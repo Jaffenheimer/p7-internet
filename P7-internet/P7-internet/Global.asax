@@ -1,1 +1,0 @@
-﻿<%@ Application Codebehind="Global.asax.cs" Inherits="P7_internet.MvcApplication" Language="C#" %>
