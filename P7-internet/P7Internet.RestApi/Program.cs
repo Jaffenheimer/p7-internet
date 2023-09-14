@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
-using P7_Internet.Translation.RestApi;
+using P7Internet.Translation.RestApi;
 
-namespace P7_Internet
+namespace P7Internet
 {
     public class Program
     {

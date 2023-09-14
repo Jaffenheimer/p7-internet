@@ -4,7 +4,7 @@
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
-        <RootNamespace>P7_Internet</RootNamespace>
+        <RootNamespace>P7Internet</RootNamespace>
         <LangVersion>latest</LangVersion>
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>

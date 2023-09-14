@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using OpenAI_API;
 using OpenAI_API.Chat;
 using OpenAI_API.Models;
-using P7_internet.Response;
+using P7Internet.Response;
 
 namespace P7_internet.Services
 {

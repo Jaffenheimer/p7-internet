@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using P7_internet.Response;
 using P7_internet.Services;
 using P7Internet.Persistence.Repositories;
 
-namespace P7_Internet.Controllers;
+namespace P7Internet.Controllers;
 
 [ApiController]
 [Route("recipes")]

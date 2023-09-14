@@ -1,4 +1,4 @@
-﻿namespace P7_internet.Response
+﻿namespace P7Internet.Response
 {
     public class RecipeResponse
     {

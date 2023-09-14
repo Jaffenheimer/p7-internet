@@ -8,7 +8,7 @@ using Microsoft.OpenApi.Models;
 using P7_internet.Services;
 using P7Internet.Persistence.Extensions;
 
-namespace P7_Internet
+namespace P7Internet
 {
     namespace Translation.RestApi
     {
