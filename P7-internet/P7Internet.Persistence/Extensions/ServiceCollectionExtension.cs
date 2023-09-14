@@ -2,9 +2,9 @@
 using Dapper;
 using Microsoft.Extensions.DependencyInjection;
 using MySql.Data.MySqlClient;
-using P7_Internet_Persistence.Dapper;
+using P7Internet.Persistence.Dapper;
 
-namespace P7_Internet_Persistence.Extensions;
+namespace P7Internet.Persistence.Extensions;
 
 public static class ServiceCollectionExtension
 {
