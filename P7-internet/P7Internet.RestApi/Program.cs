@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using P7_Internet.Translation.RestApi;
 
 namespace P7_Internet

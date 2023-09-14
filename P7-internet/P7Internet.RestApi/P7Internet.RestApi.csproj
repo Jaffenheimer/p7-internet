@@ -3,7 +3,7 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
-        <ImplicitUsings>enable</ImplicitUsings>
+        <ImplicitUsings>disable</ImplicitUsings>
         <RootNamespace>P7_Internet</RootNamespace>
         <LangVersion>latest</LangVersion>
     </PropertyGroup>

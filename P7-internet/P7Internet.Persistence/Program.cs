@@ -1,4 +1,6 @@
-﻿namespace P7_Internet_Persistence
+﻿using System;
+
+namespace P7_Internet_Persistence
 {
     class Program
     {

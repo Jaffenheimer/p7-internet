@@ -1,4 +1,6 @@
-﻿using OpenAI_API;
+﻿using System;
+using System.Collections.Generic;
+using OpenAI_API;
 using OpenAI_API.Chat;
 using OpenAI_API.Models;
 using P7_internet.Response;
