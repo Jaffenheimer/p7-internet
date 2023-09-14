@@ -6,6 +6,7 @@
         <ImplicitUsings>disable</ImplicitUsings>
         <RootNamespace>P7_Internet</RootNamespace>
         <LangVersion>latest</LangVersion>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -25,6 +26,12 @@
 
     <ItemGroup>
         <ProjectReference Include="..\P7Internet.Persistence\P7Internet.Persistence.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>

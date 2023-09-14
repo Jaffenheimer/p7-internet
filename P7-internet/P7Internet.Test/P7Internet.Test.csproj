@@ -4,6 +4,7 @@
         <TargetFramework>net5.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <IsPackable>false</IsPackable>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -18,5 +19,6 @@
       <ProjectReference Include="..\P7Internet.Persistence\P7Internet.Persistence.csproj" />
       <ProjectReference Include="..\P7Internet.RestApi\P7Internet.RestApi.csproj" />
     </ItemGroup>
+
 
 </Project>

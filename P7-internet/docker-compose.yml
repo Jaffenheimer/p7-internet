@@ -1,0 +1,13 @@
+﻿version: '3'
+services:
+  dbup:
+    build:
+      context: .
+      dockerfile: Dockerfile-DbUp
+    image: p7internet/db-up
+  
+  restapi:
+    build:
+      context: .
+      dockerfile: Dockerfile-RestApi
+    image: p7internet/rest-api
