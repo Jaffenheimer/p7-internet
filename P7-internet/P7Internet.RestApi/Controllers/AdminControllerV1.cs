@@ -12,6 +12,7 @@ public class AdminControllerV1 : ControllerBase
 {
     private readonly ITestRepository _testRepository;
     private readonly OpenAiService _openAiService;
+
     public AdminControllerV1(ITestRepository testRepository, OpenAiService openAiService)
     {
         _testRepository = testRepository;

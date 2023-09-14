@@ -34,7 +34,7 @@ namespace P7Internet
                 });
                 services.AddSwaggerGen(c =>
                 {
-                    c.SwaggerDoc("v1", new OpenApiInfo {Title = ServiceName, Version = "v1"});
+                    c.SwaggerDoc("v1", new OpenApiInfo { Title = ServiceName, Version = "v1" });
                 });
 
                 services.ConfigurePersistenceMySqlConnection(Configuration.GetConnectionString("MySqlDatabase"));

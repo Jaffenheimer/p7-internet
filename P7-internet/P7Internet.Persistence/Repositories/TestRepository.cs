@@ -17,6 +17,7 @@ public class TestRepository : ITestRepository
     }
 
     private IDbConnection Connection => _connectionFactory.Connection;
+
     public async Task<bool> Upsert(List<string> ingredients)
     {
         var query = $@"INSERT INTO {TableName} (Ingredients)
