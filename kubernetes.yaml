@@ -124,6 +124,18 @@ spec:
             capabilities:
               drop:
                 - NET_RAW
+          volumeMounts:
+          - name: p7-volume-mount
+            mountPath: /data
+            readOnly: true
+      volumes:
+          - name: p7-volume
+            csi:
+              driver: gcsfuse.csi.storage.gke.io
+              readOnly: true
+              volumeAttributes:
+                bucketName: p7-internet
+                mountOptions: "implicit-dirs"
       securityContext:
         seccompProfile:
           type: RuntimeDefault
