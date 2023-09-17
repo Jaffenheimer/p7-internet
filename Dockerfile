@@ -2,8 +2,8 @@
 WORKDIR /src
 
 #Copy Files
-COPY ["P7Internet.Persistence/", "P7Internet.Persistence/"]
-COPY ["P7Internet.RestApi/", "P7Internet.RestApi/"]
+COPY ["P7Internet.Persistence/P7Internet.Persistence.csproj", "P7Internet.Persistence/"]
+COPY ["P7Internet.RestApi/P7Internet.RestApi.csproj", "P7Internet.RestApi/"]
 
 
 # Persistence project
