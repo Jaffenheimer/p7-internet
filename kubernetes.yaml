@@ -1,0 +1,210 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    autopilot.gke.io/resource-adjustment: >-
+      {"input":{"containers":[{"name":"p7-internet-sha256-1"}]},"output":{"containers":[{"limits":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"requests":{"cpu":"500m","ephemeral-storage":"1Gi","memory":"2Gi"},"name":"p7-internet-sha256-1"}]},"modified":true}
+    autopilot.gke.io/warden-version: 2.7.41
+  labels:
+    P7: nginx-1
+  managedFields:
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:spec':
+          'f:replicas': {}
+      manager: vpa-recommender
+      operation: Update
+      subresource: scale
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            .: {}
+            'f:P7': {}
+        'f:spec':
+          'f:progressDeadlineSeconds': {}
+          'f:revisionHistoryLimit': {}
+          'f:selector': {}
+          'f:strategy':
+            'f:rollingUpdate':
+              .: {}
+              'f:maxSurge': {}
+              'f:maxUnavailable': {}
+            'f:type': {}
+          'f:template':
+            'f:metadata':
+              'f:labels':
+                .: {}
+                'f:P7': {}
+            'f:spec':
+              'f:containers':
+                'k:{"name":"p7-internet-sha256-1"}':
+                  .: {}
+                  'f:image': {}
+                  'f:imagePullPolicy': {}
+                  'f:name': {}
+                  'f:resources': {}
+                  'f:terminationMessagePath': {}
+                  'f:terminationMessagePolicy': {}
+              'f:dnsPolicy': {}
+              'f:restartPolicy': {}
+              'f:schedulerName': {}
+              'f:securityContext': {}
+              'f:terminationGracePeriodSeconds': {}
+      manager: GoogleCloudConsole
+      operation: Update
+      time: '2023-09-17T20:21:30Z'
+    - apiVersion: apps/v1
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:annotations':
+            'f:deployment.kubernetes.io/revision': {}
+        'f:status':
+          'f:availableReplicas': {}
+          'f:conditions':
+            .: {}
+            'k:{"type":"Available"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:lastUpdateTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+            'k:{"type":"Progressing"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:lastUpdateTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+          'f:observedGeneration': {}
+          'f:readyReplicas': {}
+          'f:replicas': {}
+          'f:updatedReplicas': {}
+      manager: kube-controller-manager
+      operation: Update
+      subresource: status
+      time: '2023-09-17T20:28:08Z'
+  name: nginx-1
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      P7: nginx-1
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        P7: nginx-1
+    spec:
+      containers:
+        - image: gcr.io/river-tiger-399318/github.com/jaffenheimer/p7-internet
+          imagePullPolicy: IfNotPresent
+          name: p7-internet-sha256-1
+          resources:
+            limits:
+              cpu: 500m
+              ephemeral-storage: 1Gi
+              memory: 2Gi
+            requests:
+              cpu: 500m
+              ephemeral-storage: 1Gi
+              memory: 2Gi
+          securityContext:
+            capabilities:
+              drop:
+                - NET_RAW
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      tolerations:
+        - effect: NoSchedule
+          key: kubernetes.io/arch
+          operator: Equal
+          value: amd64
+---
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  labels:
+    P7: nginx-1
+  managedFields:
+    - apiVersion: autoscaling/v2
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:metadata':
+          'f:labels':
+            .: {}
+            'f:P7': {}
+        'f:spec':
+          'f:maxReplicas': {}
+          'f:metrics': {}
+          'f:minReplicas': {}
+          'f:scaleTargetRef':
+            'f:apiVersion': {}
+            'f:kind': {}
+            'f:name': {}
+      manager: GoogleCloudConsole
+      operation: Update
+      time: '2023-09-17T20:21:31Z'
+    - apiVersion: autoscaling/v2
+      fieldsType: FieldsV1
+      fieldsV1:
+        'f:status':
+          'f:conditions':
+            .: {}
+            'k:{"type":"AbleToScale"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+            'k:{"type":"ScalingActive"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+            'k:{"type":"ScalingLimited"}':
+              .: {}
+              'f:lastTransitionTime': {}
+              'f:message': {}
+              'f:reason': {}
+              'f:status': {}
+              'f:type': {}
+          'f:currentMetrics': {}
+          'f:currentReplicas': {}
+          'f:desiredReplicas': {}
+          'f:lastScaleTime': {}
+      manager: vpa-recommender
+      operation: Update
+      subresource: status
+      time: '2023-09-17T20:29:35Z'
+  name: nginx-1-hpa-nwkj
+  namespace: default
+spec:
+  maxReplicas: 5
+  metrics:
+    - resource:
+        name: cpu
+        target:
+          averageUtilization: 80
+          type: Utilization
+      type: Resource
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx-1
