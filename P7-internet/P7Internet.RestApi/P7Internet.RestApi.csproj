@@ -28,12 +28,6 @@
     <ItemGroup>
         <ProjectReference Include="..\P7Internet.Persistence\P7Internet.Persistence.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
-    </ItemGroup>
     <ItemGroup>
         <Content Update="appsettings.json">
             <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
