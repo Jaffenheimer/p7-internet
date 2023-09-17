@@ -5,7 +5,6 @@ WORKDIR /src
 COPY ["P7-Internet/P7Internet.Persistence/P7Internet.Persistence.csproj", "P7Internet.Persistence/"]
 COPY ["P7-Internet/P7Internet.RestApi/P7Internet.RestApi.csproj", "P7Internet.RestApi/"]
 
-
 # Persistence project
 WORKDIR /src/P7Internet.Persistence
 RUN dotnet restore
