@@ -27,6 +27,6 @@ public class AdminControllerV1 : ControllerBase
         // Der kunne også spørges OpenAi om noget og returnere det til brugeren
         // var res = _openAiService.GetAiResponse(ingredients);
         // return Ok(res);
-        return Ok(result);
+        return Ok("result");
     }
 }
