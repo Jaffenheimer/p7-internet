@@ -19,14 +19,14 @@ public class AdminControllerV1 : ControllerBase
         _openAiService = openAiService;
     }
 
-    [HttpPost("ingredients")]
-    public async Task<IActionResult> SampleEndpoint(List<string> ingredients)
+    [HttpGet("ingredients")]
+    public async Task<IActionResult> SampleEndpoint()
     {
         //Upsert noget til en DB
-        var result = await _testRepository.Upsert(ingredients);
+        //var result = await _testRepository.Upsert(ingredients);
         // Der kunne også spørges OpenAi om noget og returnere det til brugeren
         // var res = _openAiService.GetAiResponse(ingredients);
         // return Ok(res);
-        return Ok("result");
+        return Ok("Hej fra API'et");
     }
 }
