@@ -10,13 +10,11 @@ public class TestRepository : ITestRepository
 {
     private static readonly string TableName = "";
     private readonly IDbConnectionFactory _connectionFactory;
-
+    private IDbConnection Connection => _connectionFactory.Connection;
     public TestRepository(IDbConnectionFactory connectionFactory)
     {
         _connectionFactory = connectionFactory;
     }
-
-    private IDbConnection Connection => _connectionFactory.Connection;
 
     public async Task<bool> Upsert(List<string> ingredients)
     {
