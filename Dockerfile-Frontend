@@ -1,0 +1,19 @@
+﻿FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+WORKDIR /src
+
+#Copy Files
+COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
+
+# Shared project
+
+# Api project
+WORKDIR /src/P7Internet.Frontend
+RUN dotnet restore
+RUN dotnet publish -c Release -o out
+
+
+# Build runtime image
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
+WORKDIR /src
+COPY --from=build-env /src/P7Internet.Frontend/out .
+ENTRYPOINT ["dotnet", "P7Internet.Frontend.dll"]
