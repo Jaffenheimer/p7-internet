@@ -7,7 +7,7 @@ using P7Internet.Persistence.Repositories;
 namespace P7Internet.Controllers;
 
 [ApiController]
-[Route("recipes")]
+[Route("admin/sample")]
 public class AdminControllerV1 : ControllerBase
 {
     private readonly ITestRepository _testRepository;

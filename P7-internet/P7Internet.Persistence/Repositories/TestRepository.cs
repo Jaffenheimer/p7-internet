@@ -23,6 +23,7 @@ public class TestRepository : ITestRepository
         var query = $@"INSERT INTO {TableName} (Ingredients)
                        VALUES (@Ingredients)
                        ON DUPLICATE KEY UPDATE Ingredients = @Ingredients";
+        
         return await Connection.ExecuteAsync(query, new { Ingredients = ingredients }) > 0;
     }
 }
