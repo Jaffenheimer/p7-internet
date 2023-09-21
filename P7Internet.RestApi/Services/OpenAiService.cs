@@ -5,7 +5,7 @@ using OpenAI_API.Chat;
 using OpenAI_API.Models;
 using P7Internet.Response;
 
-namespace P7_internet.Services
+namespace P7Internet.Services
 {
     public class OpenAiService
     {
