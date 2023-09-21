@@ -8,4 +8,4 @@ services:
   restapi:
     build:
       context: .
-      dockerfile: P7Internet.RestApi/Dockerfile-RestApi
+      dockerfile: P7Internet.RestApi/Dockerfile
