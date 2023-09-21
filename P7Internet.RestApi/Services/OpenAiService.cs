@@ -16,7 +16,7 @@ namespace P7_internet.Services
             _openAi = new OpenAIAPI(apiKey);
         }
 
-        public RecipeResponse GetAiResponse(List<string> sourceText)
+        public RecipeResponse GetAiResponse(string sourceText)
         {
             var request = new ChatRequest()
             {
@@ -26,7 +26,7 @@ namespace P7_internet.Services
                     {
                         Role = ChatMessageRole.User,
                         Content =
-                            $"Give 3 examples on recipes that can be made from the following ingredients '{sourceText}'",
+                            $"'{sourceText}'",
                     }
                 },
                 Model = Model.ChatGPTTurbo,

@@ -1,0 +1,6 @@
+FROM node:18-alpine
+
+WORKDIR /src
+
+COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
+

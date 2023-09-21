@@ -15,7 +15,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\P7Internet.Frontend\P7Internet.Frontend.csproj" />
       <ProjectReference Include="..\P7Internet.Persistence\P7Internet.Persistence.csproj" />
       <ProjectReference Include="..\P7Internet.RestApi\P7Internet.RestApi.csproj" />
     </ItemGroup>
