@@ -8,7 +8,7 @@ namespace P7_DbUp
         static int Main(string[] args)
         {
             var connectionString = "Server=127.0.0.1;Port=3308;Database=p7-internet;Uid=root;Pwd=password;";
-            
+
             var sqlUpgrader =
                 DeployChanges.To
                     .MySqlDatabase(connectionString)

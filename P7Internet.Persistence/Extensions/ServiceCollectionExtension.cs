@@ -1,7 +1,5 @@
-﻿using System.Data.Common;
-using Dapper;
+﻿using Dapper;
 using Microsoft.Extensions.DependencyInjection;
-using MySql.Data.MySqlClient;
 using P7Internet.Persistence.Connection;
 using P7Internet.Persistence.Dapper;
 using P7Internet.Persistence.Repositories;
