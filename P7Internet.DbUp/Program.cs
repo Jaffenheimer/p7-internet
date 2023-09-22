@@ -7,16 +7,16 @@ namespace P7_DbUp
     {
         static int Main(string[] args)
         {
-            var connectionString = "this is my connectionstring";
-
-            var upgrader =
+            var connectionString = "Server=127.0.0.1;Port=3308;Database=p7-internet;Uid=root;Pwd=password;";
+            
+            var sqlUpgrader =
                 DeployChanges.To
                     .MySqlDatabase(connectionString)
                     .WithScriptsEmbeddedInAssembly(Assembly.GetExecutingAssembly())
                     .LogToConsole()
                     .Build();
 
-            upgrader.PerformUpgrade();
+            sqlUpgrader.PerformUpgrade();
 
             return 0;
         }
