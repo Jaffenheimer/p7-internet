@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using P7Internet.Persistence.Repositories;
+using P7Internet.Requests;
 using P7Internet.Services;
 
 namespace P7Internet.Controllers;
@@ -19,9 +20,9 @@ public class PublicControllerV1 : ControllerBase
     }
 
     [HttpPost("recipes")]
-    public async Task<IActionResult> GetARecipe(string req)
+    public async Task<IActionResult> GetARecipe(SampleRequest req)
     {
-        var res = _openAiService.GetAiResponse(req);
+        var res = _openAiService.GetAiResponse(req.OpenAiString);
 
         return Ok(res);
     }
