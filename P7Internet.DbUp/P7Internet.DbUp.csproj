@@ -13,7 +13,6 @@
 
     <ItemGroup>
         <None Remove="Scripts\0001-TestDb.sql" />
-        <EmbeddedResource Include="Scripts\0001-TestDb.sql" />
     </ItemGroup>
 
     <ItemGroup>

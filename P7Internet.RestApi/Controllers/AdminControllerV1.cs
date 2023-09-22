@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using P7Internet.Persistence.Repositories;
+using P7Internet.Persistence.UserRepository;
 using P7Internet.Services;
 
 namespace P7Internet.Controllers;
@@ -9,12 +9,12 @@ namespace P7Internet.Controllers;
 [Route("admin/sample")]
 public class AdminControllerV1 : ControllerBase
 {
-    private readonly ITestRepository _testRepository;
+    private readonly IUserRepository _userRepository;
     private readonly OpenAiService _openAiService;
 
-    public AdminControllerV1(ITestRepository testRepository, OpenAiService openAiService)
+    public AdminControllerV1(IUserRepository userRepository, OpenAiService openAiService)
     {
-        _testRepository = testRepository;
+        _userRepository = userRepository;
         _openAiService = openAiService;
     }
 

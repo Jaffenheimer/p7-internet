@@ -4,15 +4,15 @@ using System.Threading.Tasks;
 using Dapper;
 using P7Internet.Persistence.Connection;
 
-namespace P7Internet.Persistence.Repositories;
+namespace P7Internet.Persistence.UserRepository;
 
-public class TestRepository : ITestRepository
+public class UserRepository : IUserRepository
 {
     private static readonly string TableName = "";
     private readonly IDbConnectionFactory _connectionFactory;
     private IDbConnection Connection => _connectionFactory.Connection;
 
-    public TestRepository(IDbConnectionFactory connectionFactory)
+    public UserRepository(IDbConnectionFactory connectionFactory)
     {
         _connectionFactory = connectionFactory;
     }

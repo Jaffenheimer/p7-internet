@@ -12,7 +12,7 @@ public class User
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
 
-    public User(Guid id, string name, string emailAddress, string passwordHash, string passwordSalt, DateTime createdAt, DateTime updatedAt)
+    public User(Guid id,string name, string emailAddress, string passwordHash, string passwordSalt, DateTime createdAt, DateTime updatedAt)
     {
         Id = id;
         Name = name;
