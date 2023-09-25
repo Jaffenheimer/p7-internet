@@ -30,24 +30,40 @@ public class PublicControllerV1 : ControllerBase
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
         List<string?> recipesIncludingIngredients = new List<string?>();
-        foreach (var ingredient in req.Ingredients)
+        foreach (var recipe in recipes)
         {
-            recipesIncludingIngredients.Add(recipes.Find((x) => x.Contains(ingredient)));
+            if (ContainsEveryString(req.Ingredients, recipe))
+            {
+                recipesIncludingIngredients.Add(recipe);
+            }
         }
         
-        if (recipesIncludingIngredients.All(x => x != null))
+        if (recipesIncludingIngredients.Any(x => x != null))
             return Ok(recipesIncludingIngredients);
             
         var openAiRequest = req.OpenAiString;
 
         foreach (var ingredient in req.Ingredients)
         {
-            openAiRequest +=  ingredient + ", ";
+            openAiRequest += ", " + ingredient;
         }
         
         var res = _openAiService.GetAiResponse(openAiRequest);
         
         await _cachedRecipeRepository.Upsert(res.Recipes);
         return Ok(res);
+    }
+    
+    //Tak til chatgpt for nedenstående metode wup wup
+    private static bool ContainsEveryString(List<string> stringList, string targetString)
+    {
+        foreach (string str in stringList)
+        {
+            if (!targetString.Contains(str))
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
