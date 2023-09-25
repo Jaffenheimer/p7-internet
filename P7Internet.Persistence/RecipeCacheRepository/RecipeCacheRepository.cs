@@ -1,8 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Dapper;
+using MySql.Data.MySqlClient;
 using P7Internet.Persistence.Connection;
 using SharedObjects;
 
@@ -20,52 +23,32 @@ public class RecipeCacheRepository : IRecipeCacheRepository
         _connectionFactory = connectionFactory;
     }
     
-    public async Task<Recipe> GetRecipeByName(string name)
+    public async Task<List<string>> GetAllRecipes()
     {
-        var query = $@"SELECT * FROM {TableName} WHERE Name LIKE @Name";
+        var query = $@"SELECT Recipe FROM {TableName}";
 
-        return await Connection.QueryFirstOrDefaultAsync<Recipe>(query, new { Name = "%" + name + "%"});
+        var resultFromDb = await Connection.QueryMultipleAsync(query);
+
+        var result = resultFromDb.Read<string>();
+
+        return result.AsList();
     }
     
-    public async Task<List<Recipe>> GetRecipeByIngredients(List<Ingredient> ingredients)
+    public async Task<bool> Upsert(string openAiResponse)
     {
-        var query = $@"SELECT RecipeId FROM {IngredientsTable} WHERE Ingredients LIKE @Ingredients";
-        var gridReader = await Connection.QueryMultipleAsync(query, new { Ingredients = ingredients });
-        var recipeIds = await gridReader.ReadAsync<Guid>();
-        
-        var recipeQuery = $@"SELECT * FROM {TableName} WHERE Id = @Id";
-        var recipeGridReader = await Connection.QueryMultipleAsync(recipeQuery, new { Id = recipeIds });
-        var recipes = await recipeGridReader.ReadAsync<Recipe>();
-        
-        return recipes.AsList();
-    }
-    
-    public async Task<bool> Upsert(Recipe recipe)
-    {
-        var query = $@"INSERT INTO {TableName} (Name, Category, Description)
-                       VALUES (@Name, @Category, @Description)
-                       ON DUPLICATE KEY UPDATE Name = @Name, Category = @Category, Description = @Description";
-        
-        var ingredientQuery = $@"INSERT INTO {IngredientsTable} (Name, RecipeId)
-                                 VALUES (@Name,@RecipeId)
-                                 ON DUPLICATE KEY UPDATE Name = @Name, RecipeId = @RecipeId";
+        var query = $@"INSERT INTO {TableName} (Id, Recipe)
+                       VALUES (@Id, @Recipe)
+                       ON DUPLICATE KEY UPDATE Recipe = @Recipe";
         
         var parameters = new
         {
-            Name = recipe.Name,
-            Category = recipe.Category,
-            Description = recipe.Description
+            Id = Guid.NewGuid(),
+            Recipe = openAiResponse
         };
-        
-        var ingredientParameters = new
-        {
-            Name = recipe.Ingredients,
-            RecipeId = recipe.Id
-        };
-        
-        await Connection.ExecuteAsync(ingredientQuery, ingredientParameters);
         
         return await Connection.ExecuteAsync(query, parameters) > 0;
     }
+
+    
     
 }

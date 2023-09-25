@@ -9,7 +9,6 @@
     <Import_RootNamespace>SharedObjects</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Ingredient.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Recipe.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)User.cs" />
   </ItemGroup>

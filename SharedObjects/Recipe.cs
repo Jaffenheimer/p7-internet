@@ -7,14 +7,15 @@ namespace SharedObjects
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Category { get; set; }
+        //public string Category { get; set; }
         public string Description { get; set; }
-        public List<Ingredient> Ingredients { get; set; }
+        public List<string> Ingredients { get; set; }
         
-        public Recipe(string name, string category, string description, List<Ingredient> ingredients)
+        public Recipe(Guid id, string name, string description, List<string> ingredients)
         {
+            Id = id;
             Name = name;
-            Category = category;
+            //Category = category;
             Description = description;
             Ingredients = ingredients;
         }

@@ -6,7 +6,6 @@ using P7Internet.Persistence.RecipeCacheRepository;
 using P7Internet.Persistence.UserRepository;
 using P7Internet.Requests;
 using P7Internet.Services;
-using SharedObjects;
 
 namespace P7Internet.Controllers;
 
@@ -26,13 +25,29 @@ public class PublicControllerV1 : ControllerBase
     }
 
     [HttpPost("recipes")]
-    public Task<IActionResult> GetARecipe(SampleRequest req)
+    public async Task<IActionResult> GetARecipe([FromBody]SampleRequest req)
     {
-        //Der er noget wonky shit med .net der ikke vil assigne en variabel
-        //af typen List<Ingredient> til en List<Ingredient> som jeg lige skal have fundet ud af
-        //var recipes = _cachedRecipeRepository.GetRecipeByIngredients();
-        var res = _openAiService.GetAiResponse(req.OpenAiString);
+        var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
-        return Task.FromResult<IActionResult>(Ok(res));
+        List<string?> recipesIncludingIngredients = new List<string?>();
+        foreach (var ingredient in req.Ingredients)
+        {
+            recipesIncludingIngredients.Add(recipes.Find((x) => x.Contains(ingredient)));
+        }
+        
+        if (recipesIncludingIngredients.All(x => x != null))
+            return Ok(recipesIncludingIngredients);
+            
+        var openAiRequest = req.OpenAiString;
+
+        foreach (var ingredient in req.Ingredients)
+        {
+            openAiRequest +=  ingredient + ", ";
+        }
+        
+        var res = _openAiService.GetAiResponse(openAiRequest);
+        
+        await _cachedRecipeRepository.Upsert(res.Recipes);
+        return Ok(res);
     }
 }
