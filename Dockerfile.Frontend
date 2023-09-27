@@ -4,7 +4,7 @@ WORKDIR /src
 #Copy Files
 COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
 COPY ["P7Internet.Frontend/react-app", "P7Internet.Frontend/react-app"]
-cd P7Internet.Frontend/react-app
+WORKDIR src/P7Internet.Frontend/react-app
 RUN npm install
 
 CMD ["npm", "start"]
