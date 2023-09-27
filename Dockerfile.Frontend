@@ -1,5 +1,4 @@
 FROM node:18-alpine
-WORKDIR /src
 
 #Copy Files
 COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
