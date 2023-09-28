@@ -8,3 +8,6 @@ WORKDIR P7Internet.Frontend/react-app
 RUN npm install
 
 CMD ["npm", "start"]
+
+FROM nginx:latest
+COPY public /usr/share/nginx/html/index.html
