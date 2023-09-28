@@ -9,4 +9,5 @@ RUN npm install
 CMD ["npm", "start"]
 
 FROM nginx:latest
-COPY /public /usr/share/nginx/html/
+echo WORKDIR
+COPY react-app/public /usr/share/nginx/html/
