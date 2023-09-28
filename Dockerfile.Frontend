@@ -3,11 +3,10 @@ WORKDIR /src
 
 #Copy Files
 COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
-COPY ["P7Internet.Frontend/react-app", "P7Internet.Frontend/react-app"]
-WORKDIR P7Internet.Frontend/react-app
+WORKDIR /react-app
 RUN npm install
 
 CMD ["npm", "start"]
 
 FROM nginx:latest
-COPY /public /usr/share/nginx/html/index.html
+COPY /public /usr/share/nginx/html/
