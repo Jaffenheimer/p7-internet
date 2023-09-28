@@ -10,4 +10,4 @@ RUN npm install
 CMD ["npm", "start"]
 
 FROM nginx:latest
-COPY public /usr/share/nginx/html/index.html
+COPY /public /usr/share/nginx/html/index.html
