@@ -1,6 +1,9 @@
 # Getting Started with Create React App
-
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+
+# First time run 
+Remember to use "npm install ./react-app" in folder "p7-internet/P7Internet.Frontend" to able to run the react project
 
 ## Available Scripts
 
@@ -11,7 +14,7 @@ In the project directory, you can run:
 Runs the app in the development mode.\
 Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
+ The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
 ### `npm test`
