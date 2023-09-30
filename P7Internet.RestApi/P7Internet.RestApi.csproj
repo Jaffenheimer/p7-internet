@@ -35,6 +35,10 @@
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Dtos\" />
+      <Folder Include="RequestObjects\" />
+    </ItemGroup>
     <Import Project="..\SharedObjects\SharedObjects.projitems" Label="Shared" />
 
 </Project>

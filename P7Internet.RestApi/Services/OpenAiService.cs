@@ -5,47 +5,46 @@ using OpenAI_API.Chat;
 using OpenAI_API.Models;
 using P7Internet.Response;
 
-namespace P7Internet.Services
+namespace P7Internet.Services;
+
+public class OpenAiService
 {
-    public class OpenAiService
+    private readonly OpenAIAPI _openAi;
+
+    public OpenAiService(string? apiKey)
     {
-        private readonly OpenAIAPI _openAi;
+        _openAi = new OpenAIAPI(apiKey);
+    }
 
-        public OpenAiService(string? apiKey)
+    public RecipeResponse GetAiResponse(string sourceText)
+    {
+        var request = new ChatRequest()
         {
-            _openAi = new OpenAIAPI(apiKey);
-        }
-
-        public RecipeResponse GetAiResponse(string sourceText)
-        {
-            var request = new ChatRequest()
+            Messages = new List<ChatMessage>()
             {
-                Messages = new List<ChatMessage>()
+                new()
                 {
-                    new()
-                    {
-                        Role = ChatMessageRole.User,
-                        Content =
-                            $"'{sourceText}'",
-                    }
-                },
-                Model = Model.ChatGPTTurbo,
-                MaxTokens = 512,
-                Temperature = 0.5
-            };
+                    Role = ChatMessageRole.User,
+                    Content =
+                        $"'{sourceText}'",
+                }
+            },
+            Model = Model.ChatGPTTurbo,
+            MaxTokens = 512,
+            Temperature = 0.5
+        };
 
-            try
-            {
-                var completionResult = _openAi.Chat.CreateChatCompletionAsync(request);
-                var result = completionResult.Result;
-                if (result.Choices.Count == 0) return null;
+        try
+        {
+            var completionResult = _openAi.Chat.CreateChatCompletionAsync(request);
+            var result = completionResult.Result;
+            if (result.Choices.Count == 0) return null;
 
-                return new RecipeResponse(result.Choices[0].Message.Content);
-            }
-            catch (Exception e)
-            {
-                return RecipeResponse.Error(e.Message);
-            }
+            return new RecipeResponse(result.Choices[0].Message.Content);
+        }
+        catch (Exception e)
+        {
+            return RecipeResponse.Error(e.Message);
         }
     }
 }
