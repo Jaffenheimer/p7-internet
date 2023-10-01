@@ -10,6 +10,11 @@ WORKDIR P7Internet.Frontend/react-app/
 
 #Copy files from GitHub to nginx container
 FROM nginx:latest
-COPY --from=node ./P7Internet.Frontend/react-app/public/index.html /usr/share/nginx/html/
+
+func main() {
+  fmt.Println(WORKDIR)
+}
+
+COPY --from=node public /usr/share/nginx/html/
 
 CMD ["npm", "start"]
