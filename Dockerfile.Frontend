@@ -13,6 +13,7 @@ RUN npm run-script build
 #Copy files from GitHub to nginx container
 FROM nginx:latest
 WORKDIR P7Internet.Frontend/react-app/
+RUN pwd && ls
 COPY build/ /usr/share/nginx/html
 
 # CMD ["npm", "start"]
