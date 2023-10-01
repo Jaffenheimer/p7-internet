@@ -9,9 +9,11 @@ RUN pwd && ls
 
 # RUN npm install
 
+RUN npm run build
+
 #Copy files from GitHub to nginx container
 FROM nginx:latest
 
-ADD --from=node public/index.html /usr/share/nginx/html/index.html
+COPY --from=node build/ /usr/share/nginx/html
 
 CMD ["npm", "start"]
