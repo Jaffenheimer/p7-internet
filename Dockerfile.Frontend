@@ -12,6 +12,6 @@ RUN pwd && ls
 #Copy files from GitHub to nginx container
 FROM nginx:latest
 
-COPY --from=node ./public/index.html /usr/share/nginx/html
+COPY --from=node public/index.html /usr/share/nginx/html/index.html
 
 CMD ["npm", "start"]
