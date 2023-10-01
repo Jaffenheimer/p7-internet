@@ -9,7 +9,7 @@ WORKDIR P7Internet.Frontend/react-app/
 
 #Copy files from GitHub to nginx container
 FROM nginx:latest
-
+RUN pwd && ls
 COPY --from=0 public/index.html /usr/share/nginx/html
 
 CMD ["npm", "start"]
