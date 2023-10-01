@@ -15,6 +15,6 @@ FROM nginx:latest
 COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
 WORKDIR P7Internet.Frontend/react-app/
 RUN pwd && ls
-COPY build/ /usr/share/nginx/
+COPY P7Internet.Frontend/react-app/build/ /usr/share/nginx/
 
 # CMD ["npm", "start"]
