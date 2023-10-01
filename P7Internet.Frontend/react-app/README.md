@@ -3,7 +3,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 
 # First time run 
-Remember to use "npm install react-app" in folder "p7-internet/P7Internet.Frontend" to able to run the react project
+Remember to use "npm install react-app" in folder "p7-internet/P7Internet.
+Frontend" to able to run the react project
+
+"Npm i" can also be ran inside folder for same effect
 
 Remember to update all packages before running with "npm update"
 
