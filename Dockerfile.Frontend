@@ -2,19 +2,14 @@ FROM node:18-alpine as node
 WORKDIR /src
 
 #Copy Files
-COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
+COPY .
 WORKDIR P7Internet.Frontend/react-app/
-
 
 # RUN npm install
 
 #Copy files from GitHub to nginx container
 FROM nginx:latest
 
-func main() {
-  fmt.Println(WORKDIR)
-}
-
-COPY --from=node public /usr/share/nginx/html/
+COPY --from=0 public/index.html /usr/share/nginx/html
 
 CMD ["npm", "start"]
