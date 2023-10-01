@@ -2,7 +2,7 @@ FROM node:18-alpine as node
 WORKDIR /src
 
 #Copy Files
-COPY .
+COPY . frontend
 WORKDIR P7Internet.Frontend/react-app/
 
 # RUN npm install
