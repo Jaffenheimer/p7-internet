@@ -8,6 +8,6 @@ RUN npm install
 
 #Copy files from GitHub to nginx container
 #FROM nginx:latest
-COPY public /usr/share/nginx/html
+COPY index.html /usr/share/nginx/html/index.html
 
 CMD ["npm", "start"]
