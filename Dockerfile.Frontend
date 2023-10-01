@@ -15,4 +15,4 @@ FROM nginx:latest
 
 COPY build/ /usr/share/nginx/html
 
-CMD ["npm", "start"]
+# CMD ["npm", "start"]
