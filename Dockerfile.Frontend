@@ -4,8 +4,7 @@ WORKDIR /src
 #Copy Files
 COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
 WORKDIR P7Internet.Frontend/react-app/public/
-CMD ["ls"]
-COPY index.html /usr/share/nginx/html/index.html
+COPY /src/P7Internet.Frontend/react-app/public/index.html /usr/share/nginx/html/index.html
 RUN npm install
 
 #Copy files from GitHub to nginx container
