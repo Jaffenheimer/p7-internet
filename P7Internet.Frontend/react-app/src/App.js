@@ -1,9 +1,14 @@
 import './App.css';
 
+//husk også at ændre i './components/index.jsx'
+import {OwnedIngredientsList, GenerateButton} from './components'
+
 function App() {
   return (
     <div className="App">
-      <h1>Dette er en test</h1>
+      <h1>Recipe Generator</h1>
+			<OwnedIngredientsList/>
+			<GenerateButton/>
     </div>
   );
 }
