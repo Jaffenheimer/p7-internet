@@ -3,11 +3,12 @@ WORKDIR /src
 
 #Copy Files
 COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
-WORKDIR P7Internet.Frontend/react-app/
+WORKDIR P7Internet.Frontend/react-app/public
+COPY index.html /usr/share/nginx/html/index.html
 RUN npm install
 
 #Copy files from GitHub to nginx container
 #FROM nginx:latest
-COPY index.html /usr/share/nginx/html/index.html
+
 
 CMD ["npm", "start"]
