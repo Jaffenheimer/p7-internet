@@ -7,7 +7,7 @@ WORKDIR P7Internet.Frontend/react-app/
 
 RUN pwd && ls
 
-# RUN npm install
+RUN npm install
 RUN npm run-script build
 
 #Copy files from GitHub to nginx container
