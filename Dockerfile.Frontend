@@ -4,6 +4,7 @@ WORKDIR /src
 #Copy Files
 COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
 WORKDIR P7Internet.Frontend/react-app/public
+CMD ["ls"]
 COPY index.html /usr/share/nginx/html/index.html
 RUN npm install
 
