@@ -1,14 +1,16 @@
-# stage 1
-FROM node:17-alpine as builder
-WORKDIR /app
-COPY package.json .
-RUN npm install
-COPY . .
-RUN npm start
+FROM node:alpine
+COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
+WORKDIR P7Internet.Frontend/react-app/
 
-# stage 2
+RUN npm install
+RUN npm run-script build
+
+#Copy files from GitHub to nginx container
 FROM nginx:alpine
-WORKDIR /usr/share/nginx/html
-RUN rm -rf ./*
-COPY --from=builder /app/build .
-ENTRYPOINT ["nginx", "-g", "daemon off;"]
+
+WORKDIR /src
+
+COPY ["P7Internet.Frontend/react-app/public", "/usr/share/nginx/"]
+# COPY P7Internet.Frontend/react-app/build/ 
+
+# CMD ["npm", "start"]
