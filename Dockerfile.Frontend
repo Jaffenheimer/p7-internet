@@ -3,16 +3,18 @@ FROM node:18-alpine as node
 WORKDIR /src
 
 #Copy Files
-COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
-WORKDIR P7Internet.Frontend/react-app/
+COPY P7Internet.Frontend/ /usr/src/app/
+WORKDIR /app/react-app
 
 RUN npm install
 RUN npm run-script build
 
+COPY . .
+
 # stage 2
 FROM nginx:alpine
 
-COPY --from=node /P7Internet.Frontend/react-app/build /usr/share/nginx/html
+COPY --from=node /app/react-app/build /usr/share/nginx/html
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY /nginx.conf /etc/nginx/conf.d
