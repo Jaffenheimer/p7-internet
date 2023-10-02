@@ -4,7 +4,7 @@ WORKDIR /src
 
 #Copy Files
 COPY P7Internet.Frontend/ /usr/src/app/
-WORKDIR /app/react-app
+WORKDIR /usr/src/app/react-app
 
 RUN npm install
 RUN npm run-script build
