@@ -11,7 +11,7 @@ RUN npm run-script build
 #Copy files from GitHub to nginx container
 FROM nginx:alpine
 
-COPY --from=node . /usr/share/nginx/html
+COPY --from=node . .
 
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
