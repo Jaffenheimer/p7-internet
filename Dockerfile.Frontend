@@ -2,10 +2,10 @@ FROM node:18-alpine as node
 WORKDIR /src
 
 #Copy Files
-COPY ["P7Internet.Frontend/react-app", "P7Internet.Frontend/app"]
+COPY ["P7Internet.Frontend/", "P7Internet.Frontend/"]
 WORKDIR P7Internet.Frontend/react-app/
 
-RUN npm install --silent
+RUN npm install
 RUN npm run-script build
 
 #Copy files from GitHub to nginx container
