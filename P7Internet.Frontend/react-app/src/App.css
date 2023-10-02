@@ -5,7 +5,6 @@ body > #root > div {
 .App{
     display: flex;
     flex-direction: row;
-    height: 100%;
 }
 
 .App > .AppLeft{
@@ -16,21 +15,21 @@ body > #root > div {
 
 .App > .AppLeft > .ContainerUpper{
     height: 40%;
+    border-bottom: 2px solid black;
+    background: #F8EDE3;
+    flex-direction: column;
 }
 
 .App > .AppLeft > .ContainerLower{
+    padding: 10px;
     height: 60%;
-    background-color: bisque;
+    background: #F8EDE3;
 }
 
 .App > .AppRight{
+    background: #BDD2B6;
     width: 25%;
     height: 100%;
-}
-
-.App > .AppLeft > .ContainerUpper{
-    background-color: aqua;
-    flex-direction: column;
 }
 
 h1{
