@@ -1,38 +1,88 @@
-.App {
-  text-align: center;
+body > #root > div {
+    height: 100vh;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.App{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.App > .AppLeft{
+    width: 75%;
+    height: 100%;
+    margin-top: -22px;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+.App > .AppLeft > .ContainerUpper{
+    height: 40%;
 }
 
-.App-link {
-  color: #61dafb;
+.App > .AppLeft > .ContainerLower{
+    height: 60%;
+    background-color: bisque;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.App > .AppRight{
+    width: 25%;
+    height: 100%;
 }
+
+.App > .AppLeft > .ContainerUpper{
+    background-color: aqua;
+    flex-direction: column;
+}
+
+h1{
+    font-family: Verdana;
+    display: flex;
+    width: 433px;
+    height: 65px;
+    flex-direction: column;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+h2{
+    color: #000;
+    font-family: Verdana;
+    font-size: 35px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 45.714% */
+    letter-spacing: 0.75px;
+}
+
+input[type=text]{
+    color: rgba(0, 0, 0, 0.50);
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Verdana;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px; /* 129.412% */
+    letter-spacing: -0.408px;
+}
+
+button{
+    width: 145px;
+    height: 32px;
+    background-color: white;
+    border: 2px solid black;
+    border-radius: 5px; /* rounded corners */
+    border-color: #212120;
+    color: #000;
+    cursor: pointer;
+    text-align: center;
+    font-family: Verdana;
+    font-size: 14px;
+    font-weight: 550;
+    line-height: 16px;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
+}
+
+button:hover {
+    background: #e7e7e7;
+}
+
