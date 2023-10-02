@@ -11,7 +11,7 @@ RUN npm run-script build
 #Copy files from GitHub to nginx container
 FROM nginx:alpine
 
-COPY --from=node src/P7Internet.Frontend/react-app/public/index.html /usr/share/nginx/html
+COPY --from=node . /usr/share/nginx/html
 
 COPY ["P7Internet.Frontend/react-app/public", "/usr/share/nginx/"]
 # COPY P7Internet.Frontend/react-app/build/ 
