@@ -13,7 +13,7 @@ FROM nginx:alpine
 
 COPY --from=node . /usr/share/nginx/html
 
-COPY ["P7Internet.Frontend/react-app/public", "/usr/share/nginx/"]
-# COPY P7Internet.Frontend/react-app/build/ 
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
 
 # CMD ["npm", "start"]
