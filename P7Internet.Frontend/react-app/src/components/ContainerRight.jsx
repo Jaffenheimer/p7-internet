@@ -2,7 +2,9 @@ import React from 'react'
 
 const ContainerRight = () => {
   return (
-    <div className='ContainerRight'>ContainerRight</div>
+    <div className='ContainerRight'>ContainerRight
+      
+    </div>
   )
 }
 

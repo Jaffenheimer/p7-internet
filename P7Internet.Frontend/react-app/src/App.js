@@ -27,8 +27,6 @@ function App() {
         <p>Svar fra API</p>
         <Example />
       </div>
-
-
     </div>
   );
 }

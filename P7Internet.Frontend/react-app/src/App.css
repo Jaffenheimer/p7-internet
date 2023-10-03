@@ -34,10 +34,8 @@ body > #root > div {
 
 h1{
     font-family: Verdana;
-    display: flex;
-    width: 433px;
+    display: block;
     height: 65px;
-    flex-direction: column;
     text-align: center;
     flex-shrink: 0;
 }
@@ -54,6 +52,8 @@ h2{
 
 input[type=text]{
     color: rgba(0, 0, 0, 0.50);
+    width: 30%;
+    margin-right: 3%;
     font-feature-settings: 'clig' off, 'liga' off;
     font-family: Verdana;
     font-size: 17px;
@@ -61,6 +61,23 @@ input[type=text]{
     font-weight: 400;
     line-height: 22px; /* 129.412% */
     letter-spacing: -0.408px;
+}
+
+li{
+    color: black;
+    font-feature-settings: 'clig' off, 'liga' off;
+    font-family: Verdana;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.408px;
+}
+
+img{
+    margin-bottom: -0.1em;
+    height: 1em;
+    cursor: pointer;
 }
 
 button{
@@ -85,3 +102,20 @@ button:hover {
     background: #e7e7e7;
 }
 
+
+.RecipeTitle > h1 {
+    text-align: left
+}
+
+.ContainerLower > .SelectArrows{
+    margin-left: 45%;
+}
+
+.ContainerLower > button {
+    margin-left: 80%;
+}
+
+.ContainerLower > .SelectArrows > img {
+    margin: 5%;
+    transform: scale(2);
+}

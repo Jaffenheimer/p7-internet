@@ -4,7 +4,7 @@ const SearchBar = () => {
   return (
     <div>
         <input type="text" placeholder="Add an ingredient"/>
-        <button type="submit">Submit</button>
+        <button type="submit">Add</button>
     </div>
   )
 }

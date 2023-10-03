@@ -11,7 +11,7 @@ const OwnedIngredientsList = () => {
 	return (
 		<ul>{ownedList.map(ingredient => 
 					<li>{ingredient} 
-						<img src={cross} alt='cross' style={{height: '1em'}}
+						<img src={cross} alt='cross'
 						     onClick={handleClick}/>
 					</li>)
 			}
