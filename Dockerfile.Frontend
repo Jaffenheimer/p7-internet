@@ -9,7 +9,7 @@ WORKDIR /usr/src/app/react-app
 RUN npm install
 RUN npm run-script build
 
-COPY . .
+COPY P7Internet.Frontend/ /usr/src/app/
 
 # stage 2
 FROM nginx:alpine
