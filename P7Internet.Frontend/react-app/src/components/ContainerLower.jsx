@@ -1,10 +1,14 @@
 import React, {useState} from 'react'
 import {RecipeTitle} from '.'
+import {RecipeView} from '.'
 import SelectArrows from './SelectArrows'
 import leftArrow from '../data/leftArrow.svg'
 import rightArrow from '../data/rightArrow.svg'
 
 const ContainerLower = () => {
+
+  RecipeView()
+
 	const ownedList = ['Chicken Breast', 'Salt', 'Water', 'Milk']
 
   const Ingredients = [
