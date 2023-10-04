@@ -7,3 +7,5 @@ export { default as ContainerUpper } from './ContainerUpper';
 export { default as ContainerLower } from './ContainerLower';
 export { default as ContainerRight } from './ContainerRight';
 export { default as GenerateRecipeButton} from './GenerateRecipeButton';
+export { default as ProfilePicture } from './ProfilePicture';
+export { default as NumberField} from './NumberField';
