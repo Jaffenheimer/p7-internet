@@ -1,5 +1,5 @@
 import React from 'react'
-import {OwnedIngredientsList,  SearchBar} from '.'
+import {OwnedIngredientsList,  SearchBar, GenerateRecipeButton} from '.'
 
 const ContainerUpper = () => {
 
@@ -11,7 +11,7 @@ const ContainerUpper = () => {
 
         <OwnedIngredientsList/>
         
-        <button>Generate</button>
+       <GenerateRecipeButton></GenerateRecipeButton>
     </div>
   );
 }

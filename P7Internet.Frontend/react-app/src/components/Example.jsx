@@ -8,7 +8,7 @@ class Example extends Component{
     }; 
 
     componentDidMount(){
-        axios.get("https://localhost:5001/admin/sample/ingredients")
+        axios.get("http://localhost:5000/admin/sample/ingredients")
             .then((response) => {
                 this.setState({
                     text: response.data,
