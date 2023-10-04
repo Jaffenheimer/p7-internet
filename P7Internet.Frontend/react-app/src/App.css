@@ -119,3 +119,8 @@ button:hover {
     margin: 5%;
     transform: scale(2);
 }
+
+.ContainerRight > .ProfilePicture > img {
+    margin-left: 90%;
+    transform: scale(2.5);
+}
