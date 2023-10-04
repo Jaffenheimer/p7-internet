@@ -9,9 +9,9 @@ const ContainerLower = () => {
 
   const Ingredients = [
     ['400g Chicken Breast', '400g Asparagus', '3dl Water', '1.5dl Milk'],
-    ['400g Chicken Breast', '400g Asparagus', '3dl Water'],
-    ['400g Chicken Breast', '400g Asparagus'],
-    ['400g Chicken Breast']
+    ['400g Chicken Breast', '400g Asparagus', '1.5dl Milk', '30g butter'],
+    ['400g Chicken Breast', '30g butter', '10pieces Tartellets'],
+    ['400g Chicken Breast', '20g Parsley', '1 Chicken Stock', '3dl Water']
   ];
 
   const [tab, setTab] = useState(0)
