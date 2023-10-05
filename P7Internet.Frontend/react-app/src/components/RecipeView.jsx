@@ -66,7 +66,7 @@ const RecipeView = () => {
         else
             setTab(tab+1)
     }
-    
+
     function filterOwned(ingredients)
     {
         let filtered = [];
@@ -93,11 +93,14 @@ const RecipeView = () => {
         <div className='RecipeView'>
             <RecipeTitle title={recipes[tab].title}></RecipeTitle>
             <div className='ingredients'>
-            <ul>{recipes[tab].ingredients.map(ingredient => <li>{ingredient} 
-            {filterOwned(recipes[tab].ingredients).includes(ingredient) ? ' Owned' : ''}
-            </li>)}</ul>
-
+                <ul>
+                    {recipes[tab].ingredients.map(ingredient => 
+                    <li>{ingredient} 
+                    {filterOwned(recipes[tab].ingredients).includes(ingredient) ? ' Owned' : ''}
+                    </li>)}
+                </ul>
             </div>
+            
             <div className='SelectArrows'>
                 <img src={leftArrow} alt='Left Arrow' onClick={clickLeft}/>
                 <img src={rightArrow} alt='right Arrow' onClick={clickRight}/>
