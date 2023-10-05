@@ -1,8 +1,7 @@
 import React from 'react'
 import heart from '../data/heart.svg'
 
-const RecipeTitle = () => {
-  const title = "Title";
+const RecipeTitle = ({title}) => {
 
   function handleClick() {
     alert('You clicked me!');

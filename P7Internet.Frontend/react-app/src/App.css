@@ -107,15 +107,20 @@ button:hover {
     text-align: left
 }
 
-.ContainerLower > .SelectArrows{
+.ingredients{
+    position: absolute
+}
+
+.RecipeView > .SelectArrows{
+    margin-top: 50%;
     margin-left: 45%;
 }
 
-.ContainerLower > button {
+.RecipeView > button {
     margin-left: 80%;
 }
 
-.ContainerLower > .SelectArrows > img {
+.RecipeView > .SelectArrows > img {
     margin: 5%;
     transform: scale(2);
 }
