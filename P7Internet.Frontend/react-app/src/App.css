@@ -120,7 +120,68 @@ button:hover {
     transform: scale(2);
 }
 
-.ContainerRight > .ProfilePicture > img {
-    margin-left: 90%;
+.ContainerRight > .ContainerRightTop > .containerRightColumn > .ProfilePicture > img {
     transform: scale(2.5);
+    margin-top: 10%; 
+    float: right;
+    margin-right: 15%;
 }
+
+.ContainerRight > .ContainerRightTop > .containerRightColumn > .NumberField {
+    transform: scale(1.5);
+    display: flex;
+    justify-content: center;
+    margin-top: 10%;
+}
+.ContainerRight > .ContainerRightTop > .containerRightColumn > .NumberField > #inputNumberField {
+    width: 30px;
+    height: auto;
+    border: 1px solid black;
+    display: inline-block;
+    font-size: small;
+    text-align: center;
+}
+
+#inputNumberField {
+    /*Hides arrows on input field number Firefox*/
+    -moz-appearance: textfield;
+ }
+ 
+ #inputNumberField::-webkit-outer-spin-button,
+ #inputNumberField::-webkit-inner-spin-button {
+    /*Hides arrows on input field number Chrome*/
+    -webkit-appearance: none;
+    margin: 0;
+ }
+
+.ContainerRight > .ContainerRightTop > .containerRightColumn > .NumberField > .plusMinusButton {
+    text-align: center;
+    width: 30px;
+    height: auto;
+    border: 1px solid black;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 0;
+    font-size: small;
+}
+
+#numberPersons {
+    font-size: xx-large;
+    margin-top: 0%;
+    padding: 0%;
+}
+
+.containerRightColumn {
+    float: left;
+    width: 33.33%;
+    justify-content: center;
+    margin-top: 3%;
+  }
+  
+  
+  .ContainerRightTop:after {
+    content: "";
+    display: table;
+    clear: both;
+    justify-content: center;
+  }
