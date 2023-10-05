@@ -2,7 +2,6 @@ import React from "react";
 
 class Recipe
 {
-    //constructor works from a string - maybe need to edit constructor to take ingredients,method, title, etc.
     constructor(title,ingredients,method)
     {
 
