@@ -107,7 +107,7 @@ button:hover {
     text-align: left
 }
 
-.ContainerLower > .SelectArrows{
+.SelectArrows{
     margin-left: 45%;
 }
 
@@ -115,37 +115,35 @@ button:hover {
     margin-left: 80%;
 }
 
-.ContainerLower > .SelectArrows > img {
+.SelectArrows > img {
     margin: 5%;
     transform: scale(2);
 }
 
-.ContainerRight > .ContainerRightTop > .containerRightColumn > .ProfilePicture > img {
+.ProfilePicture > img {
     transform: scale(2.5);
     margin-top: 10%; 
     float: right;
     margin-right: 15%;
 }
 
-.ContainerRight > .ContainerRightTop > .containerRightColumn > .NumberField {
+.NumberField {
     transform: scale(1.5);
     display: flex;
     justify-content: center;
     margin-top: 10%;
 }
-.ContainerRight > .ContainerRightTop > .containerRightColumn > .NumberField > #inputNumberField {
+#inputNumberField {
     width: 30px;
     height: auto;
     border: 1px solid black;
     display: inline-block;
     font-size: small;
     text-align: center;
-}
-
-#inputNumberField {
     /*Hides arrows on input field number Firefox*/
     -moz-appearance: textfield;
- }
+}
+
  
  #inputNumberField::-webkit-outer-spin-button,
  #inputNumberField::-webkit-inner-spin-button {
