@@ -107,11 +107,12 @@ button:hover {
     text-align: left
 }
 
+
 .SelectArrows{
     margin-left: 45%;
 }
 
-.ContainerLower > button {
+.RecipeView > button {
     margin-left: 80%;
 }
 

@@ -58,10 +58,7 @@ public class PublicControllerV1 : ControllerBase
                               "2. Place a fresh basil leaf on top of each tomato and mozzarella slice.\\n" +
                               "3. Drizzle balsamic glaze over the salad.\\n" +
                               "4. Season with salt and pepper to taste. " +
-                              "Serve immediately as a refreshing appetizer or side dish.\\n\\n" +
-                              "4. Tuna Salad Wrap:\\nIngredients:\\n- 2 cans tuna, drained\\n- 1/4 cup mayonnaise\\" +
-                              "n- 1 tablespoon lemon juice\\n- 1/4 cup diced celery\\n- 1/4 cup diced red onion\\n- " +
-                              "Salt and pepper to taste\\n- 4 large tortilla wraps\\n\\nInstructions:\\n1. In a bowl";
+                              "Serve immediately as a refreshing appetizer or side dish.\\n\\n";
         
         
         RecipeResponse recipeResponse = new RecipeResponse(recipe);
