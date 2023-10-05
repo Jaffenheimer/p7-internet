@@ -9,7 +9,7 @@ const GenerateRecipeButton = () => {
 
     try {
       const response = await axios.post(
-        "https://localhost:5001/public/sample/testrecipes",
+        "https://localhost:5000/public/sample/testrecipes",
         req,
         {
           params: {
