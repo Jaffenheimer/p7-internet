@@ -13,12 +13,12 @@ COPY P7Internet.Frontend/ .
 
 # stage 2
 FROM nginx:alpine
-WORKDIR /usr/src/app/react-app
+WORKDIR /
 # COPY --from=node /usr/src/app/react-app/build /usr/share/nginx/html
 
 RUN rm /etc/nginx/conf.d/default.conf
 COPY /nginx.conf /etc/nginx/conf.d
-COPY --from=node /usr/src/app/react-app /usr/share/nginx/html
+COPY --from=node /usr/src/app/react-app/build /usr/share/nginx/html
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]
