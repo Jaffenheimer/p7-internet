@@ -107,12 +107,9 @@ button:hover {
     text-align: left
 }
 
-.ingredients{
-    position: absolute
-}
+
 
 .RecipeView > .SelectArrows{
-    margin-top: 50%;
     margin-left: 45%;
 }
 
