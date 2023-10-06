@@ -13,7 +13,7 @@ const NumberField = () => {
 
   
   //Every time the user changes the numberfield we check if the value is within the expected values
-  function updateNumberField(event){
+  function UpdateNumberField(event){
     if (event.target.value < minValue) {
       setValue(minValue);
       alert("minimum is 1");
@@ -27,14 +27,14 @@ const NumberField = () => {
     }
   }
 
-  function add(){
+  function Add(){
     if (value < maxValue)
       setValue(value + 1);
     else 
       alert("maximum is 100");
   }
 
-  function subtract(){
+  function Subtract(){
     if(value > minValue)
       setValue(value - 1);
     else
@@ -43,16 +43,16 @@ const NumberField = () => {
 
   return (
     <div className="NumberField">
-      <button class="plusMinusButton" onClick={subtract}>-</button>
+      <button class="PlusMinusButton" onClick={Subtract}>-</button>
       <input
-        id='inputNumberField'
+        id='InputNumberField'
         type="number"
         size={3}
         value={value}
-        onChange={updateNumberField}
+        onChange={UpdateNumberField}
         readOnly
       />
-      <button class="plusMinusButton" onClick={add}>+</button>
+      <button class="PlusMinusButton" onClick={Add}>+</button>
     </div>
   );
 };

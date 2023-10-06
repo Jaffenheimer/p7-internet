@@ -134,7 +134,7 @@ button:hover {
     justify-content: center;
     margin-top: 10%;
 }
-#inputNumberField {
+#InputNumberField {
     width: 30px;
     height: auto;
     border: 1px solid black;
@@ -146,14 +146,14 @@ button:hover {
 }
 
  
- #inputNumberField::-webkit-outer-spin-button,
- #inputNumberField::-webkit-inner-spin-button {
+ #InputNumberField::-webkit-outer-spin-button,
+ #InputNumberField::-webkit-inner-spin-button {
     /*Hides arrows on input field number Chrome*/
     -webkit-appearance: none;
     margin: 0;
  }
 
-.ContainerRight > .ContainerRightTop > .containerRightColumn > .NumberField > .plusMinusButton {
+.ContainerRight > .ContainerRightTop > .ContainerRightColumn > .NumberField > .PlusMinusButton {
     text-align: center;
     width: 30px;
     height: auto;
@@ -164,13 +164,13 @@ button:hover {
     font-size: small;
 }
 
-#numberPersons {
+#NumberPersons {
     font-size: xx-large;
     margin-top: 0%;
     padding: 0%;
 }
 
-.containerRightColumn {
+.ContainerRightColumn {
     float: left;
     width: 33.33%;
     justify-content: center;
