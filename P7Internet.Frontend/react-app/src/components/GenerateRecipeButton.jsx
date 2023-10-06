@@ -5,11 +5,11 @@ const GenerateRecipeButton = () => {
   const GenerateRecipesHandler = async (event) => {
     event.preventDefault();
 
-    const req = "Create 5 short and simple recipe for 4 people";
+    const req = "Create 3 short and simple recipe for 4 people";
 
     try {
       const response = await axios.post(
-        "https://localhost:5000/public/sample/testrecipes",
+        "/public/sample/testrecipes",
         req,
         {
           params: {
