@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-import heart from '../data/heart.svg'
 import Recipe from './Recipe'
 import RecipeTitle from './RecipeTitle';
 import leftArrow from '../data/leftArrow.svg'
@@ -22,7 +21,7 @@ const RecipeView = () => {
         var ingredients = [];
         var method = []
         for (const line of string.split("\n")) {
-            if (title == "") //title
+            if (title === "") //title
             {
                 title = line
                 title = trimNumberedPoints(line)
@@ -33,12 +32,12 @@ const RecipeView = () => {
             {
                 ingredients.push(line.substring(line.indexOf(" ") + 1))
             }
-            else if (startsWithNumber(line) && title != "") //instructions
+            else if (startsWithNumber(line) && title !== "") //instructions
             {
                 method.push(trimNumberedPoints(line));
             }
 
-            else if (line == "" && method.length != []) //end of recipe
+            else if (line === "" && method.length != []) //end of recipe
             {
                 recipe = new Recipe(title,ingredients,method)
                 recipes.push(recipe)
@@ -78,7 +77,7 @@ const RecipeView = () => {
         return filtered;
       }
 
-    const ownedList = ['Chicken Breast', 'Salt', 'Water', 'Milk']
+    const ownedList = ['chicken breast', 'salt', 'water', 'milk']
     const [tab, setTab] = useState(0)
     //this should of course not be hardcoded in here like it is now
     //and the ingredients you own should also be sent somehow
@@ -91,7 +90,7 @@ const RecipeView = () => {
 
     return (
         <div className='RecipeView'>
-            <RecipeTitle title={recipes[tab].title}></RecipeTitle>
+            <RecipeTitle title={recipes[tab].title}/>
             <div className='ingredients'>
                 <ul>
                     {recipes[tab].ingredients.map(ingredient => 
