@@ -29,7 +29,7 @@ public class ETilbudsAvisService
     }
     */
 
-    public async Task<Offer> GetAllOffers(int zip, List<KeyValuePair<string, string>>? queries)
+    public async Task<IList<Offer>> GetAllOffers(int zip, List<KeyValuePair<string, string>>? queries)
     {
         var coords = await GetCoordinates(zip);
         _queryBuilder.Add("r_lng", coords["lon"]);
@@ -42,14 +42,19 @@ public class ETilbudsAvisService
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        
-
         var response = await _client.SendAsync(request);
+        var responseContent = response.Content.ReadAsStringAsync().Result;
+        var deserializedContent = JsonConvert.DeserializeObject<dynamic>(responseContent);
 
-        Console.WriteLine(response.Content.ReadAsStringAsync().Result);
-        Offer serializedContent = JsonConvert.DeserializeObject<Offer>(response.Content.ReadAsStringAsync().Result);
+        //This creates the offer objects from the parsed json data.
+        IList<Offer> offers = new List<Offer>();
+        foreach (JToken result in deserializedContent)
+        {
+            Offer offer = CreateObjectFromDeserializedJson<Offer>(result);
+            offers.Add(offer);
+        }
 
-        return serializedContent;
+        return offers;
     }
 
 
@@ -64,13 +69,33 @@ public class ETilbudsAvisService
         var coordinates = new Dictionary<string, string>() { { "lon", jsonData["visueltcenter"][0].ToString() }, { "lat", jsonData["visueltcenter"][1].ToString() } };
         return coordinates;
     }
+    public T CreateObjectFromDeserializedJson<T>(JToken jsonToken)
+    {
+        return jsonToken.ToObject<T>();
+    }
     #endregion
 }
 
 public class Offer
 {
+    public Offer()
+    {
+
+    }
+
     public string Id { get; set; }
+    [JsonProperty("heading")]
     public string Name { get; set; }
+    public string Description { get; set; } 
     public decimal Price { get; set; }
+    [JsonProperty("size.to")]
+    public float Size { get; set; }
+    [JsonProperty("dealer.name")]
+    public string Dealer { get; set; }
+    [JsonProperty("run_from")]
+    public DateTime Created { get; set; }
+    [JsonProperty("run_till")]
+    public DateTime Ending { get; set; }
+
 
 }
