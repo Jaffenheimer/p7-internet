@@ -16,12 +16,14 @@ public class PublicControllerV1 : ControllerBase
     private readonly IUserRepository _userRepository;
     private readonly IRecipeCacheRepository _cachedRecipeRepository;
     private readonly OpenAiService _openAiService;
+    private readonly ETilbudsAvisService _eTilbudsAvisService;
 
     public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService, IRecipeCacheRepository cachedRecipeRepository)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
         _cachedRecipeRepository = cachedRecipeRepository;
+        _eTilbudsAvisService = new ETilbudsAvisService();
     }
 
     [HttpPost("recipes")]
@@ -52,6 +54,16 @@ public class PublicControllerV1 : ControllerBase
         
         await _cachedRecipeRepository.Upsert(res.Recipes);
         return Ok(res);
+    }
+    [HttpGet]
+    [Route("offer/GetAllOffers/{zip}/{queries}")]
+    public async Task<IActionResult> GetOffer([FromRoute] int zip, [FromRoute] List<KeyValuePair<string, string>> queries)
+    {
+        var res = await _eTilbudsAvisService.GetAllOffers(zip, queries);
+        if (res != null) return Ok(res);
+        return BadRequest();
+
+
     }
     
     //Tak til chatgpt for nedenstående metode wup wup
