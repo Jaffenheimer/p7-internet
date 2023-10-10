@@ -168,6 +168,7 @@ button:hover {
     font-size: xx-large;
     margin-top: 0%;
     padding: 0%;
+    margin-left: 10%;
 }
 
 .ContainerRightColumn {
@@ -178,9 +179,27 @@ button:hover {
   }
   
   
-  .ContainerRightTop:after {
+.ContainerRightTop:after {
     content: "";
     display: table;
     clear: both;
     justify-content: center;
   }
+
+#DietaryRestrictions{
+    font-size: xx-large;
+    text-align: left;
+    margin-left: 2.5%;
+}
+
+.ContainerRightMiddle > .DietaryRestrictions > #DietaryRestrictionsCheckbox{
+    text-align: left;
+    font-size: x-large;
+}
+
+.DietaryRestrictionsCheckboxSize{
+    transform: scale(1.5);
+    margin-right: 5%;
+    margin-left: 5%;
+    margin-top: 5%;
+}

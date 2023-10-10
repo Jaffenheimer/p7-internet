@@ -1,6 +1,7 @@
 import React from 'react'
 import ProfilePicture from './ProfilePicture'
 import NumberField from './NumberField'
+import DietaryRestrictions from './DietaryRestrictions'
 
 const ContainerRight = () => {
   return (
@@ -9,6 +10,10 @@ const ContainerRight = () => {
         <div className='ContainerRightColumn'> <p id='NumberPersons'>Persons</p> </div>
         <div className='ContainerRightColumn'> <NumberField/> </div>
         <div className='ContainerRightColumn'> <ProfilePicture/> </div>
+      </div>
+      <div className='ContainerRightMiddle'>
+        <DietaryRestrictions/>
+
       </div>
     </div>
   )

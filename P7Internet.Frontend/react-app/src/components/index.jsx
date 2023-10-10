@@ -11,3 +11,4 @@ export { default as ProfilePicture } from './ProfilePicture';
 export { default as NumberField} from './NumberField';
 export { default as Recipe } from './Recipe';
 export { default as RecipeView } from './RecipeView';
+export { default as DietaryRestrictions } from './DietaryRestrictions';
