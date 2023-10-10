@@ -7,9 +7,9 @@ const SearchBar = () => {
       <input
         type="text"
         name="userInput"
-        placeholder="Add an ingredient"
+        placeholder="Tilføj en ingrediens..."
         />
-      <button type="submit" >Submit</button>
+      <button type="submit" >Tilføj</button>
     </form>
   );
 };

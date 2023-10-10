@@ -2,7 +2,7 @@ import React from 'react'
 import cross from '../data/cross.svg'
 
 const OwnedIngredientsList = () => {
-	const ownedList = ['Chicken Breast', 'Salt']
+	const ownedList = ['Kyllingebryst', 'Salt']
 	
 	function handleClick() {
     alert('You clicked me!');

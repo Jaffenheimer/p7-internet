@@ -5,8 +5,8 @@ const ContainerUpper = () => {
 
   return (
     <div className='ContainerUpper'>
-        <h1>Recipe Generator</h1>
-        <h2>Owned Ingredients</h2>
+        <h1>Opskriftsgenerator</h1>
+        <h2>Ingredienser jeg gerne vil bruge:</h2>
         <SearchBar/>
 
         <OwnedIngredientsList/>
