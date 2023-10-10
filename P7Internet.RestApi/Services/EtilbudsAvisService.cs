@@ -6,6 +6,7 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Converters;
 using Microsoft.AspNetCore.Http.Extensions;
 
 namespace P7Internet.Services;
@@ -31,9 +32,16 @@ public class ETilbudsAvisService
 
     public async Task<IList<Offer>> GetAllOffers(int zip, List<KeyValuePair<string, string>>? queries)
     {
-        var coords = await GetCoordinates(zip);
-        _queryBuilder.Add("r_lng", coords["lon"]);
-        _queryBuilder.Add("r_lat", coords["lat"]);
+        try
+        {
+            var coords = await GetCoordinates(zip);
+            _queryBuilder.Add("r_lng", coords["lon"]);
+            _queryBuilder.Add("r_lat", coords["lat"]);
+        }
+        catch (Exception)
+        {
+            throw new Exception("Zip not found");
+        }
         foreach (var query in queries)
         {
             _queryBuilder.Add(query.Key, query.Value);  
@@ -44,13 +52,19 @@ public class ETilbudsAvisService
 
         var response = await _client.SendAsync(request);
         var responseContent = response.Content.ReadAsStringAsync().Result;
-        var deserializedContent = JsonConvert.DeserializeObject<dynamic>(responseContent);
+        var deserializedContent =  JToken.Parse(responseContent);
 
         //This creates the offer objects from the parsed json data.
         IList<Offer> offers = new List<Offer>();
-        foreach (JToken result in deserializedContent)
+        foreach (JObject result in deserializedContent)
         {
             Offer offer = CreateObjectFromDeserializedJson<Offer>(result);
+            offer.Price.Add("price", result["pricing"]["price"].Value<decimal>());
+            offer.Price.Add("currency", result["pricing"]["currency"].Value<string>());
+            offer.Dealer.Add("name", result["dealer"]["name"].Value<string>());
+            offer.Dealer.Add("logo", result["dealer"]["logo"].Value<string>());
+            offer.Size.Add("from", result["quantity"]["size"]["from"].Value<float>());
+            offer.Size.Add("to", result["quantity"]["size"]["to"].Value<float>());
             offers.Add(offer);
         }
 
@@ -69,33 +83,57 @@ public class ETilbudsAvisService
         var coordinates = new Dictionary<string, string>() { { "lon", jsonData["visueltcenter"][0].ToString() }, { "lat", jsonData["visueltcenter"][1].ToString() } };
         return coordinates;
     }
-    public T CreateObjectFromDeserializedJson<T>(JToken jsonToken)
+    public T CreateObjectFromDeserializedJson<T>(JObject jsonObject)
     {
-        return jsonToken.ToObject<T>();
+        return jsonObject.ToObject<T>();
     }
     #endregion
 }
 
+[JsonObject(MemberSerialization.OptIn)]
 public class Offer
 {
     public Offer()
     {
-
+        Price = new Dictionary<string, object>();
+        Size = new Dictionary<string, float>();
+        Dealer = new Dictionary<string, string>();
     }
-
+    [JsonProperty("id")]
     public string Id { get; set; }
     [JsonProperty("heading")]
     public string Name { get; set; }
-    public string Description { get; set; } 
-    public decimal Price { get; set; }
-    [JsonProperty("size.to")]
-    public float Size { get; set; }
-    [JsonProperty("dealer.name")]
-    public string Dealer { get; set; }
+    [JsonProperty("description")]
+    public string Description { get; set; }
+    public Dictionary<string, object> Price { get; set; }
+    public Dictionary<string, float> Size { get; set; }
+    public Dictionary<string, string> Dealer { get; set; }
     [JsonProperty("run_from")]
     public DateTime Created { get; set; }
     [JsonProperty("run_till")]
     public DateTime Ending { get; set; }
 
-
+    
+}
+[JsonObject(MemberSerialization.OptIn)]
+public class Pricing
+{
+    [JsonProperty("price")]
+    public decimal Price;
+    [JsonProperty("currency")]
+    public string currency;
+}
+[JsonObject(MemberSerialization.OptIn)]
+public class Dealer
+{
+    [JsonProperty("name")]
+    public string Name;
+    [JsonProperty("logo")]
+    public string Logo;
+}
+[JsonObject(MemberSerialization.OptIn)]
+public class Quantity
+{
+    [JsonProperty("size")]
+    public JObject size;
 }

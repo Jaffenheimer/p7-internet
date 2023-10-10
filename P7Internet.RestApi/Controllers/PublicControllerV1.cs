@@ -56,8 +56,8 @@ public class PublicControllerV1 : ControllerBase
         return Ok(res);
     }
     [HttpGet]
-    [Route("offer/GetAllOffers/{zip}/{queries}")]
-    public async Task<IActionResult> GetOffer([FromRoute] int zip, [FromRoute] List<KeyValuePair<string, string>> queries)
+    [Route("offer/GetAllOffers/zip/queries")]
+    public async Task<IActionResult> GetOffer([FromQuery] int zip, [FromQuery] List<KeyValuePair<string, string>>? queries)
     {
         var res = await _eTilbudsAvisService.GetAllOffers(zip, queries);
         if (res != null) return Ok(res);
