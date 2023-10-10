@@ -31,7 +31,7 @@ const NumberField = () => {
     if (value < maxValue)
       setValue(value + 1);
     else 
-      alert("maximum is 100");
+      alert("maximum is 10");
   }
 
   function Subtract(){
