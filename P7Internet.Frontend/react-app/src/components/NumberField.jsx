@@ -28,7 +28,7 @@ const NumberField = () => {
 
   return (
     <div className="NumberField">
-      <button class="PlusMinusButton" onClick={Subtract}>-</button>
+      <button className="PlusMinusButton" onClick={Subtract}>-</button>
       <input
         id='InputNumberField'
         type="number"
@@ -36,7 +36,7 @@ const NumberField = () => {
         value={value}
         readOnly
       />
-      <button class="PlusMinusButton" onClick={Add}>+</button>
+      <button className="PlusMinusButton" onClick={Add}>+</button>
     </div>
   );
 };
