@@ -108,8 +108,7 @@ button:hover {
 }
 
 
-
-.RecipeView > .SelectArrows{
+.SelectArrows{
     margin-left: 45%;
 }
 
@@ -117,12 +116,71 @@ button:hover {
     margin-left: 80%;
 }
 
-.RecipeView > .SelectArrows > img {
+.SelectArrows > img {
     margin: 5%;
     transform: scale(2);
 }
 
-.ContainerRight > .ProfilePicture > img {
-    margin-left: 90%;
+.ProfilePicture > img {
     transform: scale(2.5);
+    margin-top: 10%; 
+    float: right;
+    margin-right: 15%;
 }
+
+.NumberField {
+    transform: scale(1.5);
+    display: flex;
+    justify-content: center;
+    margin-top: 10%;
+}
+#InputNumberField {
+    width: 30px;
+    height: auto;
+    border: 1px solid black;
+    display: inline-block;
+    font-size: small;
+    text-align: center;
+    /*Hides arrows on input field number Firefox*/
+    -moz-appearance: textfield;
+}
+
+ 
+ #InputNumberField::-webkit-outer-spin-button,
+ #InputNumberField::-webkit-inner-spin-button {
+    /*Hides arrows on input field number Chrome*/
+    -webkit-appearance: none;
+    margin: 0;
+ }
+
+.ContainerRight > .ContainerRightTop > .ContainerRightColumn > .NumberField > .PlusMinusButton {
+    text-align: center;
+    width: 30px;
+    height: auto;
+    border: 1px solid black;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 0;
+    font-size: small;
+}
+
+#NumberPersons {
+    font-size: xx-large;
+    margin-top: 0%;
+    padding: 0%;
+}
+
+.ContainerRightColumn {
+    float: left;
+    width: 33.33%;
+    justify-content: center;
+    margin-top: 3%;
+  }
+  
+  
+  .ContainerRightTop:after {
+    content: "";
+    display: table;
+    clear: both;
+    justify-content: center;
+  }
