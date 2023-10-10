@@ -1,15 +1,23 @@
-import React from "react";
+import React, {useState} from "react";
 
-const SearchBar = () => {
+const SearchBar = ( { onSubmit } ) => {
+  const [ingredient, setIngredient] = useState('');
+
+  const handleSubmit = (event) => {
+      event.preventDefault();
+      onSubmit(ingredient);
+  }
 
   return (
-    <form>
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
-        name="userInput"
+        name="ingredient"
         placeholder="Add an ingredient"
+        value={ingredient}
+        onChange={(event => setIngredient(event.target.value))}
         />
-      <button type="submit" >Submit</button>
+      <button type="submit" >Add</button>
     </form>
   );
 };
