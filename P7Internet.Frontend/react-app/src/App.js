@@ -15,8 +15,6 @@ function App() {
       </div>
       <div className='AppRight'>
         <ContainerRight/>
-        <p>Svar fra API</p>
-        <Example />
       </div>
     </div>
   );
