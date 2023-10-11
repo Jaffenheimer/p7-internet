@@ -22,7 +22,7 @@ const RecipeView = () => {
         var ingredients = [];
         var method = []
         for (const line of string.split("\n")) {
-            if (title == "") //title
+            if (title === "") //title
             {
                 title = line
                 title = trimNumberedPoints(line)
@@ -33,12 +33,12 @@ const RecipeView = () => {
             {
                 ingredients.push(line.substring(line.indexOf(" ") + 1))
             }
-            else if (startsWithNumber(line) && title != "") //instructions
+            else if (startsWithNumber(line) && title !== "") //instructions
             {
                 method.push(trimNumberedPoints(line));
             }
 
-            else if (line == "" && method.length != []) //end of recipe
+            else if (line === "" && method.length !=[]) //end of recipe
             {
                 recipe = new Recipe(title,ingredients,method)
                 recipes.push(recipe)
