@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from "react";
+//import { useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { recipeGenerationActions } from '../features/recipeGenerationSlice';
 
@@ -8,7 +8,7 @@ import { recipeGenerationActions } from '../features/recipeGenerationSlice';
 const NumberField = () => {
 
   //Set the intial value of the number field 
-  const [value, setValue] = useState(4);
+  //const [value, setValue] = useState(4);
   const numPeople = useSelector((state) => state.recipeGeneration.numPeople);
   const dispath = useDispatch();
 
