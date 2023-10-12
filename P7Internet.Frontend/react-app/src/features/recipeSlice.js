@@ -17,4 +17,4 @@ export const recipeSlice = createSlice({
     },  
 }); 
 
-export const {actions: recipeActions, reducer: recipereducer} = recipeSlice;   
+export const {actions: recipeActions, reducer: recipeReducer} = recipeSlice;   

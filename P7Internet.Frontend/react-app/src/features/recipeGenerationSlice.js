@@ -42,4 +42,4 @@ export const recipeGenerationSlice = createSlice({
     },  
 }); 
 
-export const {actions: recipeGenerationActions, reducer: recipeGenerationreducer} = recipeGenerationSlice;
+export const {actions: recipeGenerationActions, reducer: recipeGenerationReducer} = recipeGenerationSlice;
