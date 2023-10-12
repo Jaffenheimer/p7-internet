@@ -1,13 +1,14 @@
-import React from 'react'
+
+import React, { useState } from 'react'
 import heart from '../data/heart.svg'
-import heartSolid from '../data/heart-solid.svg'
 
 const RecipeTitle = ({title}) => {
-
+  const [solid, setSolid] = useState(false)
   function handleClick(e) {
-		const solid = 'http://localhost:3000/static/media/heart-solid.6baa036489430148c6c13ee25dc4935e.svg'
-		if (e.target.src === solid) e.target.src = 'http://localhost:3000/static/media/heart.b8460c938c0732c645a81f16c95c05f9.svg'
-		else e.target.src = solid
+    e.preventDefault()
+    setSolid(!solid)
+		if (solid) e.target.src = 'http://localhost:3000/static/media/heart.9e1e9c6d121d45e8ca15c9933a759ad1.svg'
+		else e.target.src = 'http://localhost:3000/static/media/heart-solid.6baa036489430148c6c13ee25dc4935e.svg'
   }
 
   return (
