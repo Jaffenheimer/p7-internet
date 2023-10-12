@@ -1,5 +1,8 @@
 import React from 'react'
-import {OwnedIngredientsList,  SearchBar, GenerateRecipeButton} from '.'
+import SearchBar from './SearchBar'
+import OwnedIngredientsList from './OwnedIngredientsList'
+import GenerateRecipeButton from './GenerateRecipeButton'
+
 
 const ContainerUpper = () => {
 
