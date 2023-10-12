@@ -15,14 +15,14 @@ const NumberField = () => {
   const maxValue = 10;
 
 
-  const Add = () => {
+  const add = () => {
     if (numPeople < maxValue)
       dispath(recipeGenerationActions.addPerson());
     else 
       alert("maximum is 10");
   }
 
-  const Subtract = () =>{
+  const subtract = () =>{
     if(numPeople > minValue)
       dispath(recipeGenerationActions.removePerson());
     else
@@ -31,7 +31,7 @@ const NumberField = () => {
 
   return (
     <div className="NumberField">
-      <button className="PlusMinusButton" onClick={Subtract}>-</button>
+      <button className="PlusMinusButton" onClick={subtract}>-</button>
       <input
         id='InputNumberField'
         type="number"
@@ -39,7 +39,7 @@ const NumberField = () => {
         value={numPeople}
         readOnly
       />
-      <button className="PlusMinusButton" onClick={Add}>+</button>
+      <button className="PlusMinusButton" onClick={add}>+</button>
     </div>
   );
 };
