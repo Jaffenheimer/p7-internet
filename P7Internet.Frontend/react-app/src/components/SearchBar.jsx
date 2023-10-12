@@ -1,21 +1,36 @@
-import React, {useState} from "react";
+import React, {useState, useRef} from "react";
+import { recipeGenerationActions } from "../features/recipeGenerationSlice";
+import { useDispatch } from "react-redux";
 
-const SearchBar = ( { onSubmit } ) => {
+const SearchBar = () => {
+  const dispatch = useDispatch();
+  const inputRef = useRef();
   const [ingredient, setIngredient] = useState('');
+
+  const handleChange = (event) => {
+    setIngredient(event.target.value);
+  };
 
   const handleSubmit = (event) => {
       event.preventDefault();
-      onSubmit(ingredient);
-  }
+      inputRef.current.value = '';
+
+      if(ingredient !== null){
+        console.log("ingredient: ", ingredient)
+        dispatch(recipeGenerationActions.addOwnedIngredients(ingredient));
+      }
+      setIngredient(event.target.value); 
+  }; 
 
   return (
     <form onSubmit={handleSubmit}>
       <input
         type="text"
         name="ingredient"
+        ref={inputRef}
         placeholder="Add an ingredient"
         value={ingredient}
-        onChange={(event => setIngredient(event.target.value))}
+        onChange={handleChange}
         />
       <button type="submit" >Add</button>
     </form>

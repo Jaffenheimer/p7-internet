@@ -1,34 +1,20 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-    ownedIngredients: [],
-    dietaryRestrictions: [], 
-    excludeList: [],
+    recipes: [],
 };
 
-export const recipeGenerationSlice = createSlice({
-    name: 'recipeGeneration', 
+export const recipeSlice = createSlice({
+    name: 'recipes', 
     initialState, 
     reducers: {
-        addOwnedIngredients(state, action){
+        addRecipe(state, action){
             state.ownedIngredients.push(action.payload); 
         }, 
-        removeOwnedIngreidents(state, action){
-            state.ownedIngredients = state.ownedIngredients.filter(ingredient => ingredient.id !== action.payload);
+        removeRecipe(state, action){
+            state.recipes = state.recipes.filter((recipe) => recipe.id !== action.payload);
         }, 
-        selectDietaryRestrictions(state, action){
-            state.dietaryRestrictions.push(action.payload);
-        }, 
-        deselectDietaryRestrictions(state, action){
-            state.dietaryRestrictions = state.ownedIngredients.filter(dietaryRestrictions => dietaryRestrictions !== action.payload);
-        }, 
-        addExcludedIngredient(state, action){
-            state.excludeList.push(action.payload); 
-        }, 
-        removeExcludedIngredient(state, action){
-            state.excludeList = state.excludeList.filter(ingredient => ingredient.id !== action.payload);
-        },
     },  
 }); 
 
-export const {actions: recipeGenerationActions, reducer: recipeGenerationreducer} = recipeGenerationSlice
+export const {actions: recipeActions, reducer: recipereducer} = recipeSlice;   

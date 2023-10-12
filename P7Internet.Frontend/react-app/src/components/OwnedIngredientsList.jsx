@@ -1,19 +1,24 @@
 import React from 'react'
 import cross from '../data/cross.svg'
+import { useDispatch, useSelector } from 'react-redux';
+import { recipeGenerationActions } from '../features/recipeGenerationSlice';
 
-const OwnedIngredientsList = ({ownedList, onRemoveItem}) => {
-	//const ownedList = ['Chicken Breast', 'Salt']
+const OwnedIngredientsList = () => {
+	const ownedIngredientsList = useSelector(state => state.recipeGeneration.ownedIngredients);
+	const dispath = useDispatch();
 	
-	function handleClick(index) {
-		onRemoveItem(index);
-    //alert('You clicked me!');
-  }
+	const handleRemove = (event, ingredient) => {
+		event.preventDefault();
+		console.log("ingredient: ", ingredient); 
+		console.log("ingredient id: ", ingredient.id);
+		dispath(recipeGenerationActions.removeOwnedIngreidents(ingredient.id));
+  	}
 
   return (
 	<ul>
-		{ownedList.map((ingredient, index) => 
-			<li key={index}>{ingredient} 
-				<img src={cross} alt='cross' onClick={() => handleClick(index)}/>
+		{ownedIngredientsList.map((ingredient) => 
+			<li key={ingredient.id}>{ingredient.text} 
+				<img src={cross} alt='cross' onClick={(event) => handleRemove(event, ingredient)}/>
 			</li>)
 		}
 	</ul>

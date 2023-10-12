@@ -1,6 +1,8 @@
 import './App.css';
 import Example from './components/Example';
 import {ContainerUpper, ContainerLower, ContainerRight} from './components'
+import { Provider } from 'react-redux';
+import { store } from './app/store';
 import axios from 'axios';
 
 function App() {
@@ -8,17 +10,19 @@ function App() {
   axios.defaults.baseURL="http://localhost:5000";
 
   return (
-    <div className="App">
-      <div className='AppLeft'>
-        <ContainerUpper/>
-        <ContainerLower/>
+    <Provider store={store}>
+        <div className="App">
+        <div className='AppLeft'>
+          <ContainerUpper/>
+          <ContainerLower/>
+        </div>
+        <div className='AppRight'>
+          <ContainerRight/>
+          <p>Svar fra API</p>
+          <Example />
+        </div>
       </div>
-      <div className='AppRight'>
-        <ContainerRight/>
-        <p>Svar fra API</p>
-        <Example />
-      </div>
-    </div>
+    </Provider>
   );
 }
 
