@@ -94,7 +94,7 @@ const RecipeView = () => {
             <div className='ingredients'>
                 <ul>
                     {recipes[tab].ingredients.map(ingredient => 
-                    <li>{ingredient} 
+                    <li key={ingredient} >{ingredient} 
                     {filterOwned(recipes[tab].ingredients).includes(ingredient) ? ' Owned' : ''}
                     </li>)}
                 </ul>
