@@ -28,11 +28,11 @@ const SearchBar = () => {
         type="text"
         name="ingredient"
         ref={inputRef}
-        placeholder="Add an ingredient"
         value={ingredient}
         onChange={handleChange}
+        placeholder="Tilføj en ingrediens..."
         />
-      <button type="submit" >Add</button>
+      <button type="submit" >Tilføj</button>
     </form>
   );
 };
