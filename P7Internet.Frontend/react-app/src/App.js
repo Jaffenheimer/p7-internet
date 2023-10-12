@@ -1,23 +1,30 @@
 import React from 'react'
 import './App.css';
-import { Provider } from 'react-redux';
-import { store } from './app/store';
 import axios from 'axios';
-import FullRecipeView from "./pages/FullRecipeView";
 import FrontPage from "./pages/FrontPage";
-
+import FullRecipeView from './pages/FullRecipeView';
+import { useSelector } from 'react-redux';
+import Pages from './objects/Pages';
 
 
 export default function App() {
   axios.defaults.baseURL="http://localhost:5000";
 
-  return (
-    <Provider store={store}>
-        <FrontPage/>
-    </Provider>
-  );
-}
+  const page = useSelector((state) => state.page.page);
 
+  if (page === Pages.frontPage)
+  {
+    return (
+          <FrontPage/>
+    );
+  }
+  else if (page === Pages.fullRecipeView)
+  {
+    return (
+      <FullRecipeView/>
+    )
+  }
+}
 
 
 //husk også at ændre i './components/index.jsx'

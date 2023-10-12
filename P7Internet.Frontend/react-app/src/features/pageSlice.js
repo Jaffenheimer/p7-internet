@@ -1,26 +1,19 @@
-import { createSlice, nanoid } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+import Pages from "../objects/Pages"
 
-const pages = {
-    frontPage: 0,
-    //selectRecipes: 1,
-    fullRecipeView: 2,
-}
 
 const initialState = {
-    page: pages.frontPage
+    page: Pages.frontPage
 };
 
-export const recipeGenerationSlice = createSlice({
+export const pageSlice = createSlice({
     name: 'page', 
     initialState,
     reducers: {
-        addOwnedIngredients(state, action){
-            const ownedIngredient = {
-                id: nanoid(), 
-                text: action.payload,
-            }
-            state.ownedIngredients.push(ownedIngredient); 
+        goToPage(state, action) {
+            state.page = action.payload
         }, 
     },
 });
 
+export const {actions: pageActions, reducer: pageReducer} = pageSlice;
