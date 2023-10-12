@@ -13,7 +13,7 @@ const OwnedIngredientsList = () => {
 		<ul>{ownedList.map(ingredient => 
 					<li>{ingredient} 
 						<img src={cross} alt='cross'
-						     onClick={() => {setOwnedList(ownedList.filter(i => i !== ingredient))}}/>
+						     onClick={() => {}}/>
 					</li>)
 			}
 		</ul>
