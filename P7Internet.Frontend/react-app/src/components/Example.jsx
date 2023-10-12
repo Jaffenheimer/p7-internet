@@ -8,7 +8,11 @@ class Example extends Component{
     }; 
 
     componentDidMount(){
-        axios.get("/admin/sample/ingredients")
+        axios.get("/admin/sample/ingredients", {
+            headers : {
+                'Access-Control-Allow-Origin': '*',
+            }
+        })
             .then((response) => {
                 this.setState({
                     text: response.data,
