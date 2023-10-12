@@ -13,3 +13,5 @@ export { default as Recipe } from './Recipe';
 export { default as RecipeView } from './RecipeView';
 export { default as DietaryRestrictions } from './DietaryRestrictions';
 export { default as ExcludeList } from './ExcludeList';
+export { default as FullRecipeView } from '../pages/FullRecipeView';
+export { default as FrontPage } from '../pages/FrontPage';

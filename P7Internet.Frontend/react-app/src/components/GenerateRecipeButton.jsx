@@ -23,7 +23,7 @@ const GenerateRecipeButton = () => {
     }
   };
 
-  return <button onClick={GenerateRecipesHandler}>Generate</button>;
+  return <button onClick={GenerateRecipesHandler}>Generer opskrifter</button>;
 };
 
 export default GenerateRecipeButton;
