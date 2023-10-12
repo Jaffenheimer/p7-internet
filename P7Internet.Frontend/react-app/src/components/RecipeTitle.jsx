@@ -5,19 +5,19 @@ import heartSolid from '../data/heart-solid.svg'
 
 const RecipeTitle = ({title}) => {
   const [solid, setSolid] = useState(false)
-  function handleClick(e) {
-    e.preventDefault()
+  function handleClick(event) {
+    event.preventDefault()
     setSolid(!solid)
 		if (solid) 
-      e.target.src = heartHollow
+      event.target.src = heartHollow
 		else 
-      e.target.src = heartSolid
+      event.target.src = heartSolid
   }
-
+  
   return (
     <div className='RecipeTitle'>
         <h1>{title} 
-        <img src={heartHollow} alt='heart' onClick={handleClick}/>
+          <img src={heartHollow} alt='heart' onClick={handleClick}/>
         </h1>
     </div>
   )
