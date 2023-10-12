@@ -241,3 +241,34 @@ button:hover {
     cursor: pointer;
 }
   
+#ExcludeList{
+    text-align: center;
+    
+}
+
+#InputFieldExclude{
+    width: 90%;
+    height: 100%;
+    border: 1px solid black;
+    font-size: medium;
+    text-align: center;
+    float: center;
+    margin-left: 2.5%;
+}
+
+#RemoveButton{
+    margin-top: 5%;
+}
+
+#ExcludeListText{
+    font-size: xx-large;
+    text-align: left;
+    margin-left: 2.5%;
+    margin-top: 12%;   
+}
+
+#ExcludedIngredientsList{
+    text-align: left;
+    margin-left: 8%;
+}
+

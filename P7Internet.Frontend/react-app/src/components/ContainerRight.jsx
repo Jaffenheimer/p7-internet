@@ -2,6 +2,7 @@ import React from 'react'
 import ProfilePicture from './ProfilePicture'
 import NumberField from './NumberField'
 import DietaryRestrictions from './DietaryRestrictions'
+import ExcludeList from './ExcludeList'
 
 const ContainerRight = () => {
   return (
@@ -13,8 +14,10 @@ const ContainerRight = () => {
       </div>
       <div className='ContainerRightMiddle'>
         <DietaryRestrictions/>
-
       </div>
+      <div className='ContainerRightBottom'>
+      <ExcludeList/>
+      </div>  
     </div>
   )
 }

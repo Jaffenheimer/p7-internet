@@ -5,7 +5,6 @@ import GenerateRecipeButton from './GenerateRecipeButton'
 
 
 const ContainerUpper = () => {
-
   return (
     <div className='ContainerUpper'>
         <h1>Opskriftsgenerator</h1>

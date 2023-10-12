@@ -13,8 +13,6 @@ const FrontPage = () => {
       </div>
       <div className='AppRight'>
         <ContainerRight/>
-        <p>Svar fra API</p>
-        <Example />
       </div>
     </div>
   );
