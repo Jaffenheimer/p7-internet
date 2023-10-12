@@ -1,16 +1,35 @@
-import React from 'react'
+import React, {useState} from 'react'
 import profile from '../data/profile.svg'
 
 const ProfilePicture = () => {
-
+  const [open, setOpen] = useState(false);
+  
   function profileClick() {
-    alert('You clicked me!');
+    setOpen(!open);
   }
+
+  const handleMenuOne = () => {
+    setOpen(false);
+  };
+
+  const handleMenuTwo = () => {
+    setOpen(false);
+  };
   
 
   return (
     <div className='ProfilePicture'>
           <img src={profile} alt='Profile picture' onClick={profileClick}/>
+          {open ? (
+          <ul className="menu">
+            <li className="menu-item">
+              <button onClick={handleMenuOne}>Favoritter</button>
+            </li>
+            <li className="menu-item">
+              <button onClick={handleMenuTwo}>Indstillinger</button>
+            </li>
+          </ul>
+          ) : null}
     </div>
   )
 }
