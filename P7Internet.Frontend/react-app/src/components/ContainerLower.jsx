@@ -10,7 +10,7 @@ const ContainerLower = () => {
 
   return (
 		<div className='ContainerLower'>
-    <RecipeView></RecipeView>
+    <RecipeView/>
     {/* would be nice if the arrow were in this element (instead of recipe view)
     but im not sure how to have shared variables between react elements */}
 		</div>

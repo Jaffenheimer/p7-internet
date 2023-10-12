@@ -11,7 +11,7 @@ const ContainerUpper = () => {
 
         <OwnedIngredientsList/>
         
-       <GenerateRecipeButton></GenerateRecipeButton>
+       <GenerateRecipeButton/>
     </div>
   );
 }
