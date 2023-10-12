@@ -2,7 +2,11 @@ import React, {useState} from 'react'
 import cross from '../data/cross.svg'
 
 const OwnedIngredientsList = () => {
-	const [ownedList, setOwnedList] = useState(['Chicken Breast', 'Salt']);
+	const ownedList = ['Kyllingebryst', 'Salt']
+	
+	function handleClick() {
+    alert('You clicked me!');
+  }
 
 	
 	return (
