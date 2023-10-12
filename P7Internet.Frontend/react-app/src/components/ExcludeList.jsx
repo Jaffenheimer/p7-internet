@@ -27,7 +27,7 @@ const ExcludeList = () => {
     } 
   }
 
-  function submitRemove() {
+  function submitRemoveAll() {
     var list = document.getElementById("ExcludedIngredientsList");
     while (list.firstChild) {
       list.removeChild(list.firstChild);
@@ -46,7 +46,7 @@ const ExcludeList = () => {
           <ul></ul>
         </div>
       </form>
-      <button id="RemoveButton" onClick={submitRemove}>
+      <button id="RemoveButton" onClick={submitRemoveAll}>
         Fjern alle
       </button>
     </div>
