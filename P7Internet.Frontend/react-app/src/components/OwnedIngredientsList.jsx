@@ -1,18 +1,15 @@
-import React from 'react'
+import React, {useState} from 'react'
 import cross from '../data/cross.svg'
 
 const OwnedIngredientsList = () => {
-	const ownedList = ['Chicken Breast', 'Salt']
-	
-	function handleClick() {
-    alert('You clicked me!');
-  }
+	const [ownedList, setOwnedList] = useState(['Chicken Breast', 'Salt']);
 
+	
 	return (
 		<ul>{ownedList.map(ingredient => 
 					<li>{ingredient} 
 						<img src={cross} alt='cross'
-						     onClick={handleClick}/>
+						     onClick={() => {setOwnedList(ownedList.filter(i => i !== ingredient))}}/>
 					</li>)
 			}
 		</ul>
