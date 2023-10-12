@@ -12,14 +12,14 @@ const NumberField = () => {
   const maxValue = 10;
 
 
-  function Add(){
+  function add(){
     if (value < maxValue)
       setValue(value + 1);
     else 
       alert("maximum is 10");
   }
 
-  function Subtract(){
+  function subtract(){
     if(value > minValue)
       setValue(value - 1);
     else
@@ -28,7 +28,7 @@ const NumberField = () => {
 
   return (
     <div className="NumberField">
-      <button className="PlusMinusButton" onClick={Subtract}>-</button>
+      <button className="PlusMinusButton" onClick={subtract}>-</button>
       <input
         id='InputNumberField'
         type="number"
@@ -36,7 +36,7 @@ const NumberField = () => {
         value={value}
         readOnly
       />
-      <button className="PlusMinusButton" onClick={Add}>+</button>
+      <button className="PlusMinusButton" onClick={add}>+</button>
     </div>
   );
 };

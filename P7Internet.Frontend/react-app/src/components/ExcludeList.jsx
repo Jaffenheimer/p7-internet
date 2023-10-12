@@ -1,7 +1,7 @@
 import React from "react";
 
 const ExcludeList = () => {
-  function AddIngredientToList(event, inputField, list) {
+  function addIngredientToList(event, inputField, list) {
     // Prevents the page from reloading
     event.preventDefault();
     // Creates a new list item
@@ -13,42 +13,42 @@ const ExcludeList = () => {
     inputField.value = "";
   }
 
-  function RemoveIngredientFromList(event, list) {
-    //check if list is empty
-    if (list.childElementCount === 0) {
-      return;
-    }
-    // Prevents the page from reloading
-    event.preventDefault();
-    // Removes the last child of the list
-    list.removeChild(list.lastChild);
-  }
-
-  function SubmitAdd(event) {
-    AddIngredientToList(
-      event,
-      document.getElementById("InputFieldExclude"),
-      document.getElementById("ExcludedIngredientsList")
-    );
-}
-    function SubmitRemove(event) {
-      RemoveIngredientFromList(
+  function submitAdd(event) { 
+    if (document.getElementById("ExcludedIngredientsList").childElementCount <= 10) {
+      addIngredientToList(
         event,
+        document.getElementById("InputFieldExclude"),
         document.getElementById("ExcludedIngredientsList")
       );
     }
+    else {
+      event.preventDefault();
+      alert("Du kan ikke tilføje flere ingredienser");
+    } 
+  }
+
+  function submitRemove() {
+    var list = document.getElementById("ExcludedIngredientsList");
+    while (list.firstChild) {
+      list.removeChild(list.firstChild);
+    }
+  }
   return (
-    <div>
-      <form onSubmit={SubmitAdd}>
+    <div id="ExcludeList">
+      <p id="ExcludeListText">Ekskluder ingredienser</p>
+      <form id="ExcludeForm" onSubmit={submitAdd}>
         <input
           id="InputFieldExclude"
           type="text"
           placeholder="Ekskluder ingrediens"
         />
-        <ul id="ExcludedIngredientsList"></ul>
-        <input id="addButton" type="submit" value="Tilføj" />
+        <div id="ExcludedIngredientsList">
+          <ul></ul>
+        </div>
       </form>
-        <button id="removeButton" onClick={SubmitRemove}>Fjern</button>
+      <button id="RemoveButton" onClick={submitRemove}>
+        Fjern alle
+      </button>
     </div>
   );
 };
