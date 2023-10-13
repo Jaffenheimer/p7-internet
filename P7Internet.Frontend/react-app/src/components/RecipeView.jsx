@@ -3,6 +3,7 @@ import Recipe from "../objects/Recipe";
 import RecipeTitle from "./RecipeTitle";
 import leftArrow from "../data/leftArrow.svg";
 import rightArrow from "../data/rightArrow.svg";
+import SelectRecipeButton from "./SelectRecipeButton";
 
 const RecipeView = () => {
   function startsWithNumber(string) {
@@ -92,6 +93,7 @@ const RecipeView = () => {
         <img src={leftArrow} alt="Left Arrow" onClick={clickLeft} />
         <img src={rightArrow} alt="right Arrow" onClick={clickRight} />
       </div>
+      <SelectRecipeButton />
     </div>
   );
 };
