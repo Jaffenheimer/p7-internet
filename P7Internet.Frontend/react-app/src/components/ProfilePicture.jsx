@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
-import profile from '../data/profile.svg'
+import React, { useState } from "react";
+import profile from "../data/profile.svg";
 
 const ProfilePicture = () => {
   const [open, setOpen] = useState(false);
-  
+
   function profileClick() {
     setOpen(!open);
   }
@@ -15,23 +15,22 @@ const ProfilePicture = () => {
   const handleMenuTwo = () => {
     setOpen(false);
   };
-  
 
   return (
-    <div className='ProfilePicture'>
-          <img src={profile} alt='Profile picture' onClick={profileClick}/>
-          {open ? (
-          <ul className="menu">
-            <li className="menu-item">
-              <button onClick={handleMenuOne}>Favoritter</button>
-            </li>
-            <li className="menu-item">
-              <button onClick={handleMenuTwo}>Indstillinger</button>
-            </li>
-          </ul>
-          ) : null}
+    <div className="ProfilePicture">
+      <img src={profile} alt="Profile picture" onClick={profileClick} />
+      {open ? (
+        <ul className="menu">
+          <li className="menu-item">
+            <button onClick={handleMenuOne}>Favoritter</button>
+          </li>
+          <li className="menu-item">
+            <button onClick={handleMenuTwo}>Indstillinger</button>
+          </li>
+        </ul>
+      ) : null}
     </div>
-  )
-}
+  );
+};
 
-export default ProfilePicture
+export default ProfilePicture;

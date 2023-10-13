@@ -13,18 +13,19 @@ const ExcludeList = () => {
     inputField.value = "";
   }
 
-  function submitAdd(event) { 
-    if (document.getElementById("ExcludedIngredientsList").childElementCount <= 10) {
+  function submitAdd(event) {
+    if (
+      document.getElementById("ExcludedIngredientsList").childElementCount <= 10
+    ) {
       addIngredientToList(
         event,
         document.getElementById("InputFieldExclude"),
         document.getElementById("ExcludedIngredientsList")
       );
-    }
-    else {
+    } else {
       event.preventDefault();
       alert("Du kan ikke tilføje flere ingredienser");
-    } 
+    }
   }
 
   function submitRemoveAll() {

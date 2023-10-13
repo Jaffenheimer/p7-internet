@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, { useState, useRef } from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { useDispatch } from "react-redux";
 
@@ -12,15 +12,14 @@ const SearchBar = () => {
   };
 
   const handleSubmit = (event) => {
-      event.preventDefault();
-      
-      inputRef.current.value = '';
+    event.preventDefault();
 
-      if(ingredient !== null){
-        dispatch(recipeGenerationActions.addOwnedIngredients(ingredient));
-      }
-      
-  }; 
+    inputRef.current.value = "";
+
+    if (ingredient !== null) {
+      dispatch(recipeGenerationActions.addOwnedIngredients(ingredient));
+    }
+  };
 
   return (
     <form onSubmit={handleSubmit}>
@@ -31,8 +30,8 @@ const SearchBar = () => {
         value={ingredient}
         onChange={handleChange}
         placeholder="Tilføj en ingrediens..."
-        />
-      <button type="submit" >Tilføj</button>
+      />
+      <button type="submit">Tilføj</button>
     </form>
   );
 };
