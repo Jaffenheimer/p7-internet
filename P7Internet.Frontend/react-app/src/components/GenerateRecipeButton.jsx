@@ -9,7 +9,7 @@ const GenerateRecipeButton = () => {
 
   const dispatch = useDispatch();
 
-  function goToPageRecipeSelection() {
+  function goToPageFullRecipeView() {
     dispatch(pageActions.goToPage(Pages.fullRecipeView)); 
   }
 
@@ -33,7 +33,7 @@ const GenerateRecipeButton = () => {
       console.log(error.message);
     }
 
-    goToPageRecipeSelection()
+    goToPageFullRecipeView()
   };
 
   return <button onClick={GenerateRecipesHandler}>Generer opskrifter</button>;
