@@ -5,7 +5,7 @@ import { useDispatch } from "react-redux";
 const SearchBar = () => {
   const dispatch = useDispatch();
   const inputRef = useRef();
-  const [ingredient, setIngredient] = useState('');
+  const [ingredient, setIngredient] = useState("");
 
   const handleChange = (event) => {
     setIngredient(event.target.value);
@@ -13,13 +13,13 @@ const SearchBar = () => {
 
   const handleSubmit = (event) => {
       event.preventDefault();
+      
       inputRef.current.value = '';
 
       if(ingredient !== null){
-        console.log("ingredient: ", ingredient)
         dispatch(recipeGenerationActions.addOwnedIngredients(ingredient));
       }
-      setIngredient(event.target.value); 
+      
   }; 
 
   return (
