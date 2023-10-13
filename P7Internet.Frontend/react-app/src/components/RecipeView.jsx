@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Recipe from "./Recipe";
+import Recipe from "../objects/Recipe";
 import RecipeTitle from "./RecipeTitle";
 import leftArrow from "../data/leftArrow.svg";
 import rightArrow from "../data/rightArrow.svg";
