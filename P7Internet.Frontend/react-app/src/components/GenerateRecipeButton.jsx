@@ -8,15 +8,11 @@ const GenerateRecipeButton = () => {
     const req = "Create 3 short and simple recipe for 4 people";
 
     try {
-      const response = await axios.post(
-        "/public/sample/testrecipes",
-        req,
-        {
-          params: {
-            req,
-          },
-        }
-      );
+      const response = await axios.post("/public/sample/testrecipes", req, {
+        params: {
+          req,
+        },
+      });
       console.log(response.data);
     } catch (error) {
       console.log(error.message);
