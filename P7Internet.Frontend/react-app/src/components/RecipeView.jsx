@@ -50,15 +50,6 @@ const RecipeView = () => {
     return recipes;
   }
 
-  function filterOwned(ingredients) {
-    let filtered = [];
-    for (let ingredient of ingredients) {
-      if (ownedList.includes(ingredient)) filtered.add(ingredient);
-    }
-    return filtered;
-  }
-
-  const ownedList = ["chicken breast", "salt", "water", "milk"]; //skal bruges i ingredientslist
   const tab = useSelector((state) => state.recipe.currentRecipeIndex);
   //this should of course not be hardcoded in here like it is now
   //and the ingredients you own should also be sent somehow
