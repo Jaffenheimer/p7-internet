@@ -21,7 +21,7 @@ const IngredientsList = ({ ingredients }) => {
         {ingredients.map((ingredient) => (
           <li key={ingredient}>
             {ingredient}
-            {filterOwned(ingredients).includes(ingredient) ? <b> Owned</b> : ""}
+            {filterOwned(ingredients).includes(ingredient) ? <b> Ejet </b> : ""}
           </li>
         ))}
       </ul>
