@@ -7,14 +7,11 @@ const IngredientsList = ({ ingredients }) => {
   );
   function filterOwned(ingredients) {
     let filtered = [];
-    console.log(ownedIngredientsList[0].text);
     for (let ingredient of ingredients) {
-      console.log("ingredient", ingredient);
       for (let ownedIngredient of ownedIngredientsList) {
         if (ownedIngredient.text === ingredient) filtered.push(ingredient);
       }
     }
-    console.log("filtered", filtered);
     return filtered;
   }
 
