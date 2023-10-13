@@ -16,10 +16,7 @@ const SearchBar = () => {
       
       inputRef.current.value = '';
 
-      console.log("ingredient: ", ingredient);
-
       if(ingredient !== null){
-        console.log("ingredient: ", ingredient)
         dispatch(recipeGenerationActions.addOwnedIngredients(ingredient));
       }
       
