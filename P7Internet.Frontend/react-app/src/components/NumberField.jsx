@@ -5,19 +5,19 @@ import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 const NumberField = () => {
   //Set the intial value of the number field
   const numPeople = useSelector((state) => state.recipeGeneration.numPeople);
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
 
   //Set the min and max values of the number field
   const minValue = 1;
   const maxValue = 10;
 
   const add = () => {
-    if (numPeople < maxValue) dispath(recipeGenerationActions.addPerson());
+    if (numPeople < maxValue) dispatch(recipeGenerationActions.addPerson());
     else alert("maximum is 10");
   };
 
   const subtract = () => {
-    if (numPeople > minValue) dispath(recipeGenerationActions.removePerson());
+    if (numPeople > minValue) dispatch(recipeGenerationActions.removePerson());
     else alert("minimum is 1");
   };
 
