@@ -10,21 +10,17 @@ const SelectArrows = () => {
     (state) => state.recipe.currentRecipeIndex
   );
 
-  const numOfRecipes = useSelector(
-    (state) => state.recipe.recipes?.length
-  );
-
-
-      console.log("currentRecipeIndex: ", currentRecipeIndex);
-      console.log("numOfRecipes: ", numOfRecipes);
+  const numOfRecipes = useSelector((state) => state.recipe.recipes?.length);
 
   function clickLeft() {
-    if (currentRecipeIndex === 0) dispatch(recipeActions.setCurrentRecipeIndex(numOfRecipes - 1));
+    if (currentRecipeIndex === 0)
+      dispatch(recipeActions.setCurrentRecipeIndex(numOfRecipes - 1));
     else dispatch(recipeActions.setCurrentRecipeIndex(currentRecipeIndex - 1));
   }
 
   function clickRight() {
-    if (currentRecipeIndex === numOfRecipes - 1) dispatch(recipeActions.setCurrentRecipeIndex(0));
+    if (currentRecipeIndex === numOfRecipes - 1)
+      dispatch(recipeActions.setCurrentRecipeIndex(0));
     else dispatch(recipeActions.setCurrentRecipeIndex(currentRecipeIndex + 1));
   }
 

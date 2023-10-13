@@ -50,8 +50,6 @@ const RecipeView = () => {
     return recipes;
   }
 
-
-
   function filterOwned(ingredients) {
     let filtered = [];
     for (let ingredient of ingredients) {
@@ -61,9 +59,7 @@ const RecipeView = () => {
   }
 
   const ownedList = ["chicken breast", "salt", "water", "milk"]; //skal bruges i ingredientslist
-  const tab = useSelector(
-    (state) => state.recipe.currentRecipeIndex
-  );
+  const tab = useSelector((state) => state.recipe.currentRecipeIndex);
   //this should of course not be hardcoded in here like it is now
   //and the ingredients you own should also be sent somehow
   var recipeString =
@@ -75,9 +71,9 @@ const RecipeView = () => {
   return (
     <div className="RecipeView">
       <RecipeTitle title={recipes[tab].title} />
-      <IngredientsList ingredients={recipes[tab].ingredients}/> 
-      <SelectArrows/>
-      <SelectRecipeButton/>
+      <IngredientsList ingredients={recipes[tab].ingredients} />
+      <SelectArrows />
+      <SelectRecipeButton />
     </div>
   );
 };
