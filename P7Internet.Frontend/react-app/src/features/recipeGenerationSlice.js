@@ -32,7 +32,11 @@ export const recipeGenerationSlice = createSlice({
       );
     },
     addExcludedIngredient(state, action) {
-      state.excludeList.push(action.payload);
+      const ExcluedIngredient = {
+        id: nanoid(),
+        text: action.payload,
+      };
+      state.excludeList.push(ExcluedIngredient);
     },
     removeExcludedIngredient(state, action) {
       state.excludeList = state.excludeList.filter(

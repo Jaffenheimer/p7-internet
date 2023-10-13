@@ -1,5 +1,3 @@
-import React from "react";
-
 class Recipe {
   constructor(title, ingredients, method) {
     this.title = title;

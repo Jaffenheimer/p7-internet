@@ -13,13 +13,12 @@ const SearchBar = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     inputRef.current.value = "";
 
     if (ingredient !== null) {
-      console.log("ingredient: ", ingredient);
       dispatch(recipeGenerationActions.addOwnedIngredients(ingredient));
     }
-    setIngredient(event.target.value);
   };
 
   return (
