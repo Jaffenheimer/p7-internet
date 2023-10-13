@@ -26,7 +26,11 @@ const GenerateRecipeButton = () => {
           params: {
             req,
           },
+        },
+        {
+          'Access-Control-Allow-Origin': '*',
         }
+
       );
       console.log(response.data);
     } catch (error) {
