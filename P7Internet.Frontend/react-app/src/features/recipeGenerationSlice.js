@@ -2,7 +2,13 @@ import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 const initialState = {
   ownedIngredients: [],
-  dietaryRestrictions: [],
+  dietaryRestrictions: {
+    pescitarian: false,
+    vegan: false,
+    vegetarian: false,
+    lactosefree: false,
+    glutenfree: false, 
+  },
   excludeList: [],
   numPeople: 4,
 };
@@ -23,13 +29,9 @@ export const recipeGenerationSlice = createSlice({
         (ingredient) => ingredient.id !== action.payload
       );
     },
-    selectDietaryRestrictions(state, action) {
-      state.dietaryRestrictions.push(action.payload);
-    },
-    deselectDietaryRestrictions(state, action) {
-      state.dietaryRestrictions = state.ownedIngredients.filter(
-        (dietaryRestrictions) => dietaryRestrictions !== action.payload
-      );
+    toggleDietaryRestrictions(state, action) {
+      const dietaryRestrictionName = action.payload; 
+      state.dietaryRestrictions[dietaryRestrictionName] = !state.dietaryRestrictions[dietaryRestrictionName];
     },
     addExcludedIngredient(state, action) {
       const ExcluedIngredient = {
@@ -39,6 +41,11 @@ export const recipeGenerationSlice = createSlice({
       state.excludeList.push(ExcluedIngredient);
     },
     removeExcludedIngredient(state, action) {
+      state.excludeList = state.excludeList.filter(
+        (ingredient) => ingredient.id !== action.payload
+      );
+    },
+    clearAllExcludedIngredient(state, action) {
       state.excludeList = state.excludeList.filter(
         (ingredient) => ingredient.id !== action.payload
       );
