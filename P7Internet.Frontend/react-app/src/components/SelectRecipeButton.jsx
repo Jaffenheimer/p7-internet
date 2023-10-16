@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
@@ -16,7 +15,11 @@ const SelectRecipeButton = () => {
     goToPageFullRecipeView();
   }
 
-  return <button onClick={handleOnClick}>Vælg opskrift</button>;
+  return (
+    <button id="selectRecipeButton" onClick={handleOnClick}>
+      Vælg opskrift
+    </button>
+  );
 };
 
 export default SelectRecipeButton;

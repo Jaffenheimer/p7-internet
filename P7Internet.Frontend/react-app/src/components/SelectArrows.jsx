@@ -12,6 +12,11 @@ const SelectArrows = () => {
 
   const numOfRecipes = useSelector((state) => state.recipe.recipes?.length);
 
+  function handleKeyPress(event) {
+    if (event.key === "ArrowLeft") clickLeft();
+    else if (event.key === "ArrowRight") clickRight();
+  }
+
   function clickLeft() {
     if (currentRecipeIndex === 0)
       dispatch(recipeActions.setCurrentRecipeIndex(numOfRecipes - 1));
@@ -25,7 +30,7 @@ const SelectArrows = () => {
   }
 
   return (
-    <div className="SelectArrows">
+    <div id="SelectArrows" onKeyDown={(e) => handleKeyPress(e)} tabIndex={-1}>
       <img src={leftArrow} alt="Left Arrow" onClick={clickLeft} />
       <img src={rightArrow} alt="right Arrow" onClick={clickRight} />
     </div>

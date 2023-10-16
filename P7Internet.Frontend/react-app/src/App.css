@@ -2,6 +2,11 @@ body > #root > div {
   height: 100vh;
 }
 
+body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .App {
   display: flex;
   flex-direction: row;
@@ -106,15 +111,16 @@ button:hover {
   text-align: left;
 }
 
-.SelectArrows {
+#SelectArrows {
   margin-left: 45%;
+  outline: none;
 }
 
-.RecipeView > button {
-  margin-left: 80%;
+#selectRecipeButton {
+  float: right;
 }
 
-.SelectArrows > img {
+#SelectArrows > img {
   margin: 5%;
   transform: scale(2);
 }

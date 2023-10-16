@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import Recipe from "../objects/Recipe";
 import RecipeTitle from "./RecipeTitle";
-import SelectRecipeButton from "./SelectRecipeButton";
 import IngredientsList from "./IngredientsList";
-import SelectArrows from "./SelectArrows";
 import { useDispatch, useSelector } from "react-redux";
 import { recipeActions } from "../features/recipeSlice";
 
@@ -63,8 +61,6 @@ const RecipeView = () => {
     <div className="RecipeView">
       <RecipeTitle title={recipes[tab].title} />
       <IngredientsList ingredients={recipes[tab].ingredients} />
-      <SelectArrows />
-      <SelectRecipeButton />
     </div>
   );
 };

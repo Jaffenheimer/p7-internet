@@ -1,16 +1,18 @@
-import React, { useState } from "react";
-import RecipeTitle from "./RecipeTitle";
+import React from "react";
 import RecipeView from "./RecipeView";
 import SelectArrows from "./SelectArrows";
-import leftArrow from "../data/leftArrow.svg";
-import rightArrow from "../data/rightArrow.svg";
+import SelectRecipeButton from "./SelectRecipeButton";
 
 const ContainerLower = () => {
+  function enableArrowKeyPress() {
+    document.getElementById("SelectArrows").focus();
+  }
+
   return (
-    <div className="ContainerLower">
+    <div className="ContainerLower" onClick={enableArrowKeyPress} tabIndex={-1}>
       <RecipeView />
-      {/* would be nice if the arrow were in this element (instead of recipe view)
-    but im not sure how to have shared variables between react elements */}
+      <SelectRecipeButton />
+      <SelectArrows />
     </div>
   );
 };
