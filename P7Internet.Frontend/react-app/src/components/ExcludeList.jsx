@@ -1,39 +1,44 @@
-import React from "react";
+import React, { useState} from "react";
+import cross from "../data/cross.svg";
+import { recipeGenerationActions } from "../features/recipeGenerationSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const ExcludeList = () => {
-  function addIngredientToList(event, inputField, list) {
-    // Prevents the page from reloading
-    event.preventDefault();
-    // Creates a new list item
-    var listItem = document.createElement("li");
-    // Adds the input value to the list item
-    listItem.innerHTML = inputField.value;
-    // Adds the list item to the list
-    list.appendChild(listItem);
-    inputField.value = "";
-  }
+  const [ingredient, setIngredient] = useState("");
+  const dispatch = useDispatch(); 
 
-  function submitAdd(event) {
-    if (
-      document.getElementById("ExcludedIngredientsList").childElementCount <= 10
-    ) {
-      addIngredientToList(
-        event,
-        document.getElementById("InputFieldExclude"),
-        document.getElementById("ExcludedIngredientsList")
-      );
+  // Gets the list from the store
+  const excludeList = useSelector(
+    (state) => state.recipeGeneration.excludeList
+  );
+
+  //Gets the lenght from the array from store
+  const listlenght = Array.from(excludeList).length;
+
+  //Function for handling the remove feature
+  const handleRemove = (event, ingredient) => {
+    event.preventDefault();
+    dispatch(recipeGenerationActions.removeExcludedIngredient(ingredient.id));
+  };
+
+  //Functions for add ingredient to state
+  const submitAdd = (event) => {
+    event.preventDefault();
+    
+    if (listlenght < 10) {
+        dispatch(recipeGenerationActions.addExcludedIngredient(ingredient));        
     } else {
-      event.preventDefault();
       alert("Du kan ikke tilføje flere ingredienser");
     }
+
+    setIngredient("");    
   }
 
+  //function for removing all elements from state
   function submitRemoveAll() {
-    var list = document.getElementById("ExcludedIngredientsList");
-    while (list.firstChild) {
-      list.removeChild(list.firstChild);
-    }
+    dispatch(recipeGenerationActions.clearAllExcludedIngredient());
   }
+
   return (
     <div id="ExcludeList">
       <p id="ExcludeListText">Ekskluder ingredienser</p>
@@ -42,9 +47,23 @@ const ExcludeList = () => {
           id="InputFieldExclude"
           type="text"
           placeholder="Ekskluder ingrediens"
+          name="ingredient"
+          value={ingredient}
+          onChange={(event) => setIngredient(event.target.value)}
         />
         <div id="ExcludedIngredientsList">
-          <ul></ul>
+          <ul>
+            {excludeList.map((ingredient) => (
+              <li key={ingredient.id}>
+                {ingredient.text}
+              <img
+                src={cross}
+                alt="cross"
+                onClick={(event) => handleRemove(event, ingredient)}
+              />
+              </li>
+            ))}
+          </ul>
         </div>
       </form>
       <button id="RemoveButton" onClick={submitRemoveAll}>

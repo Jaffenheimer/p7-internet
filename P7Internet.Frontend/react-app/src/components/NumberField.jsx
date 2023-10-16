@@ -1,4 +1,5 @@
 import React from "react";
+import toast from 'react-hot-toast';
 import { useDispatch, useSelector } from "react-redux";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 
@@ -13,12 +14,12 @@ const NumberField = () => {
 
   const add = () => {
     if (numPeople < maxValue) dispatch(recipeGenerationActions.addPerson());
-    else alert("maximum is 10");
+    else toast.error("maximum er 10");
   };
 
   const subtract = () => {
     if (numPeople > minValue) dispatch(recipeGenerationActions.removePerson());
-    else alert("minimum is 1");
+    else toast.error("minimum er 1");
   };
 
   return (

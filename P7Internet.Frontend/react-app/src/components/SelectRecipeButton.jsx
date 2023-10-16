@@ -1,5 +1,4 @@
 import React from "react";
-import axios from "axios";
 import { useDispatch } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
