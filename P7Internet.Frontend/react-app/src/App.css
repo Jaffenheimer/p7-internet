@@ -1,274 +1,292 @@
 body > #root > div {
-    height: 100vh;
+  height: 100vh;
 }
 
-.App{
-    display: flex;
-    flex-direction: row;
+.App {
+  background: #f8ede3;
+  display: flex;
+  flex-direction: row;
 }
 
-.App > .AppLeft{
-    width: 75%;
-    height: 100%;
-    margin-top: -22px;
+.App > .AppLeft {
+  width: 75%;
+  height: 100%;
+  margin-top: -22px;
 }
 
-.App > .AppLeft > .ContainerUpper{
-    height: 40%;
-    border-bottom: 2px solid black;
-    background: #F8EDE3;
-    flex-direction: column;
+
+.App > h1,h2,h3,h4,h5,h6 {
+  margin-left: 10px;
 }
 
-.App > .AppLeft > .ContainerLower{
-    padding: 10px;
-    height: 60%;
-    background: #F8EDE3;
+.App > .AppLeft > .ContainerUpper {
+  height: 40%;
+  border-bottom: 2px solid black;
+  flex-direction: column;
 }
 
-.App > .AppRight{
-    background: #BDD2B6;
-    width: 25%;
-    height: 100%;
+.App > .AppLeft > .ContainerLower {
+  padding: 10px;
+  height: 60%;
+  background: #f8ede3;
 }
 
-h1{
-    font-family: Verdana;
-    display: block;
-    height: 65px;
-    text-align: center;
-    flex-shrink: 0;
+.App > .AppRight {
+  background: #bdd2b6;
+  width: 25%;
+  height: 100%;
 }
 
-h2{
-    color: #000;
-    font-family: Verdana;
-    font-size: 35px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 16px; /* 45.714% */
-    letter-spacing: 0.75px;
+h1 {
+  font-family: Verdana;
+  display: block;
+  height: 65px;
+  text-align: center;
+  flex-shrink: 0;
 }
 
-input[type=text]{
-    color: rgba(0, 0, 0, 0.50);
-    width: 30%;
-    margin-right: 3%;
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: Verdana;
-    font-size: 17px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px; /* 129.412% */
-    letter-spacing: -0.408px;
+h2 {
+  color: #000;
+  font-family: Verdana;
+  font-size: 35px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 16px; /* 45.714% */
+  letter-spacing: 0.75px;
 }
 
-li{
-    color: black;
-    font-feature-settings: 'clig' off, 'liga' off;
-    font-family: Verdana;
-    font-size: 17px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 22px;
-    letter-spacing: -0.408px;
+input[type="text"] {
+  color: rgba(0, 0, 0, 0.5);
+  width: 30%;
+  margin-right: 3%;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: Verdana;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 129.412% */
+  letter-spacing: -0.408px;
 }
 
-img{
-    margin-bottom: -0.1em;
-    height: 1em;
-    cursor: pointer;
+li {
+  color: black;
+  font-feature-settings: "clig" off, "liga" off;
+  font-family: Verdana;
+  font-size: 17px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  letter-spacing: -0.408px;
 }
 
-button{
-    width: 145px;
-    height: 40px;
-    background-color: white;
-    border: 2px solid black;
-    border-radius: 5px; /* rounded corners */
-    border-color: #212120;
-    color: #000;
-    cursor: pointer;
-    text-align: center;
-    font-family: Verdana;
-    font-size: 14px;
-    font-weight: 550;
-    line-height: 16px;
-    letter-spacing: 0.75px;
-    text-transform: uppercase;
+img {
+  margin-bottom: -0.1em;
+  height: 1em;
+  cursor: pointer;
+}
+
+button {
+  width: 145px;
+  height: 40px;
+  background-color: white;
+  border: 2px solid black;
+  border-radius: 5px; /* rounded corners */
+  border-color: #212120;
+  color: #000;
+  cursor: pointer;
+  text-align: center;
+  font-family: Verdana;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 16px;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
 }
 
 button:hover {
-    background: #e7e7e7;
+  background: #e7e7e7;
 }
 
-
-.RecipeTitle > h1 {
-    text-align: left
+.RecipeView > #RecipeTitleDiv > h1 {
+  text-align: left;
 }
 
-
-.SelectArrows{
-    margin-left: 45%;
+.SelectArrows {
+  margin-left: 45%;
 }
 
 .RecipeView > button {
-    margin-left: 80%;
+  margin-left: 80%;
 }
 
 .SelectArrows > img {
-    margin: 5%;
-    transform: scale(2);
+  margin: 5%;
+  transform: scale(2);
 }
 
 .ProfilePicture > img {
-    transform: scale(2.5);
-    margin-top: 10%; 
-    float: right;
-    margin-right: 15%;
+  transform: scale(2.5);
+  margin-top: 10%;
+  float: right;
+  margin-right: 15%;
 }
 
 .NumberField {
-    transform: scale(1.5);
-    display: flex;
-    justify-content: center;
-    margin-top: 10%;
+  transform: scale(1.5);
+  display: flex;
+  justify-content: center;
+  margin-top: 10%;
 }
 #InputNumberField {
-    width: 30px;
-    height: auto;
-    border: 1px solid black;
-    display: inline-block;
-    font-size: small;
-    text-align: center;
-    /*Hides arrows on input field number Firefox*/
-    -moz-appearance: textfield;
+  width: 30px;
+  height: auto;
+  border: 1px solid black;
+  display: inline-block;
+  font-size: small;
+  text-align: center;
+  /*Hides arrows on input field number Firefox*/
+  -moz-appearance: textfield;
 }
 
- 
- #InputNumberField::-webkit-outer-spin-button,
- #InputNumberField::-webkit-inner-spin-button {
-    /*Hides arrows on input field number Chrome*/
-    -webkit-appearance: none;
-    margin: 0;
- }
+#InputNumberField::-webkit-outer-spin-button,
+#InputNumberField::-webkit-inner-spin-button {
+  /*Hides arrows on input field number Chrome*/
+  -webkit-appearance: none;
+  margin: 0;
+}
 
-.ContainerRight > .ContainerRightTop > .ContainerRightColumn > .NumberField > .PlusMinusButton {
-    text-align: center;
-    width: 30px;
-    height: auto;
-    border: 1px solid black;
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 0;
-    font-size: small;
+.ContainerRight
+  > .ContainerRightTop
+  > .ContainerRightColumn
+  > .NumberField
+  > .PlusMinusButton {
+  text-align: center;
+  width: 30px;
+  height: auto;
+  border: 1px solid black;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 0;
+  font-size: small;
 }
 
 #NumberPersons {
-    font-size: xx-large;
-    margin-top: 0%;
-    padding: 0%;
-    margin-left: 10%;
+  font-size: xx-large;
+  margin-top: 0%;
+  padding: 0%;
+  margin-left: 10%;
 }
 
 .ContainerRightColumn {
-    float: left;
-    width: 33.33%;
-    justify-content: center;
-    margin-top: 3%;
-  }
-  
-  
+  float: left;
+  width: 33.33%;
+  justify-content: center;
+  margin-top: 3%;
+}
+
 .ContainerRightTop:after {
-    content: "";
-    display: table;
-    clear: both;
-    justify-content: center;
-  }
-
-#DietaryRestrictions{
-    font-size: xx-large;
-    text-align: left;
-    margin-left: 2.5%;
+  content: "";
+  display: table;
+  clear: both;
+  justify-content: center;
 }
 
-.ContainerRightMiddle > .DietaryRestrictions > #DietaryRestrictionsCheckbox{
-    text-align: left;
-    font-size: x-large;
+#DietaryRestrictions {
+  font-size: xx-large;
+  text-align: left;
+  margin-left: 2.5%;
 }
 
-.DietaryRestrictionsCheckboxSize{
-    transform: scale(1.5);
-    margin-right: 5%;
-    margin-left: 5%;
-    margin-top: 5%;
+.ContainerRightMiddle > .DietaryRestrictions > #DietaryRestrictionsCheckbox {
+  text-align: left;
+  font-size: x-large;
+}
+
+.DietaryRestrictionsCheckboxSize {
+  transform: scale(1.5);
+  margin-right: 5%;
+  margin-left: 5%;
+  margin-top: 5%;
 }
 
 .dropdown {
-    position: relative;
+  position: relative;
 }
-  
+
 .menu {
-    position: absolute;
-    list-style-type: none;
-    margin: 5px 0;
-    padding: 0;
-    border: 1px solid grey;
-    width: 150px;
-    transform: translateY(40px)
+  position: absolute;
+  list-style-type: none;
+  margin: 5px 0;
+  padding: 0;
+  border: 1px solid grey;
+  width: 150px;
+  transform: translateY(40px);
 }
 
 .menu > li {
-    margin: 0;
-    background-color: white;
+  margin: 0;
+  background-color: white;
 }
-  
+
 .menu > li:hover {
-    background-color: lightgray;
+  background-color: lightgray;
 }
-  
+
 .menu > li > button {
-    width: 100%;
-    height: 100%;
-    text-align: left;
-  
-    background: none;
-    color: inherit;
-    border: none;
-    padding: 5px;
-    margin: 0;
-    font: inherit;
-    cursor: pointer;
-}
-  
-#ExcludeList{
-    text-align: center;
-    
+  width: 100%;
+  height: 100%;
+  text-align: left;
+
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 5px;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
 }
 
-#InputFieldExclude{
-    width: 90%;
-    height: 100%;
-    border: 1px solid black;
-    font-size: medium;
-    text-align: center;
-    float: center;
-    margin-left: 2.5%;
+#ExcludeList {
+  text-align: center;
 }
 
-#RemoveButton{
-    margin-top: 5%;
+#InputFieldExclude {
+  width: 90%;
+  height: 100%;
+  border: 1px solid black;
+  font-size: medium;
+  text-align: center;
+  float: center;
+  margin-left: 2.5%;
 }
 
-#ExcludeListText{
-    font-size: xx-large;
-    text-align: left;
-    margin-left: 2.5%;
-    margin-top: 12%;   
+#RemoveButton {
+  margin-top: 5%;
 }
 
-#ExcludedIngredientsList{
-    text-align: left;
-    margin-left: 8%;
+#ExcludeListText {
+  font-size: xx-large;
+  text-align: left;
+  margin-left: 2.5%;
+  margin-top: 12%;
 }
 
+#ExcludedIngredientsList {
+  text-align: left;
+  margin-left: 8%;
+}
+
+.App > .FullRecipeView {
+  flex: 1;
+}
+
+.ForPersons > h4 {
+  text-align: center;
+  margin-top: -20px;
+}
+
+#backButton {
+  float:right;
+  margin-top: 25px;
+  margin-right: 25px;
+}

@@ -1,10 +1,10 @@
 import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 const initialState = {
-    ownedIngredients: [],
-    dietaryRestrictions: [], 
-    excludeList: [],
-    numPeople: 4, 
+  ownedIngredients: [],
+  dietaryRestrictions: [],
+  excludeList: [],
+  numPeople: 4,
 };
 
 export const recipeGenerationSlice = createSlice({
@@ -21,9 +21,6 @@ export const recipeGenerationSlice = createSlice({
         removeOwnedIngredients(state, action){
             state.ownedIngredients = state.ownedIngredients.filter((ingredient) => ingredient.id !== action.payload);
         }, 
-        includesOwnedIngredients(state, action){
-            return state.ownedIngredients.includes(action.payload)
-        },
         selectDietaryRestrictions(state, action){
             state.dietaryRestrictions.push(action.payload);
         }, 
@@ -45,4 +42,7 @@ export const recipeGenerationSlice = createSlice({
     },  
 }); 
 
-export const {actions: recipeGenerationActions, reducer: recipeGenerationReducer} = recipeGenerationSlice;
+export const {
+  actions: recipeGenerationActions,
+  reducer: recipeGenerationReducer,
+} = recipeGenerationSlice;

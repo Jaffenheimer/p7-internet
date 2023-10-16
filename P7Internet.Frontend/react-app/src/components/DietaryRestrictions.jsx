@@ -6,27 +6,47 @@ const DietaryRestrictions = () => {
       <p id="DietaryRestrictions">Kostbegrænsninger</p>
       <div id="DietaryRestrictionsCheckbox">
         <div>
-          <input className="DietaryRestrictionsCheckboxSize" type="checkbox" name="Pescitarian" />
+          <input
+            className="DietaryRestrictionsCheckboxSize"
+            type="checkbox"
+            name="Pescitarian"
+          />
           <label htmlFor="Pescitarian">Pescetar</label>
         </div>
 
         <div>
-          <input className="DietaryRestrictionsCheckboxSize" type="checkbox" name="Vegan" />
+          <input
+            className="DietaryRestrictionsCheckboxSize"
+            type="checkbox"
+            name="Vegan"
+          />
           <label htmlFor="Vegan">Veganer</label>
         </div>
 
         <div>
-          <input className="DietaryRestrictionsCheckboxSize" type="checkbox" name="Vegetarian" />
+          <input
+            className="DietaryRestrictionsCheckboxSize"
+            type="checkbox"
+            name="Vegetarian"
+          />
           <label htmlFor="Vegetarian">Vegetar</label>
         </div>
 
         <div>
-          <input className="DietaryRestrictionsCheckboxSize" type="checkbox" name="Lactose free" />
+          <input
+            className="DietaryRestrictionsCheckboxSize"
+            type="checkbox"
+            name="Lactose free"
+          />
           <label htmlFor="Lactose free">Laktosefri</label>
         </div>
 
         <div>
-          <input className="DietaryRestrictionsCheckboxSize" type="checkbox" name="Gluten free" />
+          <input
+            className="DietaryRestrictionsCheckboxSize"
+            type="checkbox"
+            name="Gluten free"
+          />
           <label htmlFor="Gluten free">Glutenfri</label>
         </div>
       </div>

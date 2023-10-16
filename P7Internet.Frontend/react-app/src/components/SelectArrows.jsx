@@ -1,20 +1,35 @@
-import React from 'react'
-import leftArrow from '../data/leftArrow.svg'
-import rightArrow from '../data/rightArrow.svg'
+import React, { useEffect } from "react";
+import leftArrow from "../data/leftArrow.svg";
+import rightArrow from "../data/rightArrow.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { recipeActions } from "../features/recipeSlice";
 
 const SelectArrows = () => {
-  function clickLeft(){
-    alert("left!")
-  }
-  function clickRight(){
-    alert("right!")
-  }
-  return (
-    <div className='SelectArrows'>
-        <img src={leftArrow} alt='Left Arrow' onClick={clickLeft}/>
-        <img src={rightArrow} alt='right Arrow' onClick={clickRight}/>
-    </div>
-  )
-}
+  const dispatch = useDispatch();
+  const currentRecipeIndex = useSelector(
+    (state) => state.recipe.currentRecipeIndex
+  );
 
-export default SelectArrows
+  const numOfRecipes = useSelector((state) => state.recipe.recipes?.length);
+
+  function clickLeft() {
+    if (currentRecipeIndex === 0)
+      dispatch(recipeActions.setCurrentRecipeIndex(numOfRecipes - 1));
+    else dispatch(recipeActions.setCurrentRecipeIndex(currentRecipeIndex - 1));
+  }
+
+  function clickRight() {
+    if (currentRecipeIndex === numOfRecipes - 1)
+      dispatch(recipeActions.setCurrentRecipeIndex(0));
+    else dispatch(recipeActions.setCurrentRecipeIndex(currentRecipeIndex + 1));
+  }
+
+  return (
+    <div className="SelectArrows">
+      <img src={leftArrow} alt="Left Arrow" onClick={clickLeft} />
+      <img src={rightArrow} alt="right Arrow" onClick={clickRight} />
+    </div>
+  );
+};
+
+export default SelectArrows;

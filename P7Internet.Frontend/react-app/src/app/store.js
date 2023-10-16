@@ -1,11 +1,17 @@
-import {configureStore} from "@reduxjs/toolkit"
+import { configureStore } from "@reduxjs/toolkit";
 import { recipeGenerationReducer } from "../features/recipeGenerationSlice";
 import { recipeReducer } from "../features/recipeSlice";
+import { pageReducer } from "../features/pageSlice";
+
 
 export const store = configureStore({
-    reducer: {
-        recipeGeneration: recipeGenerationReducer, 
-        recipe: recipeReducer,
-    },
+  reducer: {
+    recipeGeneration: recipeGenerationReducer,
+    recipe: recipeReducer,
+    page: pageReducer,
+  },
+  middleware: getDefaultMiddleware =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
-

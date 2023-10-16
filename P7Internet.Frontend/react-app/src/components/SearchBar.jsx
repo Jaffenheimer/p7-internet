@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, { useState, useRef } from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -43,8 +43,8 @@ const SearchBar = () => {
         value={ingredient}
         onChange={handleChange}
         placeholder="Tilføj en ingrediens..."
-        />
-      <button type="submit" >Tilføj</button>
+      />
+      <button type="submit">Tilføj</button>
     </form>
   );
 };

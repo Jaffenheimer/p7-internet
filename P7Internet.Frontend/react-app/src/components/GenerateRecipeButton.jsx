@@ -1,11 +1,17 @@
 import React from "react";
 import axios from "axios";
 
-const GenerateRecipeButton = () => {
-  const GenerateRecipesHandler = async (event) => {
-    event.preventDefault();
 
-    const req = "Create 3 short and simple recipe for 4 people";
+const GenerateRecipeButton = () => {
+
+  function handleOnClick() {
+    GenerateRecipesHandler();
+  }
+
+  //insert comment about what the function does here
+  const GenerateRecipesHandler = async (event) => {
+
+    const req = "Create 3 short and simple recipes for 4 people";
 
     try {
       const response = await axios.post(
@@ -15,6 +21,9 @@ const GenerateRecipeButton = () => {
           params: {
             req,
           },
+        },
+        {
+          "Access-Control-Allow-Origin": "*",
         }
       );
       console.log(response.data);
@@ -23,7 +32,7 @@ const GenerateRecipeButton = () => {
     }
   };
 
-  return <button onClick={GenerateRecipesHandler}>Generer opskrifter</button>;
+  return <button onClick={handleOnClick}>Generer opskrifter</button>;
 };
 
 export default GenerateRecipeButton;
