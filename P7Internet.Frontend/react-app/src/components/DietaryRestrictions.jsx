@@ -47,6 +47,7 @@ const DietaryRestrictions = () => {
             className="DietaryRestrictionsCheckboxSize"
             type="checkbox"
             name="Pescitarian"
+            id="Pescitarian"
             checked={pescitarian}
             onChange={handleChecked}
           />
@@ -58,6 +59,7 @@ const DietaryRestrictions = () => {
             className="DietaryRestrictionsCheckboxSize"
             type="checkbox"
             name="Vegan"
+            id="Vegan"
             checked={vegan}
             onChange={handleChecked}
           />
@@ -69,6 +71,7 @@ const DietaryRestrictions = () => {
             className="DietaryRestrictionsCheckboxSize"
             type="checkbox"
             name="Vegetarian"
+            id="Vegetarian"
             checked={vegetarian}
             onChange={handleChecked}
           />
@@ -80,6 +83,7 @@ const DietaryRestrictions = () => {
             className="DietaryRestrictionsCheckboxSize"
             type="checkbox"
             name="Lactose free"
+            id="Lactose free"
             checked={lactosefree}
             onChange={handleChecked}
           />
@@ -91,6 +95,7 @@ const DietaryRestrictions = () => {
             className="DietaryRestrictionsCheckboxSize"
             type="checkbox"
             name="Gluten free"
+            id="Gluten free"
             checked={glutenfree}
             onChange={handleChecked}
           />

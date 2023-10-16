@@ -34,6 +34,7 @@ const ExcludeList = () => {
       document.getElementById("ExcludedIngredientsList").childElementCount <= 1 
     ) {
         event.preventDefault(); 
+        document.getElementById("InputFieldExclude").value = "";
         dispatch(recipeGenerationActions.addExcludedIngredient(ingredient));
 
       // addIngredientToList(
@@ -70,14 +71,14 @@ const ExcludeList = () => {
         <div id="ExcludedIngredientsList">
           <ul>
             {excludeList.map((ingredient) => (
-                <li key={ingredient.id}>
+              <li key={ingredient.id}>
                 {ingredient.text}
               <img
                 src={cross}
                 alt="cross"
                 onClick={(event) => handleRemove(event, ingredient)}
               />
-            </li>
+              </li>
             ))}
           </ul>
         </div>
