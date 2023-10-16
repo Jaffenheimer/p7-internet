@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Converters;
 using Microsoft.AspNetCore.Http.Extensions;
+using P7Internet.CustomExceptions;
 
 namespace P7Internet.Services;
 
@@ -34,13 +35,14 @@ public class ETilbudsAvisService
     {
         try
         {
+            if (zip == 0 || zip == null) { throw new ZipNotFoundException(); }
             var coords = await GetCoordinates(zip);
             _queryBuilder.Add("r_lng", coords["lon"]);
             _queryBuilder.Add("r_lat", coords["lat"]);
         }
         catch (Exception)
         {
-            throw new Exception("Zip not found");
+            throw new Exception("Zip not found or provided");
         }
         
         Array.ForEach(queries, query =>
