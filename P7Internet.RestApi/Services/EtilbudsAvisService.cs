@@ -30,7 +30,7 @@ public class ETilbudsAvisService
     }
     */
 
-    public async Task<IList<Offer>> GetAllOffers(int zip, List<KeyValuePair<string, string>>? queries)
+    public async Task<IList<Offer>> GetAllOffers(int zip, string[] queries)
     {
         try
         {
@@ -42,10 +42,12 @@ public class ETilbudsAvisService
         {
             throw new Exception("Zip not found");
         }
-        foreach (var query in queries)
+        
+        Array.ForEach(queries, query =>
         {
-            _queryBuilder.Add(query.Key, query.Value);  
-        }
+            var split = query.Split('=');
+            _queryBuilder.Add(split[0], split[1]);
+        });
         var url = new Uri(_client.BaseAddress, $"offers{_queryBuilder.ToQueryString().Value}");
         var request = new HttpRequestMessage(HttpMethod.Get, url);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
