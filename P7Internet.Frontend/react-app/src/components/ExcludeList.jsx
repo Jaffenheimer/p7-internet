@@ -31,10 +31,10 @@ const ExcludeList = () => {
 
   function submitAdd(event) {
     if (
-      document.getElementById("ExcludedIngredientsList").childElementCount <= 10
+      document.getElementById("ExcludedIngredientsList").childElementCount <= 1 
     ) {
         event.preventDefault(); 
-        dispatch(recipeGenerationActions.addExcludedIngredient  (ingredient));
+        dispatch(recipeGenerationActions.addExcludedIngredient(ingredient));
 
       // addIngredientToList(
       //   event,
@@ -48,6 +48,8 @@ const ExcludeList = () => {
   }
 
   function submitRemoveAll() {
+    dispatch(recipeGenerationActions.clearAllExcludedIngredient());
+    console.log(excludeList); 
     //Mangler at blive fikset
     var list = document.getElementById("ExcludedIngredientsList");
     while (list.firstChild) {

@@ -45,10 +45,8 @@ export const recipeGenerationSlice = createSlice({
         (ingredient) => ingredient.id !== action.payload
       );
     },
-    clearAllExcludedIngredient(state, action) {
-      state.excludeList = state.excludeList.filter(
-        (ingredient) => ingredient.id !== action.payload
-      );
+    clearAllExcludedIngredient(state) {
+      state.excludeList = [];
     },
     addPerson(state) {
       state.numPeople++;

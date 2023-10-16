@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const DietaryRestrictions = () => {
   const [pescitarian, checkPescitarian] = useState(false);
@@ -30,7 +30,8 @@ const DietaryRestrictions = () => {
         checkglutenfree(!glutenfree);
         break;
     }
- 
+    
+    //Strips text of spaces and lowers the casing
     const strippedValue = name.replace(/ +/g, "");
     const loweredValue = strippedValue.toLowerCase(); 
     dispatch(recipeGenerationActions.toggleDietaryRestrictions(loweredValue));
