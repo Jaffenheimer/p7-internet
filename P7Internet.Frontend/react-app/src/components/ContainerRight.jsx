@@ -9,16 +9,13 @@ const ContainerRight = () => {
     <div className="ContainerRight">
       <div className="ContainerRightTop">
         <div className="ContainerRightColumn">
-          {" "}
-          <p id="NumberPersons">Personer</p>{" "}
+          <p id="NumberPersons">Personer</p>
         </div>
         <div className="ContainerRightColumn">
-          {" "}
-          <NumberField />{" "}
+          <NumberField />
         </div>
         <div className="ContainerRightColumn">
-          {" "}
-          <ProfilePicture />{" "}
+          <ProfilePicture />
         </div>
       </div>
       <div className="ContainerRightMiddle">
