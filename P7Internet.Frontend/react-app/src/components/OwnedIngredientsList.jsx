@@ -9,9 +9,7 @@ const OwnedIngredientsList = () => {
 	
 	const handleRemove = (event, ingredient) => {
 		event.preventDefault();
-		console.log("ingredient: ", ingredient); 
-		console.log("ingredient id: ", ingredient.id);
-		dispath(recipeGenerationActions.removeOwnedIngreidents(ingredient.id));
+		dispath(recipeGenerationActions.removeOwnedIngredients(ingredient.id));
   	}
 
   return (

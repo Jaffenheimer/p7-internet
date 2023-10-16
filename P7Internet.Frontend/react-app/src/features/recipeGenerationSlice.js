@@ -18,9 +18,12 @@ export const recipeGenerationSlice = createSlice({
             }
             state.ownedIngredients.push(ownedIngredient); 
         }, 
-        removeOwnedIngreidents(state, action){
+        removeOwnedIngredients(state, action){
             state.ownedIngredients = state.ownedIngredients.filter((ingredient) => ingredient.id !== action.payload);
         }, 
+        includesOwnedIngredients(state, action){
+            return state.ownedIngredients.includes(action.payload)
+        },
         selectDietaryRestrictions(state, action){
             state.dietaryRestrictions.push(action.payload);
         }, 
