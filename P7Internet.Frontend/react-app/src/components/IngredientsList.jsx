@@ -7,8 +7,8 @@ const IngredientsList = ({ ingredients }) => {
     <div className="ingredients">
       <h2>Ingredienser:</h2>
       <ul>
-        {ingredients.map((ingredient) => (
-          <IngredientElement ingredient={ingredient} />
+        {ingredients.map((ingredient,index) => (
+          <IngredientElement key={index} ingredient={ingredient} />
         ))}
       </ul>
     </div>
