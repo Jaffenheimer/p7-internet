@@ -7,13 +7,13 @@ const OwnedIngredientsList = () => {
   const ownedIngredientsList = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
   );
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
 
   const handleRemove = (event, ingredient) => {
     event.preventDefault();
     console.log("ingredient: ", ingredient);
     console.log("ingredient id: ", ingredient.id);
-    dispath(recipeGenerationActions.removeOwnedIngreidents(ingredient.id));
+    dispatch(recipeGenerationActions.removeOwnedIngreidents(ingredient.id));
   };
 
   return (
