@@ -12,8 +12,8 @@ const RecipeTitle = ({ title }) => {
   }
 
   return (
-    <div className="RecipeTitle">
-      <h1>
+    <div id="RecipeTitleDiv">
+      <h1 id="RecipeTitle">
         {title}
         <img src={heartHollow} alt="heart" onClick={handleClick} />
       </h1>

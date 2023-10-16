@@ -3,9 +3,7 @@ class Recipe {
     this.title = title;
     this.ingredients = ingredients;
     this.method = method;
-    // this.persons = NOT_IMPLEMENTED
   }
-  function;
 }
 
 export default Recipe;
