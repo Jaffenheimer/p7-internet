@@ -6,13 +6,15 @@ const DietaryRestrictions = () => {
   const [pescitarian, checkPescitarian] = useState(false);
   const [vegan, checkVegan] = useState(false);
   const [vegetarian, checkVegetarian] = useState(false);
-  const [lactosefree, checklactosefree] = useState(false);
-  const [glutenfree, checkglutenfree] = useState(false);
+  const [lactosefree, checkLactosefree] = useState(false);
+  const [glutenfree, checkGlutenfree] = useState(false);
 
   const dispatch = useDispatch();
 
   const handleChecked = (event) =>{
     const name = event.target.name;
+
+    //Switch for setting state and adding checked to the correct element
     switch(name){
       case 'Pescitarian':
         checkPescitarian(!pescitarian);
@@ -24,15 +26,18 @@ const DietaryRestrictions = () => {
         checkVegetarian(!vegetarian); 
         break;
       case 'Lactose free':
-        checklactosefree(!lactosefree); 
+        checkLactosefree(!lactosefree); 
         break;
       case 'Gluten free':
-        checkglutenfree(!glutenfree);
+        checkGlutenfree(!glutenfree);
+        break;
+      default: 
         break;
     }
     
     //Strips text of spaces and lowers the casing
     const strippedValue = name.replace(/ +/g, "");
+    //Adds the text to all lower case
     const loweredValue = strippedValue.toLowerCase(); 
     dispatch(recipeGenerationActions.toggleDietaryRestrictions(loweredValue));
     
