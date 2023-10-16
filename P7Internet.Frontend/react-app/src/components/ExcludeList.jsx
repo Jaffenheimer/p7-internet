@@ -74,16 +74,3 @@ const ExcludeList = () => {
 };
 
 export default ExcludeList;
-
-  // function addIngredientToList(event, inputField, list) {
-  //   // Prevents the page from reloading
-  //   event.preventDefault();
-
-  //   // Creates a new list item
-  //   var listItem = document.createElement("li");
-  //   // Adds the input value to the list item
-  //   listItem.innerHTML = inputField.value;
-  //   // Adds the list item to the list
-  //   list.appendChild(listItem);
-  //   inputField.value = "";
-  // }
