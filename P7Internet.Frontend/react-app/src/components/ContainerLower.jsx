@@ -9,7 +9,7 @@ const ContainerLower = () => {
   }
 
   return (
-    <div className="ContainerLower" onClick={enableArrowKeyPress} tabIndex={-1}>
+    <div className="ContainerLower" onClick={enableArrowKeyPress}>
       <RecipeView />
       <SelectRecipeButton />
       <SelectArrows />
