@@ -28,14 +28,16 @@ export const recipeGenerationSlice = createSlice({
             state.dietaryRestrictions = state.ownedIngredients.filter(dietaryRestrictions => dietaryRestrictions !== action.payload);
         }, 
         addExcludedIngredient(state, action){
-            state.excludeList.push(action.payload); 
+            const ExcludeIngredient = {
+                id: nanoid(),
+                text: action.payload,
+            };
+            state.excludeList.push(ExcludeIngredient);
         }, 
         removeExcludedIngredient(state, action){
-            const ExcludeIngredient = {
-            id: nanoid(),
-            text: action.payload,
-            };
-        state.excludeList.push(ExcludeIngredient);
+            state.excludeList = state.excludeList.filter(
+                (ingredient) => ingredient.id !== action.payload
+            );
         },
         addPerson(state){
             state.numPeople++; 
