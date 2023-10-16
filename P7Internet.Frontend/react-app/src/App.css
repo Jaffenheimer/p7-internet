@@ -3,6 +3,7 @@ body > #root > div {
 }
 
 .App {
+  background: #f8ede3;
   display: flex;
   flex-direction: row;
 }
@@ -13,10 +14,14 @@ body > #root > div {
   margin-top: -22px;
 }
 
+
+.App > h1,h2,h3,h4,h5,h6 {
+  margin-left: 10px;
+}
+
 .App > .AppLeft > .ContainerUpper {
   height: 40%;
   border-bottom: 2px solid black;
-  background: #f8ede3;
   flex-direction: column;
 }
 
@@ -102,7 +107,7 @@ button:hover {
   background: #e7e7e7;
 }
 
-.RecipeTitle > h1 {
+.RecipeView > #RecipeTitleDiv > h1 {
   text-align: left;
 }
 
@@ -269,4 +274,19 @@ button:hover {
 #ExcludedIngredientsList {
   text-align: left;
   margin-left: 8%;
+}
+
+.App > .FullRecipeView {
+  flex: 1;
+}
+
+.ForPersons > h4 {
+  text-align: center;
+  margin-top: -20px;
+}
+
+#backButton {
+  float:right;
+  margin-top: 25px;
+  margin-right: 25px;
 }
