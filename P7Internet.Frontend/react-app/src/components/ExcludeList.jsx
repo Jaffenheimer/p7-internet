@@ -13,7 +13,7 @@ const ExcludeList = () => {
   );
 
   //Gets the lenght from the array from store
-  const listlenght = Array.from(excludeList).length;
+  const listlength = Array.from(excludeList).length;
 
   //Function for handling the remove feature
   const handleRemove = (event, ingredient) => {
@@ -25,12 +25,18 @@ const ExcludeList = () => {
   const submitAdd = (event) => {
     event.preventDefault();
     
-    if (listlenght < 10) {
-        dispatch(recipeGenerationActions.addExcludedIngredient(ingredient));        
-    } else {
+    var excludeDict = Object.values(excludeList)
+    var excludeIngredientText = []
+
+    excludeDict.forEach((excludeIngredient) => excludeIngredientText.push(excludeIngredient['text']))
+    if (listlength < 10) {
+      if(ingredient === '') return
+      if(excludeIngredientText.includes(ingredient)) return
+      dispatch(recipeGenerationActions.addExcludedIngredient(ingredient));        
+    } 
+    else {
       alert("Du kan ikke tilføje flere ingredienser");
     }
-
     setIngredient("");    
   }
 
