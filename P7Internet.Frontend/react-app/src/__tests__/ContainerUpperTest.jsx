@@ -5,7 +5,7 @@ import ContainerUpper from "../components/ContainerUpper";
 import {renderComponent} from "../testSetupHelper/Helper.jsx";
 
 test("Renders the title of the recipe", () => {
-  render(renderComponent(<ContainerUpper />));
+  renderComponent(<ContainerUpper />);
   const linkElement = screen.getByText(/Opskriftsgenerator/);
   expect(linkElement).toBeInTheDocument();
 });
