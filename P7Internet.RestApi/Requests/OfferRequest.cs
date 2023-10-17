@@ -10,14 +10,14 @@ namespace P7Internet.Requests
         public int Pagesize { get; set; }
         public string SearchTerm { get; set; }
         public int Radius { get; set; }
-        public bool Upcoming { get; set; }
+        public string Upcoming { get; set; }
         public string Geohash { get; set; }
         public OfferRequest()
         {
 
         }
 
-        public OfferRequest(int zip, int pagesize, string searchTerm, int radius, bool upcoming, string geoHash)
+        public OfferRequest(int zip, int pagesize, string searchTerm, int radius, string upcoming, string geoHash)
         {
             Zip = zip;
             Pagesize = pagesize;
@@ -35,20 +35,12 @@ namespace P7Internet.Requests
              ""where"": {{
                 ""term"": ""{this.SearchTerm}"",
                 ""max_radius"": {this.Radius},
-                ""include_upcoming"": {true}
+                ""include_upcoming"": {this.Upcoming.ToLower()}
              }},
              ""geohash"": ""{this.Geohash}""
              }}";
 
             return res;
         }
-    
-
-        //public StringContent CreateRequestBody()
-        //{
-        //    var json = JsonSerializer.Serialize(this, Formatting.Indented);
-        //    StringContent body = new StringContent(json);
-        //    return body;
-        //}
     }
 }

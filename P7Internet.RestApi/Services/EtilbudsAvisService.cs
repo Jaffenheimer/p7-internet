@@ -52,25 +52,29 @@ public class ETilbudsAvisService
         var request = new HttpRequestMessage(HttpMethod.Post, url);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         request.Headers.Add("X-Api-Key", "EFSiDV");
-        StringContent payload = new StringContent(req.ComposeOfferObject());
+        StringContent payload = new StringContent(req.ComposeOfferObject(), System.Text.Encoding.UTF8, "application/json");
             
 
         request.Content = payload;
         var response = await _client.SendAsync(request);
         var responseContent = response.Content.ReadAsStringAsync().Result;
-        var deserializedContent =  JToken.Parse(responseContent);
+        var deserializedContent = JsonConvert.DeserializeObject<JObject>(responseContent);
 
+        deserializedContent.Remove("page_info");
+        var offerArray = deserializedContent.Value<JArray>("offers");
         //This creates the offer objects from the parsed json data.
         IList<Offer> offers = new List<Offer>();
-        foreach (JObject result in deserializedContent)
+        for (int i = 0; i < offerArray.Count; i++)
         {
-            Offer offer = CreateObjectFromDeserializedJson<Offer>(result);
-            offer.Price.Add("price", result["pricing"]["price"].Value<decimal>());
-            offer.Price.Add("currency", result["pricing"]["currency"].Value<string>());
-            offer.Dealer.Add("name", result["dealer"]["name"].Value<string>());
-            offer.Dealer.Add("logo", result["dealer"]["logo"].Value<string>());
-            offer.Size.Add("from", result["quantity"]["size"]["from"].Value<float>());
-            offer.Size.Add("to", result["quantity"]["size"]["to"].Value<float>());
+            Offer offer = new Offer();
+            offer.Id = offerArray[i]["id"].Value<string>();
+            offer.Name = offerArray[i]["name"].Value<string>();
+            offer.Price = offerArray[i]["price"].Value<decimal>();
+            offer.Currency = offerArray[i]["currency_code"].Value<string>();
+            offer.Store = offerArray[i]["business"]["name"].Value<string>();
+            offer.Size = new KeyValuePair<float, float>(offerArray[i]["unit_size"]["from"].Value<float>(), offerArray[i]["unit_size"]["to"].Value<float>());
+            offer.Created = offerArray[i]["validity"]["from"].Value<DateTime>();
+            offer.Ending = offerArray[i]["validity"]["to"].Value<DateTime>();
             offers.Add(offer);
         }
 
@@ -96,50 +100,33 @@ public class ETilbudsAvisService
     #endregion
 }
 
-[JsonObject(MemberSerialization.OptIn)]
+//[JsonObject(MemberSerialization.OptIn)]
 public class Offer
 {
     public Offer()
     {
-        Price = new Dictionary<string, object>();
-        Size = new Dictionary<string, float>();
-        Dealer = new Dictionary<string, string>();
+        
     }
     [JsonProperty("id")]
     public string Id { get; set; }
-    [JsonProperty("heading")]
+    [JsonProperty("name")]
     public string Name { get; set; }
     [JsonProperty("description")]
     public string Description { get; set; }
-    public Dictionary<string, object> Price { get; set; }
-    public Dictionary<string, float> Size { get; set; }
-    public Dictionary<string, string> Dealer { get; set; }
-    [JsonProperty("run_from")]
+    public decimal Price { get; set; }
+    public string Currency { get; set; }
+    public KeyValuePair<float, float> Size { get; set; }
+    public string Store { get; set; }
     public DateTime Created { get; set; }
-    [JsonProperty("run_till")]
     public DateTime Ending { get; set; }
 
     
 }
 [JsonObject(MemberSerialization.OptIn)]
-public class Pricing
-{
-    [JsonProperty("price")]
-    public decimal Price;
-    [JsonProperty("currency")]
-    public string currency;
-}
-[JsonObject(MemberSerialization.OptIn)]
-public class Dealer
+public class Store
 {
     [JsonProperty("name")]
     public string Name;
     [JsonProperty("logo")]
     public string Logo;
-}
-[JsonObject(MemberSerialization.OptIn)]
-public class Quantity
-{
-    [JsonProperty("size")]
-    public JObject size;
 }
