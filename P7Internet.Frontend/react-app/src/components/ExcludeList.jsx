@@ -27,9 +27,9 @@ const ExcludeList = () => {
     event.preventDefault();
     
     //Extracts exclude list from redux in dict form to a list of ingredients.
-    var excludeDict = Object.values(excludeList)
+    var excludeDictionary = Object.values(excludeList)
     var excludeIngredientText = []
-    excludeDict.forEach((excludeIngredient) => excludeIngredientText.push(excludeIngredient['text']))
+    excludeDictionary.forEach((excludeIngredient) => excludeIngredientText.push(excludeIngredient['text']))
 
     //Handles input validation for the excludelist input field
     if(ingredient === '')                                   toast.error("Tekstfeltet er tomt. Skriv venligst navnet på ingrediensen.")

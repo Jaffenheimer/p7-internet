@@ -18,10 +18,10 @@ const SearchBar = () => {
 
       // receives the ingredient text (aka. name) from dict on store in format 
       // {0:{id: '', text: ''}, 1:{id: '', text: ''}}¨
-      var ownedDict = Object.values(ownedIngredientsList)
+      var ownedDictionary = Object.values(ownedIngredientsList)
       var ownedIngredientText = []
 
-      ownedDict.forEach((ownedIngredient) => ownedIngredientText.push(ownedIngredient['text']))
+      ownedDictionary.forEach((ownedIngredient) => ownedIngredientText.push(ownedIngredient['text']))
 
       // only adds to ownedIngredient if non-dublicate
       if (!ownedIngredientText.includes(ingredient))
