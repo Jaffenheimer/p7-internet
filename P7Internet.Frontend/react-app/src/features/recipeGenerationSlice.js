@@ -24,7 +24,7 @@ export const recipeGenerationSlice = createSlice({
       };
       state.ownedIngredients.push(ownedIngredient);
     },
-    removeOwnedIngreidents(state, action) {
+    removeOwnedIngredients(state, action) {
       state.ownedIngredients = state.ownedIngredients.filter(
         (ingredient) => ingredient.id !== action.payload
       );
