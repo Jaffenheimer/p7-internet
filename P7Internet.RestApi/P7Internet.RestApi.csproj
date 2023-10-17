@@ -2,7 +2,7 @@
 
     <PropertyGroup>
         <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <Nullable>enable</Nullable>
         <ImplicitUsings>disable</ImplicitUsings>
         <RootNamespace>P7Internet</RootNamespace>
@@ -34,6 +34,10 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Dtos\" />
+      <Folder Include="RequestObjects\" />
     </ItemGroup>
     <Import Project="..\SharedObjects\SharedObjects.projitems" Label="Shared" />
 
