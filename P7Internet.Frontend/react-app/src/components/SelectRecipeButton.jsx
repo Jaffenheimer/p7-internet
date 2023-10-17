@@ -15,7 +15,11 @@ const SelectRecipeButton = () => {
     goToPageFullRecipeView();
   }
 
-  return <button onClick={handleOnClick}>Vælg opskrift</button>;
+  return (
+    <button id="selectRecipeButton" onClick={handleOnClick}>
+      Vælg opskrift
+    </button>
+  );
 };
 
 export default SelectRecipeButton;

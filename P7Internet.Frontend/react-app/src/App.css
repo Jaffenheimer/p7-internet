@@ -115,15 +115,16 @@ button:hover {
   text-align: left;
 }
 
-.SelectArrows {
+#SelectArrows {
   margin-left: 45%;
+  outline: none;
 }
 
-.RecipeView > button {
-  margin-left: 80%;
+#selectRecipeButton {
+  float: right;
 }
 
-.SelectArrows > img {
+#SelectArrows > img {
   margin: 5%;
   transform: scale(2);
 }
