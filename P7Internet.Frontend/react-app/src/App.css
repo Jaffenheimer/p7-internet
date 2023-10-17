@@ -2,11 +2,6 @@ body > #root > div {
   height: 100vh;
 }
 
-body {
-  max-width: 100%;
-  overflow-x: hidden;
-}
-
 .App {
   display: flex;
   flex-direction: row;
