@@ -2,13 +2,14 @@
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.IO;
-using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Converters;
+using System.Text.Json;
 using Microsoft.AspNetCore.Http.Extensions;
 using P7Internet.CustomExceptions;
+using P7Internet.Requests;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace P7Internet.Services;
 
@@ -17,11 +18,11 @@ public class ETilbudsAvisService
     private readonly HttpClient _client = new();
     private readonly QueryBuilder _queryBuilder = new();
 
+
     public ETilbudsAvisService()
     {
-        //_client.BaseAddress = new Uri("https://squid-api.tjek.com/v4/rpc/get_offers");
-        _client.BaseAddress = new Uri("https://etilbudsavis.dk/api/squid/v2/");
-        _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("ApiKey", "EFSiDV");
+        _client.BaseAddress = new Uri("https://squid-api.tjek.com/v4/rpc/get_offers");
+        //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("EFSiDV");
     }
 
 
@@ -31,29 +32,30 @@ public class ETilbudsAvisService
     }
     */
 
-    public async Task<IList<Offer>> GetAllOffers(int zip, string[] queries)
+    public async Task<IList<Offer>> GetAllOffers(OfferRequest req)
     {
         try
         {
-            if (zip == 0 || zip == null) { throw new ZipNotFoundException(); }
-            var coords = await GetCoordinates(zip);
-            _queryBuilder.Add("r_lng", coords["lon"]);
-            _queryBuilder.Add("r_lat", coords["lat"]);
+            //if (zip == 0 || zip == null) { throw new ZipNotFoundException(); }
+            //var coords = await GetCoordinates(zip);
+            //_queryBuilder.Add("r_lng", coords["lon"]);
+            //_queryBuilder.Add("r_lat", coords["lat"]);
         }
         catch (Exception)
         {
             throw new Exception("Zip not found or provided");
         }
-        
-        Array.ForEach(queries, query =>
-        {
-            var split = query.Split('=');
-            _queryBuilder.Add(split[0], split[1]);
-        });
-        var url = new Uri(_client.BaseAddress, $"offers{_queryBuilder.ToQueryString().Value}");
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
+      
+        //var url = new Uri(_client.BaseAddress, $"offers{_queryBuilder.ToQueryString().Value}");
+        var url = new Uri(_client.BaseAddress.ToString());
+        var request = new HttpRequestMessage(HttpMethod.Post, url);
+        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        request.Headers.Add("X-Api-Key", "EFSiDV");
+        StringContent payload = new StringContent(req.ComposeOfferObject());
+            
+
+        request.Content = payload;
         var response = await _client.SendAsync(request);
         var responseContent = response.Content.ReadAsStringAsync().Result;
         var deserializedContent =  JToken.Parse(responseContent);

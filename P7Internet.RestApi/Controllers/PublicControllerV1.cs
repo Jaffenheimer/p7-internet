@@ -57,9 +57,9 @@ public class PublicControllerV1 : ControllerBase
     }
     [HttpGet]
     [Route("offer/GetAllOffers")]
-    public async Task<IActionResult> GetOffer([FromQuery] int zip, [FromQuery] string[] queries)
+    public async Task<IActionResult> GetOffer([FromQuery] OfferRequest req)
     {
-        var res = await _eTilbudsAvisService.GetAllOffers(zip, queries);
+        var res = await _eTilbudsAvisService.GetAllOffers(req);
         if (res != null) return Ok(res);
         return BadRequest();
 
