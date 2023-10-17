@@ -10,6 +10,7 @@ using P7Internet.CustomExceptions;
 using P7Internet.Requests;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using SharedObjects;
 
 namespace P7Internet.Services;
 
@@ -22,15 +23,7 @@ public class ETilbudsAvisService
     public ETilbudsAvisService()
     {
         _client.BaseAddress = new Uri("https://squid-api.tjek.com/v4/rpc/get_offers");
-        //_client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("EFSiDV");
     }
-
-
-    /*public async Task<JsonContent> GetOffers()
-    {
-      _client.PostAsJsonAsync();
-    }
-    */
 
     public async Task<IList<Offer>> GetAllOffers(OfferRequest req)
     {
@@ -45,9 +38,7 @@ public class ETilbudsAvisService
         {
             throw new Exception("Zip not found or provided");
         }
-
-      
-        //var url = new Uri(_client.BaseAddress, $"offers{_queryBuilder.ToQueryString().Value}");
+        
         var url = new Uri(_client.BaseAddress.ToString());
         var request = new HttpRequestMessage(HttpMethod.Post, url);
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
@@ -101,27 +92,6 @@ public class ETilbudsAvisService
 }
 
 //[JsonObject(MemberSerialization.OptIn)]
-public class Offer
-{
-    public Offer()
-    {
-        
-    }
-    [JsonProperty("id")]
-    public string Id { get; set; }
-    [JsonProperty("name")]
-    public string Name { get; set; }
-    [JsonProperty("description")]
-    public string Description { get; set; }
-    public decimal Price { get; set; }
-    public string Currency { get; set; }
-    public KeyValuePair<float, float> Size { get; set; }
-    public string Store { get; set; }
-    public DateTime Created { get; set; }
-    public DateTime Ending { get; set; }
-
-    
-}
 [JsonObject(MemberSerialization.OptIn)]
 public class Store
 {
