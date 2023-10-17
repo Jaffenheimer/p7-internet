@@ -14,8 +14,12 @@ body > #root > div {
   margin-top: -22px;
 }
 
-
-.App > h1,h2,h3,h4,h5,h6 {
+.App > h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-left: 10px;
 }
 
@@ -111,15 +115,16 @@ button:hover {
   text-align: left;
 }
 
-.SelectArrows {
+#SelectArrows {
   margin-left: 45%;
+  outline: none;
 }
 
-.RecipeView > button {
-  margin-left: 80%;
+#selectRecipeButton {
+  float: right;
 }
 
-.SelectArrows > img {
+#SelectArrows > img {
   margin: 5%;
   transform: scale(2);
 }
@@ -136,6 +141,12 @@ button:hover {
   display: flex;
   justify-content: center;
   margin-top: 10%;
+}
+#NumberFieldToast {
+  transform: scale(0.7);
+  text-align: center;
+  justify-content: center;
+  
 }
 #InputNumberField {
   width: 30px;
@@ -286,7 +297,7 @@ button:hover {
 }
 
 #backButton {
-  float:right;
+  float: right;
   margin-top: 25px;
   margin-right: 25px;
 }

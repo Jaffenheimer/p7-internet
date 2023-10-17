@@ -4,17 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 
 const OwnedIngredientsList = () => {
-  const ownedIngredientsList = useSelector(
-    (state) => state.recipeGeneration.ownedIngredients
-  );
-  const dispatch = useDispatch();
-
-  const handleRemove = (event, ingredient) => {
-    event.preventDefault();
-    console.log("ingredient: ", ingredient);
-    console.log("ingredient id: ", ingredient.id);
-    dispatch(recipeGenerationActions.removeOwnedIngreidents(ingredient.id));
-  };
+	const ownedIngredientsList = useSelector(state => state.recipeGeneration.ownedIngredients);
+	const dispath = useDispatch();
+	
+	const handleRemove = (event, ingredient) => {
+		event.preventDefault();
+		dispath(recipeGenerationActions.removeOwnedIngredients(ingredient.id));
+  	}
 
   return (
     <ul>

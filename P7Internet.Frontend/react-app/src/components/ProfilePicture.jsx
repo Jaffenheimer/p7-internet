@@ -18,7 +18,7 @@ const ProfilePicture = () => {
 
   return (
     <div className="ProfilePicture">
-      <img src={profile} alt="Profile picture" onClick={profileClick} />
+      <img src={profile} alt="ProfilePicture" onClick={profileClick} />
       {open ? (
         <ul className="menu">
           <li className="menu-item">
