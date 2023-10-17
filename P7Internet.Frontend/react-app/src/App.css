@@ -31,7 +31,6 @@ body > #root > div {
   height: 100%;
 }
 
-
 h1 {
   font-family: Verdana;
   display: block;
@@ -306,6 +305,19 @@ button:hover {
   margin-right: 25px;
 }
 
-.App > .RecipeSelection {
+.App > .RecipeSelectionContainerLeft {
   flex: 1;
+  position: relative;
+}
+
+.RecipeView {
+  margin-left: 2%;
+}
+
+#selectRecipeButton {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-bottom: 3%;
+  margin-right: 3%;
 }

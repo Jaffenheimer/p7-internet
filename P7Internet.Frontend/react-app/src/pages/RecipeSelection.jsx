@@ -4,9 +4,11 @@ import RecipeSelectionContainerLeft from "../components/RecipeSelectionContainer
 const RecipeSelection = () => {
   return (
     <div className="App">
-      <div className="RecipeSelection">
+      
+        <div className="RecipeSelectionContainerLeft">
           <RecipeSelectionContainerLeft />
-      </div>
+        </div>
+
       <div className="AppRight"></div>
     </div>
   );
