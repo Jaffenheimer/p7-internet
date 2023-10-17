@@ -5,6 +5,7 @@ import FrontPage from "./pages/FrontPage";
 import FullRecipeView from "./pages/FullRecipeView";
 import { useSelector } from "react-redux";
 import Pages from "./objects/Pages";
+import RecipeSelection from "./pages/RecipeSelection";
 
 export default function App() {
   axios.defaults.baseURL = "http://localhost:5000";
@@ -13,6 +14,8 @@ export default function App() {
 
   if (page === Pages.frontPage) {
     return <FrontPage />;
+  } else if (page === Pages.RecipeSelection) {
+    return <RecipeSelection />;
   } else if (page === Pages.fullRecipeView) {
     return <FullRecipeView />;
   }
