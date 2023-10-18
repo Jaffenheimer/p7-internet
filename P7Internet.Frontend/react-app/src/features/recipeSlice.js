@@ -11,7 +11,9 @@ export const recipeSlice = createSlice({
   initialState,
   reducers: {
     addRecipes(state, action) {
-      state.recipes.push({id: nanoid(), text: action.payload})
+      for (let i = 0; i < action.payload.length; i++) {
+        state.recipes.push(action.payload[i]);
+      }
     },
     setDefaultRecipes(state, action) { //this function will not be necessary later, but is useful since we dont have communication with the backend yet
       state.recipes = [action.payload[0]];
