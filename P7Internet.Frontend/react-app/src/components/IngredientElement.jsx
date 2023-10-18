@@ -7,8 +7,13 @@ const IngredientElement = ({ ingredient }) => {
   );
 
   function isOwned(ingredient) {
-    return ownedIngredientsList.includes(ingredient);
+    for (const ownedIngredient of ownedIngredientsList) {
+      if (ownedIngredient.text === ingredient) {
+        return true
+    }
+    return false;
   }
+}
 
   return (
     <div>
