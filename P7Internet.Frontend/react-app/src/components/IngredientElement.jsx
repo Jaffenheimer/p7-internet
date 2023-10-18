@@ -9,11 +9,11 @@ const IngredientElement = ({ ingredient }) => {
   function isOwned(ingredient) {
     for (const ownedIngredient of ownedIngredientsList) {
       if (ownedIngredient.text === ingredient) {
-        return true
+        return true;
+      }
+      return false;
     }
-    return false;
   }
-}
 
   return (
     <div>
