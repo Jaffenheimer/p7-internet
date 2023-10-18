@@ -3,13 +3,13 @@ import RecipeView from "./RecipeView";
 import SelectArrows from "./SelectArrows";
 import SelectRecipeButton from "./SelectRecipeButton";
 
-const ContainerLower = () => {
+const RecipeSelectionContainerLeft = () => {
   function enableArrowKeyPress() {
     document.getElementById("SelectArrows").focus();
   }
 
   return (
-    <div className="ContainerLower" onClick={enableArrowKeyPress}>
+    <div className="RecipeSelectionContainerLeft" onClick={enableArrowKeyPress}>
       <RecipeView />
       <SelectRecipeButton />
       <SelectArrows />
@@ -17,4 +17,4 @@ const ContainerLower = () => {
   );
 };
 
-export default ContainerLower;
+export default RecipeSelectionContainerLeft;
