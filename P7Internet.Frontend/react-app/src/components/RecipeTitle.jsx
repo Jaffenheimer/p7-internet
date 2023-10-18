@@ -22,7 +22,7 @@ const RecipeTitle = ({ title }) => {
     }
   }
 
-  function UpdateTab(){ //component that dynamically changes heart icon when using arrows
+  function SetHeartIconOnChange(){ //component that dynamically changes heart icon when using arrows
     if (heartedRecipeTitles.includes(title)){
       setHeart(heartSolid)
     }
@@ -36,7 +36,7 @@ const RecipeTitle = ({ title }) => {
       <h1 id="RecipeTitle">
         {title}
         <img src={heart} alt="heart" onClick={handleClick} />
-        <UpdateTab/> {/* used to dynamically update heart icon when updating tab */}
+        <SetHeartIconOnChange/> {/* used to dynamically update heart icon when updating tab */}
       </h1>
     </div>
   );
