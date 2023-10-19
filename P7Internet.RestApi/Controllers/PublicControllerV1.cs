@@ -62,8 +62,6 @@ public class PublicControllerV1 : ControllerBase
         var res = await _eTilbudsAvisService.GetAllOffers(req);
         if (res != null) return Ok(res);
         return BadRequest();
-
-
     }
     
     //Tak til chatgpt for nedenstående metode wup wup

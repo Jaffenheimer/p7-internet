@@ -10,6 +10,7 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'P7Internet.RestApi' " />
     <ItemGroup>
         <PackageReference Include="geohash-dotnet" Version="2.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-rc.1.23419.4" />

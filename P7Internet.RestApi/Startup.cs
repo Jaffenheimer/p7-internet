@@ -40,6 +40,7 @@ namespace P7Internet
                 services.ConfigurePersistenceMySqlConnection(Configuration.GetConnectionString("MySqlDatabase"));
 
                 services.AddSingleton(new OpenAiService(Configuration.GetSection("OpenAI").GetValue<string>("APIKey")));
+                
             }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -56,7 +57,7 @@ namespace P7Internet
                     s.SwaggerEndpoint($"/{SwaggerRoute}/v1/swagger.json", "v1");
                     s.RoutePrefix = $"{SwaggerRoute}/swagger";
                 });
-
+              
                 program.UseRouting();
                 program.UseCors();
                 program.UseEndpoints(endpoints => { endpoints.MapControllers(); });
