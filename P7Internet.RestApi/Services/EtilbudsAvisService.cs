@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Collections.Generic;
-using System.Text.Json;
 using Microsoft.AspNetCore.Http.Extensions;
 using P7Internet.CustomExceptions;
 using P7Internet.Requests;
@@ -27,24 +26,13 @@ public class ETilbudsAvisService
 
     public async Task<IList<Offer>> GetAllOffers(OfferRequest req)
     {
-        try
-        {
-            //if (zip == 0 || zip == null) { throw new ZipNotFoundException(); }
-            //var coords = await GetCoordinates(zip);
-            //_queryBuilder.Add("r_lng", coords["lon"]);
-            //_queryBuilder.Add("r_lat", coords["lat"]);
-        }
-        catch (Exception)
-        {
-            throw new Exception("Zip not found or provided");
-        }
         
         var url = new Uri(_client.BaseAddress.ToString());
         var request = new HttpRequestMessage(HttpMethod.Post, url);
+
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         request.Headers.Add("X-Api-Key", "EFSiDV");
         StringContent payload = new StringContent(req.ComposeOfferObject(), System.Text.Encoding.UTF8, "application/json");
-            
 
         request.Content = payload;
         var response = await _client.SendAsync(request);
@@ -53,6 +41,7 @@ public class ETilbudsAvisService
 
         deserializedContent.Remove("page_info");
         var offerArray = deserializedContent.Value<JArray>("offers");
+
         //This creates the offer objects from the parsed json data.
         IList<Offer> offers = new List<Offer>();
         for (int i = 0; i < offerArray.Count; i++)
@@ -71,32 +60,8 @@ public class ETilbudsAvisService
 
         return offers;
     }
-
-
-    #region Utility Functions
-    public async Task<Dictionary<string, string>> GetCoordinates(int postalCode)
-    {
-        var coordinateClient = new HttpClient() { BaseAddress = new Uri("https://api.dataforsyningen.dk/postnumre/") };
-        var url = new Uri(coordinateClient.BaseAddress, postalCode.ToString());
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
-        var response = await coordinateClient.SendAsync(request);
-        var jsonData = JsonConvert.DeserializeObject<JObject>(response.Content.ReadAsStringAsync().Result);
-        var coordinates = new Dictionary<string, string>() { { "lon", jsonData["visueltcenter"][0].ToString() }, { "lat", jsonData["visueltcenter"][1].ToString() } };
-        return coordinates;
-    }
     public T CreateObjectFromDeserializedJson<T>(JObject jsonObject)
     {
         return jsonObject.ToObject<T>();
     }
-    #endregion
-}
-
-//[JsonObject(MemberSerialization.OptIn)]
-[JsonObject(MemberSerialization.OptIn)]
-public class Store
-{
-    [JsonProperty("name")]
-    public string Name;
-    [JsonProperty("logo")]
-    public string Logo;
 }
