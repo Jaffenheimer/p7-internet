@@ -25,7 +25,7 @@ public class PublicControllerV1 : ControllerBase
         _cachedRecipeRepository = cachedRecipeRepository;
         _eTilbudsAvisService = new ETilbudsAvisService();
     }
-
+    #region Recipe Endpoints
     [HttpPost("recipes")]
     public async Task<IActionResult> GetARecipe([FromBody]SampleRequest req)
     {
@@ -63,7 +63,19 @@ public class PublicControllerV1 : ControllerBase
         if (res != null) return Ok(res);
         return BadRequest();
     }
-    
+    #endregion
+
+    #region User Endpoints
+    [HttpPut]
+    [Route("user/create-user")]
+    public async Task<IActionResult> CreateUser([FromForm] CreateUserRequest req)
+    {
+
+        throw new System.NotImplementedException();
+    }
+    #endregion
+
+    #region Utility functions
     //Tak til chatgpt for nedenstående metode wup wup
     private static bool ContainsEveryString(List<string> stringList, string targetString)
     {
@@ -76,4 +88,5 @@ public class PublicControllerV1 : ControllerBase
         }
         return true;
     }
+    #endregion
 }
