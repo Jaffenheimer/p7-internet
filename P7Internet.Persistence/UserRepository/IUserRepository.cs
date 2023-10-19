@@ -1,9 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace P7Internet.Persistence.Repositories;
+namespace P7Internet.Persistence.UserRepository;
 
-public interface ITestRepository
+public interface IUserRepository
 {
     public Task<bool> Upsert(List<string> ingredients);
 }

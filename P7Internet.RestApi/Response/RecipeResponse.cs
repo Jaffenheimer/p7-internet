@@ -15,7 +15,8 @@
 
             if (recipes.EndsWith("\"") || recipes.EndsWith("'"))
                 recipes = recipes.Substring(0, recipes.Length - 1);
-
+            recipes = recipes.Replace('\n', ' ');
+            
             Recipes = recipes;
         }
 

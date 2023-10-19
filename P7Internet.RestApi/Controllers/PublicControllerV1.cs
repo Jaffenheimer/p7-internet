@@ -1,75 +1,79 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using P7_internet.Services;
-using P7Internet.Persistence.Repositories;
-using P7Internet.Response;
+using P7Internet.Persistence.RecipeCacheRepository;
+using P7Internet.Persistence.UserRepository;
+using P7Internet.Requests;
+using P7Internet.Services;
 
 namespace P7Internet.Controllers;
+
 [ApiController]
 [Route("public/sample")]
 public class PublicControllerV1 : ControllerBase
 {
-    private readonly ITestRepository _testRepository;
+    private readonly IUserRepository _userRepository;
+    private readonly IRecipeCacheRepository _cachedRecipeRepository;
     private readonly OpenAiService _openAiService;
+    private readonly ETilbudsAvisService _eTilbudsAvisService;
 
-    public PublicControllerV1(ITestRepository testRepository, OpenAiService openAiService)
+    public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService, IRecipeCacheRepository cachedRecipeRepository)
     {
-        _testRepository = testRepository;
+        _userRepository = userRepository;
         _openAiService = openAiService;
+        _cachedRecipeRepository = cachedRecipeRepository;
+        _eTilbudsAvisService = new ETilbudsAvisService();
     }
 
     [HttpPost("recipes")]
-    public async Task<IActionResult> GetARecipe(string req)
+    public async Task<IActionResult> GetARecipe([FromBody]SampleRequest req)
     {
-        var res = _openAiService.GetAiResponse(req);
+        var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
+        List<string?> recipesIncludingIngredients = new List<string?>();
+        foreach (var recipe in recipes)
+        {
+            if (ContainsEveryString(req.Ingredients, recipe))
+            {
+                recipesIncludingIngredients.Add(recipe);
+            }
+        }
+        
+        if (recipesIncludingIngredients.Any(x => x != null))
+            return Ok(recipesIncludingIngredients);
+            
+        var openAiRequest = req.OpenAiString;
+
+        foreach (var ingredient in req.Ingredients)
+        {
+            openAiRequest += ", " + ingredient;
+        }
+        
+        var res = _openAiService.GetAiResponse(openAiRequest);
+        
+        await _cachedRecipeRepository.Upsert(res.Recipes);
         return Ok(res);
     }
-    
-    [HttpPost("testrecipes")]
-    public async Task<IActionResult> GetATestRecipe(string req)
+    [HttpGet]
+    [Route("offer/GetAllOffers")]
+    public async Task<IActionResult> GetOffer([FromQuery] OfferRequest req)
     {
-        const string recipe = "1. Spaghetti Aglio e Olio:\\nIngredients:\\n- " +
-                              "400g spaghetti\\n- 4 cloves garlic, minced\\n- " +
-                              "1/4 cup olive oil\\n- 1/2 teaspoon red pepper flakes\\n- " +
-                              "Salt and pepper to taste\\n- Grated Parmesan cheese (optional)\\n\\" +
-                              "nInstructions:\\n1. Cook spaghetti according to package instructions until " +
-                              "al dente. Drain and set aside.\\n2. In a large pan, heat olive oil over medium heat. " +
-                              "Add minced garlic and red pepper flakes. Sauté until garlic turns golden brown.\\n3. " +
-                              "Add cooked spaghetti to the pan and toss well to coat with garlic-infused oil.\\n4. " +
-                              "Season with salt and pepper to taste. Serve hot, optionally topped with grated Parmesan " +
-                              "cheese.\\n\\n2. Chicken Stir-Fry:\\nIngredients:\\n- 500g boneless chicken breast, " +
-                              "sliced\\n- 2 bell peppers, sliced\\n- 1 onion, sliced\\n- 2 tablespoons soy sauce\\n- " +
-                              "1 tablespoon oyster sauce\\n- 1 tablespoon vegetable oil\\n- " +
-                              "Salt and pepper to taste\\n\\nInstructions:\\n1. " +
-                              "Heat vegetable oil in a large skillet or wok over high heat.\\n2. " +
-                              "Add sliced chicken and cook until browned and cooked through.\\n3. " +
-                              "Add sliced bell peppers and onion to the skillet. " +
-                              "Stir-fry for a few minutes until vegetables are slightly tender.\\n4. " +
-                              "In a small bowl, mix soy sauce and oyster sauce together. " +
-                              "Pour the sauce over the chicken and vegetables. " +
-                              "Stir well to combine.\\n5. Season with salt and pepper to taste. " +
-                              "Serve hot with steamed rice or noodles.\\n\\n3. Caprese Salad:\\nIngredients:\\n- " +
-                              "4 ripe tomatoes, sliced\\n- 200g fresh mozzarella cheese, sliced\\n- " +
-                              "Fresh basil leaves\\n- 2 tablespoons balsamic glaze\\n- " +
-                              "Salt and pepper to taste\\n\\nInstructions:\\n1. " +
-                              "Arrange tomato and mozzarella slices on a serving platter.\\n" +
-                              "2. Place a fresh basil leaf on top of each tomato and mozzarella slice.\\n" +
-                              "3. Drizzle balsamic glaze over the salad.\\n" +
-                              "4. Season with salt and pepper to taste. " +
-                              "Serve immediately as a refreshing appetizer or side dish.\\n\\n";
-        
-        
-        RecipeResponse recipeResponse = new RecipeResponse(recipe);
-        var res = recipeResponse; 
-
-        return Ok(res);
+        var res = await _eTilbudsAvisService.GetAllOffers(req);
+        if (res != null) return Ok(res);
+        return BadRequest();
     }
     
-    
-    
-    
-    
-    
+    //Tak til chatgpt for nedenstående metode wup wup
+    private static bool ContainsEveryString(List<string> stringList, string targetString)
+    {
+        foreach (string str in stringList)
+        {
+            if (!targetString.Contains(str))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

@@ -11,5 +11,13 @@
         <PackageReference Include="EntityFramework" Version="6.4.4" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0-rc.1.23419.4" />
         <PackageReference Include="MySql.Data" Version="8.1.0" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
+
+
+
+
+
+
+    <Import Project="..\SharedObjects\SharedObjects.projitems" Label="Shared" />
 </Project>
