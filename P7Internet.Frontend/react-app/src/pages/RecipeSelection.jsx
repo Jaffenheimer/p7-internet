@@ -5,9 +5,7 @@ import StoreSelection from "../components/StoreSelection";
 const RecipeSelection = () => {
   return (
     <div className="App">
-      <div className="RecipeSelectionContainerLeft">
         <RecipeSelectionContainerLeft />
-      </div>
       <div className="AppRight">
         <StoreSelection />
       </div>
