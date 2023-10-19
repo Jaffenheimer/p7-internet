@@ -10,7 +10,6 @@ using P7Internet.Requests;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using SharedObjects;
-using Geohash;
 
 namespace P7Internet.Services;
 
@@ -27,23 +26,13 @@ public class ETilbudsAvisService
 
     public async Task<IList<Offer>> GetAllOffers(OfferRequest req)
     {
-        string geohash;
-        try
-        {
-            if (req.Zip == 0 || req.Zip == null) { throw new ZipNotFoundException(); }
-            geohash = await CalculateGeohashFromZip(req.Zip);
-        }
-        catch (Exception)
-        {
-            throw new Exception("Zip not found or provided");
-        }
         
         var url = new Uri(_client.BaseAddress.ToString());
         var request = new HttpRequestMessage(HttpMethod.Post, url);
 
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         request.Headers.Add("X-Api-Key", "EFSiDV");
-        StringContent payload = new StringContent(req.ComposeOfferObject(geohash), System.Text.Encoding.UTF8, "application/json");
+        StringContent payload = new StringContent(req.ComposeOfferObject(), System.Text.Encoding.UTF8, "application/json");
 
         request.Content = payload;
         var response = await _client.SendAsync(request);
@@ -71,24 +60,8 @@ public class ETilbudsAvisService
 
         return offers;
     }
-
-
-    #region Utility Functions
-    public async Task<string> CalculateGeohashFromZip(int zip)
-    {
-        var geohasher = new Geohash.Geohasher();
-        var coordinateClient = new HttpClient() { BaseAddress = new Uri("https://api.dataforsyningen.dk/postnumre/") };
-        var url = new Uri(coordinateClient.BaseAddress, zip.ToString());
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
-        var response = await coordinateClient.SendAsync(request);
-        var jsonData = JsonConvert.DeserializeObject<JObject>(response.Content.ReadAsStringAsync().Result);
-        var coordinates = new Dictionary<string, double>() { { "lon", (double)jsonData["visueltcenter"][0] }, { "lat", (double)jsonData["visueltcenter"][1] } };
-        var geohash = geohasher.Encode(coordinates["lat"], coordinates["lon"]);
-        return geohash;
-    }
     public T CreateObjectFromDeserializedJson<T>(JObject jsonObject)
     {
         return jsonObject.ToObject<T>();
     }
-    #endregion
 }

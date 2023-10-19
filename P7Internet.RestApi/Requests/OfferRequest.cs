@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Geohash;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 
@@ -6,7 +7,8 @@ namespace P7Internet.Requests
 {
     public class OfferRequest
     {
-        public int Zip { get; set; }
+        public double Lat { get; set; }
+        public double Long { get; set; }
         public int Pagesize { get; set; }
         public string SearchTerm { get; set; }
         public int Radius { get; set; }
@@ -16,16 +18,15 @@ namespace P7Internet.Requests
 
         }
 
-        public OfferRequest(int zip, int pagesize, string searchTerm, int radius, string upcoming)
+        public OfferRequest(int pagesize, string searchTerm, int radius, string upcoming)
         {
-            Zip = zip;
             Pagesize = pagesize;
             SearchTerm = searchTerm;
             Radius = radius;
             Upcoming = upcoming;
         }
 
-        public string ComposeOfferObject(string geohash)
+        public string ComposeOfferObject()
         {
             string res = $@"{{
             ""page"": {{""page_size"": {this.Pagesize}
@@ -35,10 +36,16 @@ namespace P7Internet.Requests
                 ""max_radius"": {Radius},
                 ""include_upcoming"": {Upcoming.ToLower()}
              }},
-             ""geohash"": ""{geohash}""
+             ""geohash"": ""{CalculateGeohash()}""
              }}";
 
             return res;
+        }
+        public string CalculateGeohash()
+        {
+            var geohasher = new Geohasher();
+            var geohash = geohasher.Encode(Lat, Long);
+            return geohash;
         }
     }
 }
