@@ -19,7 +19,7 @@ const StoreSelection = () => {
 
   return (
     <div className="StoreSelection">
-      <p id="StoreSelectionText">Mulige Butikker:</p>
+      <h3 id="StoreSelectionText">Mulige Butikker:</h3>
       <CheckBoxes
         id="StoreSelectionCheckBoxes"
         options={stores}

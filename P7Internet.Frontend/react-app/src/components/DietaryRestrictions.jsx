@@ -32,7 +32,7 @@ const DietaryRestrictions = () => {
 
   return (
     <div className="DietaryRestrictions">
-      <p id="DietaryRestrictionsText">Kostbegrænsninger</p>
+      <h3 id="DietaryRestrictionsText">Kostbegrænsninger</h3>
       <CheckBoxes
         id="DietaryRestrictionsCheckBoxes"
         options={dietaryRestrictions}
