@@ -3,7 +3,7 @@ import { createSlice, nanoid } from "@reduxjs/toolkit";
 const initialState = {
   ownedIngredients: [],
   dietaryRestrictions: {
-    pescitarian: false,
+    pescetarian: false,
     vegan: false,
     vegetarian: false,
     lactosefree: false,
