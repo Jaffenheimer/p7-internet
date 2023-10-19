@@ -2,13 +2,8 @@ import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 const initialState = {
   ownedIngredients: [],
-  dietaryRestrictions: {
-    pescetarian: false,
-    vegan: false,
-    vegetarian: false,
-    lactosefree: false,
-    glutenfree: false, 
-  },
+  dietaryRestrictions: "",
+  allergens: [],
   excludeList: [],
   numPeople: 4,
 };
@@ -29,9 +24,12 @@ export const recipeGenerationSlice = createSlice({
         (ingredient) => ingredient.id !== action.payload
       );
     },
-    toggleDietaryRestrictions(state, action) {
-      const dietaryRestrictionName = action.payload; 
-      state.dietaryRestrictions[dietaryRestrictionName] = !state.dietaryRestrictions[dietaryRestrictionName];
+    setDietaryRestrictions(state, action) {
+      state.dietaryRestrictions = action.payload;
+    },
+    //since allergens is a multi select we get a list as input
+    setAllergens(state, action) {
+      state.allergens = action.payload;
     },
     addExcludedIngredient(state, action) {
       const ExcludeIngredient = {
