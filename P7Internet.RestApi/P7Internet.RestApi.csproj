@@ -10,7 +10,9 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(RunConfiguration)' == 'P7Internet.RestApi' " />
     <ItemGroup>
+        <PackageReference Include="geohash-dotnet" Version="2.0.0" />
         <PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0-rc.1.23419.4" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0-rc.1.23419.4" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.0-rc.1.23419.4" />
@@ -35,5 +37,10 @@
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Dtos\" />
+      <Folder Include="RequestObjects\" />
+    </ItemGroup>
+    <Import Project="..\SharedObjects\SharedObjects.projitems" Label="Shared" />
 
 </Project>

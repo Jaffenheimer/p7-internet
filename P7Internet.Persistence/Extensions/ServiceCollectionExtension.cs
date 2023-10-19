@@ -1,10 +1,9 @@
-﻿using System.Data.Common;
-using Dapper;
+﻿using Dapper;
 using Microsoft.Extensions.DependencyInjection;
-using MySql.Data.MySqlClient;
 using P7Internet.Persistence.Connection;
 using P7Internet.Persistence.Dapper;
-using P7Internet.Persistence.Repositories;
+using P7Internet.Persistence.RecipeCacheRepository;
+using P7Internet.Persistence.UserRepository;
 
 namespace P7Internet.Persistence.Extensions;
 
@@ -16,7 +15,9 @@ public static class ServiceCollectionExtension
         services.AddSingleton<IDbConnectionFactory>(new MySqlConnectionFactory(connectionString));
 
         // Add repositories
-        services.AddScoped<ITestRepository, TestRepository>();
+        services.AddScoped<IUserRepository, UserRepository.UserRepository>();
+        services.AddScoped<IRecipeCacheRepository, RecipeCacheRepository.RecipeCacheRepository>();
+        
 
         // Dapper
         SqlMapper.AddTypeHandler(new GuidTypeHandler());

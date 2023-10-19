@@ -5,8 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using P7_internet.Services;
 using P7Internet.Persistence.Extensions;
+using P7Internet.Services;
 
 namespace P7Internet
 {
@@ -27,39 +27,40 @@ namespace P7Internet
             // This method gets called by the runtime. Use this method to add services to the container.
             public void ConfigureServices(IServiceCollection services)
             {
-                var mvcBuilder = services.AddControllers();
+                IMvcBuilder mvcBuilder = services.AddControllers();
                 mvcBuilder.AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                 });
-                services.AddSwaggerGen(c =>
+                services.AddSwaggerGen(s =>
                 {
-                    c.SwaggerDoc("v1", new OpenApiInfo { Title = ServiceName, Version = "v1" });
+                    s.SwaggerDoc("v1", new OpenApiInfo { Title = ServiceName, Version = "v1" });
                 });
 
                 services.ConfigurePersistenceMySqlConnection(Configuration.GetConnectionString("MySqlDatabase"));
 
                 services.AddSingleton(new OpenAiService(Configuration.GetSection("OpenAI").GetValue<string>("APIKey")));
+                
             }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+            public void Configure(IApplicationBuilder program, IWebHostEnvironment env)
             {
                 if (env.IsDevelopment())
                 {
-                    app.UseDeveloperExceptionPage();
+                    program.UseDeveloperExceptionPage();
                 }
 
-                app.UseSwagger(c => { c.RouteTemplate = $"/{SwaggerRoute}" + "/{documentName}/swagger.json"; });
-                app.UseSwaggerUI(c =>
+                program.UseSwagger(s => { s.RouteTemplate = $"/{SwaggerRoute}" + "/{documentName}/swagger.json"; });
+                program.UseSwaggerUI(s =>
                 {
-                    c.SwaggerEndpoint($"/{SwaggerRoute}/v1/swagger.json", "v1");
-                    c.RoutePrefix = $"{SwaggerRoute}/swagger";
+                    s.SwaggerEndpoint($"/{SwaggerRoute}/v1/swagger.json", "v1");
+                    s.RoutePrefix = $"{SwaggerRoute}/swagger";
                 });
-
-                app.UseRouting();
-                app.UseCors();
-                app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+              
+                program.UseRouting();
+                program.UseCors();
+                program.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             }
         }
     }
