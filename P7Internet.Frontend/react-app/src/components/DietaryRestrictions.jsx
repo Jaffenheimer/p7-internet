@@ -7,7 +7,7 @@ const DietaryRestrictions = () => {
   const dispatch = useDispatch();
 
   const dietaryRestrictions = [
-    "Pesctarian",
+    "Pescetarian",
     "Vegan",
     "Vegetarian",
     "Lactosefree",
