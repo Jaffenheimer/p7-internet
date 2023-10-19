@@ -49,7 +49,7 @@ h2 {
   letter-spacing: 0.75px;
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
   color: rgba(0, 0, 0, 0.5);
   width: 30%;
   margin-right: 3%;
@@ -320,4 +320,49 @@ button:hover {
   bottom: 0;
   margin-bottom: 3%;
   margin-right: 3%;
+}
+
+a {
+  padding-left: 10px;
+}
+/* Full-width inputs */
+.LoginForm input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.LoginForm {
+  background-color: seashell;
+  border: 3px solid #f1f1f1;
+  height: 600px;
+  width: 400px;
+  margin:auto;
+}
+
+.LoginPage {
+  display: flex;
+  margin:auto
+}
+
+.LoginForm button {
+  width: 100%;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+img.avatar {
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+}
+
+.container {
+  padding: 16px;
 }

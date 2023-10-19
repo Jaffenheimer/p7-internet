@@ -2,6 +2,7 @@ import React from "react";
 import "./App.css";
 import axios from "axios";
 import FrontPage from "./pages/FrontPage";
+import LoginPage from "./pages/LoginPage";
 import FullRecipeView from "./pages/FullRecipeView";
 import { useSelector } from "react-redux";
 import Pages from "./objects/Pages";
@@ -18,7 +19,7 @@ export default function App() {
     return <RecipeSelection />;
   } else if (page === Pages.fullRecipeView) {
     return <FullRecipeView />;
+  } else if (page === Pages.loginPage) {
+    return <LoginPage />;
   }
 }
-
-//husk også at ændre i './components/index.jsx'
