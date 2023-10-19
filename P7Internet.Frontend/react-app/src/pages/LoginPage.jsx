@@ -4,6 +4,14 @@ import avatarIcon from "../data/img_avatar2.png";
 const LoginPage = () => {
   function submitAdd(event) {
     event.preventDefault()
+    /* 
+        const validUser = state.users.filter(
+        (user) => {
+            user.username === action.payload[0]
+            user.password === action.payload[1]
+        }
+    )
+    */
   }
   return (
     <div className='App'>
