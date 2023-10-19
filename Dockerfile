@@ -4,6 +4,7 @@ WORKDIR /src
 #Copy Files
 COPY ["P7Internet.Persistence/", "P7Internet.Persistence/"]
 COPY ["P7Internet.RestApi/", "P7Internet.RestApi/"]
+COPY ["P7Internet.SharedObjects/", "P7Internet.SharedObjects/"]
 
 # Persistence project
 WORKDIR /src/P7Internet.Persistence
