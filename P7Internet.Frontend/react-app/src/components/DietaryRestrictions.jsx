@@ -23,7 +23,7 @@ const DietaryRestrictions = () => {
   
   const handleChecked = (event) => {
     const name = event.target.name;
-    //Strips spacing from the text
+    //Strips whitespace
     const strippedValue = name.replace(/ +/g, "");
     //convert to lower case
     const loweredValue = strippedValue.toLowerCase();
