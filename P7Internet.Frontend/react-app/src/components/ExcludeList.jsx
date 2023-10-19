@@ -47,7 +47,7 @@ const ExcludeList = () => {
 
   return (
     <div id="ExcludeList">
-      <p id="ExcludeListText">Ekskluder ingredienser</p>
+      <h3 id="ExcludeListText">Ekskluder ingredienser</h3>
       <form id="ExcludeForm" onSubmit={submitAdd}>
         <input
           id="InputFieldExclude"

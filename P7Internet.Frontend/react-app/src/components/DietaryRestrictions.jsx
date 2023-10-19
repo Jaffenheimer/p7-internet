@@ -23,16 +23,16 @@ const DietaryRestrictions = () => {
   
   const handleChecked = (event) => {
     const name = event.target.name;
-    //Strips text of spaces and lowers the casing
+    //Strips whitespace
     const strippedValue = name.replace(/ +/g, "");
-    //Adds the text to all lower case
+    //convert to lower case
     const loweredValue = strippedValue.toLowerCase();
     dispatch(recipeGenerationActions.toggleDietaryRestrictions(loweredValue));
   };
 
   return (
     <div className="DietaryRestrictions">
-      <p id="DietaryRestrictionsText">Kostbegrænsninger</p>
+      <h3 id="DietaryRestrictionsText">Kostbegrænsninger</h3>
       <CheckBoxes
         id="DietaryRestrictionsCheckBoxes"
         options={dietaryRestrictions}
