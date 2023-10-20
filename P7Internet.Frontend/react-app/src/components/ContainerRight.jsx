@@ -18,9 +18,9 @@ const ContainerRight = () => {
         <div className="ContainerRightColumn">
           <NumberField />
         </div>
-        <div className="ContainerRightColumn">
+        {/* <div className="ContainerRightColumn">
           <ProfilePicture />
-        </div>
+        </div> */}
       </div>
       <div className="ContainerRightMiddle">
         <DietaryRestrictions />

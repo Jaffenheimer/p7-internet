@@ -1,23 +1,57 @@
-body > #root > div {
+/* body > #root {
   height: 100vh;
+} */
+
+html, body, .App {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
+
+.AppContainer{
+  height: 100%;
 }
 
 .App {
-  background: #f8ede3;
+  height: 100%;
+  width: 100%;
+  background: #FFF2D8;
   display: flex;
   flex-direction: row;
 }
 
 .App > .AppLeft {
+  /* display: block; */
   width: 75%;
   height: 100%;
-  margin-top: -22px;
+  /* display: flex; */
+  /*margin-top: -22px;*/
 }
 
-.App > .AppLeft > .ContainerUpper {
+
+.header {
+  padding-left: 10px;
+  padding-right: 10px;
+  height: 60px;
+  background-color: #BCA37F;
+  display: flex;
+  align-items: center;
+}
+
+
+.title{
+  text-align: center;
+  font-size: 40px;
+  font-family: Verdana;
+  flex: 1;
+}
+
+/* .App > .AppLeft > .ContainerUpper {
+  width: 100%;
   height: 100%;
   position: relative;
-}
+}  */
+
 
 .App > .AppLeft > .RecipeSelectionContainerLeft {
   padding: 10px;
@@ -26,23 +60,24 @@ body > #root > div {
 }
 
 .App > .AppRight {
-  background: #bdd2b6;
+  background: #EAD7BB;
   width: 25%;
   height: 100%;
 }
 
 h1 {
   font-family: Verdana;
-  display: block;
-  height: 65px;
+  /* display: block; */
+  /* height: 65px; */
+  font-size: xx-large;
   text-align: center;
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
 }
 
 h2 {
   color: #000;
   font-family: Verdana;
-  font-size: 35px;
+  font-size: x-large;
   font-style: normal;
   font-weight: 400;
   line-height: 16px; /* 45.714% */
@@ -86,11 +121,13 @@ img {
 button {
   width: 145px;
   height: 40px;
-  background-color: white;
+  /* background-color: white; */
+  background-color: #113946;
+  color: white;
   border: 2px solid black;
   border-radius: 5px; /* rounded corners */
-  border-color: #212120;
-  color: #000;
+  border-color: #113946;
+  /* color: #000; */
   cursor: pointer;
   text-align: center;
   font-family: Verdana;
@@ -111,11 +148,13 @@ button:hover {
 }
 
 #GenerateRecipeButton {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  margin-bottom: 3%;
-  margin-right: 3%;
+  padding: 20px;
+  padding-left: 30px;
+  /* position: absolute; */
+  /* right: 0;
+  bottom: 0; */
+  /* margin-bottom: 3%;
+  margin-right: 3%; */
 }
 
 .RecipeView > #RecipeTitleDiv > h1 {
@@ -136,11 +175,20 @@ button:hover {
   transform: scale(2);
 }
 
-.ProfilePicture > img {
+/* .ProfilePicture > img {
+  vertical-align: middle;
+  margin: 0 auto;
   transform: scale(2.5);
   margin-top: 10%;
   float: right;
   margin-right: 15%;
+} */
+
+.Profile{
+  width: 40px;
+  height: 40px;
+  flex: 1;
+  text-align: center;
 }
 
 .NumberField {
@@ -237,7 +285,8 @@ button:hover {
   padding: 0;
   border: 1px solid grey;
   width: 150px;
-  transform: translateY(40px);
+  transform: translateY(-5px);
+  transform: translateX(-105px);
 }
 
 .menu > li {

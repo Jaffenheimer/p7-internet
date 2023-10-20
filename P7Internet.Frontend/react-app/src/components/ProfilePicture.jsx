@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import profile from "../data/profile.svg";
+import "../App.css";
 
 const ProfilePicture = () => {
   const [open, setOpen] = useState(false);
@@ -18,7 +19,7 @@ const ProfilePicture = () => {
 
   return (
     <div className="ProfilePicture">
-      <img src={profile} alt="ProfilePicture" onClick={profileClick} />
+      <img className="Profile" src={profile} alt="ProfilePicture" onClick={profileClick} />
       {open ? (
         <ul className="menu">
           <li className="menu-item">
