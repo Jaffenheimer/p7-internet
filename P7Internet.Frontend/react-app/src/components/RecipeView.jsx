@@ -4,6 +4,7 @@ import RecipeTitle from "./RecipeTitle";
 import IngredientsList from "./IngredientsList";
 import { useDispatch, useSelector } from "react-redux";
 import { recipeActions } from "../features/recipeSlice";
+import RecipeIngredientElement from "./RecipeIngredientElement";
 
 const RecipeView = () => {
   const dispatch = useDispatch();
@@ -59,8 +60,11 @@ const RecipeView = () => {
   }, []);
   return (
     <div className="RecipeView">
-      <RecipeTitle title={recipes[tab].title}/>
-      <IngredientsList ingredients={recipes[tab].ingredients} />
+      <RecipeTitle title={recipes[tab].title} />
+      <IngredientsList
+        ingredients={recipes[tab].ingredients}
+        ListElement={RecipeIngredientElement}
+      />
     </div>
   );
 };
