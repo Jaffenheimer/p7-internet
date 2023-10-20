@@ -18,7 +18,7 @@
         "web-vitals": "^2.1.4"
     },
     "scripts": {
-        "start": "react-scripts start",
+        "start": "react-scripts --openssl-legacy-provider start",
         "build": "react-scripts build",
         "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!my-library-dir)/'",
         "eject": "react-scripts eject"
