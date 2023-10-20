@@ -59,7 +59,7 @@ const RecipeView = () => {
   }, []);
   return (
     <div className="RecipeView">
-      <RecipeTitle title={recipes[tab].title} />
+      <RecipeTitle title={recipes[tab].title}/>
       <IngredientsList ingredients={recipes[tab].ingredients} />
     </div>
   );

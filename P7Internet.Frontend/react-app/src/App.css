@@ -14,22 +14,12 @@ body > #root > div {
   margin-top: -22px;
 }
 
-.App > h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin-left: 10px;
-}
-
 .App > .AppLeft > .ContainerUpper {
-  height: 40%;
-  border-bottom: 2px solid black;
-  flex-direction: column;
+  height: 100%;
+  position: relative;
 }
 
-.App > .AppLeft > .ContainerLower {
+.App > .AppLeft > .RecipeSelectionContainerLeft {
   padding: 10px;
   height: 60%;
   background: #f8ede3;
@@ -57,6 +47,10 @@ h2 {
   font-weight: 400;
   line-height: 16px; /* 45.714% */
   letter-spacing: 0.75px;
+}
+
+h3 {
+  /*choose styling here for preference titles*/
 }
 
 input[type="text"] {
@@ -111,6 +105,19 @@ button:hover {
   background: #e7e7e7;
 }
 
+#IngredientsBody {
+  margin-left: 2%;
+  margin-top: 10%;
+}
+
+#GenerateRecipeButton {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-bottom: 3%;
+  margin-right: 3%;
+}
+
 .RecipeView > #RecipeTitleDiv > h1 {
   text-align: left;
 }
@@ -142,11 +149,11 @@ button:hover {
   justify-content: center;
   margin-top: 10%;
 }
+
 #NumberFieldToast {
   transform: scale(0.7);
   text-align: center;
   justify-content: center;
-  
 }
 #InputNumberField {
   width: 30px;
@@ -155,6 +162,7 @@ button:hover {
   display: inline-block;
   font-size: small;
   text-align: center;
+  appearance: textfield;
   /*Hides arrows on input field number Firefox*/
   -moz-appearance: textfield;
 }
@@ -181,8 +189,7 @@ button:hover {
   font-size: small;
 }
 
-#NumberPersons {
-  font-size: xx-large;
+.numberPersonsText{
   margin-top: 0%;
   padding: 0%;
   margin-left: 10%;
@@ -203,7 +210,6 @@ button:hover {
 }
 
 #DietaryRestrictions {
-  font-size: xx-large;
   text-align: left;
   margin-left: 2.5%;
 }
@@ -276,7 +282,6 @@ button:hover {
 }
 
 #ExcludeListText {
-  font-size: xx-large;
   text-align: left;
   margin-left: 2.5%;
   margin-top: 12%;
@@ -300,4 +305,21 @@ button:hover {
   float: right;
   margin-top: 25px;
   margin-right: 25px;
+}
+
+.App > .RecipeSelectionContainerLeft {
+  flex: 1;
+  position: relative;
+}
+
+.RecipeView {
+  margin-left: 2%;
+}
+
+#selectRecipeButton {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-bottom: 3%;
+  margin-right: 3%;
 }

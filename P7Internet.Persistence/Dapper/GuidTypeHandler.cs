@@ -13,10 +13,6 @@ public class GuidTypeHandler : SqlMapper.TypeHandler<Guid>
 
     public override Guid Parse(object value)
     {
-        // Dapper may pass a Guid instead of a string
-        if (value is Guid) return (Guid)value;
-        if (Guid.TryParse((string)value, out var guid)) return guid;
-
-        return Guid.Empty;
+        return new Guid((string)value);
     }
 }

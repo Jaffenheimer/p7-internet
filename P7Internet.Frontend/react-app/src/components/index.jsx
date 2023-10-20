@@ -5,7 +5,7 @@ export { default as OwnedIngredientsList } from "./OwnedIngredientsList";
 export { default as RecipeTitle } from "./RecipeTitle";
 export { default as SearchBar } from "./SearchBar";
 export { default as ContainerUpper } from "./ContainerUpper";
-export { default as ContainerLower } from "./ContainerLower";
+export { default as RecipeSelectionContainerLeft } from "./RecipeSelectionContainerLeft";
 export { default as ContainerRight } from "./ContainerRight";
 export { default as GenerateRecipeButton } from "./GenerateRecipeButton";
 export { default as ProfilePicture } from "./ProfilePicture";
@@ -17,6 +17,7 @@ export { default as ExcludeList } from "./ExcludeList";
 //pages
 export { default as FullRecipeView } from "../pages/FullRecipeView";
 export { default as FrontPage } from "../pages/FrontPage";
+export { default as RecipeSelection } from "../pages/RecipeSelection";
 
 //objects
 export { default as Recipe } from "../objects/Recipe";
