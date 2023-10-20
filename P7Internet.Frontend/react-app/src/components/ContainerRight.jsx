@@ -11,7 +11,7 @@ import { pageActions } from "../features/pageSlice";
 
 
 const ContainerRight = () => {
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false) // CHANGE IMPLEMENTATION TO USING REDUX
   const dispatch = useDispatch();
 
   function goToLoginPage() {
