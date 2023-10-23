@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const LoginPage = () => {
     }
     // skal der håndteres hvis validUser.length > 1?
     else{
-        alert("Kodeordet eller brugernavnet er indtastet forkert") //substitute alert med toast.error, når toast fungerer
+			  toast.error("Kodeordet eller brugernavnet er indtastet forkert")
         setUsername('')
         setPassword('')
     }
@@ -54,10 +54,9 @@ const LoginPage = () => {
   function handleCreateAccount(){
     const existsUser = users.filter( user => user.username === username )
 
-    //Substitute linjerne med alert til toast.error, når toast virker
-    if(existsUser.length > 0)                   alert("Brugernavnet er allerede taget.") 
-    else if (checkValidUsername() === false)	 	alert("Brugernavnet er invalid, da det kun må bestå af bogstaver og tal.")
-    else if (checkValidPassword() === false)		alert("Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 characters langt uden brug af specielle characters.")
+    if(existsUser.length > 0)                   toast.error("Brugernavnet er allerede taget.") 
+    else if (checkValidUsername() === false)	 	toast.error("Brugernavnet er invalid, da det kun må bestå af bogstaver og tal.")
+    else if (checkValidPassword() === false)		toast.error("Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 characters langt uden brug af specielle characters.")
     
     else{
         dispatch(userActions.addUser([username, password, []]))
@@ -65,7 +64,7 @@ const LoginPage = () => {
         document.getElementById("checkbox").checked = false
         setUsername('')
         setPassword('')
-        alert("Din bruger er nu tilføjet til databasen!") //substitute alert med toast.error, når toast fungerer
+        toast.error("Din bruger er nu tilføjet til databasen!")
     }
   }
 
@@ -83,6 +82,9 @@ const LoginPage = () => {
   return (
     <div className='App'>
         <div className='LoginPage'>
+					<div>
+        		<Toaster />
+      		</div>
             <form className='LoginForm' onSubmit={handleSubmit}>
 							<img src={leftArrow} alt="Back Arrow" id='backarrow' onClick={handleBackArrow}/>
                 <div className='imgcontainer'>
