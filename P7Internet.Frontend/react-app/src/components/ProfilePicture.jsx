@@ -11,7 +11,7 @@ const ProfilePicture = () => {
     setOpen(!open);
   }
 
-  const handleFavourites = () => {
+  const handleFavorites = () => {
     setOpen(false);
   };
 
@@ -30,7 +30,7 @@ const ProfilePicture = () => {
       {open ? (
         <ul className="menu">
           <li className="menu-item">
-            <button onClick={handleFavourites}>Favoritter</button>
+            <button onClick={handleFavorites}>Favoritter</button>
           </li>
           <li className="menu-item">
             <button onClick={handleSettings}>Indstillinger</button>

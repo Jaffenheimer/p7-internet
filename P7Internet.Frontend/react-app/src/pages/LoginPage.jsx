@@ -20,13 +20,13 @@ const LoginPage = () => {
   const handleChangeCheckbox = ()      => setCreatingAccount(!creatingAccount);
 
   function handleLogin(){
+		//validUser finds users on Redux matches the username and password typed. 
     const validUser = users.filter( user => user.username === username && user.password === password)
     
     if(validUser.length === 1){
         dispatch(userActions.loginUser(validUser)) //the user is now logged in on redux
         dispatch(pageActions.goToPage(Pages.frontPage)) //goto start page again
     }
-    // skal der håndteres hvis validUser.length > 1?
     else{
 			  toast.error("Kodeordet eller brugernavnet er indtastet forkert")
         setUsername('')
@@ -57,8 +57,8 @@ const LoginPage = () => {
     const existsUser = users.filter( user => user.username === username )
 
     if(existsUser.length > 0)                   toast.error("Brugernavnet er allerede taget.") 
-    else if (checkValidUsername() === false)	 	toast.error("Brugernavnet er invalid, da det kun må bestå af bogstaver og tal.")
-    else if (checkValidPassword() === false)		toast.error("Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 characters langt uden brug af specielle characters.")
+    else if (checkValidUsername() === false)	 	toast.error("Brugernavnet er ugyldigt, da det kun må bestå af bogstaver og tal.")
+    else if (checkValidPassword() === false)		toast.error("Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn.")
     
     else{
         dispatch(userActions.addUser([username, password, []]))
@@ -66,7 +66,8 @@ const LoginPage = () => {
         document.getElementById("checkbox").checked = false
         setUsername('')
         setPassword('')
-        toast.error("Din bruger er nu tilføjet til databasen!")
+        toast.success("Din bruger er nu tilføjet til databasen!")
+        toast.success("Indsæt nu dine oplysninger for at logge ind.")
     }
   }
 
@@ -91,7 +92,7 @@ const LoginPage = () => {
 							<img src={leftArrow} alt="Back Arrow" id='backarrow' onClick={handleBackArrow}/>
                 <div className='imgcontainer'>
                     <img src={avatarIcon} alt='Avatar' className='avatar'/>
-                    <h3> Login/Tilføj Bruger
+                    <h3> Login/Opret Bruger
                         <label className="switch">
                             <input type="checkbox" id="checkbox" value={creatingAccount} onChange={handleChangeCheckbox}/>
                             <span className="slider round"/>
