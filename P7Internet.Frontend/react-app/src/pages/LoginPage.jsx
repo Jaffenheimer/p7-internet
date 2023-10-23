@@ -34,6 +34,7 @@ const LoginPage = () => {
     }
   }
 
+  //THE USERNAME VALIDATION SHOULD HAPPEN IN THE BACKEND
   //username: allowed characters are integers and upper/lowercase letters
   function checkValidUsername(){
 		const usernameRegex = /^[a-zA-Z0-9]+$/; 
@@ -41,7 +42,8 @@ const LoginPage = () => {
 		if (isValidUsername === null)		return false
     else														return true
   }
-  
+
+	//THE PASSWORD VALIDATION SHOULD HAPPEN IN THE BACKEND
 	//password: allowed characters are at least 1 numeric degit, one uppercase, one lowercase
 	//and between 6 to 20 characters, excluding special characters.
   function checkValidPassword(){
