@@ -3,7 +3,7 @@
 //components
 export { default as OwnedIngredientsList } from "./OwnedIngredientsList";
 export { default as RecipeTitle } from "./RecipeTitle";
-export { default as SearchBar } from "./SearchBar";
+export { default as AddIngredientsForm } from "./AddIngredientsForm";
 export { default as ContainerUpper } from "./ContainerUpper";
 export { default as RecipeSelectionContainerLeft } from "./RecipeSelectionContainerLeft";
 export { default as ContainerRight } from "./ContainerRight";

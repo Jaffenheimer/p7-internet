@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { useDispatch, useSelector } from "react-redux";
+import AddButton from "./AddButton";
+import RemoveAllButton from "./RemoveAllButton";
+import AddIngredientInput from "./AddIngredientInput";
 
-const SearchBar = () => {
+const AddIngredientsForm = ({ingredientsList, addIngredient, removeAllHandler}) => {
   const dispatch = useDispatch();
   const [ingredient, setIngredient] = useState('');
-  const ownedIngredientsList = useSelector(state => state.recipeGeneration.ownedIngredients);
+  //const ownedIngredientsList = useSelector(state => state.recipeGeneration.ownedIngredients);
   const [addButtonIsDisabled, setAddButtonDisabled] = useState(true);
   const [removeAllButtonIsDisabled, setRemoveAllButtonDisabled] = useState(true);
 
-  console.log(ingredient)
+  useEffect(() => {
+    handleRemoveAllButtonDisabling();
+  }, [ingredientsList]);
 
   useEffect(() => {
-    handleRemoveAllButtonDisabling();}
-    , []);
+    handleAddButtonDisabling(ingredient);
+  }, [ingredient]);
 
   const handleChange = (event) => {
     setIngredient(event.target.value);
-    handleAddButtonDisabling(event.target.value);
   };
 
   const handleSubmit = (event) => {
@@ -27,25 +31,21 @@ const SearchBar = () => {
 
       // receives the ingredient text (aka. name) from dict on store in format
       // {0:{id: '', text: ''}, 1:{id: '', text: ''}}¨
-      var ownedDictionary = Object.values(ownedIngredientsList);
-      var ownedIngredientText = [];
+      var ingredientsDictionary = Object.values(ingredientsList);
+      var ingredientText = [];
 
-      ownedDictionary.forEach((ownedIngredient) =>
-        ownedIngredientText.push(ownedIngredient["text"])
+      ingredientsDictionary.forEach((ingredient) =>
+      ingredientText.push(ingredient["text"])
       );
 
+      console.log("what",handleChange)
       // only adds to ownedIngredient if non-dublicate
-      if (!ownedIngredientText.includes(ingredient))
-        dispatch(recipeGenerationActions.addOwnedIngredients(ingredient));
+      if (!ingredientText.includes(ingredient))
+        dispatch(addIngredient(ingredient));
       else alert(`Elementet "${ingredient}" er allerede tilføjet til listen!`);
     }
     setIngredient("");
-    handleRemoveAllButtonDisabling();
   };
-
-  function submitRemoveAll() {
-    dispatch(recipeGenerationActions.clearAllOwnedIngredients());
-  }
 
   //add button is disabled if input is empty, else enabled
   const handleAddButtonDisabling = (value) => {
@@ -58,28 +58,19 @@ const SearchBar = () => {
   //remove all button is disabled if there are no ingredients to remove, else enabled
   const handleRemoveAllButtonDisabling = () => {
     //console.log(ownedIngredientsList)
-    if (ownedIngredientsList.length === 0)
+    if (ingredientsList.length === 0)
       setRemoveAllButtonDisabled(true)
     else
       setRemoveAllButtonDisabled(false)
   }
     
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="ingredient"
-        value={ingredient}
-        onChange={handleChange}
-        placeholder="Tilføj en ingrediens..."
-      />
-      <button type="submit" disabled={addButtonIsDisabled} >Tilføj</button>
-      <button id="RemoveAllExcludeIngredientsButton" disabled={removeAllButtonIsDisabled}
-      onClick={submitRemoveAll}>
-        Fjern alle
-      </button>
-    </form>
+      <form onSubmit={handleSubmit}>
+        <AddIngredientInput ingredient={ingredient} handleChange={handleChange} placeholder="Tilføj en ingrediens..." />
+        <AddButton type="submit" isDisabled={addButtonIsDisabled} className="AddIngredientButton" />
+        <RemoveAllButton handleClick={removeAllHandler} isDisabled={removeAllButtonIsDisabled} />
+      </form>
   );
 };
 
-export default SearchBar;
+export default AddIngredientsForm;

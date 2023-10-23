@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import cross from "../data/cross.svg";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import IngredientsList from "./IngredientsList";
 import IngredientElement from "./IngredientElement";
+import AddIngredientsForm from "./AddIngredientsForm";
 
 const ExcludeList = () => {
   const [ingredient, setIngredient] = useState("");
@@ -54,34 +54,21 @@ const ExcludeList = () => {
   };
 
   //function for removing all elements from state
-  function submitRemoveAll() {
+  function removeAllHandler() {
     dispatch(recipeGenerationActions.clearAllExcludedIngredients());
   }
 
   return (
     <div id="ExcludeList">
-      <h3 id="ExcludeListText">Ekskluder ingredienser</h3>
-      <form id="ExcludeForm" onSubmit={submitAdd}>
-        <input
-          id="InputFieldExclude"
-          type="text"
-          placeholder="Ekskluder ingrediens"
-          name="ingredient"
-          value={ingredient}
-          onChange={(event) => setIngredient(event.target.value)}
-        />
-        <button type="submit">Tilføj</button>
-        <div id="ExcludedIngredientsList">
+      <h3 id="ExcludeListText">Ekskluder ingredienser:</h3>
+      <AddIngredientsForm addIngredient={recipeGenerationActions.addExcludedIngredient} ingredientsList={excludeList} removeAllHandler={removeAllHandler}/>
+      <div id="ExcludedIngredientsList">
           <IngredientsList
             ingredients={excludeList}
             ListElement={IngredientElement}
             handleRemove={handleRemove}
           />
         </div>
-      </form>
-      <button id="RemoveAllExcludeIngredientsButton" onClick={submitRemoveAll}>
-        Fjern alle
-      </button>
     </div>
   );
 };
