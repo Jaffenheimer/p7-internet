@@ -20,9 +20,7 @@ const LoginPage = () => {
   const handleChangeCheckbox = ()      => setCreatingAccount(!creatingAccount);
 
   function handleLogin(){
-    const validUser = users.filter(
-        (user) => user.username === username && user.password === password
-    )
+    const validUser = users.filter( user => user.username === username && user.password === password)
     
     if(validUser.length === 1){
         dispatch(userActions.loginUser(validUser)) //the user is now logged in on redux
@@ -58,7 +56,7 @@ const LoginPage = () => {
 
     //Substitute linjerne med alert til toast.error, når toast virker
     if(existsUser.length > 0)                   alert("Brugernavnet er allerede taget.") 
-    else if (checkValidUsername() === false)	 	alert("Brugernavnet er invalid.")
+    else if (checkValidUsername() === false)	 	alert("Brugernavnet er invalid, da det kun må bestå af bogstaver og tal.")
     else if (checkValidPassword() === false)		alert("Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 characters langt uden brug af specielle characters.")
     
     else{

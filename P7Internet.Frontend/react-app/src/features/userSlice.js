@@ -26,7 +26,10 @@ export const userSlice = createSlice({
         },
         loginUser(state, action) {
             state.loggedInUser = action.payload
-        }
+        },
+				logoutUser(state) {
+						state.loggedInUser = {}
+				}
     },
 });
 

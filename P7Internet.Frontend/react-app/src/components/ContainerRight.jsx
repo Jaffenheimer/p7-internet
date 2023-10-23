@@ -8,15 +8,21 @@ import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 
-
 const ContainerRight = () => {
 	const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
-  const [loggedIn, setLoggedIn] = useState(loggedInUser.length === 1)
+  const [loggedIn, setLoggedIn] = useState(false)
 
   function goToLoginPage() {
     dispatch(pageActions.goToPage(Pages.loginPage));
   }
+
+	function SetLoggedInOnChange(){ //component that dynamically changes when log in status changes
+		if (loggedInUser.length === 1)
+		  setLoggedIn(true)
+		else
+			setLoggedIn(false)
+	}
 
   return (
     <div className="ContainerRight">
@@ -31,6 +37,7 @@ const ContainerRight = () => {
           <NumberField />
         </div>
         <div className="ContainerRightColumn">
+					<SetLoggedInOnChange/>
           {loggedIn ? <ProfilePicture /> : <button onClick={goToLoginPage}>Log In</button>}
         </div>
       </div>
