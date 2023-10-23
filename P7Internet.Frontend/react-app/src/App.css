@@ -53,6 +53,33 @@ h3 {
   /*choose styling here for preference titles*/
 }
 
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.IngredientElement {
+  margin: 10px;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#OwnedIngredientsList > div > ul > .IngredientElement {
+  width: 60%;
+}
+
+#ExcludedIngredientsList > .ingredientsList > ul > .IngredientElement {
+  width: 70%;
+}
+
+.RemoveIngredientImage {
+  float: right;
+}
+
 input[type="text"] {
   color: rgba(0, 0, 0, 0.5);
   width: 30%;
@@ -116,6 +143,14 @@ button:hover {
 #IngredientsBody {
   margin-left: 2%;
   margin-top: 10%;
+}
+
+.excludedIngredientListItems {
+  width: 90%;
+}
+
+.ownedIngredientListItems {
+  width: 40%;
 }
 
 #GenerateRecipeButton {

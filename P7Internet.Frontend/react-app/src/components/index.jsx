@@ -13,6 +13,8 @@ export { default as NumberField } from "./NumberField";
 export { default as RecipeView } from "./RecipeView";
 export { default as DietaryRestrictions } from "./DietaryRestrictions";
 export { default as ExcludeList } from "./ExcludeList";
+export { default as RecipeIngredientElement } from "./RecipeIngredientElement";
+export { default as IngredientsList } from "./IngredientsList";
 
 //pages
 export { default as FullRecipeView } from "../pages/FullRecipeView";
