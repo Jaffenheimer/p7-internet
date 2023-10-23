@@ -145,6 +145,7 @@ button:hover {
   justify-content: center;
   margin-top: 10%;
 }
+
 #NumberFieldToast {
   transform: scale(0.7);
   text-align: center;
@@ -184,8 +185,7 @@ button:hover {
   font-size: small;
 }
 
-#NumberPersons {
-  font-size: xx-large;
+.numberPersonsText{
   margin-top: 0%;
   padding: 0%;
   margin-left: 10%;
@@ -206,7 +206,6 @@ button:hover {
 }
 
 #DietaryRestrictions {
-  font-size: xx-large;
   text-align: left;
   margin-left: 2.5%;
 }
@@ -279,7 +278,6 @@ button:hover {
 }
 
 #ExcludeListText {
-  font-size: xx-large;
   text-align: left;
   margin-left: 2.5%;
   margin-top: 12%;

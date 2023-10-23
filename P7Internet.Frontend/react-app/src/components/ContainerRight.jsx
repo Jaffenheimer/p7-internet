@@ -31,7 +31,7 @@ const ContainerRight = () => {
       </div>
       <div className="ContainerRightTop">
         <div className="ContainerRightColumn">
-          <p id="NumberPersons">Personer</p>
+          <h3 id="NumberPersonsText">Personer</h3>
         </div>
         <div className="ContainerRightColumn">
           <NumberField />
