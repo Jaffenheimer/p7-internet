@@ -29,10 +29,8 @@ const StoreSelection = () => {
   }, [values]);
 
   const handleChange = (event, actionMeta) => {
-    console.log(actionMeta);
     //action is the type of action, option is the selected option, removedValue is the removed value
     const { action, option, removedValue } = actionMeta;
-    console.log(option);
     //removing a store
     if (action === "remove-value") {
       const removedValueOption = {
@@ -75,6 +73,7 @@ const StoreSelection = () => {
       <h3 id="StoreSelectionText">Mulige Butikker:</h3>
       <Select
         closeMenuOnSelect={false}
+        // makes it possible to select multiple options
         isMulti
         id="storesSelect"
         options={options}
