@@ -1,20 +1,19 @@
 import React, { useState } from 'react'
-import avatarIcon from "../data/img_avatar2.png";
+import avatarIcon from "../data/profile.svg";
+import leftArrow from "../data/leftArrow.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
 import toast from 'react-hot-toast';
 
-//HUSK AT TILFØJE PROFILE ICON TILBAGE NÅR LOGGED IN CONTAINERRIGHT
-
 const LoginPage = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.users);
 
-  const [creatingAccount, setCreatingAccount] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [creatingAccount, setCreatingAccount] = useState(false)
 
   const handleChangeUsername = (event) => setUsername(event.target.value);
   const handleChangePassword = (event) => setPassword(event.target.value);
@@ -36,24 +35,31 @@ const LoginPage = () => {
         setPassword('')
     }
   }
-  
+
+  //username: allowed characters are integers and upper/lowercase letters
   function checkValidUsername(){
-    return true
+		const usernameRegex = /^[a-zA-Z0-9]+$/; 
+		const isValidUsername = usernameRegex.exec(username);
+		if (isValidUsername === null)		return false
+    else														return true
   }
   
+	//password: allowed characters are at least 1 numeric degit, one uppercase, one lowercase
+	//and between 6 to 20 characters, excluding special characters.
   function checkValidPassword(){
-    return true
+		const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/ //
+		const isValidPassword = passwordRegex.exec(password)
+		if (isValidPassword === null)		return false
+		else														return true
   }
 
   function handleCreateAccount(){
-    const existsUser = users.filter(
-        (user) => user.username === username
-    )
-    
+    const existsUser = users.filter( user => user.username === username )
+
     //Substitute linjerne med alert til toast.error, når toast virker
     if(existsUser.length > 0)                   alert("Brugernavnet er allerede taget.") 
-    else if (checkValidUsername() == false)     alert("Brugernavnet er invalid.")
-    else if (checkValidPassword() == false)     alert("Kodeordet er invalid.")
+    else if (checkValidUsername() === false)	 	alert("Brugernavnet er invalid.")
+    else if (checkValidPassword() === false)		alert("Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 characters langt uden brug af specielle characters.")
     
     else{
         dispatch(userActions.addUser([username, password, []]))
@@ -71,10 +77,16 @@ const LoginPage = () => {
     else                    handleCreateAccount()
   }
 
+	function handleBackArrow(event) {
+		event.preventDefault()
+		dispatch(pageActions.goToPage(Pages.frontPage)) //goto start page again
+	}
+
   return (
     <div className='App'>
         <div className='LoginPage'>
             <form className='LoginForm' onSubmit={handleSubmit}>
+							<img src={leftArrow} alt="Back Arrow" id='backarrow' onClick={handleBackArrow}/>
                 <div className='imgcontainer'>
                     <img src={avatarIcon} alt='Avatar' className='avatar'/>
                     <h3> Login/Tilføj Bruger

@@ -25,8 +25,7 @@ export const userSlice = createSlice({
             );
         },
         loginUser(state, action) {
-            state.loggedInUser = {id: action.payload[0], username: action.payload[1],
-                                  password: action.payload[2], heartedRecipes: action.payload[3]}
+            state.loggedInUser = action.payload
         }
     },
 });

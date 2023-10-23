@@ -5,14 +5,14 @@ import NumberField from "./NumberField";
 import DietaryRestrictions from "./DietaryRestrictions";
 import ExcludeList from "./ExcludeList";
 import { Toaster } from "react-hot-toast";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 
 
-
 const ContainerRight = () => {
-  const [loggedIn, setLoggedIn] = useState(false) // CHANGE IMPLEMENTATION TO USING REDUX
-  const dispatch = useDispatch();
+	const dispatch = useDispatch();
+  const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  const [loggedIn, setLoggedIn] = useState(loggedInUser.length === 1)
 
   function goToLoginPage() {
     dispatch(pageActions.goToPage(Pages.loginPage));

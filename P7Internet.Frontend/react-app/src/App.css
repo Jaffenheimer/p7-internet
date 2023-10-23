@@ -322,10 +322,14 @@ button:hover {
   margin-right: 3%;
 }
 
-a {
-  padding-left: 10px;
+/* Login */
+.LoginForm {
+	background-color: white;
+	height: 600px;
+	width: 400px;
+	margin:auto;
 }
-/* Full-width inputs */
+
 .LoginForm input[type=text], input[type=password] {
   width: 100%;
   padding: 12px 20px;
@@ -335,17 +339,18 @@ a {
   box-sizing: border-box;
 }
 
-.LoginForm {
-  background-color: seashell;
-  border: 3px solid #f1f1f1;
-  height: 600px;
-  width: 400px;
-  margin:auto;
+#backarrow {
+	padding: 3%;
+	transform: scale(1.5);
+}
+
+a {
+  padding-left: 10px;
 }
 
 .LoginPage {
   display: flex;
-  margin:auto
+  margin: auto
 }
 
 .LoginForm button {
@@ -361,6 +366,10 @@ img.avatar {
   width: 50%;
   height: 50%;
   border-radius: 50%;
+}
+
+img.avatar:hover{
+	cursor:default
 }
 
 .container {
