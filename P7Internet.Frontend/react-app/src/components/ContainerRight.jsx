@@ -7,6 +7,8 @@ import ExcludeList from "./ExcludeList";
 import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
+import Allergens from "./Allergens";
+
 
 const ContainerRight = () => {
 	const dispatch = useDispatch();
@@ -43,6 +45,7 @@ const ContainerRight = () => {
       </div>
       <div className="ContainerRightMiddle">
         <DietaryRestrictions />
+        <Allergens />
       </div>
       <div className="ContainerRightBottom">
         <ExcludeList />

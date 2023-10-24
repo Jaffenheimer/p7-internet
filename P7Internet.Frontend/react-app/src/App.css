@@ -215,13 +215,6 @@ button:hover {
   font-size: x-large;
 }
 
-.DietaryRestrictionsCheckboxSize {
-  transform: scale(1.5);
-  margin-right: 5%;
-  margin-left: 5%;
-  margin-top: 5%;
-}
-
 .dropdown {
   position: relative;
 }

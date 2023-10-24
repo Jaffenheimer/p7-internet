@@ -1,44 +1,31 @@
-import React, { useState } from "react";
+import React from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { useDispatch } from "react-redux";
-import CheckBoxes from "./CheckBoxes";
+import Select from "react-select";
 
 const DietaryRestrictions = () => {
   const dispatch = useDispatch();
 
-  const dietaryRestrictions = [
-    "Pescetarian",
-    "Vegan",
-    "Vegetarian",
-    "Lactosefree",
-    "Glutenfree",
+  const options = [
+    { value: "Pescetarian", label: "Pescetar" },
+    { value: "Vegan", label: "Veganer" },
+    { value: "Vegetarian", label: "Vegetar" },
+    { value: "", label: "Ingen" },
   ];
-  const dietaryRestrictionsTranslated = [
-    "Pescetar",
-    "Veganer",
-    "Vegetar",
-    "Laktosefri",
-    "Glutenfri",
-  ];
-  
+
   const handleChecked = (event) => {
-    const name = event.target.name;
-    //Strips whitespace
-    const strippedValue = name.replace(/ +/g, "");
-    //convert to lower case
-    const loweredValue = strippedValue.toLowerCase();
-    dispatch(recipeGenerationActions.toggleDietaryRestrictions(loweredValue));
+    dispatch(recipeGenerationActions.setDietaryRestrictions(event.value));
   };
 
   return (
     <div className="DietaryRestrictions">
       <h3 id="DietaryRestrictionsText">Kostbegrænsninger</h3>
-      <CheckBoxes
-        id="DietaryRestrictionsCheckBoxes"
-        options={dietaryRestrictions}
-        optionsView={dietaryRestrictionsTranslated}
-        handleChecked={handleChecked}
-      ></CheckBoxes>
+      <Select
+        id="DietaryRestrictionsSelect"
+        options={options}
+        defaultValue={{ value: "", label: "Ingen" }}
+        onChange={handleChecked}
+      />
     </div>
   );
 };

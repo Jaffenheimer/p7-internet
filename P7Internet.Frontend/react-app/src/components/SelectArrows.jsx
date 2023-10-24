@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import leftArrow from "../data/leftArrow.svg";
 import rightArrow from "../data/rightArrow.svg";
 import { useDispatch, useSelector } from "react-redux";
