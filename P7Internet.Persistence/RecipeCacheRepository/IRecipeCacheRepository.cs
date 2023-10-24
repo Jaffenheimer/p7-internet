@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -7,4 +8,5 @@ public interface IRecipeCacheRepository
 {
     public Task<List<string>> GetAllRecipes();
     public Task<bool> Upsert(string recipe);
+    public Task<List<string>> GetListOfRecipes(List<Guid> ids);
 }

@@ -1,0 +1,12 @@
+START TRANSACTION;
+
+CREATE TABLE IF NOT EXISTS FavouriteRecipesTable
+(
+    No       INT         NOT NULL AUTO_INCREMENT,
+    UserId   VARCHAR(40) NOT NULL,
+    RecipeId VARCHAR(40) NOT NULL,
+    PRIMARY KEY (No)
+);
+
+COMMIT;
+    

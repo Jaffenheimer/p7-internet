@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using P7Internet.Persistence.FavouriteRecipeRepository;
 using P7Internet.Persistence.RecipeCacheRepository;
 using P7Internet.Persistence.UserRepository;
 using P7Internet.Requests;
@@ -17,14 +18,16 @@ public class PublicControllerV1 : ControllerBase
 {
     private readonly IUserRepository _userRepository;
     private readonly IRecipeCacheRepository _cachedRecipeRepository;
+    private readonly IFavouriteRecipeRepository _favouriteRecipeRepository;
     private readonly OpenAiService _openAiService;
     private readonly ETilbudsAvisService _eTilbudsAvisService;
 
-    public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService, IRecipeCacheRepository cachedRecipeRepository)
+    public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService, IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
         _cachedRecipeRepository = cachedRecipeRepository;
+        _favouriteRecipeRepository = favouriteRecipeRepository;
         _eTilbudsAvisService = new ETilbudsAvisService();
     }
     #region Recipe Endpoints
@@ -75,8 +78,7 @@ public class PublicControllerV1 : ControllerBase
     #endregion
 
     #region User Endpoints
-    [HttpPost]
-    [Route("user/create-user")]
+    [HttpPost("user/create-user")]
     public async Task<IActionResult> CreateUser([FromQuery] CreateUserRequest req)
     { 
         
@@ -88,8 +90,7 @@ public class PublicControllerV1 : ControllerBase
         return Ok(response);
     }
     
-    [HttpPost]
-    [Route("user/login")]
+    [HttpPost("user/login")]
     public async Task<IActionResult> Login([FromQuery] LogInRequest req)
     {
         var result = await _userRepository.LogIn(req.Username, req.Password);
@@ -101,6 +102,29 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("Username or password is incorrect please try again");
     }
+    [HttpPost("user/add-favourite-recipe")]
+    public async Task<IActionResult> AddFavouriteRecipe([FromQuery] AddFavouriteRecipeRequest req)
+    {
+        var result = await _favouriteRecipeRepository.Upsert(req.UserId, req.RecipeId);
+        if (result)
+        {
+            return Ok("Recipe added to favourites");
+        }
+
+        return BadRequest("Something went wrong");
+    }
+    [HttpGet("user/get-favourite-recipes")]
+    public async Task<IActionResult> GetFavouriteRecipes([FromQuery] GetFavouriteRecipesRequest req)
+    {
+        var result = await _favouriteRecipeRepository.Get(req.UserId);
+        if (result != null)
+        {
+            return Ok(result);
+        }
+
+        return BadRequest("Something went wrong");
+    }
+    
     #endregion
 
     #region Utility functions

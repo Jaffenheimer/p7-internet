@@ -4,13 +4,13 @@ using System.Data;
 using System.Threading.Tasks;
 using Dapper;
 using P7Internet.Persistence.Connection;
+using SharedObjects;
 
 namespace P7Internet.Persistence.RecipeCacheRepository;
 
 public class RecipeCacheRepository : IRecipeCacheRepository
 {
     private static readonly string TableName = "CachedRecipes";
-    private static readonly string IngredientsTable = "IngredientsInRecipe";
     private readonly IDbConnectionFactory _connectionFactory;
     private IDbConnection Connection => _connectionFactory.Connection;
 
@@ -45,6 +45,23 @@ public class RecipeCacheRepository : IRecipeCacheRepository
         return await Connection.ExecuteAsync(query, parameters) > 0;
     }
 
+    public async Task<List<string>> GetListOfRecipes(List<Guid> ids)
+    {
+        var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
+        
+        var gridReader = await Connection.QueryMultipleAsync(query, new {Ids = ids});
+        
+        var result = gridReader.Read<string>();
+        
+        var recipes = new List<string>();
+        
+        foreach (var recipe in result)
+        {
+            recipes.Add(recipe);
+        }
+        
+        return recipes;
+    }
     
     
 }
