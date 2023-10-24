@@ -3,14 +3,11 @@ import avatarIcon from "../data/profile.svg";
 import cross from "../data/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
-import { pageActions } from "../features/pageSlice";
-import Pages from "../objects/Pages";
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 
-const LoginPage = () => {
+const LoginBox = ({closeModal}) => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.users);
-
   const [fullname, setFullname] = useState('')
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
@@ -29,7 +26,7 @@ const LoginPage = () => {
     
     if(validUser.length === 1){ //if the user exists
         dispatch(userActions.loginUser(validUser)) //the user is now logged in on redux
-        dispatch(pageActions.goToPage(Pages.frontPage)) //goto start page again
+        closeModal()
     }
     else{
 			  toast.error("Kodeordet eller brugernavnet er indtastet forkert")
@@ -101,69 +98,56 @@ const LoginPage = () => {
     else                    handleCreateAccount()
   }
 
-	function handleBackArrow(event) {
-		event.preventDefault()
-		dispatch(pageActions.goToPage(Pages.frontPage)) //goto start page again
-	}
-
-  return (
-    <div className='App'>
-        <div className='LoginPage'>
-					<div>
-        		<Toaster />
-      		</div>
-            <form className='LoginForm' onSubmit={handleSubmit}>
-							<img src={cross} alt="Back Arrow" id='logincross' onClick={handleBackArrow}/>
-							<div className='imgcontainer'>
-								<h3> Login/Opret Bruger
-										<label className="switch">
-												<input type="checkbox" id="checkbox" value={creatingAccount} onChange={handleChangeCheckbox}/>
-												<span className="slider round"/>
-										</label>
-								</h3>
-								{!creatingAccount ? 
-											<img src={avatarIcon} alt='Avatar' className='avatar'/>
-									: 
-									<>
-										<br></br>
-										<br></br>
-									</>
-								}
-							</div>
-
-                <div className='container'>
-										{!creatingAccount ? "" : 
-										<>
-											<label><b>Fulde navn</b></label>
-											<input type="text" placeholder='Indtast dit fulde navn' 
-											value={fullname} onChange={handleChangeFullname}
-											required/>
-											<label><b>Email</b></label>
-											<input type="text" placeholder='Indtast din email' 
-											value={email} onChange={handleChangeEmail}
-											required/> 
-										</>}
-                    <label><b>Brugernavn</b></label>
-                    <input type="text" placeholder='Indtast brugernavn' 
-                    value={username} onChange={handleChangeUsername}
-                    required/>
-                    
-                    <label><b>Kodeord</b></label>
-                    <input type="password" placeholder='Indtast kodeordet' 
-                    value={password} onChange={handleChangePassword}
-                    required/>
-                    
-                    <button type="submit">{!creatingAccount ?  "Login" : "Tilføj Bruger"}</button>
-                    {!creatingAccount ? <>
-                        <label>Husk mig: <input type="checkbox"/>  </label>
-                        <a href="#">Glemt kodeord?</a>
-                    </> : ""
-                    }
-                </div>
-            </form>
-        </div>
-    </div>
-  )
+	return (
+		<form className='LoginForm' onSubmit={handleSubmit}>
+			<div className='imgcontainer'>
+				<h3> Login/Opret Bruger
+					<label className="switch">
+						<input type="checkbox" id="checkbox" value={creatingAccount} onChange={handleChangeCheckbox}/>
+						<span className="slider round"/>
+					</label>
+					<img src={cross} alt="Back Arrow" id='loginCross' onClick={closeModal}/>
+				</h3>
+				{!creatingAccount ? 
+					<img src={avatarIcon} alt='Avatar' className='avatar'/>
+					: 
+					<>
+						<br></br>
+						<br></br>
+					</>
+				}
+			</div>
+			<div className='container'>
+					{!creatingAccount ? "" : 
+					<>
+						<label><b>Fulde navn</b></label>
+						<input type="text" placeholder='Indtast dit fulde navn' 
+						value={fullname} onChange={handleChangeFullname}
+						required/>
+						<label><b>Email</b></label>
+						<input type="text" placeholder='Indtast din email' 
+						value={email} onChange={handleChangeEmail}
+						required/> 
+					</>}
+					<label><b>Brugernavn</b></label>
+					<input type="text" placeholder='Indtast brugernavn' 
+					value={username} onChange={handleChangeUsername}
+					required/>
+					
+					<label><b>Kodeord</b></label>
+					<input type="password" placeholder='Indtast kodeordet' 
+					value={password} onChange={handleChangePassword}
+					required/>
+					
+					<button type="submit">{!creatingAccount ?  "Login" : "Tilføj Bruger"}</button>
+					{!creatingAccount ? <>
+						<label>Husk mig: <input type="checkbox"/>  </label>
+						<a href="#">Glemt kodeord?</a>
+					</> : ""
+					}
+			</div>
+		</form>
+	)
 }
 
-export default LoginPage
+export default LoginBox

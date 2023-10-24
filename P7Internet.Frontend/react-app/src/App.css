@@ -330,7 +330,7 @@ button:hover {
   box-sizing: border-box;
 }
 
-#logincross {
+#loginCross {
 	padding: 3%;
 	transform: scale(1.2);
 	float:right
