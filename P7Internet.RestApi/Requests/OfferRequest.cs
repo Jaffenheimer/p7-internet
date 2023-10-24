@@ -1,7 +1,4 @@
 ﻿using Geohash;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text.Json;
 
 namespace P7Internet.Requests
 {
