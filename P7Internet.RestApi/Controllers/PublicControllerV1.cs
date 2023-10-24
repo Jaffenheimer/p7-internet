@@ -111,7 +111,7 @@ public class PublicControllerV1 : ControllerBase
             return Ok("Recipe added to favourites");
         }
 
-        return BadRequest("Something went wrong");
+        return BadRequest("This should never happen");
     }
     [HttpGet("user/get-favourite-recipes")]
     public async Task<IActionResult> GetFavouriteRecipes([FromQuery] GetFavouriteRecipesRequest req)
@@ -122,7 +122,7 @@ public class PublicControllerV1 : ControllerBase
             return Ok(result);
         }
 
-        return BadRequest("Something went wrong");
+        return BadRequest("No favourite recipes found");
     }
     
     #endregion
