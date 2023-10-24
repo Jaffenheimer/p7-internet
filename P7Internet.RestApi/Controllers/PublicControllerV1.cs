@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using P7Internet.Persistence.RecipeCacheRepository;
 using P7Internet.Persistence.UserRepository;
 using P7Internet.Requests;
+using P7Internet.Response;
 using P7Internet.Services;
 using SharedObjects;
 
@@ -71,10 +71,28 @@ public class PublicControllerV1 : ControllerBase
     [HttpPost]
     [Route("user/create-user")]
     public async Task<IActionResult> CreateUser([FromQuery] CreateUserRequest req)
+    { 
+        
+        var user = _userRepository.CreateUser(req.Name, req.EmailAddress);
+        var res = await _userRepository.Upsert(user, req.Password);
+        if(!res)
+            return BadRequest("User with the specified Username already exists, please choose another Username");
+        var response = new LogInResponse(user.Id, user.Name, user.EmailAddress);
+        return Ok(response);
+    }
+    
+    [HttpPost]
+    [Route("user/login")]
+    public async Task<IActionResult> Login([FromQuery] LogInRequest req)
     {
-        var user = _userRepository.CreateUser(req.Name, req.EmailAddress, req.Password);
-        await _userRepository.Upsert(user);
-        return Ok(user);
+        var result = await _userRepository.LogIn(req.Username, req.Password);
+        if (result != null)
+        {
+            var response = new LogInResponse(result.Id, result.Name, result.EmailAddress);
+            return Ok(response);
+        }
+
+        return BadRequest("Username or password is incorrect please try again");
     }
     #endregion
 

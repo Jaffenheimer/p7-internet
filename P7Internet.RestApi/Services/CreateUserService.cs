@@ -1,6 +1,5 @@
-using P7Internet.Persistence.UserRepository;
 using P7Internet.Persistence.Connection;
-using SharedObjects;
+using P7Internet.Persistence.UserRepository;
 
 class CreateUserService
 {
