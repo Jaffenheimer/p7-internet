@@ -2,7 +2,7 @@ import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 //users should be on the database, st. user cannot browse all valid users.
 const initialState = {
-    users: [{id: "23haihfsk", username: "admin", password: "admin", heartedRecipes: []}],
+    users: [{id: "23haihfsk", fullname:"admin", email:"admin@admin.com",username: "admin", password: "admin", heartedRecipes: []}],
     loggedInUser: {},
 };
 
@@ -13,9 +13,11 @@ export const userSlice = createSlice({
         addUser(state, action) {
             const user = {
               id: nanoid(),
-              username: action.payload[0],
-              password: action.payload[1],
-              heartedRecipes: action.payload[2]
+              fullname: action.payload[0],
+							email: 		action.payload[1],
+              username: action.payload[2],
+							password:	action.payload[3],
+              heartedRecipes: action.payload[4]
             };
             state.users.push(user);
         },

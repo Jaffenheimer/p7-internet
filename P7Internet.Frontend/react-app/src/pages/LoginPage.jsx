@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import avatarIcon from "../data/profile.svg";
-import leftArrow from "../data/leftArrow.svg";
+import cross from "../data/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { pageActions } from "../features/pageSlice";
@@ -11,10 +11,14 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.users);
 
+  const [fullname, setFullname] = useState('')
+  const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [creatingAccount, setCreatingAccount] = useState(false)
 
+	const handleChangeFullname = (event) => setFullname(event.target.value);
+	const handleChangeEmail    = (event) => setEmail(event.target.value); 
   const handleChangeUsername = (event) => setUsername(event.target.value);
   const handleChangePassword = (event) => setPassword(event.target.value);
   const handleChangeCheckbox = ()      => setCreatingAccount(!creatingAccount);
@@ -33,6 +37,23 @@ const LoginPage = () => {
         setPassword('')
     }
   }
+
+	//should happen in backend
+	function checkValidFullname(){
+		const fullnameRegex = /^[a-zA-Z]+ [a-zA-Z]+$/
+		const isValidFullname = fullnameRegex.exec(fullname)
+		if (isValidFullname === null)		return false
+		else														return true
+	}
+
+	//should happen in backend
+	//see what this regex accepts at https://jsfiddle.net/ghvj4gy9/
+	function checkValidEmail(){
+		const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+		const isValidEmail = emailRegex.exec(email)
+		if (isValidEmail === null)			return false
+		else														return true
+	}
 
   //THE USERNAME VALIDATION SHOULD HAPPEN IN THE BACKEND
   //username: allowed characters are integers and upper/lowercase letters
@@ -57,17 +78,20 @@ const LoginPage = () => {
     const existsUser = users.filter( user => user.username === username )
 
     if(existsUser.length > 0)                   toast.error("Brugernavnet er allerede taget.") 
+		else if (checkValidFullname() === false)    toast.error("Du har indtastet et ugyldigt navn. Den må kun bestå af bogstaver.")
+		else if (checkValidEmail() === false)				toast.error("Den indtastede email er ugyldig eller allerede i brug.")
     else if (checkValidUsername() === false)	 	toast.error("Brugernavnet er ugyldigt, da det kun må bestå af bogstaver og tal.")
     else if (checkValidPassword() === false)		toast.error("Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn.")
-    
     else{
-        dispatch(userActions.addUser([username, password, []]))
+        dispatch(userActions.addUser([fullname, email, username, password, []]))
         setCreatingAccount(false)
         document.getElementById("checkbox").checked = false
+				setFullname('')
+				setEmail('')
         setUsername('')
         setPassword('')
-        toast.success("Din bruger er nu tilføjet til databasen!")
         toast.success("Indsæt nu dine oplysninger for at logge ind.")
+        toast.success("Din bruger er nu tilføjet til databasen!")
     }
   }
 
@@ -89,18 +113,36 @@ const LoginPage = () => {
         		<Toaster />
       		</div>
             <form className='LoginForm' onSubmit={handleSubmit}>
-							<img src={leftArrow} alt="Back Arrow" id='backarrow' onClick={handleBackArrow}/>
-                <div className='imgcontainer'>
-                    <img src={avatarIcon} alt='Avatar' className='avatar'/>
-                    <h3> Login/Opret Bruger
-                        <label className="switch">
-                            <input type="checkbox" id="checkbox" value={creatingAccount} onChange={handleChangeCheckbox}/>
-                            <span className="slider round"/>
-                        </label>
-                    </h3>
-                </div>
+							<img src={cross} alt="Back Arrow" id='logincross' onClick={handleBackArrow}/>
+							<div className='imgcontainer'>
+								<h3> Login/Opret Bruger
+										<label className="switch">
+												<input type="checkbox" id="checkbox" value={creatingAccount} onChange={handleChangeCheckbox}/>
+												<span className="slider round"/>
+										</label>
+								</h3>
+								{!creatingAccount ? 
+											<img src={avatarIcon} alt='Avatar' className='avatar'/>
+									: 
+									<>
+										<br></br>
+										<br></br>
+									</>
+								}
+							</div>
 
                 <div className='container'>
+										{!creatingAccount ? "" : 
+										<>
+											<label><b>Fulde navn</b></label>
+											<input type="text" placeholder='Indtast dit fulde navn' 
+											value={fullname} onChange={handleChangeFullname}
+											required/>
+											<label><b>Email</b></label>
+											<input type="text" placeholder='Indtast din email' 
+											value={email} onChange={handleChangeEmail}
+											required/> 
+										</>}
                     <label><b>Brugernavn</b></label>
                     <input type="text" placeholder='Indtast brugernavn' 
                     value={username} onChange={handleChangeUsername}

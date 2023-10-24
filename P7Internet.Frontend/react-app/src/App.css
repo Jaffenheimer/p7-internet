@@ -330,9 +330,10 @@ button:hover {
   box-sizing: border-box;
 }
 
-#backarrow {
+#logincross {
 	padding: 3%;
-	transform: scale(1.5);
+	transform: scale(1.2);
+	float:right
 }
 
 a {
