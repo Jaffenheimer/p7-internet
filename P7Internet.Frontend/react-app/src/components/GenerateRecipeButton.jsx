@@ -57,7 +57,7 @@ function getGeoLocation() {
                 })
             );
         });
-    } else toast("Geolocation not supported");
+    } else toast("Geolocation not supported by browser");
 }
 
 export default GenerateRecipeButton;
