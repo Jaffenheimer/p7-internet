@@ -4,7 +4,7 @@
 export { default as OwnedIngredientsList } from "./OwnedIngredientsList";
 export { default as RecipeTitle } from "./RecipeTitle";
 export { default as SearchBar } from "./SearchBar";
-export { default as ContainerUpper } from "./ContainerUpper";
+export { default as ContainerLeft } from "./ContainerLeft";
 export { default as RecipeSelectionContainerLeft } from "./RecipeSelectionContainerLeft";
 export { default as ContainerRight } from "./ContainerRight";
 export { default as GenerateRecipeButton } from "./GenerateRecipeButton";
