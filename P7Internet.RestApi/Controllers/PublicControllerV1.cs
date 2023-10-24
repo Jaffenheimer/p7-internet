@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using P7Internet.Persistence.CachedIngredientPricesRepository;
 using P7Internet.Persistence.FavouriteRecipeRepository;
 using P7Internet.Persistence.RecipeCacheRepository;
 using P7Internet.Persistence.UserRepository;
@@ -19,15 +20,17 @@ public class PublicControllerV1 : ControllerBase
     private readonly IUserRepository _userRepository;
     private readonly IRecipeCacheRepository _cachedRecipeRepository;
     private readonly IFavouriteRecipeRepository _favouriteRecipeRepository;
+    private readonly ICachedOfferRepository _cachedOfferRepository;
     private readonly OpenAiService _openAiService;
     private readonly ETilbudsAvisService _eTilbudsAvisService;
 
-    public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService, IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository)
+    public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService, IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository, ICachedOfferRepository cachedOfferRepository)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
         _cachedRecipeRepository = cachedRecipeRepository;
         _favouriteRecipeRepository = favouriteRecipeRepository;
+        _cachedOfferRepository = cachedOfferRepository;
         _eTilbudsAvisService = new ETilbudsAvisService();
     }
     #region Recipe Endpoints
@@ -67,13 +70,36 @@ public class PublicControllerV1 : ControllerBase
         await _cachedRecipeRepository.Upsert(res.Recipes);
         return Ok(res);
     }
-    [HttpGet]
-    [Route("offer/GetAllOffers")]
+    [HttpGet("offer/getOffer")]
     public async Task<IActionResult> GetOffer([FromQuery] OfferRequest req)
     {
+        var checkIfOfferExists = await _cachedOfferRepository.GetOffer(req.SearchTerm);
+        if (checkIfOfferExists != null)
+        {
+            return Ok(checkIfOfferExists);
+        }
         var res = await _eTilbudsAvisService.GetAllOffers(req);
-        if (res != null) return Ok(res);
-        return BadRequest();
+        
+        if (res != null)
+        {
+            foreach (var offer in res)
+            {
+                await _cachedOfferRepository.UpsertOffer(offer.Name,offer.Price,offer.Store);
+            }
+            return Ok(res);
+        }
+        return BadRequest("No offer found");
+    }
+    
+    [HttpGet("offer/getOfferByStoreFromCache")]
+    public async Task<IActionResult> GetOfferByStoreIfAvailableFromCache([FromQuery] string ingredient, string store)
+    {
+        var checkIfOfferExists = await _cachedOfferRepository.GetOfferByStore(ingredient, store);
+        if (checkIfOfferExists != null)
+        {
+            return Ok(checkIfOfferExists);
+        }
+        return BadRequest("Offer did not exist in cache");
     }
     #endregion
 
