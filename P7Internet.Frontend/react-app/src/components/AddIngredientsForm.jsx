@@ -57,7 +57,6 @@ const AddIngredientsForm = ({ingredientsList, addIngredient, removeAllHandler}) 
 
   //remove all button is disabled if there are no ingredients to remove, else enabled
   const handleRemoveAllButtonDisabling = () => {
-    //console.log(ownedIngredientsList)
     if (ingredientsList.length === 0)
       setRemoveAllButtonDisabled(true)
     else

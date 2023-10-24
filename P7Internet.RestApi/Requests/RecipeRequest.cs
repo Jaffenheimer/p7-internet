@@ -1,15 +1,16 @@
 using System.Collections.Generic;
-using SharedObjects;
 
 namespace P7Internet.Requests;
 
-public class SampleRequest
+public class RecipeRequest
 {
     public string OpenAiString { get;}
     public List<string> Ingredients { get;}
-    public SampleRequest(string openAiString, List<string> ingredients)
+    public int? Amount { get; set; }
+    public RecipeRequest(string openAiString, List<string> ingredients, int? amount)
     {
         OpenAiString = openAiString;
         Ingredients = ingredients;
+        Amount = amount;
     }   
 }

@@ -6,16 +6,9 @@ import { useSelector } from "react-redux";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { useDispatch } from "react-redux";
 
-const ContainerUpper = () => {
-
-  const dispatch = useDispatch();
-  const ownedIngredientsList = useSelector(state => state.recipeGeneration.ownedIngredients);
-  function removeAllHandler() {
-    dispatch(recipeGenerationActions.clearAllOwnedIngredients());
-  }
-
+const ContainerLeft = () => {
   return (
-    <div className="ContainerUpper">
+    <div className="ContainerLeft">
       <h1 id="RecipeGenerator">Opskriftsgenerator</h1>
       <div id="IngredientsBody">
         <h2>Ingredienser jeg gerne vil bruge:</h2>
@@ -30,4 +23,4 @@ const ContainerUpper = () => {
   );
 };
 
-export default ContainerUpper;
+export default ContainerLeft;
