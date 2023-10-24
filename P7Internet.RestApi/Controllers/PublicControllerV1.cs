@@ -29,7 +29,7 @@ public class PublicControllerV1 : ControllerBase
     }
     #region Recipe Endpoints
     [HttpPost("recipes")]
-    public async Task<IActionResult> GetARecipe([FromBody]SampleRequest req)
+    public async Task<IActionResult> GetARecipe([FromBody]RecipeRequest req)
     {
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
@@ -41,10 +41,17 @@ public class PublicControllerV1 : ControllerBase
                 recipesIncludingIngredients.Add(recipe);
             }
         }
-        
+
+        if (req.Amount != null)
+        {
+            if (recipesIncludingIngredients.Count < req.Amount)
+                goto NotEnoughRecipes;
+        }
+
         if (recipesIncludingIngredients.Any(x => x != null))
             return Ok(recipesIncludingIngredients);
-            
+        
+        NotEnoughRecipes:    
         var openAiRequest = req.OpenAiString;
 
         foreach (var ingredient in req.Ingredients)
