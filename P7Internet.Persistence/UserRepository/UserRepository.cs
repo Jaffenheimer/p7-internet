@@ -23,23 +23,18 @@ public class UserRepository : IUserRepository
     private async Task<User> GetUser(string name)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Name = @name";
-        var result = await Connection.QuerySingleAsync(query, new {name});
+        var result = await Connection.QueryFirstOrDefaultAsync<User>(query, new {name});
         if (result != null)
         {
-            var user = new User(result.Name, result.Email);
-            user.Id = Guid.Parse(result.Id);
-            user.PasswordHash = result.Password_hash;
-            user.PasswordSalt = result.Password_salt;
-            user.CreatedAt = result.Creation_date;
-            return user;
+            return result;
         }
         return null;
     }
 
     public async Task<bool> Upsert(User user, string password)
     {
-        var checkIfUserExist = GetUser(user.Name);
-        if(checkIfUserExist.Result != null)
+        var checkIfUserExist = await GetUser(user.Name);
+        if(checkIfUserExist != null)
             return false;
         
             var query = $@"INSERT INTO {TableName} (Id, Name, Email, Password_hash, Password_salt, Creation_date, Updated)
