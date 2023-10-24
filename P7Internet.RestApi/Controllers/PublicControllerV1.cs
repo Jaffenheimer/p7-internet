@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using P7Internet.Persistence.RecipeCacheRepository;
 using P7Internet.Persistence.UserRepository;
 using P7Internet.Requests;
 using P7Internet.Services;
+using SharedObjects;
 
 namespace P7Internet.Controllers;
 
@@ -66,12 +68,13 @@ public class PublicControllerV1 : ControllerBase
     #endregion
 
     #region User Endpoints
-    [HttpPut]
+    [HttpPost]
     [Route("user/create-user")]
-    public async Task<IActionResult> CreateUser([FromForm] CreateUserRequest req)
+    public async Task<IActionResult> CreateUser([FromQuery] CreateUserRequest req)
     {
-
-        throw new System.NotImplementedException();
+        var user = _userRepository.CreateUser(req.Name, req.EmailAddress, req.Password);
+        await _userRepository.Upsert(user);
+        return Ok(user);
     }
     #endregion
 

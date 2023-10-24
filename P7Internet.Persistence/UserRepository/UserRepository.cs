@@ -1,7 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Data.Common;
+using System.Security;
 using System.Threading.Tasks;
 using Dapper;
+using MySql.Data.MySqlClient;
 using P7Internet.Persistence.Connection;
 using SharedObjects;
 
@@ -18,19 +22,34 @@ public class UserRepository : IUserRepository
         _connectionFactory = connectionFactory;
     }
 
-    public async Task<bool> Upsert(List<string> ingredients)
+    public async Task<bool> Upsert(User user)
     {
-        var query = $@"INSERT INTO {TableName} (Ingredients)
-                       VALUES (@Ingredients)
-                       ON DUPLICATE KEY UPDATE Ingredients = @Ingredients";
+        var parameters = new
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.EmailAddress,
+            PasswordHash = user.PasswordHash,
+            PasswordSalt = user.PasswordSalt,
+            CreatedAt = user.CreatedAt,
+            UpdatedAt = DateTime.UtcNow,
+        };
+        try
+        {
+            var query = $@"INSERT INTO {TableName} (Id, Name, Email, Password_hash, Password_salt, Creation_date, Updated)
+                            VALUES (@Id, @Name, @Email, @PasswordHash, @PasswordSalt, @CreatedAt, @UpdatedAt)";
+            
+            return await Connection.ExecuteAsync(query, parameters) > 0;
+        }
+        catch (Exception)
+        {
 
-        return await Connection.ExecuteAsync(query, new { Ingredients = ingredients }) > 0;
+            throw;
+        }
     }
-    public async Task<bool> UpsertNewUser(User user) 
+    public User CreateUser(string name, string email, string password)
     {
-        var query = $@"INSERT INTO {TableName} (Name, email, password_hash, password_salt, creation_date, updated)
-                       VALUES (@User.Id, @User.Name, @User.Email, @User.PasswordHash, @User.PasswordSalt, @User.CreatedAt, @User.UpdatedAt)
-                       ON DUPLICATE KEY UPDATE Ingredients = @Ingredients";
-        return await Connection.ExecuteAsync(query) > 0;
+        User user = new User(name, email, password);
+        return user;
     }
 }
