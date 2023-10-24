@@ -24,6 +24,7 @@ const Allergens = () => {
     <div className="Allergens">
       <h3 id="AllergensText">Allergener</h3>
       <Select
+        // makes it possible to select multiple options
         isMulti
         id="AllergensSelect"
         options={options}
