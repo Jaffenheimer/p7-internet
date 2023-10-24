@@ -1,13 +1,22 @@
-import React from "react";
+import React, { useEffect,useState } from "react";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
 
 
 const GenerateRecipeButton = () => {
   const dispatch = useDispatch();
+  const ownedIngredientsList = useSelector(state => state.recipeGeneration.ownedIngredients);
+  const [buttonIsDisabled, setButtonDisabled] = useState(true);
+  
+  useEffect(() => {
+    if (ownedIngredientsList.length > 0) setButtonDisabled(false);
+      else setButtonDisabled(true);
+    }, [ownedIngredientsList]);
 
+
+  
   function goToPageFullRecipeSelection() {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
   }
@@ -42,7 +51,7 @@ const GenerateRecipeButton = () => {
     }
   };
 
-  return <button onClick={handleOnClick}>Generer opskrifter</button>;
+  return <button onClick={handleOnClick} disabled={buttonIsDisabled}>Generer opskrifter</button>;
 };
 
 export default GenerateRecipeButton;
