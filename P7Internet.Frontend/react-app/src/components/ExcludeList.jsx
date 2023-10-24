@@ -54,7 +54,7 @@ const ExcludeList = () => {
 
   //function for removing all elements from state
   function submitRemoveAll() {
-    dispatch(recipeGenerationActions.clearAllExcludedIngredient());
+    dispatch(recipeGenerationActions.clearAllExcludedIngredients());
   }
 
   return (
@@ -69,6 +69,7 @@ const ExcludeList = () => {
           value={ingredient}
           onChange={(event) => setIngredient(event.target.value)}
         />
+        <button type="submit">Tilføj</button>
         <div id="ExcludedIngredientsList">
           <IngredientsList
             ingredients={excludeList}
@@ -77,7 +78,7 @@ const ExcludeList = () => {
           />
         </div>
       </form>
-      <button id="RemoveButton" onClick={submitRemoveAll}>
+      <button id="RemoveAllExcludeIngredientsButton" onClick={submitRemoveAll}>
         Fjern alle
       </button>
     </div>
