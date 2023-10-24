@@ -54,22 +54,19 @@ h3 {
 }
 
 ul {
-  list-style-type: none;
   padding: 0;
 }
 
 .IngredientElement {
   margin: 10px;
   padding: 10px;
-  background-color: #f2f2f2;
-  border: 1px solid #ddd;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 #OwnedIngredientsList > div > ul > .IngredientElement {
-  width: 60%;
+  width: 30%;
 }
 
 #ExcludedIngredientsList > .ingredientsList > ul > .IngredientElement {
