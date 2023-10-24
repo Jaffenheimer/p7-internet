@@ -34,7 +34,7 @@ const RecipeView = () => {
       } else if (startsWithNumber(line) && title !== "") {
         //instructions
         method.push(trimNumberedPoints(line));
-      } else if (line === "" && method.length != []) {
+      } else if (line === "" && method.length !== 0) {
         //end of recipe
         recipe = new Recipe(title, ingredients, method);
         recipes.push(recipe);
