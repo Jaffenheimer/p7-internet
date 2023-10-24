@@ -7,6 +7,13 @@ import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { useDispatch } from "react-redux";
 
 const ContainerLeft = () => {
+
+  const dispatch = useDispatch();
+  const ownedIngredientsList = useSelector(state => state.recipeGeneration.ownedIngredients);
+  function removeAllHandler() {
+    dispatch(recipeGenerationActions.clearAllOwnedIngredients());
+  }
+
   return (
     <div className="ContainerLeft">
       <h1 id="RecipeGenerator">Opskriftsgenerator</h1>
