@@ -14,7 +14,7 @@ body > #root > div {
   margin-top: -22px;
 }
 
-.App > .AppLeft > .ContainerUpper {
+.App > .AppLeft > .ContainerLeft {
   height: 100%;
   position: relative;
 }

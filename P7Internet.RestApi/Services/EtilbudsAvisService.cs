@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Net.Http;
-using System.Threading.Tasks;
-using System.IO;
-using System.Net.Http.Headers;
 using System.Collections.Generic;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Extensions;
-using P7Internet.CustomExceptions;
-using P7Internet.Requests;
-using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using P7Internet.Requests;
 using SharedObjects;
 
 namespace P7Internet.Services;
@@ -32,7 +31,7 @@ public class ETilbudsAvisService
 
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         request.Headers.Add("X-Api-Key", "EFSiDV");
-        StringContent payload = new StringContent(req.ComposeOfferObject(), System.Text.Encoding.UTF8, "application/json");
+        StringContent payload = new StringContent(req.ComposeOfferObject(), Encoding.UTF8, "application/json");
 
         request.Content = payload;
         var response = await _client.SendAsync(request);

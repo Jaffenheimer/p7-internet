@@ -5,7 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using P7Internet.Persistence.RecipeCacheRepository;
 using P7Internet.Persistence.UserRepository;
 using P7Internet.Requests;
+using P7Internet.Response;
 using P7Internet.Services;
+using SharedObjects;
 
 namespace P7Internet.Controllers;
 
@@ -25,7 +27,7 @@ public class PublicControllerV1 : ControllerBase
         _cachedRecipeRepository = cachedRecipeRepository;
         _eTilbudsAvisService = new ETilbudsAvisService();
     }
-
+    #region Recipe Endpoints
     [HttpPost("recipes")]
     public async Task<IActionResult> GetARecipe([FromBody]RecipeRequest req)
     {
@@ -70,7 +72,38 @@ public class PublicControllerV1 : ControllerBase
         if (res != null) return Ok(res);
         return BadRequest();
     }
+    #endregion
+
+    #region User Endpoints
+    [HttpPost]
+    [Route("user/create-user")]
+    public async Task<IActionResult> CreateUser([FromQuery] CreateUserRequest req)
+    { 
+        
+        var user = _userRepository.CreateUser(req.Name, req.EmailAddress);
+        var res = await _userRepository.Upsert(user, req.Password);
+        if(!res)
+            return BadRequest("User with the specified Username already exists, please choose another Username");
+        var response = new LogInResponse(user.Id, user.Name, user.EmailAddress);
+        return Ok(response);
+    }
     
+    [HttpPost]
+    [Route("user/login")]
+    public async Task<IActionResult> Login([FromQuery] LogInRequest req)
+    {
+        var result = await _userRepository.LogIn(req.Username, req.Password);
+        if (result != null)
+        {
+            var response = new LogInResponse(result.Id, result.Name, result.EmailAddress);
+            return Ok(response);
+        }
+
+        return BadRequest("Username or password is incorrect please try again");
+    }
+    #endregion
+
+    #region Utility functions
     //Tak til chatgpt for nedenstående metode wup wup
     private static bool ContainsEveryString(List<string> stringList, string targetString)
     {
@@ -83,4 +116,5 @@ public class PublicControllerV1 : ControllerBase
         }
         return true;
     }
+    #endregion
 }
