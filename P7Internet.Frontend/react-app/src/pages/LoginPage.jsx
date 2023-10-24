@@ -20,10 +20,10 @@ const LoginPage = () => {
   const handleChangeCheckbox = ()      => setCreatingAccount(!creatingAccount);
 
   function handleLogin(){
-		//validUser finds users on Redux matches the username and password typed. 
+		//Find users that matches the username and password typed. 
     const validUser = users.filter( user => user.username === username && user.password === password)
     
-    if(validUser.length === 1){
+    if(validUser.length === 1){ //if the user exists
         dispatch(userActions.loginUser(validUser)) //the user is now logged in on redux
         dispatch(pageActions.goToPage(Pages.frontPage)) //goto start page again
     }
