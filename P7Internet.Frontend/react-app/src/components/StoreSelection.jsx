@@ -52,19 +52,29 @@ const StoreSelection = () => {
         setOptions([]);
         setValue(allStores);
         return;
-        //selecting a store: we remove the option from the options list and add it to the values
-      } else {
-        setOptions(options.filter((value) => value.value !== option.value));
-        setValue([option, ...values]);
-        return;
+      }
+      //selecting a store
+      else {
+        //if one have selected a store and there are 2 options left, and one of them is "vælg alle",
+        // it means the user has selected all stores and ensure that no options are available
+        if (
+          options.length === 2 &&
+          (options[0].value === "All stores" ||
+            options[1].value === "All stores")
+        )
+          setOptions([]);
+        //Otherwise we remove the option from the options list and add it to the values
+        else {
+          setOptions(options.filter((value) => value.value !== option.value));
+          setValue([option, ...values]);
+        }
       }
     }
 
     //clearing all selections: we reset the values and enable all options
-    if (action === "clear") {
+    else if (action === "clear") {
       setValue([]);
       setOptions(allOptions);
-      return;
     }
   };
 
