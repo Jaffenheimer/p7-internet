@@ -42,12 +42,7 @@ const ExcludeList = () => {
 
   //function for removing all elements from state
   function submitRemoveAll() {
-    if (listlength === 0) {
-      toast.error("Der er ikke tilføjet nogle ingredienser.");
-    }
-    else{
     dispatch(recipeGenerationActions.clearAllExcludedIngredient());
-    }
   }
 
   return (
