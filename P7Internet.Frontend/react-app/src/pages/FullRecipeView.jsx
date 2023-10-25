@@ -6,6 +6,7 @@ import MethodsList from "../components/MethodsList";
 import Pages from "../objects/Pages";
 import React from "react";
 import ForPersons from "../components/ForPersons";
+import Header from "../components/Header";
 
 function FullRecipeView() {
   const dispatch = useDispatch();
@@ -24,7 +25,10 @@ function FullRecipeView() {
   }
 
   return (
-    <div className="App">
+    <div className="AppContainer2">
+      <div className="header2">
+        <Header />
+      </div>
       <div className="FullRecipeView">
         <RecipeTitle id="RecipeTitle" title={recipe.title} />
         <ForPersons />

@@ -2,11 +2,54 @@
   height: 100vh;
 } */
 
-html, body, .App {
+html, body {
   margin: 0;
-  height: 100%;
-  overflow: hidden;
+  max-height: 100vh;
+  max-width: 100vw;
 }
+
+.AppContainer2 {
+  height: 100vh;
+  width: 100vw;
+  background: #f8ede3;
+}
+
+.header2{
+  height: 50px;
+  background-color: #BCA37F;
+  padding: 10px;
+  text-align: center;
+}
+
+.split-container{
+  position: relative;
+  height: calc(100vh - 110px);
+  display: flex;
+  flex-direction: row;
+}
+
+.split-screen-left{
+  width: 75%;
+  background: #f8ede3;
+}
+
+.split-screen-right{
+  width: 25%;
+  background: #EAD7BB;
+}
+
+.split-screen-left, 
+.split-screen-right {
+  height: 100%;
+  padding: 20px;
+  display: block;
+}
+
+.searchfield{
+  min-width: 250px;
+}
+
+
 
 .AppContainer{
   height: 100%;
@@ -15,7 +58,7 @@ html, body, .App {
 .App {
   height: 100%;
   width: 100%;
-  background: #FFF2D8;
+  background: #f8ede3;
   display: flex;
   flex-direction: row;
 }
@@ -30,10 +73,10 @@ html, body, .App {
 
 
 .header {
-  padding-left: 10px;
-  padding-right: 10px;
-  height: 60px;
-  background-color: #BCA37F;
+  padding: 0;
+  margin: 0 ;
+  height: 100%;
+  width: 100%;
   display: flex;
   align-items: center;
 }
@@ -143,20 +186,24 @@ button:hover {
   background: #e7e7e7;
 }
 
-#IngredientsBody {
-  margin-left: 2%;
-  margin-top: 10%;
+.FormStyle{
+  width: 100%;
 }
 
-#GenerateRecipeButton {
+/* #IngredientsBody {
+  margin-left: 2%;
+  margin-top: 10%;
+} */
+
+/* #GenerateRecipeButton {
   padding: 20px;
   padding-left: 30px;
-  /* position: absolute; */
-  /* right: 0;
-  bottom: 0; */
-  /* margin-bottom: 3%;
-  margin-right: 3%; */
-}
+  position: absolute; 
+  right: 0;
+  bottom: 0;
+  margin-bottom: 3%;
+  margin-right: 3%;
+} */
 
 .RecipeView > #RecipeTitleDiv > h1 {
   text-align: left;
@@ -169,6 +216,7 @@ button:hover {
 
 #selectRecipeButton {
   float: right;
+  align-items: right;
 }
 
 #SelectArrows > img {
