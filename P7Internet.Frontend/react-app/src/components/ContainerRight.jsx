@@ -3,15 +3,13 @@ import ProfilePicture from "./ProfilePicture";
 import NumberField from "./NumberField";
 import DietaryRestrictions from "./DietaryRestrictions";
 import ExcludeList from "./ExcludeList";
-import { Toaster } from "react-hot-toast";
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Allergens from "./Allergens";
 
 const ContainerRight = () => {
   return (
     <div className="ContainerRight">
-      <div>
-        <Toaster />
-      </div>
       <div className="ContainerRightTop">
         <div className="ContainerRightColumn">
           <h3 id="NumberPersonsText">Personer</h3>

@@ -1,7 +1,8 @@
 import React, { useState} from "react";
 import cross from "../data/cross.svg";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from "react-redux";
 
 const ExcludeList = () => {

@@ -53,6 +53,10 @@ h3 {
   /*choose styling here for preference titles*/
 }
 
+.toast-position {
+  position: "top-center";
+}
+
 input[type="text"] {
   color: rgba(0, 0, 0, 0.5);
   width: 30%;
