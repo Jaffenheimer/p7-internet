@@ -49,7 +49,8 @@ h2 {
   letter-spacing: 0.75px;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"],
+input[type="password"] {
   color: rgba(0, 0, 0, 0.5);
   width: 30%;
   margin-right: 3%;
@@ -185,7 +186,7 @@ button:hover {
   font-size: small;
 }
 
-.numberPersonsText{
+.numberPersonsText {
   margin-top: 0%;
   padding: 0%;
   margin-left: 10%;
@@ -315,13 +316,14 @@ button:hover {
 
 /* Login */
 .LoginForm {
-	background-color: white;
-	height: 600px;
-	width: 400px;
-	margin:auto;
+  background-color: white;
+  height: 600px;
+  width: 400px;
+  margin: auto;
 }
 
-.LoginForm input[type=text], input[type=password] {
+.LoginForm input[type="text"],
+input[type="password"] {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -331,20 +333,19 @@ button:hover {
 }
 
 #loginCross {
-	padding: 3%;
-	transform: scale(1.2);
-	float:right
+  padding: 3%;
+  transform: scale(1.2);
+  float: right;
 }
 
-
-#alreadyHasUserText, #noUserText {
+#alreadyHasUserText,
+#noUserText {
   display: inline-block;
 }
 
-
 .LoginPage {
   display: flex;
-  margin: auto
+  margin: auto;
 }
 
 .LoginForm button {
@@ -362,8 +363,8 @@ img.avatar {
   border-radius: 50%;
 }
 
-img.avatar:hover{
-	cursor:default
+img.avatar:hover {
+  cursor: default;
 }
 
 .container {
@@ -395,8 +396,8 @@ img.avatar:hover{
   right: 0;
   bottom: 0;
   background-color: #ccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .slider:before {
@@ -407,16 +408,16 @@ img.avatar:hover{
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #2196F3;
+  background-color: #2196f3;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196F3;
+  box-shadow: 0 0 1px #2196f3;
 }
 
 input:checked + .slider:before {

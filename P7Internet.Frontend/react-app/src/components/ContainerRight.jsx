@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import Pages from '../objects/Pages'
+import React, { useState } from "react";
+import Pages from "../objects/Pages";
 import ProfilePicture from "./ProfilePicture";
 import NumberField from "./NumberField";
 import DietaryRestrictions from "./DietaryRestrictions";
@@ -9,52 +9,50 @@ import { Toaster } from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import Allergens from "./Allergens";
-import Modal from 'react-modal'
-
+import Modal from "react-modal";
 
 //styling for the modal
 const customStyles = {
   content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
   },
 };
 
 const ContainerRight = () => {
-	const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
-  const [loggedIn, setLoggedIn] = useState(false)
+  const [loggedIn, setLoggedIn] = useState(false);
 
-	const [modalIsOpen, setIsOpen] = React.useState(false);
-	const openModal = () => setIsOpen(true);
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
-	//DELETE WHEN MODAL IS DONE.
+  //DELETE WHEN MODAL IS DONE.
   function goToLoginPage() {
     dispatch(pageActions.goToPage(Pages.loginPage));
   }
 
-	function SetLoggedInOnChange(){ //component that dynamically changes when log in status changes
-		if (loggedInUser.length === 1)
-		  setLoggedIn(true)
-		else
-			setLoggedIn(false)
-	}
+  function SetLoggedInOnChange() {
+    //component that dynamically changes when log in status changes
+    if (loggedInUser.length === 1) setLoggedIn(true);
+    else setLoggedIn(false);
+  }
 
   return (
     <div className="ContainerRight">
-			<Modal
+      <Modal
         isOpen={modalIsOpen}
-				style={customStyles}
+        style={customStyles}
         onRequestClose={closeModal}
         contentLabel="Example Modal"
       >
-				<LoginBox closeModal={closeModal}/>
-			</Modal>
+        <LoginBox closeModal={closeModal} />
+      </Modal>
       <div>
         <Toaster />
       </div>
@@ -66,8 +64,12 @@ const ContainerRight = () => {
           <NumberField />
         </div>
         <div className="ContainerRightColumn">
-					<SetLoggedInOnChange/>
-          {loggedIn ? <ProfilePicture /> : <button onClick={openModal}>Log In</button>}
+          <SetLoggedInOnChange />
+          {loggedIn ? (
+            <ProfilePicture />
+          ) : (
+            <button onClick={openModal}>Log In</button>
+          )}
         </div>
       </div>
       <div className="ContainerRightMiddle">
