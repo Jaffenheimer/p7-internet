@@ -336,9 +336,11 @@ button:hover {
 	float:right
 }
 
-a {
-  padding-left: 10px;
+
+#alreadyHasUserText, #noUserText {
+  display: inline-block;
 }
+
 
 .LoginPage {
   display: flex;

@@ -18,7 +18,8 @@ const LoginBox = ({closeModal}) => {
 	const handleChangeEmail    = (event) => setEmail(event.target.value); 
   const handleChangeUsername = (event) => setUsername(event.target.value);
   const handleChangePassword = (event) => setPassword(event.target.value);
-  const handleChangeCheckbox = ()      => setCreatingAccount(!creatingAccount);
+  const handleUserToLogIn = ()      => setCreatingAccount(false);
+  const handleUserToCreateAccount = ()      => setCreatingAccount(true);
 
   function handleLogin(){
 		//Find users that matches the username and password typed. 
@@ -101,11 +102,8 @@ const LoginBox = ({closeModal}) => {
 	return (
 		<form className='LoginForm' onSubmit={handleSubmit}>
 			<div className='imgcontainer'>
-				<h3> Login/Opret Bruger
-					<label className="switch">
-						<input type="checkbox" id="checkbox" value={creatingAccount} onChange={handleChangeCheckbox}/>
-						<span className="slider round"/>
-					</label>
+				
+				<h3> {!creatingAccount ? "Login" : "Opret Bruger"}
 					<img src={cross} alt="Back Arrow" id='loginCross' onClick={closeModal}/>
 				</h3>
 				{!creatingAccount ? 
@@ -142,8 +140,14 @@ const LoginBox = ({closeModal}) => {
 					<button type="submit">{!creatingAccount ?  "Login" : "Tilføj Bruger"}</button>
 					{!creatingAccount ? <>
 						<label>Husk mig: <input type="checkbox"/>  </label>
+						<br/>
 						<a href="#">Glemt kodeord?</a>
-					</> : ""
+						<br/>
+						<p id="noUserText">Ingen bruger:</p>
+						<a href='#' onClick={handleUserToCreateAccount}>Opret Bruger</a>
+					</> : <><p id="alreadyHasUserText">Har allerede en bruger:</p>
+					<a href='#' onClick={handleUserToLogIn}>Log in</a>
+					</>
 					}
 			</div>
 		</form>
