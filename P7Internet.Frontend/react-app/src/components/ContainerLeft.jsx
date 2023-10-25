@@ -3,10 +3,10 @@ import SearchBar from "./SearchBar";
 import OwnedIngredientsList from "./OwnedIngredientsList";
 import GenerateRecipeButton from "./GenerateRecipeButton";
 
-const ContainerUpper = () => {
+const ContainerLeft = () => {
   return (
-    <div className="ContainerUpper">
-      {/* <h1 id="RecipeGenerator">Opskriftsgenerator</h1> */}
+    <div className="ContainerLeft">
+      <h1 id="RecipeGenerator">Opskriftsgenerator</h1>
       <div id="IngredientsBody">
         <h2>Ingredienser jeg gerne vil bruge:</h2>
         <SearchBar />
@@ -20,4 +20,4 @@ const ContainerUpper = () => {
   );
 };
 
-export default ContainerUpper;
+export default ContainerLeft;

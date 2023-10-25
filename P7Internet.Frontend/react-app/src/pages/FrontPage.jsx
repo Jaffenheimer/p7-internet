@@ -1,19 +1,16 @@
 import React from "react";
 import ContainerRight from "../components/ContainerRight";
-import ContainerUpper from "../components/ContainerUpper";
-import Header from "../components/Header";
+import ContainerLeft from "../components/ContainerLeft";
 
 const FrontPage = () => {
   return (
-    <div style={{height: '100%'}} >
-        <Header />
-        <div className="App">
-        <div className="AppLeft">
-          <ContainerUpper />
-        </div>
-        <div className="AppRight">
-          <ContainerRight />
-        </div>
+    <div className="App">
+      <div className="AppLeft">
+        <ContainerLeft />
+        
+      </div>
+      <div className="AppRight">
+        <ContainerRight />
       </div>
     </div>
   );

@@ -48,6 +48,7 @@ html, body, .App {
 
 /* .App > .AppLeft > .ContainerUpper {
   width: 100%;
+.App > .AppLeft > .ContainerLeft {
   height: 100%;
   position: relative;
 }  */
@@ -265,13 +266,6 @@ button:hover {
 .ContainerRightMiddle > .DietaryRestrictions > #DietaryRestrictionsCheckbox {
   text-align: left;
   font-size: x-large;
-}
-
-.DietaryRestrictionsCheckboxSize {
-  transform: scale(1.5);
-  margin-right: 5%;
-  margin-left: 5%;
-  margin-top: 5%;
 }
 
 .dropdown {
