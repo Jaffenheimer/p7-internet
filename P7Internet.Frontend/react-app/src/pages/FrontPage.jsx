@@ -1,12 +1,12 @@
 import React from "react";
 import ContainerRight from "../components/ContainerRight";
-import ContainerUpper from "../components/ContainerUpper";
+import ContainerLeft from "../components/ContainerLeft";
 
 const FrontPage = () => {
   return (
     <div className="App">
       <div className="AppLeft">
-        <ContainerUpper />
+        <ContainerLeft />
         
       </div>
       <div className="AppRight">

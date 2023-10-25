@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { useDispatch, useSelector } from "react-redux";
+import toast from 'react-hot-toast';
 
 const SearchBar = () => {
   const dispatch = useDispatch();
@@ -14,7 +15,7 @@ const SearchBar = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if(ingredient !== null && typeof(ingredient) !== 'undefined'){
-      if (ingredient == "") return
+      if (ingredient === "") return
 
       // receives the ingredient text (aka. name) from dict on store in format 
       // {0:{id: '', text: ''}, 1:{id: '', text: ''}}¨
@@ -27,7 +28,7 @@ const SearchBar = () => {
       if (!ownedIngredientText.includes(ingredient))
         dispatch(recipeGenerationActions.addOwnedIngredients(ingredient));
       else
-        alert(`Elementet "${ingredient}" er allerede tilføjet til listen!`)
+        toast.error(`Elementet "${ingredient}" er allerede tilføjet til listen!`)
     }
     setIngredient(''); 
   }; 
