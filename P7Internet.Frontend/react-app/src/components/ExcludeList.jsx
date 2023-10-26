@@ -25,28 +25,6 @@ const ExcludeList = () => {
     dispatch(recipeGenerationActions.removeExcludedIngredient(ingredient.id));
   };
 
-  //Functions for add ingredient to state
-  const submitAdd = (event) => {
-    event.preventDefault();
-
-    //Extracts exclude list from redux in dict form to a list of ingredients.
-    var excludeDictionary = Object.values(excludeList);
-    var excludeIngredientText = [];
-    excludeDictionary.forEach((excludeIngredient) =>
-      excludeIngredientText.push(excludeIngredient["text"])
-    );
-
-    //Handles input validation for the excludelist input field
-    if (ingredient === "") toast.error("Tekstfeltet er tomt.");
-    else if (listlength >= 10)
-      toast.error("Du kan ikke tilføje flere ingredienser.");
-    else if (excludeIngredientText.includes(ingredient))
-      toast.error(`"${ingredient}" er allerede tilføjet til listen!`);
-    else dispatch(recipeGenerationActions.addExcludedIngredient(ingredient));
-
-    setIngredient("");
-  };
-
   //function for removing all elements from state
   function removeAllHandler() {
     dispatch(recipeGenerationActions.clearAllExcludedIngredients());

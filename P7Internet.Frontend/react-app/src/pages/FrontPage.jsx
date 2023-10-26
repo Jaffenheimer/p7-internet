@@ -2,10 +2,13 @@ import React from "react";
 import ContainerRight from "../components/ContainerRight";
 import ContainerLeft from "../components/ContainerLeft";
 import Header from "../components/Header";
+import { ToastContainer } from "react-toastify";
 
 const FrontPage = () => {
   return (
     <div className="AppContainer">
+      <ToastContainer 
+        position="top-center"/>
       <div className="headerContainer">
         <Header />
       </div>

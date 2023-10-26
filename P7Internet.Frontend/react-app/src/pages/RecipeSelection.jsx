@@ -2,11 +2,14 @@ import React from "react";
 import RecipeSelectionContainerLeft from "../components/RecipeSelectionContainerLeft";
 import StoreSelection from "../components/StoreSelection";
 import Header from "../components/Header";
+import { ToastContainer } from "react-toastify";
 
 
 const RecipeSelection = () => {
   return (
     <div className="AppContainer">
+      <ToastContainer 
+        position="top-center"/>
       <div className="headerContainer">
         <Header />
       </div>

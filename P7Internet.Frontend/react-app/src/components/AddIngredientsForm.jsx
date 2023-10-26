@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import AddButton from "./AddButton";
 import RemoveAllButton from "./RemoveAllButton";
 import AddIngredientInput from "./AddIngredientInput";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const AddIngredientsForm = ({ingredientsList, addIngredient, removeAllHandler}) => {
   const dispatch = useDispatch();
@@ -37,12 +39,16 @@ const AddIngredientsForm = ({ingredientsList, addIngredient, removeAllHandler}) 
       ingredientsDictionary.forEach((ingredient) =>
       ingredientText.push(ingredient["text"])
       );
-
-      console.log("what",handleChange)
+      if (ingredientText.includes(ingredient)) {
+        toast.error(`"${ingredient}" er allerede tilføjet til listen!`);
+        return;
+      }
+      if (ingredientsList.length >= 10) {
+        toast.error("Du kan ikke tilføje flere end 10 ingredienser");
+        return;
+      }
       // only adds to ownedIngredient if non-dublicate
-      if (!ingredientText.includes(ingredient))
         dispatch(addIngredient(ingredient));
-      else alert(`Elementet "${ingredient}" er allerede tilføjet til listen!`);
     }
     setIngredient("");
   };
