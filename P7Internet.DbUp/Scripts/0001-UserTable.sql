@@ -10,5 +10,7 @@ CREATE TABLE IF NOT EXISTS UserTable (
     Updated DateTime,
     PRIMARY KEY (id)
 );
-
+CREATE INDEX UserTable_Id ON UserTable (Id);
+CREATE INDEX UserTable_Name ON UserTable (Name);
+CREATE INDEX UserTable_Email ON UserTable (Email);
 COMMIT;
