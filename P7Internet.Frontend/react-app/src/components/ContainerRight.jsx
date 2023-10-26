@@ -1,41 +1,34 @@
 import React, { useState } from "react";
-import Pages from "../objects/Pages";
 import ProfilePicture from "./ProfilePicture";
 import NumberField from "./NumberField";
 import DietaryRestrictions from "./DietaryRestrictions";
 import ExcludeList from "./ExcludeList";
 import LoginBox from "./LoginBox";
 import { Toaster } from "react-hot-toast";
-import { useDispatch, useSelector } from "react-redux";
-import { pageActions } from "../features/pageSlice";
+import { useSelector } from "react-redux";
 import Allergens from "./Allergens";
 import Modal from "react-modal";
 
 //styling for the modal
 const customStyles = {
   content: {
+    height: "450px",
+    overflow: "hidden",
     top: "50%",
     left: "50%",
     right: "auto",
     bottom: "auto",
-    marginRight: "-50%",
     transform: "translate(-50%, -50%)",
   },
 };
 
 const ContainerRight = () => {
-  const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const [loggedIn, setLoggedIn] = useState(false);
 
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
-
-  //DELETE WHEN MODAL IS DONE.
-  function goToLoginPage() {
-    dispatch(pageActions.goToPage(Pages.loginPage));
-  }
 
   function SetLoggedInOnChange() {
     //component that dynamically changes when log in status changes

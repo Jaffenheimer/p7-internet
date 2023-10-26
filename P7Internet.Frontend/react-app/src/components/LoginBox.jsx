@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import avatarIcon from "../data/profile.svg";
 import cross from "../data/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
@@ -104,19 +103,11 @@ const LoginBox = ({ closeModal }) => {
           {!creatingAccount ? "Login" : "Opret Bruger"}
           <img
             src={cross}
-            alt="Back Arrow"
+            alt="Back Cross"
             id="loginCross"
             onClick={closeModal}
           />
         </h3>
-        {!creatingAccount ? (
-          <img src={avatarIcon} alt="Avatar" className="avatar" />
-        ) : (
-          <>
-            <br></br>
-            <br></br>
-          </>
-        )}
       </div>
       <div className="container">
         {!creatingAccount ? (
