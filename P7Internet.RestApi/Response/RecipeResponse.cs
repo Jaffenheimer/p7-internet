@@ -1,15 +1,13 @@
-﻿using System;
-
-namespace P7Internet.Response
+﻿namespace P7Internet.Response
 {
     public class RecipeResponse
     {
         public string Recipes { get; }
-        public Guid RecipeId { get; set; }
+
         public bool Success => string.IsNullOrEmpty(ErrorMessage);
         public string ErrorMessage { get; }
 
-        public RecipeResponse(string recipes, Guid recipeId)
+        public RecipeResponse(string recipes)
         {
             recipes = recipes.Trim();
             if (recipes.StartsWith("\"") || recipes.StartsWith("'"))
@@ -19,7 +17,6 @@ namespace P7Internet.Response
                 recipes = recipes.Substring(0, recipes.Length - 1);
             recipes = recipes.Replace('\n', ' ');
             
-            RecipeId = recipeId;
             Recipes = recipes;
         }
 
@@ -29,9 +26,9 @@ namespace P7Internet.Response
             Recipes = recipes;
         }
 
-        public static RecipeResponse Error(string message, Guid id)
+        public static RecipeResponse Error(string message)
         {
-            return new RecipeResponse(message, id);
+            return new RecipeResponse(message);
         }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using P7Internet.Requests;
-using P7Internet.Shared;
+using SharedObjects;
 
 namespace P7Internet.Services;
 

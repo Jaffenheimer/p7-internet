@@ -10,6 +10,7 @@ namespace P7Internet.Persistence.RecipeCacheRepository;
 public class RecipeCacheRepository : IRecipeCacheRepository
 {
     private static readonly string TableName = "CachedRecipes";
+    private static readonly string IngredientsTable = "IngredientsInRecipe";
     private readonly IDbConnectionFactory _connectionFactory;
     private IDbConnection Connection => _connectionFactory.Connection;
 
@@ -18,14 +19,6 @@ public class RecipeCacheRepository : IRecipeCacheRepository
         _connectionFactory = connectionFactory;
     }
     
-    public async Task<bool> CheckIfRecipeExist(Guid recipeId)
-    {
-        var query = $@"SELECT Id FROM {TableName} WHERE Id = @Id";
-        
-        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new {Id = recipeId});
-        
-        return resultFromDb != null;
-    }
     public async Task<List<string>> GetAllRecipes()
     {
         var query = $@"SELECT Recipe FROM {TableName}";
@@ -37,7 +30,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
         return result.AsList();
     }
     
-    public async Task<bool> Upsert(string openAiResponse, Guid recipeId)
+    public async Task<bool> Upsert(string openAiResponse)
     {
         var query = $@"INSERT INTO {TableName} (Id, Recipe)
                        VALUES (@Id, @Recipe)
@@ -45,30 +38,13 @@ public class RecipeCacheRepository : IRecipeCacheRepository
         
         var parameters = new
         {
-            Id = recipeId,
+            Id = Guid.NewGuid(),
             Recipe = openAiResponse
         };
         
         return await Connection.ExecuteAsync(query, parameters) > 0;
     }
 
-    public async Task<List<string>> GetListOfRecipes(List<Guid> ids)
-    {
-        var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
-        
-        var gridReader = await Connection.QueryMultipleAsync(query, new {Ids = ids});
-        
-        var result = gridReader.Read<string>();
-        
-        var recipes = new List<string>();
-        
-        foreach (var recipe in result)
-        {
-            recipes.Add(recipe);
-        }
-        
-        return recipes;
-    }
     
     
 }

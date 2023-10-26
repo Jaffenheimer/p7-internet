@@ -1,10 +1,11 @@
 ﻿version: '3'
 services:
-  #dbup:
-    #build:
-     # context: .
-     # dockerfile: ./Dockerfile-DbUp
+  dbup:
+    build:
+      context: .
+      dockerfile: P7Internet.DbUp/Dockerfile-DbUp
+  
   restapi:
     build:
       context: .
-      dockerfile: ./Dockerfile
+      dockerfile: P7Internet.RestApi/Dockerfile

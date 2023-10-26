@@ -1,5 +1,5 @@
 body > #root > div {
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .App {
@@ -10,7 +10,7 @@ body > #root > div {
 
 .App > .AppLeft {
   width: 75%;
-  height: 100vh;
+  height: 100%;
   margin-top: -22px;
 }
 
@@ -28,7 +28,7 @@ body > #root > div {
 .App > .AppRight {
   background: #bdd2b6;
   width: 25%;
-  min-height: 100vh;
+  height: 100%;
 }
 
 h1 {
@@ -54,18 +54,22 @@ h3 {
 }
 
 ul {
+  list-style-type: none;
   padding: 0;
 }
 
 .IngredientElement {
-  margin-left: 10px;
+  margin: 10px;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 #OwnedIngredientsList > div > ul > .IngredientElement {
-  width: 30%;
+  width: 60%;
 }
 
 #ExcludedIngredientsList > .ingredientsList > ul > .IngredientElement {

@@ -36,11 +36,18 @@ const ExcludeList = () => {
     );
 
     //Handles input validation for the excludelist input field
-    if (ingredient === "") toast.error("Tekstfeltet er tomt.");
-    else if (listlength >= 10)
-      toast.error("Du kan ikke tilføje flere ingredienser.");
+    if (ingredient === "")
+      toast.error(
+        "Tekstfeltet er tomt. Skriv venligst navnet på ingrediensen."
+      );
+    else if (listlength > 10)
+      toast.error(
+        "Du kan ikke tilføje flere ingredienser til listen af ekskluderede ingredienser."
+      );
     else if (excludeIngredientText.includes(ingredient))
-      toast.error(`"${ingredient}" er allerede tilføjet til listen!`);
+      toast.error(
+        "Den indtastede ingrediens er allerede i listen af ekskluderede ingredienser."
+      );
     else dispatch(recipeGenerationActions.addExcludedIngredient(ingredient));
 
     setIngredient("");
