@@ -5,7 +5,6 @@ const initialState = {
   users: [
     {
       id: "23haihfsk",
-      fullname: "admin",
       email: "admin@admin.com",
       username: "admin",
       password: "admin",
@@ -22,11 +21,10 @@ export const userSlice = createSlice({
     addUser(state, action) {
       const user = {
         id: nanoid(),
-        fullname: action.payload[0],
-        email: action.payload[1],
-        username: action.payload[2],
-        password: action.payload[3],
-        heartedRecipes: action.payload[4],
+        email: action.payload[0],
+        username: action.payload[1],
+        password: action.payload[2],
+        heartedRecipes: action.payload[3],
       };
       state.users.push(user);
     },

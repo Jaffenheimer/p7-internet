@@ -8,13 +8,11 @@ import toast from "react-hot-toast";
 const LoginBox = ({ closeModal }) => {
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.users);
-  const [fullname, setFullname] = useState("");
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [creatingAccount, setCreatingAccount] = useState(false);
 
-  const handleChangeFullname = (event) => setFullname(event.target.value);
   const handleChangeEmail = (event) => setEmail(event.target.value);
   const handleChangeUsername = (event) => setUsername(event.target.value);
   const handleChangePassword = (event) => setPassword(event.target.value);
@@ -36,14 +34,6 @@ const LoginBox = ({ closeModal }) => {
       setUsername("");
       setPassword("");
     }
-  }
-
-  //should happen in backend
-  function checkValidFullname() {
-    const fullnameRegex = /^[a-zA-Z]+ [a-zA-Z]+$/;
-    const isValidFullname = fullnameRegex.exec(fullname);
-    if (isValidFullname === null) return false;
-    else return true;
   }
 
   //should happen in backend
@@ -79,10 +69,6 @@ const LoginBox = ({ closeModal }) => {
     const existsUser = users.filter((user) => user.username === username);
 
     if (existsUser.length > 0) toast.error("Brugernavnet er allerede taget.");
-    else if (checkValidFullname() === false)
-      toast.error(
-        "Du har indtastet et ugyldigt navn. Den må kun bestå af bogstaver."
-      );
     else if (checkValidEmail() === false)
       toast.error("Den indtastede email er ugyldig eller allerede i brug.");
     else if (checkValidUsername() === false)
@@ -94,10 +80,8 @@ const LoginBox = ({ closeModal }) => {
         "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn."
       );
     else {
-      dispatch(userActions.addUser([fullname, email, username, password, []]));
+      dispatch(userActions.addUser([email, username, password, []]));
       setCreatingAccount(false);
-      document.getElementById("checkbox").checked = false;
-      setFullname("");
       setEmail("");
       setUsername("");
       setPassword("");
@@ -139,16 +123,6 @@ const LoginBox = ({ closeModal }) => {
           ""
         ) : (
           <>
-            <label>
-              <b>Fulde navn</b>
-            </label>
-            <input
-              type="text"
-              placeholder="Indtast dit fulde navn"
-              value={fullname}
-              onChange={handleChangeFullname}
-              required
-            />
             <label>
               <b>Email</b>
             </label>
