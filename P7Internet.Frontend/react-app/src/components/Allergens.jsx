@@ -28,6 +28,7 @@ const Allergens = () => {
         isMulti
         id="AllergensSelect"
         options={options}
+        placeholder="Vælg allergener"
         onChange={handleChange}
       />
     </div>
