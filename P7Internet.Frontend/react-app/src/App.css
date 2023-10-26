@@ -189,7 +189,7 @@ button:hover {
   font-size: small;
 }
 
-.numberPersonsText{
+.numberPersonsText {
   margin-top: 0%;
   padding: 0%;
   margin-left: 10%;
@@ -261,7 +261,7 @@ button:hover {
 }
 
 #InputFieldExclude {
-  width: 90%;
+  width: 60%;
   height: 100%;
   border: 1px solid black;
   font-size: medium;
@@ -270,7 +270,7 @@ button:hover {
   margin-left: 2.5%;
 }
 
-#RemoveButton {
+#RemoveAllExcludeIngredientsButton {
   margin-top: 5%;
 }
 
