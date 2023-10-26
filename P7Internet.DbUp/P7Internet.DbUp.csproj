@@ -27,10 +27,6 @@
       <None Remove="Scripts\0002-CachedRecipesTable.sql" />
       <EmbeddedResource Include="Scripts\0002-CachedRecipesTable.sql" />
       <None Remove="Scripts\0003-IngredientsInRecipeTable.sql" />
-      <None Remove="Scripts\0003-FavouriteRecipesTable.sql" />
-      <EmbeddedResource Include="Scripts\0003-FavouriteRecipesTable.sql" />
-      <None Remove="Scripts\0004-CachedOfferTable.sql" />
-      <EmbeddedResource Include="Scripts\0004-CachedOfferTable.sql" />
     </ItemGroup>
 
 </Project>

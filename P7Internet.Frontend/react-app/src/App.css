@@ -1,5 +1,5 @@
 body > #root > div {
-  min-height: 100vh;
+  height: 100vh;
 }
 
 .App {
@@ -10,7 +10,7 @@ body > #root > div {
 
 .App > .AppLeft {
   width: 75%;
-  height: 100vh;
+  height: 100%;
   margin-top: -22px;
 }
 
@@ -28,7 +28,7 @@ body > #root > div {
 .App > .AppRight {
   background: #bdd2b6;
   width: 25%;
-  min-height: 100vh;
+  height: 100%;
 }
 
 h1 {
@@ -53,27 +53,8 @@ h3 {
   /*choose styling here for preference titles*/
 }
 
-ul {
-  padding: 0;
-}
-
-.IngredientElement {
-  margin-left: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-#OwnedIngredientsList > div > ul > .IngredientElement {
-  width: 30%;
-}
-
-#ExcludedIngredientsList > .ingredientsList > ul > .IngredientElement {
-  width: 70%;
-}
-
-.RemoveIngredientImage {
-  float: right;
+.toast-position {
+  position: "top-center";
 }
 
 input[type="text"] {
@@ -131,14 +112,6 @@ button:hover {
 #IngredientsBody {
   margin-left: 2%;
   margin-top: 10%;
-}
-
-.excludedIngredientListItems {
-  width: 90%;
-}
-
-.ownedIngredientListItems {
-  width: 40%;
 }
 
 #GenerateRecipeButton {
@@ -220,7 +193,7 @@ button:hover {
   font-size: small;
 }
 
-.numberPersonsText {
+.numberPersonsText{
   margin-top: 0%;
   padding: 0%;
   margin-left: 10%;
@@ -292,7 +265,7 @@ button:hover {
 }
 
 #InputFieldExclude {
-  width: 60%;
+  width: 90%;
   height: 100%;
   border: 1px solid black;
   font-size: medium;
@@ -301,7 +274,7 @@ button:hover {
   margin-left: 2.5%;
 }
 
-#RemoveAllExcludeIngredientsButton {
+#RemoveButton {
   margin-top: 5%;
 }
 

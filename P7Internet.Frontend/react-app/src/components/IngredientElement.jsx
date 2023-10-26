@@ -1,16 +1,26 @@
 import React from "react";
-import cross from "../data/cross.svg";
+import { useSelector } from "react-redux";
 
-const IngredientElement = ({ ingredient, handleRemove }) => {
+const IngredientElement = ({ ingredient }) => {
+  const ownedIngredientsList = useSelector(
+    (state) => state.recipeGeneration.ownedIngredients
+  );
+
+  function isOwned(ingredient) {
+    for (const ownedIngredient of ownedIngredientsList) {
+      if (ownedIngredient.text === ingredient) {
+        return true;
+      }
+      return false;
+    }
+  }
+
   return (
-    <div className="IngredientElement">
-      <li key={ingredient.id}>{ingredient.text}</li>
-      <img
-        className="RemoveIngredientImage"
-        src={cross}
-        alt="cross"
-        onClick={(event) => handleRemove(event, ingredient)}
-      />
+    <div>
+      <li key={ingredient}>
+        {ingredient}
+        {isOwned(ingredient) ? <b> Ejet </b> : ""}
+      </li>
     </div>
   );
 };

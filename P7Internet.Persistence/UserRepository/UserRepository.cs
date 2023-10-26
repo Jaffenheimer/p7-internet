@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using P7Internet.Persistence.Connection;
-using P7Internet.Shared;
+using SharedObjects;
 
 namespace P7Internet.Persistence.UserRepository;
 
