@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7Internet.Shared", "P7Internet.Shared\P7Internet.Shared.csproj", "{043D105F-32DC-4C4F-8868-4E2FB84A836B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7Internet.Shared", "P7Internet.Shared\P7Internet.Shared.csproj", "{5AE8E67C-855B-4822-96A6-57B68DD4D7FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -40,10 +40,10 @@ Global
 		{4D3A36B2-98E5-4F03-9E50-2BD876B7FFF8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D3A36B2-98E5-4F03-9E50-2BD876B7FFF8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D3A36B2-98E5-4F03-9E50-2BD876B7FFF8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{043D105F-32DC-4C4F-8868-4E2FB84A836B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{043D105F-32DC-4C4F-8868-4E2FB84A836B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{043D105F-32DC-4C4F-8868-4E2FB84A836B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{043D105F-32DC-4C4F-8868-4E2FB84A836B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5AE8E67C-855B-4822-96A6-57B68DD4D7FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5AE8E67C-855B-4822-96A6-57B68DD4D7FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5AE8E67C-855B-4822-96A6-57B68DD4D7FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5AE8E67C-855B-4822-96A6-57B68DD4D7FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

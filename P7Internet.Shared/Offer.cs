@@ -1,9 +1,6 @@
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
 
-namespace P7Internet.Shared;
-
+namespace P7_Internet.Shared;
 public class Offer
 {
     public Offer()
