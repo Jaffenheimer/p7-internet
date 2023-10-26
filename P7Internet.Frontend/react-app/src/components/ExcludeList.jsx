@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import cross from "../data/cross.svg";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
+import IngredientsList from "./IngredientsList";
+import IngredientElement from "./IngredientElement";
 
 const ExcludeList = () => {
   const [ingredient, setIngredient] = useState("");
@@ -63,18 +64,11 @@ const ExcludeList = () => {
         />
         <button type="submit">Tilføj</button>
         <div id="ExcludedIngredientsList">
-          <ul>
-            {excludeList.map((ingredient) => (
-              <li key={ingredient.id}>
-                {ingredient.text}
-                <img
-                  src={cross}
-                  alt="cross"
-                  onClick={(event) => handleRemove(event, ingredient)}
-                />
-              </li>
-            ))}
-          </ul>
+          <IngredientsList
+            ingredients={excludeList}
+            ListElement={IngredientElement}
+            handleRemove={handleRemove}
+          />
         </div>
       </form>
       <button id="RemoveAllExcludeIngredientsButton" onClick={submitRemoveAll}>
