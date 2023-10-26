@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { recipeGenerationActions } from "../features/recipeGenerationSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import AddButton from "./AddButton";
 import RemoveAllButton from "./RemoveAllButton";
 import AddIngredientInput from "./AddIngredientInput";
@@ -14,13 +13,13 @@ const AddIngredientsForm = ({
 }) => {
   const dispatch = useDispatch();
   const [ingredient, setIngredient] = useState("");
-  //const ownedIngredientsList = useSelector(state => state.recipeGeneration.ownedIngredients);
   const [addButtonIsDisabled, setAddButtonDisabled] = useState(true);
   const [removeAllButtonIsDisabled, setRemoveAllButtonDisabled] =
     useState(true);
 
+  
   useEffect(() => {
-    handleRemoveAllButtonDisabling();
+    handleRemoveAllButtonDisabling();// eslint-disable-next-line
   }, [ingredientsList]);
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const AddIngredientsForm = ({
   const handleSubmit = (event) => {
     event.preventDefault();
     if (ingredient !== null && typeof ingredient !== "undefined") {
-      if (ingredient == "") return;
+      if (ingredient === "") return;
 
       // receives the ingredient text (aka. name) from dict on store in format
       // {0:{id: '', text: ''}, 1:{id: '', text: ''}}¨

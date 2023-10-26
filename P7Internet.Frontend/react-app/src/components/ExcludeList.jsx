@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import IngredientsList from "./IngredientsList";
@@ -8,7 +7,6 @@ import IngredientElement from "./IngredientElement";
 import AddIngredientsForm from "./AddIngredientsForm";
 
 const ExcludeList = () => {
-  const [ingredient, setIngredient] = useState("");
   const dispatch = useDispatch();
 
   // Gets the list from the store
@@ -17,7 +15,6 @@ const ExcludeList = () => {
   );
 
   //Gets the length from the array from store
-  const listlength = Array.from(excludeList).length;
 
   //Function for handling the remove feature
   const handleRemove = (event, ingredient) => {
