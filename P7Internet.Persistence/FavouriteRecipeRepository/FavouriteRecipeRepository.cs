@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Dapper;
 using P7Internet.Persistence.Connection;
 using P7Internet.Persistence.RecipeCacheRepository;
-using SharedObjects;
 
 namespace P7Internet.Persistence.FavouriteRecipeRepository;
 

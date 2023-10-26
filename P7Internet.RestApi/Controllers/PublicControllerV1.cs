@@ -9,7 +9,6 @@ using P7Internet.Persistence.UserRepository;
 using P7Internet.Requests;
 using P7Internet.Response;
 using P7Internet.Services;
-using SharedObjects;
 
 namespace P7Internet.Controllers;
 

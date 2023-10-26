@@ -1,8 +1,8 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
 
-namespace SharedObjects;
+namespace P7Internet.Shared;
 
 public class Offer
 {

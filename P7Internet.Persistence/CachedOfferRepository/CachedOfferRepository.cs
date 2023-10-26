@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using P7Internet.Persistence.CachedIngredientPricesRepository;
 using P7Internet.Persistence.Connection;
-using SharedObjects;
+using P7Internet.Shared;
 
 namespace P7Internet.Persistence.CachedOfferRepository;
 

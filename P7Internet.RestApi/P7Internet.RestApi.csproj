@@ -29,6 +29,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\P7Internet.Persistence\P7Internet.Persistence.csproj" />
+        <ProjectReference Include="..\P7Internet.Shared\P7Internet.Shared.csproj" />
     </ItemGroup>
     <ItemGroup>
         <Content Update="appsettings.json">
@@ -41,6 +42,5 @@
       <Folder Include="Dtos\" />
       <Folder Include="RequestObjects\" />
     </ItemGroup>
-    <Import Project="..\SharedObjects\SharedObjects.projitems" Label="Shared" />
 
 </Project>
