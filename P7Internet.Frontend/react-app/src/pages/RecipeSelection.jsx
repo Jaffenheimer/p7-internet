@@ -6,8 +6,8 @@ import Header from "../components/Header";
 
 const RecipeSelection = () => {
   return (
-    <div className="AppContainer2">
-      <div className="header2">
+    <div className="AppContainer">
+      <div className="headerContainer">
         <Header />
       </div>
       <div className={"split-container"}>
@@ -19,12 +19,6 @@ const RecipeSelection = () => {
         </div>
       </div>
     </div>
-    // <div className="App">
-    //   <RecipeSelectionContainerLeft />
-    //   <div className="AppRight">
-    //     <StoreSelection />
-    //   </div>
-    // </div>
   );
 };
 

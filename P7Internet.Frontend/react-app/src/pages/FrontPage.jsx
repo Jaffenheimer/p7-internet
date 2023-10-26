@@ -3,11 +3,10 @@ import ContainerRight from "../components/ContainerRight";
 import ContainerLeft from "../components/ContainerLeft";
 import Header from "../components/Header";
 
-
 const FrontPage = () => {
   return (
-    <div className="AppContainer2">
-      <div className="header2">
+    <div className="AppContainer">
+      <div className="headerContainer">
         <Header />
       </div>
       <div className={"split-container"}>
@@ -15,21 +14,10 @@ const FrontPage = () => {
           <ContainerLeft />
         </div>
         <div className={"split-screen-right"}>
-         <ContainerRight />
+          <ContainerRight />
         </div>
       </div>
     </div>
-    // <div style={{height: '100%'}} >
-    //     <Header />
-    //     <div className="App">
-    //     <div className="AppLeft">
-    //       <ContainerUpper />
-    //     </div>
-    //     <div className="AppRight">
-    //       <ContainerRight />
-    //     </div>
-    //   </div>
-    // </div>
   );
 };
 

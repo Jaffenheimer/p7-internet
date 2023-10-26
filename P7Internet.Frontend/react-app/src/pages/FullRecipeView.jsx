@@ -25,8 +25,8 @@ function FullRecipeView() {
   }
 
   return (
-    <div className="AppContainer2">
-      <div className="header2">
+    <div className="AppContainer">
+      <div className="headerContainer">
         <Header />
       </div>
       <div className="FullRecipeView">

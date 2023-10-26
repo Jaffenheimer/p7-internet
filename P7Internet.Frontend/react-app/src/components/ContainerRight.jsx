@@ -13,12 +13,15 @@ const ContainerRight = () => {
         <Toaster />
       </div>
       <div className="ContainerRightTop">
-        <div className="ContainerRightColumn">
-          <h3 id="NumberPersonsText">Personer</h3>
-        </div>
-        <div className="ContainerRightColumn">
+          <h3>Personer</h3>
+          <div className="NumberFieldContainer">
+          </div>
+          <div className="ContainerRightColumn">
+              <NumberField />
+            </div>
+        {/* <div className="ContainerRightColumn">
           <NumberField />
-        </div>
+        </div> */}
         {/* <div className="ContainerRightColumn">
           <ProfilePicture />
         </div> */}
