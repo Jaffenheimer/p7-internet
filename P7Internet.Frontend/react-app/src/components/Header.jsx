@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import LoginBox from "./LoginBox";
 import { useSelector } from "react-redux";
 import Modal from "react-modal";
+import { useEffect } from "react";
 
 //styling for the modal
 const customStyles = {
@@ -27,8 +28,11 @@ const Header = () => {
 
   function SetLoggedInOnChange() {
     //component that dynamically changes when log in status changes
-    if (loggedInUser.length === 1) setLoggedIn(true);
-    else setLoggedIn(false);
+    useEffect(() => {
+      if (loggedInUser.length === 1) setLoggedIn(true);
+      else setLoggedIn(false);
+    })
+  
   }
 
   return (
