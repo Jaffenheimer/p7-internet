@@ -3,9 +3,9 @@ services:
   dbup:
     build:
       context: .
-      dockerfile: P7Internet.DbUp/Dockerfile-DbUp
+      dockerfile: ./Dockerfile-DbUp
   
   restapi:
     build:
       context: .
-      dockerfile: P7Internet.RestApi/Dockerfile
+      dockerfile: ./Dockerfile
