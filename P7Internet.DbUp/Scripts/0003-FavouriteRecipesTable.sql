@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS FavouriteRecipesTable
     RecipeId VARCHAR(40) NOT NULL,
     PRIMARY KEY (No)
 );
-
+CREATE INDEX FavouriteRecipesTable_UserId ON FavouriteRecipesTable (UserId);
+CREATE INDEX FavouriteRecipesTable_RecipeId ON FavouriteRecipesTable (RecipeId);
 COMMIT;
     

@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS CachedOfferTable
     Store           VARCHAR(250) NOT NULL,
     CreatedAt       DATETIME NOT NULL
 );
-CREATE INDEX CachedRecipes_Name ON CachedOfferTable(IngredientName);
-CREATE INDEX CachedRecipes_Store ON CachedOfferTable(Store);
+CREATE INDEX CachedOffer_Name ON CachedOfferTable(IngredientName);
+CREATE INDEX CachedOffer_Store ON CachedOfferTable(Store);
 
 COMMIT;
