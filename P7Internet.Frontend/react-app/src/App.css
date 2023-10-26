@@ -49,8 +49,34 @@ h2 {
   letter-spacing: 0.75px;
 }
 
-input[type="text"],
-input[type="password"] {
+h3 {
+  /*choose styling here for preference titles*/
+}
+
+ul {
+  padding: 0;
+}
+
+.IngredientElement {
+  margin-left: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#OwnedIngredientsList > div > ul > .IngredientElement {
+  width: 30%;
+}
+
+#ExcludedIngredientsList > .ingredientsList > ul > .IngredientElement {
+  width: 70%;
+}
+
+.RemoveIngredientImage {
+  float: right;
+}
+
+input[type="text"], input[type="password"] {
   color: rgba(0, 0, 0, 0.5);
   width: 30%;
   margin-right: 3%;
@@ -105,6 +131,14 @@ button:hover {
 #IngredientsBody {
   margin-left: 2%;
   margin-top: 10%;
+}
+
+.excludedIngredientListItems {
+  width: 90%;
+}
+
+.ownedIngredientListItems {
+  width: 40%;
 }
 
 #GenerateRecipeButton {
@@ -258,7 +292,7 @@ button:hover {
 }
 
 #InputFieldExclude {
-  width: 90%;
+  width: 60%;
   height: 100%;
   border: 1px solid black;
   font-size: medium;
@@ -267,7 +301,7 @@ button:hover {
   margin-left: 2.5%;
 }
 
-#RemoveButton {
+#RemoveAllExcludeIngredientsButton {
   margin-top: 5%;
 }
 
