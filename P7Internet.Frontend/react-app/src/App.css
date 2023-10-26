@@ -35,7 +35,7 @@ html, body {
 
 .split-container{
   position: relative;
-  height: calc(100vh - 110px);
+  min-height: calc(100vh - 110px);
   display: flex;
   flex-direction: row;
 }
@@ -54,7 +54,7 @@ html, body {
 
 .split-screen-left, 
 .split-screen-right {
-  height: 100%;
+  min-height: 100vh;
   padding: 20px;
   display: block;
 }
