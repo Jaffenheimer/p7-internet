@@ -26,6 +26,7 @@ const StoreSelection = () => {
   //whenever we update the store hook, we update the redux
   useEffect(() => {
     dispatch(storesActions.setStores(values));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
 
   const handleChange = (event, actionMeta) => {
