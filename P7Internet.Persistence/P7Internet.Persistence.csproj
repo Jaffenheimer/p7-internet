@@ -13,6 +13,9 @@
         <PackageReference Include="MySql.Data" Version="8.1.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
-    
-    <Import Project="..\SharedObjects\SharedObjects.projitems" Label="Shared" />
+
+
+    <ItemGroup>
+      <ProjectReference Include="..\P7Internet.Shared\P7Internet.Shared.csproj" />
+    </ItemGroup>
 </Project>
