@@ -20,5 +20,3 @@ export default function App() {
     return <FullRecipeView />;
   }
 }
-
-//husk også at ændre i './components/index.jsx'
