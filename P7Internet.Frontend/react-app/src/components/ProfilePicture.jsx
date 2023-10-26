@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import profile from "../data/profile.svg";
+import "../App.css";
 import { userActions } from "../features/userSlice";
 import { useDispatch } from "react-redux";
 
@@ -26,7 +27,7 @@ const ProfilePicture = () => {
 
   return (
     <div className="ProfilePicture">
-      <img src={profile} alt="ProfilePicture" onClick={profileClick} />
+      <img className="Profile" src={profile} alt="ProfilePicture" onClick={profileClick} />
       {open ? (
         <ul className="menu">
           <li className="menu-item">

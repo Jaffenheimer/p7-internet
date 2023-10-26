@@ -1,57 +1,139 @@
-body > #root > div {
-  min-height: 100vh;
+/* body > #root {
+  height: 100vh;
+} */
+
+html, body {
+  margin: 0;
+  max-height: 100vh;
+  max-width: 100vw;
 }
 
-.App {
-  background: #f8ede3;
+.AppContainer {
+  height: 100vh;
+  width: 100vw;
+  background: #FFF2D8;
+}
+
+.headerContainer{
+  height: 50px;
+  background-color: #BCA37F;
+  padding: 10px;
+  text-align: center;
+}
+
+.split-container{
+  position: relative;
+  height: calc(100vh - 110px);
   display: flex;
   flex-direction: row;
 }
 
-.App > .AppLeft {
+.split-screen-left{
   width: 75%;
-  height: 100vh;
-  margin-top: -22px;
+  background: #FFF2D8;
 }
 
+.split-screen-right{
+  width: 25%;
+  background: #EAD7BB;
+}
+
+.split-screen-left, 
+.split-screen-right {
+  height: 100%;
+  padding: 20px;
+  display: block;
+}
+
+.searchfield{
+  min-width: 250px;
+  width: 400px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+}
+
+
+
+/* .AppContainer{
+  height: 100%;
+} */
+
+/* .App {
+  height: 100%;
+  width: 100%;
+  background: #f8ede3;
+  display: flex;
+  flex-direction: row;
+} */
+/* 
+.App > .AppLeft {
+  display: block;
+  width: 75%;
+  height: 100%;
+  display: flex;
+  margin-top: -22px;
+} */
+
+
+.header {
+  padding: 0;
+  margin: 0 ;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+
+.title{
+  text-align: center;
+  font-size: 40px;
+  font-family: Verdana;
+  flex: 1;
+}
+
+/* .App > .AppLeft > .ContainerUpper {
+  width: 100%;
 .App > .AppLeft > .ContainerLeft {
   height: 100%;
   position: relative;
-}
+}  */
 
-.App > .AppLeft > .RecipeSelectionContainerLeft {
+
+.RecipeSelectionContainerLeft {
   padding: 10px;
   height: 60%;
-  background: #f8ede3;
 }
 
 .App > .AppRight {
-  background: #bdd2b6;
+  background: #EAD7BB;
   width: 25%;
   min-height: 100vh;
 }
 
 h1 {
   font-family: Verdana;
-  display: block;
-  height: 65px;
+  /* display: block; */
+  /* height: 65px; */
+  font-size: xx-large;
   text-align: center;
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
 }
 
 h2 {
   color: #000;
   font-family: Verdana;
-  font-size: 35px;
+  font-size: x-large;
   font-style: normal;
   font-weight: 400;
   line-height: 16px; /* 45.714% */
   letter-spacing: 0.75px;
 }
 
-h3 {
-  /*choose styling here for preference titles*/
-}
+/* h3 {
+  choose styling here for preference titles
+} */
 
 ul {
   padding: 0;
@@ -109,11 +191,13 @@ img {
 button {
   width: 145px;
   height: 40px;
-  background-color: white;
+  /* background-color: white; */
+  background-color: #113946;
+  color: white;
   border: 2px solid black;
   border-radius: 5px; /* rounded corners */
-  border-color: #212120;
-  color: #000;
+  border-color: #113946;
+  /* color: #000; */
   cursor: pointer;
   text-align: center;
   font-family: Verdana;
@@ -127,11 +211,15 @@ button {
 button:hover {
   background: #e7e7e7;
 }
+/* 
+.FormStyle{
+  width: 100%;
+} */
 
-#IngredientsBody {
+/* #IngredientsBody {
   margin-left: 2%;
   margin-top: 10%;
-}
+} */
 
 .excludedIngredientListItems {
   width: 90%;
@@ -141,13 +229,13 @@ button:hover {
   width: 40%;
 }
 
-#GenerateRecipeButton {
+/* #GenerateRecipeButton {
   position: absolute;
   right: 0;
   bottom: 0;
   margin-bottom: 3%;
   margin-right: 3%;
-}
+}  */
 
 .RecipeView > #RecipeTitleDiv > h1 {
   text-align: left;
@@ -160,6 +248,7 @@ button:hover {
 
 #selectRecipeButton {
   float: right;
+  align-items: right;
 }
 
 #SelectArrows > img {
@@ -167,18 +256,34 @@ button:hover {
   transform: scale(2);
 }
 
-.ProfilePicture > img {
+/* .ProfilePicture > img {
+  vertical-align: middle;
+  margin: 0 auto;
   transform: scale(2.5);
   margin-top: 10%;
   float: right;
   margin-right: 15%;
+} */
+
+.Profile{
+  width: 40px;
+  height: 40px;
+  flex: 1;
+  text-align: center;
+}
+
+.NumberFieldContainer{
+  position: absolute;
+  height: 35px;
+  width: 30%;
 }
 
 .NumberField {
   transform: scale(1.5);
   display: flex;
   justify-content: center;
-  margin-top: 10%;
+  margin-left: 22px;
+  /* margin-top: 10%; */
 }
 
 #NumberFieldToast {
@@ -223,12 +328,12 @@ button:hover {
 .numberPersonsText {
   margin-top: 0%;
   padding: 0%;
-  margin-left: 10%;
+  margin-left: 20%;
 }
 
 .ContainerRightColumn {
   float: left;
-  width: 33.33%;
+  /*width: 33.33%;*/
   justify-content: center;
   margin-top: 3%;
 }
@@ -261,7 +366,9 @@ button:hover {
   padding: 0;
   border: 1px solid grey;
   width: 150px;
-  transform: translateY(40px);
+  transform: translateY(-5px);
+  transform: translateX(-105px);
+  z-index: 1000;
 }
 
 .menu > li {
@@ -299,6 +406,10 @@ button:hover {
   text-align: center;
   float: center;
   margin-left: 2.5%;
+
+  height: 35px;
+  border: none;
+  border-radius: 5px;
 }
 
 #RemoveAllExcludeIngredientsButton {

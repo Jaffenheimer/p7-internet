@@ -1,18 +1,21 @@
 import React from "react";
 import ContainerRight from "../components/ContainerRight";
 import ContainerLeft from "../components/ContainerLeft";
-import { ToastContainer } from "react-toastify";
+import Header from "../components/Header";
 
 const FrontPage = () => {
   return (
-    <div className="App">
-        <ToastContainer 
-        position="top-center"/>
-      <div className="AppLeft">
-        <ContainerLeft />
+    <div className="AppContainer">
+      <div className="headerContainer">
+        <Header />
       </div>
-      <div className="AppRight">
-        <ContainerRight />
+      <div className={"split-container"}>
+        <div className={"split-screen-left"}>
+          <ContainerLeft />
+        </div>
+        <div className={"split-screen-right"}>
+          <ContainerRight />
+        </div>
       </div>
     </div>
   );

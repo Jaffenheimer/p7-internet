@@ -44,8 +44,9 @@ const SearchBar = () => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className={"FormStyle"} onSubmit={handleSubmit}>
       <input
+        className="searchfield"
         type="text"
         name="ingredient"
         value={ingredient}
