@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace SharedObjects
+namespace P7Internet.Shared
 {
     public class Recipe
     {

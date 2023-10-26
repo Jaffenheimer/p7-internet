@@ -17,7 +17,8 @@ const SearchBar = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     if(ingredient !== null && typeof(ingredient) !== 'undefined'){
-      if (ingredient === "") return
+      if (ingredient === "") 
+        return
 
       // receives the ingredient text (aka. name) from dict on store in format
       // {0:{id: '', text: ''}, 1:{id: '', text: ''}}¨
