@@ -18,6 +18,14 @@ public class RecipeCacheRepository : IRecipeCacheRepository
         _connectionFactory = connectionFactory;
     }
     
+    public async Task<bool> CheckIfRecipeExist(Guid recipeId)
+    {
+        var query = $@"SELECT Id FROM {TableName} WHERE Id = @Id";
+        
+        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new {Id = recipeId});
+        
+        return resultFromDb != null;
+    }
     public async Task<List<string>> GetAllRecipes()
     {
         var query = $@"SELECT Recipe FROM {TableName}";

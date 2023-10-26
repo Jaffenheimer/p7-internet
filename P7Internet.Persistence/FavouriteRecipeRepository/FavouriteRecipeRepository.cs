@@ -11,7 +11,7 @@ namespace P7Internet.Persistence.FavouriteRecipeRepository;
 
 public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 {
-    private static readonly string TableName = "CachedRecipes";
+    private static readonly string TableName = "FavouriteRecipes";
     private readonly IDbConnectionFactory _connectionFactory;
     private readonly IRecipeCacheRepository _cachedRecipeRepository;
     private IDbConnection Connection => _connectionFactory.Connection;
@@ -39,6 +39,10 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 
     public async Task<bool> Upsert(Guid userId, Guid recipeId)
     {
+        var checkIfRecipeExist = await _cachedRecipeRepository.CheckIfRecipeExist(recipeId);
+        if(checkIfRecipeExist == false)
+            throw new ArgumentException($@"The recipe with the id: {recipeId} does not exist in the database. And therefore cannot be added to the favourite recipes.");
+        
         var query = $@"INSERT INTO {TableName} (UserId, RecipeId)
                        VALUES (@UserId, @RecipeId)";
 
