@@ -1,19 +1,27 @@
 import React, { useState } from "react";
 import profile from "../data/profile.svg";
 import "../App.css";
+import { userActions } from "../features/userSlice";
+import { useDispatch } from "react-redux";
 
 const ProfilePicture = () => {
+  const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
   function profileClick() {
     setOpen(!open);
   }
 
-  const handleMenuOne = () => {
+  const handleFavorites = () => {
     setOpen(false);
   };
 
-  const handleMenuTwo = () => {
+  const handleSettings = () => {
+    setOpen(false);
+  };
+
+  const handleLogOut = () => {
+    dispatch(userActions.logoutUser()); //the user is now logged out
     setOpen(false);
   };
 
@@ -23,10 +31,13 @@ const ProfilePicture = () => {
       {open ? (
         <ul className="menu">
           <li className="menu-item">
-            <button onClick={handleMenuOne}>Favoritter</button>
+            <button onClick={handleFavorites}>Favoritter</button>
           </li>
           <li className="menu-item">
-            <button onClick={handleMenuTwo}>Indstillinger</button>
+            <button onClick={handleSettings}>Indstillinger</button>
+          </li>
+          <li className="menu-item">
+            <button onClick={handleLogOut}>Log ud</button>
           </li>
         </ul>
       ) : null}

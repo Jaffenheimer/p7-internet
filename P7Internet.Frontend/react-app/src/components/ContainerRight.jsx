@@ -1,12 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import ProfilePicture from "./ProfilePicture";
 import NumberField from "./NumberField";
 import DietaryRestrictions from "./DietaryRestrictions";
 import ExcludeList from "./ExcludeList";
+import LoginBox from "./LoginBox";
 import { Toaster } from "react-hot-toast";
+import { useSelector } from "react-redux";
 import Allergens from "./Allergens";
+import Modal from "react-modal";
+
+//styling for the modal
+const customStyles = {
+  content: {
+    height: "450px",
+    overflow: "hidden",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 const ContainerRight = () => {
+
   return (
     <div className="ContainerRight">
       <div>
@@ -19,13 +36,8 @@ const ContainerRight = () => {
           <div className="ContainerRightColumn">
               <NumberField />
             </div>
-        {/* <div className="ContainerRightColumn">
-          <NumberField />
-        </div> */}
-        {/* <div className="ContainerRightColumn">
-          <ProfilePicture />
-        </div> */}
-      </div>
+        </div>
+       
       <div className="ContainerRightMiddle">
         <DietaryRestrictions />
         <Allergens />
@@ -33,7 +45,7 @@ const ContainerRight = () => {
       <div className="ContainerRightBottom">
         <ExcludeList />
       </div>
-    </div>
+    </div> 
   );
 };
 

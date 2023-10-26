@@ -1,6 +1,6 @@
 using System;
 
-namespace SharedObjects;
+namespace P7Internet.Shared;
 
 public class User
 {
