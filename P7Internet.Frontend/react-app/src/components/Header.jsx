@@ -31,8 +31,7 @@ const Header = () => {
     useEffect(() => {
       if (loggedInUser.length === 1) setLoggedIn(true);
       else setLoggedIn(false);
-    })
-  
+    });
   }
 
   return (
@@ -48,11 +47,11 @@ const Header = () => {
       </Modal>
       <div className="title">Opskriftsgenerator</div>
       <SetLoggedInOnChange />
-          {loggedIn ? (
-            <ProfilePicture />
-          ) : (
-            <button onClick={openModal}>Log In</button>
-          )}
+      {loggedIn ? (
+        <ProfilePicture />
+      ) : (
+        <button onClick={openModal}>Log In</button>
+      )}
     </div>
   );
 };

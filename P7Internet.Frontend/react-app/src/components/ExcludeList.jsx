@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
 import IngredientsList from "./IngredientsList";
 import IngredientElement from "./IngredientElement";
@@ -33,14 +33,18 @@ const ExcludeList = () => {
   return (
     <div id="ExcludeList">
       <h3 id="ExcludeListText">Ekskluder ingredienser:</h3>
-      <AddIngredientsForm addIngredient={recipeGenerationActions.addExcludedIngredient} ingredientsList={excludeList} removeAllHandler={removeAllHandler}/>
+      <AddIngredientsForm
+        addIngredient={recipeGenerationActions.addExcludedIngredient}
+        ingredientsList={excludeList}
+        removeAllHandler={removeAllHandler}
+      />
       <div id="ExcludedIngredientsList">
-          <IngredientsList
-            ingredients={excludeList}
-            ListElement={IngredientElement}
-            handleRemove={handleRemove}
-          />
-        </div>
+        <IngredientsList
+          ingredients={excludeList}
+          ListElement={IngredientElement}
+          handleRemove={handleRemove}
+        />
+      </div>
     </div>
   );
 };

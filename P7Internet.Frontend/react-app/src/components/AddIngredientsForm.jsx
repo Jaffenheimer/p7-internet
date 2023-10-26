@@ -7,12 +7,17 @@ import AddIngredientInput from "./AddIngredientInput";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const AddIngredientsForm = ({ingredientsList, addIngredient, removeAllHandler}) => {
+const AddIngredientsForm = ({
+  ingredientsList,
+  addIngredient,
+  removeAllHandler,
+}) => {
   const dispatch = useDispatch();
-  const [ingredient, setIngredient] = useState('');
+  const [ingredient, setIngredient] = useState("");
   //const ownedIngredientsList = useSelector(state => state.recipeGeneration.ownedIngredients);
   const [addButtonIsDisabled, setAddButtonDisabled] = useState(true);
-  const [removeAllButtonIsDisabled, setRemoveAllButtonDisabled] = useState(true);
+  const [removeAllButtonIsDisabled, setRemoveAllButtonDisabled] =
+    useState(true);
 
   useEffect(() => {
     handleRemoveAllButtonDisabling();
@@ -37,7 +42,7 @@ const AddIngredientsForm = ({ingredientsList, addIngredient, removeAllHandler}) 
       var ingredientText = [];
 
       ingredientsDictionary.forEach((ingredient) =>
-      ingredientText.push(ingredient["text"])
+        ingredientText.push(ingredient["text"])
       );
       if (ingredientText.includes(ingredient)) {
         toast.error(`"${ingredient}" er allerede tilføjet til listen!`);
@@ -48,33 +53,40 @@ const AddIngredientsForm = ({ingredientsList, addIngredient, removeAllHandler}) 
         return;
       }
       // only adds to ownedIngredient if non-dublicate
-        dispatch(addIngredient(ingredient));
+      dispatch(addIngredient(ingredient));
     }
     setIngredient("");
   };
 
   //add button is disabled if input is empty, else enabled
   const handleAddButtonDisabling = (value) => {
-    if (value === "")
-      setAddButtonDisabled(true)
-    else
-      setAddButtonDisabled(false)
-  }
+    if (value === "") setAddButtonDisabled(true);
+    else setAddButtonDisabled(false);
+  };
 
   //remove all button is disabled if there are no ingredients to remove, else enabled
   const handleRemoveAllButtonDisabling = () => {
-    if (ingredientsList.length === 0)
-      setRemoveAllButtonDisabled(true)
-    else
-      setRemoveAllButtonDisabled(false)
-  }
-    
+    if (ingredientsList.length === 0) setRemoveAllButtonDisabled(true);
+    else setRemoveAllButtonDisabled(false);
+  };
+
   return (
-      <form onSubmit={handleSubmit}>
-        <AddIngredientInput ingredient={ingredient} handleChange={handleChange} placeholder="Tilføj en ingrediens..." />
-        <AddButton type="submit" isDisabled={addButtonIsDisabled} className="AddIngredientButton" />
-        <RemoveAllButton handleClick={removeAllHandler} isDisabled={removeAllButtonIsDisabled} />
-      </form>
+    <form onSubmit={handleSubmit}>
+      <AddIngredientInput
+        ingredient={ingredient}
+        handleChange={handleChange}
+        placeholder="Tilføj en ingrediens..."
+      />
+      <AddButton
+        type="submit"
+        isDisabled={addButtonIsDisabled}
+        className="AddIngredientButton"
+      />
+      <RemoveAllButton
+        handleClick={removeAllHandler}
+        isDisabled={removeAllButtonIsDisabled}
+      />
+    </form>
   );
 };
 
