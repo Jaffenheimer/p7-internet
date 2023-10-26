@@ -38,10 +38,11 @@ const Header = () => {
         style={customStyles}
         onRequestClose={closeModal}
         contentLabel="Example Modal"
+        ariaHideApp={false}
       >
         <LoginBox closeModal={closeModal} />
       </Modal>
-      <div className="title">Opskrifts Generator</div>
+      <div className="title">Opskriftsgenerator</div>
       <SetLoggedInOnChange />
           {loggedIn ? (
             <ProfilePicture />
