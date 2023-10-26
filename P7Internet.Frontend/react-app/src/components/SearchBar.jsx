@@ -33,7 +33,7 @@ const SearchBar = () => {
       if (!ownedIngredientText.includes(ingredient))
         dispatch(recipeGenerationActions.addOwnedIngredients(ingredient));
       else
-        toast.error(`Elementet "${ingredient}" er allerede tilføjet til listen!`)
+        toast.error(`"${ingredient}" er allerede tilføjet til listen!`)
     }
     setIngredient("");
   };
