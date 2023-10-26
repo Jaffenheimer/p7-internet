@@ -1,5 +1,5 @@
 using System.Threading.Tasks;
-using SharedObjects;
+using P7Internet.Shared;
 
 namespace P7Internet.Persistence.UserRepository;
 

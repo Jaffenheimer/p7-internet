@@ -3,6 +3,7 @@ WORKDIR /src
 
 #Copy Files
 COPY ["P7Internet.Persistence/", "P7Internet.Persistence/"]
+COPY ["P7Internet.Shared/", "P7Internet.Shared/"]
 COPY ["P7Internet.RestApi/", "P7Internet.RestApi/"]
 
 # Persistence project
@@ -10,7 +11,10 @@ WORKDIR /src/P7Internet.Persistence
 RUN dotnet restore
 RUN dotnet build 
 
-# Shared project
+#Shared project
+WORKDIR /src/P7Internet.Shared
+RUN dotnet restore
+RUN dotnet build
 
 # Api project
 WORKDIR /src/P7Internet.RestApi
