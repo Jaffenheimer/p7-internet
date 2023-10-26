@@ -44,9 +44,28 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
         if(checkIfRecipeExist == false)
             throw new ArgumentException($@"The recipe with the id: {recipeId} does not exist in the database. And therefore cannot be added to the favourite recipes.");
         
+        var checkIfRecipeIsAlreadyFavourite = await CheckIfRecipeIsAlreadyFavourite(userId, recipeId);
+        if(checkIfRecipeIsAlreadyFavourite)
+            throw new ArgumentException($@"The recipe with the id: {recipeId} is already a favourite recipe.");
+        
         var query = $@"INSERT INTO {TableName} (UserId, RecipeId)
                        VALUES (@UserId, @RecipeId)";
 
         return await Connection.ExecuteAsync(query, new { UserId = userId, RecipeId = recipeId }) > 0;
+    }
+    public async Task<bool> Delete(Guid userId, Guid recipeId)
+    {
+        var query = $@"DELETE FROM {TableName} WHERE UserId = @UserId AND RecipeId = @RecipeId";
+
+        return await Connection.ExecuteAsync(query, new { UserId = userId, RecipeId = recipeId }) > 0;
+    }
+    
+    private async Task<bool> CheckIfRecipeIsAlreadyFavourite(Guid userId, Guid recipeId)
+    {
+        var query = $@"SELECT RecipeId FROM {TableName} WHERE UserId = @UserId AND RecipeId = @RecipeId";
+        
+        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new {UserId = userId, RecipeId = recipeId});
+        
+        return resultFromDb != null;
     }
 }

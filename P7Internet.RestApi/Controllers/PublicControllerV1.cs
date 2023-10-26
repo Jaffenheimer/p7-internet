@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -66,7 +67,8 @@ public class PublicControllerV1 : ControllerBase
         
         var res = _openAiService.GetAiResponse(openAiRequest);
         
-        await _cachedRecipeRepository.Upsert(res.Recipes);
+        await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+        
         return Ok(res);
     }
     [HttpGet("offer/getOffer")]
@@ -127,7 +129,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("Username or password is incorrect please try again");
     }
-    [HttpPost("user/add-favourite-recipe")]
+    [HttpPost("user/favourite-recipe")]
     public async Task<IActionResult> AddFavouriteRecipe([FromQuery] AddFavouriteRecipeRequest req)
     {
         var result = await _favouriteRecipeRepository.Upsert(req.UserId, req.RecipeId);
@@ -138,7 +140,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("This should never happen");
     }
-    [HttpGet("user/get-favourite-recipes")]
+    [HttpGet("user/favourite-recipes")]
     public async Task<IActionResult> GetFavouriteRecipes([FromQuery] GetFavouriteRecipesRequest req)
     {
         var result = await _favouriteRecipeRepository.Get(req.UserId);
@@ -148,6 +150,18 @@ public class PublicControllerV1 : ControllerBase
         }
 
         return BadRequest("No favourite recipes found");
+    }
+    
+    [HttpDelete("user/favourite-recipe")]
+    public async Task<IActionResult> DeleteFavouriteRecipe([FromQuery] DeleteFavouriteRecipeRequest req)
+    {
+        var result = await _favouriteRecipeRepository.Delete(req.UserId, req.RecipeId);
+        if (result)
+        {
+            return Ok("Recipe deleted from favourites");
+        }
+
+        return BadRequest("This should never happen");
     }
     
     #endregion

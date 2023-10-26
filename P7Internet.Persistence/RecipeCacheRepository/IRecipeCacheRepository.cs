@@ -8,6 +8,6 @@ public interface IRecipeCacheRepository
 {
     public Task<bool> CheckIfRecipeExist(Guid recipeId);
     public Task<List<string>> GetAllRecipes();
-    public Task<bool> Upsert(string recipe);
+    public Task<bool> Upsert(string recipe, Guid recipeId);
     public Task<List<string>> GetListOfRecipes(List<Guid> ids);
 }

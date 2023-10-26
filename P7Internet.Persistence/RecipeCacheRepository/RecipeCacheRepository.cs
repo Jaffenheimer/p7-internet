@@ -37,7 +37,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
         return result.AsList();
     }
     
-    public async Task<bool> Upsert(string openAiResponse)
+    public async Task<bool> Upsert(string openAiResponse, Guid recipeId)
     {
         var query = $@"INSERT INTO {TableName} (Id, Recipe)
                        VALUES (@Id, @Recipe)
@@ -45,7 +45,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
         
         var parameters = new
         {
-            Id = Guid.NewGuid(),
+            Id = recipeId,
             Recipe = openAiResponse
         };
         
