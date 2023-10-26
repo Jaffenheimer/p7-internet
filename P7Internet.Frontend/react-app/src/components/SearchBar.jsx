@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { useDispatch, useSelector } from "react-redux";
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const SearchBar = () => {
   const dispatch = useDispatch();

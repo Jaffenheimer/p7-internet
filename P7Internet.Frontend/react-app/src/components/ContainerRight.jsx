@@ -4,10 +4,12 @@ import NumberField from "./NumberField";
 import DietaryRestrictions from "./DietaryRestrictions";
 import ExcludeList from "./ExcludeList";
 import LoginBox from "./LoginBox";
-import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import Allergens from "./Allergens";
-import Modal from "react-modal";
+
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 //styling for the modal
 const customStyles = {
@@ -23,12 +25,10 @@ const customStyles = {
 };
 
 const ContainerRight = () => {
-
   return (
     <div className="ContainerRight">
-      <div>
-        <Toaster />
-      </div>
+            <ToastContainer 
+        position="top-center"/>
       <div className="ContainerRightTop">
           <h3>Personer</h3>
           <div className="NumberFieldContainer">
