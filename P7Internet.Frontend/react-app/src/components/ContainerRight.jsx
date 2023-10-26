@@ -3,7 +3,6 @@ import ProfilePicture from "./ProfilePicture";
 import NumberField from "./NumberField";
 import DietaryRestrictions from "./DietaryRestrictions";
 import ExcludeList from "./ExcludeList";
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Allergens from "./Allergens";
 
