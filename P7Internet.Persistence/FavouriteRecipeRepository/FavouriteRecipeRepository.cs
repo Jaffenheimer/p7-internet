@@ -11,14 +11,15 @@ namespace P7Internet.Persistence.FavouriteRecipeRepository;
 
 public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 {
-    private static readonly string TableName = "FavouriteRecipes";
+    private static readonly string TableName = "FavouriteRecipesTable";
     private readonly IDbConnectionFactory _connectionFactory;
     private readonly IRecipeCacheRepository _cachedRecipeRepository;
     private IDbConnection Connection => _connectionFactory.Connection;
 
-    public FavouriteRecipeRepository(IDbConnectionFactory connectionFactory)
+    public FavouriteRecipeRepository(IDbConnectionFactory connectionFactory, IRecipeCacheRepository cachedRecipeRepository)
     {
         _connectionFactory = connectionFactory;
+        _cachedRecipeRepository = cachedRecipeRepository;
     }
 
 
