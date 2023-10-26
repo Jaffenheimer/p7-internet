@@ -33,18 +33,17 @@ public class OpenAiService
             MaxTokens = 512,
             Temperature = 0.5
         };
-
+        var recipeId = Guid.NewGuid();
         try
         {
             var completionResult = _openAi.Chat.CreateChatCompletionAsync(request);
             var result = completionResult.Result;
             if (result.Choices.Count == 0) return null;
-
-            return new RecipeResponse(result.Choices[0].Message.Content);
+            return new RecipeResponse(result.Choices[0].Message.Content, recipeId);
         }
         catch (Exception e)
         {
-            return RecipeResponse.Error(e.Message);
+            return RecipeResponse.Error(e.Message,recipeId);
         }
     }
 }

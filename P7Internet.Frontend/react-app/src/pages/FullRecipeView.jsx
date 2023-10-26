@@ -6,6 +6,7 @@ import MethodsList from "../components/MethodsList";
 import Pages from "../objects/Pages";
 import React from "react";
 import ForPersons from "../components/ForPersons";
+import Header from "../components/Header";
 import RecipeIngredientElement from "../components/RecipeIngredientElement";
 
 function FullRecipeView() {
@@ -25,7 +26,10 @@ function FullRecipeView() {
   }
 
   return (
-    <div className="App">
+    <div className="AppContainer">
+      <div className="headerContainer">
+        <Header />
+      </div>
       <div className="FullRecipeView">
         <RecipeTitle id="RecipeTitle" title={recipe.title} />
         <ForPersons />

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from "react-redux";
 import IngredientsList from "./IngredientsList";
 import IngredientElement from "./IngredientElement";
@@ -36,18 +37,11 @@ const ExcludeList = () => {
     );
 
     //Handles input validation for the excludelist input field
-    if (ingredient === "")
-      toast.error(
-        "Tekstfeltet er tomt. Skriv venligst navnet på ingrediensen."
-      );
-    else if (listlength > 10)
-      toast.error(
-        "Du kan ikke tilføje flere ingredienser til listen af ekskluderede ingredienser."
-      );
+    if (ingredient === "") toast.error("Tekstfeltet er tomt.");
+    else if (listlength >= 10)
+      toast.error("Du kan ikke tilføje flere ingredienser.");
     else if (excludeIngredientText.includes(ingredient))
-      toast.error(
-        "Den indtastede ingrediens er allerede i listen af ekskluderede ingredienser."
-      );
+      toast.error(`"${ingredient}" er allerede tilføjet til listen!`);
     else dispatch(recipeGenerationActions.addExcludedIngredient(ingredient));
 
     setIngredient("");
