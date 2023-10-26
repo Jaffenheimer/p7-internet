@@ -57,6 +57,7 @@ const RecipeView = () => {
   //trigger on component mount
   useEffect(() => {
     dispatch(recipeActions.setDefaultRecipes(recipes));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   return (
     <div className="RecipeView">

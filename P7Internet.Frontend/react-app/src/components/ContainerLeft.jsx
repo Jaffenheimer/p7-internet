@@ -16,7 +16,6 @@ const ContainerLeft = () => {
 
   return (
     <div className="ContainerLeft">
-      <h1 id="RecipeGenerator">Opskriftsgenerator</h1>
       <div id="IngredientsBody">
         <h2>Ingredienser jeg gerne vil bruge:</h2>
         <AddIngredientsForm addIngredient={recipeGenerationActions.addOwnedIngredients} ingredientsList={ownedIngredientsList} removeAllHandler={removeAllHandler} />

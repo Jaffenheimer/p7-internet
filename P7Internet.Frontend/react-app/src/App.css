@@ -1,57 +1,153 @@
-body > #root > div {
+/* body > #root {
   height: 100vh;
+} */
+
+*, *::before, *::after {
+  box-sizing: inherit;
 }
 
-.App {
-  background: #f8ede3;
+html {
+  /* this makes sure the padding and the border is included in the box sizing */
+  box-sizing: inherit;
+  overflow-x: hidden;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100vh;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+
+.AppContainer {
+  height: 100vh;
+  width: 100%;
+  background: #FFF2D8;
+}
+
+.headerContainer{
+  height: 50px;
+  background-color: #BCA37F;
+  padding: 10px;
+  text-align: center;
+}
+
+.split-container{
+  position: relative;
+  min-height: calc(100vh - 110px);
   display: flex;
   flex-direction: row;
 }
 
-.App > .AppLeft {
+.split-screen-left{
   width: 75%;
-  height: 100%;
-  margin-top: -22px;
+  background: #FFF2D8;
+  min-height: 100vh;
 }
 
+.split-screen-right{
+  width: 25%;
+  background: #EAD7BB;
+  min-height: 100vh;
+}
+
+.split-screen-left, 
+.split-screen-right {
+  min-height: 100vh;
+  padding: 20px;
+  display: block;
+}
+
+.searchfield{
+  min-width: 250px;
+  width: 400px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+}
+
+
+
+/* .AppContainer{
+  height: 100%;
+} */
+
+/* .App {
+  height: 100%;
+  width: 100%;
+  background: #f8ede3;
+  display: flex;
+  flex-direction: row;
+} */
+/* 
+.App > .AppLeft {
+  display: block;
+  width: 75%;
+  height: 100%;
+  display: flex;
+  margin-top: -22px;
+} */
+
+
+.header {
+  padding: 0;
+  margin: 0 ;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+
+.title{
+  text-align: center;
+  font-size: 40px;
+  font-family: Verdana;
+  flex: 1;
+}
+
+/* .App > .AppLeft > .ContainerUpper {
+  width: 100%;
 .App > .AppLeft > .ContainerLeft {
   height: 100%;
   position: relative;
-}
+}  */
 
-.App > .AppLeft > .RecipeSelectionContainerLeft {
+
+.RecipeSelectionContainerLeft {
   padding: 10px;
   height: 60%;
-  background: #f8ede3;
 }
 
 .App > .AppRight {
-  background: #bdd2b6;
+  background: #EAD7BB;
   width: 25%;
   height: 100%;
 }
 
 h1 {
   font-family: Verdana;
-  display: block;
-  height: 65px;
+  /* display: block; */
+  /* height: 65px; */
+  font-size: xx-large;
   text-align: center;
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
 }
 
 h2 {
   color: #000;
   font-family: Verdana;
-  font-size: 35px;
+  font-size: x-large;
   font-style: normal;
   font-weight: 400;
   line-height: 16px; /* 45.714% */
   letter-spacing: 0.75px;
 }
 
-h3 {
-  /*choose styling here for preference titles*/
-}
+/* h3 {
+  choose styling here for preference titles
+} */
 
 ul {
   list-style-type: none;
@@ -80,7 +176,7 @@ ul {
   float: right;
 }
 
-input[type="text"] {
+input[type="text"], input[type="password"] {
   color: rgba(0, 0, 0, 0.5);
   width: 30%;
   margin-right: 3%;
@@ -113,11 +209,13 @@ img {
 button {
   width: 145px;
   height: 40px;
-  background-color: white;
+  /* background-color: white; */
+  background-color: #113946;
+  color: white;
   border: 2px solid black;
   border-radius: 5px; /* rounded corners */
-  border-color: #212120;
-  color: #000;
+  border-color: #113946;
+  /* color: #000; */
   cursor: pointer;
   text-align: center;
   font-family: Verdana;
@@ -139,11 +237,15 @@ button:disabled {
 button:hover {
   background: #e7e7e7;
 }
+/* 
+.FormStyle{
+  width: 100%;
+} */
 
-#IngredientsBody {
+/* #IngredientsBody {
   margin-left: 2%;
   margin-top: 10%;
-}
+} */
 
 .excludedIngredientListItems {
   width: 90%;
@@ -153,13 +255,13 @@ button:hover {
   width: 40%;
 }
 
-#GenerateRecipeButton {
+/* #GenerateRecipeButton {
   position: absolute;
   right: 0;
   bottom: 0;
   margin-bottom: 3%;
   margin-right: 3%;
-}
+}  */
 
 .RecipeView > #RecipeTitleDiv > h1 {
   text-align: left;
@@ -172,6 +274,7 @@ button:hover {
 
 #selectRecipeButton {
   float: right;
+  align-items: right;
 }
 
 #SelectArrows > img {
@@ -179,18 +282,34 @@ button:hover {
   transform: scale(2);
 }
 
-.ProfilePicture > img {
+/* .ProfilePicture > img {
+  vertical-align: middle;
+  margin: 0 auto;
   transform: scale(2.5);
   margin-top: 10%;
   float: right;
   margin-right: 15%;
+} */
+
+.Profile{
+  width: 40px;
+  height: 40px;
+  flex: 1;
+  text-align: center;
+}
+
+.NumberFieldContainer{
+  position: absolute;
+  height: 35px;
+  width: 30%;
 }
 
 .NumberField {
   transform: scale(1.5);
   display: flex;
   justify-content: center;
-  margin-top: 10%;
+  margin-left: 22px;
+  /* margin-top: 10%; */
 }
 
 #NumberFieldToast {
@@ -235,12 +354,12 @@ button:hover {
 .numberPersonsText {
   margin-top: 0%;
   padding: 0%;
-  margin-left: 10%;
+  margin-left: 20%;
 }
 
 .ContainerRightColumn {
   float: left;
-  width: 33.33%;
+  /*width: 33.33%;*/
   justify-content: center;
   margin-top: 3%;
 }
@@ -273,7 +392,9 @@ button:hover {
   padding: 0;
   border: 1px solid grey;
   width: 150px;
-  transform: translateY(40px);
+  transform: translateY(-5px);
+  transform: translateX(-105px);
+  z-index: 1000;
 }
 
 .menu > li {
@@ -311,6 +432,10 @@ button:hover {
   text-align: center;
   float: center;
   margin-left: 2.5%;
+
+  height: 35px;
+  border: none;
+  border-radius: 5px;
 }
 
 #RemoveAllExcludeIngredientsButton {
@@ -358,4 +483,134 @@ button:hover {
   bottom: 0;
   margin-bottom: 3%;
   margin-right: 3%;
+}
+
+/* Login */
+.LoginForm {
+  background-color: white;
+  height: 600px;
+  width: 400px;
+  margin: auto;
+}
+
+.LoginForm input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+#loginCross {
+  padding: 3%;
+  transform: scale(1.2);
+  float: right;
+}
+
+#alreadyHasUserText,
+#noUserText {
+  display: inline-block;
+}
+
+.LoginPage {
+  display: flex;
+  margin: auto;
+}
+
+.LoginForm button {
+  width: 100%;
+}
+
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+img.avatar {
+  width: 50%;
+  height: 50%;
+  border-radius: 50%;
+}
+
+img.avatar:hover {
+  cursor: default;
+}
+
+.container {
+  padding: 16px;
+}
+
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+  margin-left: 10px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+#loginModal {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
 }

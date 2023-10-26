@@ -3,7 +3,8 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const GenerateRecipeButton = () => {
   const dispatch = useDispatch();

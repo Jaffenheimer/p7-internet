@@ -1,28 +1,27 @@
 import React from "react";
-import ProfilePicture from "./ProfilePicture";
 import NumberField from "./NumberField";
 import DietaryRestrictions from "./DietaryRestrictions";
 import ExcludeList from "./ExcludeList";
-import { Toaster } from "react-hot-toast";
 import Allergens from "./Allergens";
+
+import { ToastContainer } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const ContainerRight = () => {
   return (
     <div className="ContainerRight">
-      <div>
-        <Toaster />
-      </div>
+            <ToastContainer 
+        position="top-center"/>
       <div className="ContainerRightTop">
-        <div className="ContainerRightColumn">
-          <h3 id="NumberPersonsText">Personer</h3>
+          <h3>Personer</h3>
+          <div className="NumberFieldContainer">
+          </div>
+          <div className="ContainerRightColumn">
+              <NumberField />
+            </div>
         </div>
-        <div className="ContainerRightColumn">
-          <NumberField />
-        </div>
-        <div className="ContainerRightColumn">
-          <ProfilePicture />
-        </div>
-      </div>
+       
       <div className="ContainerRightMiddle">
         <DietaryRestrictions />
         <Allergens />
@@ -30,7 +29,7 @@ const ContainerRight = () => {
       <div className="ContainerRightBottom">
         <ExcludeList />
       </div>
-    </div>
+    </div> 
   );
 };
 
