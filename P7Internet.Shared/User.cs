@@ -1,4 +1,5 @@
 using System;
+
 namespace P7Internet.Shared;
 
 public class User
