@@ -4,7 +4,6 @@ import NumberField from "./NumberField";
 import DietaryRestrictions from "./DietaryRestrictions";
 import ExcludeList from "./ExcludeList";
 import LoginBox from "./LoginBox";
-import { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
 import Allergens from "./Allergens";
 import Modal from "react-modal";
@@ -46,9 +45,6 @@ const ContainerRight = () => {
       >
         <LoginBox closeModal={closeModal} />
       </Modal>
-      <div>
-        <Toaster />
-      </div>
       <div className="ContainerRightTop">
         <div className="ContainerRightColumn">
           <h3 id="NumberPersonsText">Personer</h3>
