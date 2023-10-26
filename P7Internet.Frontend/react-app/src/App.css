@@ -2,15 +2,27 @@
   height: 100vh;
 } */
 
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+html {
+  /* this makes sure the padding and the border is included in the box sizing */
+  box-sizing: inherit;
+  overflow-x: hidden;
+}
+
 html, body {
   margin: 0;
   min-height: 100vh;
-  max-width: 100vw;
+  width: 100%;
+  padding: 0;
+  margin: 0;
 }
 
 .AppContainer {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   background: #FFF2D8;
 }
 
