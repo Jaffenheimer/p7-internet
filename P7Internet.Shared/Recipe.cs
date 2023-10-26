@@ -1,5 +1,8 @@
-namespace P7_Internet.Shared;
+using System;
+using System.Collections.Generic;
 
+namespace P7Internet.Shared
+{
     public class Recipe
     {
         public Guid Id { get; set; }
@@ -17,3 +20,4 @@ namespace P7_Internet.Shared;
             Ingredients = ingredients;
         }
     }
+}

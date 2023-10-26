@@ -4,6 +4,7 @@ import NumberField from "./NumberField";
 import DietaryRestrictions from "./DietaryRestrictions";
 import ExcludeList from "./ExcludeList";
 import { Toaster } from "react-hot-toast";
+import Allergens from "./Allergens";
 
 const ContainerRight = () => {
   return (
@@ -13,7 +14,7 @@ const ContainerRight = () => {
       </div>
       <div className="ContainerRightTop">
         <div className="ContainerRightColumn">
-          <p id="NumberPersons">Personer</p>
+          <h3 id="NumberPersonsText">Personer</h3>
         </div>
         <div className="ContainerRightColumn">
           <NumberField />
@@ -24,6 +25,7 @@ const ContainerRight = () => {
       </div>
       <div className="ContainerRightMiddle">
         <DietaryRestrictions />
+        <Allergens />
       </div>
       <div className="ContainerRightBottom">
         <ExcludeList />

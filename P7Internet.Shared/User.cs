@@ -1,4 +1,6 @@
-namespace P7_Internet.Shared;
+using System;
+
+namespace P7Internet.Shared;
 
 public class User
 {
@@ -8,16 +10,13 @@ public class User
     public string PasswordHash { get; set; }
     public string PasswordSalt { get; set; }
     public DateTime CreatedAt { get; set; }
-    public DateTime UpdatedAt { get; set; }
 
-    public User(Guid id,string name, string emailAddress, string passwordHash, string passwordSalt, DateTime createdAt, DateTime updatedAt)
+    public User(string name, string emailAddress)
     {
-        Id = id;
+        Id = Guid.NewGuid();
         Name = name;
         EmailAddress = emailAddress;
-        PasswordHash = passwordHash;
-        PasswordSalt = passwordSalt;
-        CreatedAt = createdAt;
-        UpdatedAt = updatedAt;
+        CreatedAt = DateTime.UtcNow;
     }
+    
 }

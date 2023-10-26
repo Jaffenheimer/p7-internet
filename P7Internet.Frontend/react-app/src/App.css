@@ -1,5 +1,5 @@
 body > #root > div {
-  height: 100vh;
+  min-height: 100vh;
 }
 
 .App {
@@ -10,11 +10,11 @@ body > #root > div {
 
 .App > .AppLeft {
   width: 75%;
-  height: 100%;
+  height: 100vh;
   margin-top: -22px;
 }
 
-.App > .AppLeft > .ContainerUpper {
+.App > .AppLeft > .ContainerLeft {
   height: 100%;
   position: relative;
 }
@@ -28,7 +28,7 @@ body > #root > div {
 .App > .AppRight {
   background: #bdd2b6;
   width: 25%;
-  height: 100%;
+  min-height: 100vh;
 }
 
 h1 {
@@ -47,6 +47,10 @@ h2 {
   font-weight: 400;
   line-height: 16px; /* 45.714% */
   letter-spacing: 0.75px;
+}
+
+h3 {
+  /*choose styling here for preference titles*/
 }
 
 input[type="text"] {
@@ -145,6 +149,7 @@ button:hover {
   justify-content: center;
   margin-top: 10%;
 }
+
 #NumberFieldToast {
   transform: scale(0.7);
   text-align: center;
@@ -184,8 +189,7 @@ button:hover {
   font-size: small;
 }
 
-#NumberPersons {
-  font-size: xx-large;
+.numberPersonsText{
   margin-top: 0%;
   padding: 0%;
   margin-left: 10%;
@@ -206,7 +210,6 @@ button:hover {
 }
 
 #DietaryRestrictions {
-  font-size: xx-large;
   text-align: left;
   margin-left: 2.5%;
 }
@@ -214,13 +217,6 @@ button:hover {
 .ContainerRightMiddle > .DietaryRestrictions > #DietaryRestrictionsCheckbox {
   text-align: left;
   font-size: x-large;
-}
-
-.DietaryRestrictionsCheckboxSize {
-  transform: scale(1.5);
-  margin-right: 5%;
-  margin-left: 5%;
-  margin-top: 5%;
 }
 
 .dropdown {
@@ -279,7 +275,6 @@ button:hover {
 }
 
 #ExcludeListText {
-  font-size: xx-large;
   text-align: left;
   margin-left: 2.5%;
   margin-top: 12%;
