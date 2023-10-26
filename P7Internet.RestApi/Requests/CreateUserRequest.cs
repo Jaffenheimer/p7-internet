@@ -1,5 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
+namespace P7Internet.Requests;
+
 public class CreateUserRequest
 {
     public string Name { get; set; }
