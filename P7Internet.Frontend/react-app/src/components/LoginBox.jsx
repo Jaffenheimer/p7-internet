@@ -158,17 +158,17 @@ const LoginBox = ({ closeModal }) => {
               Husk mig: <input type="checkbox" />{" "}
             </label>
             <br />
-            <a href="#">Glemt kodeord?</a>
+            <a href="/#">Glemt kodeord?</a>
             <br />
             <p id="noUserText">Ingen bruger:</p>
-            <a href="#" onClick={handleUserToCreateAccount}>
+            <a href="/#" onClick={handleUserToCreateAccount}>
               Opret Bruger
             </a>
           </>
         ) : (
           <>
             <p id="alreadyHasUserText">Har allerede en bruger:</p>
-            <a href="#" onClick={handleUserToLogIn}>
+            <a href="/#" onClick={handleUserToLogIn}>
               Log in
             </a>
           </>
