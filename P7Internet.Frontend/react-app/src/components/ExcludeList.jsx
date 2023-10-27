@@ -1,12 +1,14 @@
-import React, { useState} from "react";
-import cross from "../data/cross.svg";
+import React, { useState } from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
-import toast from 'react-hot-toast';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from "react-redux";
+import IngredientsList from "./IngredientsList";
+import IngredientElement from "./IngredientElement";
 
 const ExcludeList = () => {
   const [ingredient, setIngredient] = useState("");
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
 
   // Gets the list from the store
   const excludeList = useSelector(
@@ -25,24 +27,28 @@ const ExcludeList = () => {
   //Functions for add ingredient to state
   const submitAdd = (event) => {
     event.preventDefault();
-    
+
     //Extracts exclude list from redux in dict form to a list of ingredients.
-    var excludeDictionary = Object.values(excludeList)
-    var excludeIngredientText = []
-    excludeDictionary.forEach((excludeIngredient) => excludeIngredientText.push(excludeIngredient['text']))
+    var excludeDictionary = Object.values(excludeList);
+    var excludeIngredientText = [];
+    excludeDictionary.forEach((excludeIngredient) =>
+      excludeIngredientText.push(excludeIngredient["text"])
+    );
 
     //Handles input validation for the excludelist input field
-    if(ingredient === '')                                   toast.error("Tekstfeltet er tomt.")
-    else if (listlength >= 10)                               toast.error("Du kan ikke tilføje flere ingredienser.");
-    else if(excludeIngredientText.includes(ingredient))     toast.error(`"${ingredient}" er allerede tilføjet til listen!`)
-    else                                                    dispatch(recipeGenerationActions.addExcludedIngredient(ingredient));  
-     
-    setIngredient("");    
-  }
+    if (ingredient === "") toast.error("Tekstfeltet er tomt.");
+    else if (listlength >= 10)
+      toast.error("Du kan ikke tilføje flere ingredienser.");
+    else if (excludeIngredientText.includes(ingredient))
+      toast.error(`"${ingredient}" er allerede tilføjet til listen!`);
+    else dispatch(recipeGenerationActions.addExcludedIngredient(ingredient));
+
+    setIngredient("");
+  };
 
   //function for removing all elements from state
   function submitRemoveAll() {
-    dispatch(recipeGenerationActions.clearAllExcludedIngredient());
+    dispatch(recipeGenerationActions.clearAllExcludedIngredients());
   }
 
   return (
@@ -57,22 +63,16 @@ const ExcludeList = () => {
           value={ingredient}
           onChange={(event) => setIngredient(event.target.value)}
         />
+        <button type="submit">Tilføj</button>
         <div id="ExcludedIngredientsList">
-          <ul>
-            {excludeList.map((ingredient) => (
-              <li key={ingredient.id}>
-                {ingredient.text}
-              <img
-                src={cross}
-                alt="cross"
-                onClick={(event) => handleRemove(event, ingredient)}
-              />
-              </li>
-            ))}
-          </ul>
+          <IngredientsList
+            ingredients={excludeList}
+            ListElement={IngredientElement}
+            handleRemove={handleRemove}
+          />
         </div>
       </form>
-      <button id="RemoveButton" onClick={submitRemoveAll}>
+      <button id="RemoveAllExcludeIngredientsButton" onClick={submitRemoveAll}>
         Fjern alle
       </button>
     </div>

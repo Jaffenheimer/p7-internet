@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import avatarIcon from "../data/profile.svg";
 import cross from "../data/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
-import toast from "react-hot-toast";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const LoginBox = ({ closeModal }) => {
   const dispatch = useDispatch();
@@ -104,19 +104,11 @@ const LoginBox = ({ closeModal }) => {
           {!creatingAccount ? "Login" : "Opret Bruger"}
           <img
             src={cross}
-            alt="Back Arrow"
+            alt="Back Cross"
             id="loginCross"
             onClick={closeModal}
           />
         </h3>
-        {!creatingAccount ? (
-          <img src={avatarIcon} alt="Avatar" className="avatar" />
-        ) : (
-          <>
-            <br></br>
-            <br></br>
-          </>
-        )}
       </div>
       <div className="container">
         {!creatingAccount ? (
@@ -166,17 +158,17 @@ const LoginBox = ({ closeModal }) => {
               Husk mig: <input type="checkbox" />{" "}
             </label>
             <br />
-            <a href="#">Glemt kodeord?</a>
+            <a href="/#">Glemt kodeord?</a>
             <br />
             <p id="noUserText">Ingen bruger:</p>
-            <a href="#" onClick={handleUserToCreateAccount}>
+            <a href="/#" onClick={handleUserToCreateAccount}>
               Opret Bruger
             </a>
           </>
         ) : (
           <>
             <p id="alreadyHasUserText">Har allerede en bruger:</p>
-            <a href="#" onClick={handleUserToLogIn}>
+            <a href="/#" onClick={handleUserToLogIn}>
               Log in
             </a>
           </>

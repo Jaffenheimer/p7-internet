@@ -1,14 +1,16 @@
 import React from "react";
-import IngredientElement from "./IngredientElement";
 
-const IngredientsList = ({ ingredients }) => {
-
+const IngredientsList = ({ ingredients, ListElement, handleRemove }) => {
   return (
-    <div className="ingredients">
+    <div className="ingredientsList">
       <h2>Ingredienser:</h2>
       <ul>
-        {ingredients.map((ingredient,index) => (
-          <IngredientElement key={index} ingredient={ingredient} />
+        {ingredients.map((ingredient, index) => (
+          <ListElement
+            key={index}
+            ingredient={ingredient}
+            handleRemove={handleRemove}
+          />
         ))}
       </ul>
     </div>
