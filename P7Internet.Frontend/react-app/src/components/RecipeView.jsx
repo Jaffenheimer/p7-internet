@@ -5,9 +5,27 @@ import IngredientsList from "./IngredientsList";
 import { useDispatch, useSelector } from "react-redux";
 import { recipeActions } from "../features/recipeSlice";
 import RecipeIngredientElement from "./RecipeIngredientElement";
+import Modal from "react-modal";
+import LoginBox from "./LoginBox";
+
+//styling for the modal
+const customStyles = {
+  content: {
+    height: "450px",
+    overflow: "hidden",
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    transform: "translate(-50%, -50%)",
+  },
+};
 
 const RecipeView = () => {
   const dispatch = useDispatch();
+  const [modalIsOpen, setIsOpen] = React.useState(false);
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   function startsWithNumber(string) {
     return /^\d/.test(string);
@@ -61,11 +79,21 @@ const RecipeView = () => {
   }, []);
   return (
     <div className="RecipeView">
-      <RecipeTitle title={recipes[tab].title} />
+      <RecipeTitle title={recipes[tab].title} openModal={openModal} />
       <IngredientsList
         ingredients={recipes[tab].ingredients}
         ListElement={RecipeIngredientElement}
       />
+
+      <Modal
+        isOpen={modalIsOpen}
+        style={customStyles}
+        onRequestClose={closeModal}
+        contentLabel="Example Modal"
+        ariaHideApp={false}
+        >
+          <LoginBox closeModal={closeModal} />
+      </Modal>
     </div>
   );
 };
