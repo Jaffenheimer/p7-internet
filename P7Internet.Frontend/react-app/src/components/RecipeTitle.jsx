@@ -4,8 +4,9 @@ import heartSolid from "../data/heart-solid.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { useEffect } from "react";
+import { pageActions } from "../features/pageSlice";
 
-const RecipeTitle = ({ title, openModal }) => {
+const RecipeTitle = ({ title}) => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const [heart, setHeart] = useState(heartHollow);
@@ -13,7 +14,7 @@ const RecipeTitle = ({ title, openModal }) => {
   function handleClick(event) {
     event.preventDefault();
     if (loggedInUser.length !== 1){ //if not logged in
-      openModal()
+      dispatch(pageActions.openModal())
     }
     else{
       if (heart === heartSolid) {

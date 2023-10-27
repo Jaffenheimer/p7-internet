@@ -1,9 +1,10 @@
 import ProfilePicture from "./ProfilePicture";
 import React, { useState } from "react";
 import LoginBox from "./LoginBox";
-import { useSelector } from "react-redux";
 import Modal from "react-modal";
 import { useEffect } from "react";
+import { pageActions } from "../features/pageSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 //styling for the modal
 const customStyles = {
@@ -19,12 +20,14 @@ const customStyles = {
 };
 
 const Header = () => {
+  const dispatch = useDispatch();
+  
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  const modalShown = useSelector((state) => state.page.modalShown);
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const [modalIsOpen, setIsOpen] = React.useState(false);
-  const openModal = () => setIsOpen(true);
-  const closeModal = () => setIsOpen(false);
+  const openModal = () => dispatch(pageActions.openModal());
+  const closeModal = () => dispatch(pageActions.closeModal());
 
   function SetLoggedInOnChange() {
     //component that dynamically changes when log in status changes
@@ -32,13 +35,12 @@ const Header = () => {
       if (loggedInUser.length === 1) setLoggedIn(true);
       else setLoggedIn(false);
     })
-  
   }
 
   return (
     <div className="header">
       <Modal
-        isOpen={modalIsOpen}
+        isOpen={modalShown}
         style={customStyles}
         onRequestClose={closeModal}
         contentLabel="Example Modal"
@@ -47,7 +49,7 @@ const Header = () => {
         <LoginBox closeModal={closeModal} />
       </Modal>
       <div className="title">Opskriftsgenerator</div>
-      <SetLoggedInOnChange />
+      <SetLoggedInOnChange /> {/* Dynamically check if user is logged in */}
           {loggedIn ? (
             <ProfilePicture />
           ) : (
