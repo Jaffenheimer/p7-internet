@@ -8,7 +8,6 @@ public class ChangePasswordRequest
 
     public ChangePasswordRequest()
     {
-        
     }
 
     public ChangePasswordRequest(string userName, string oldPassword, string newPassword)

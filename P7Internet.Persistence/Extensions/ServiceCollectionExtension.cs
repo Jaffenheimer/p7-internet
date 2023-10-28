@@ -21,7 +21,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<IRecipeCacheRepository, RecipeCacheRepository.RecipeCacheRepository>();
         services.AddScoped<IFavouriteRecipeRepository, FavouriteRecipeRepository.FavouriteRecipeRepository>();
         services.AddScoped<ICachedOfferRepository, CachedOfferRepository.CachedOfferRepository>();
-        
+
 
         // Dapper
         SqlMapper.AddTypeHandler(new GuidTypeHandler());

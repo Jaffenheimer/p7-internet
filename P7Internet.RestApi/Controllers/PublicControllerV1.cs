@@ -25,7 +25,9 @@ public class PublicControllerV1 : ControllerBase
     private readonly ETilbudsAvisService _eTilbudsAvisService;
     private readonly EmailService _emailService;
 
-    public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService, IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository, ICachedOfferRepository cachedOfferRepository, EmailService emailService)
+    public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService,
+        IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository,
+        ICachedOfferRepository cachedOfferRepository, EmailService emailService)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
@@ -35,9 +37,11 @@ public class PublicControllerV1 : ControllerBase
         _emailService = emailService;
         _eTilbudsAvisService = new ETilbudsAvisService();
     }
+
     #region Recipe Endpoints
+
     [HttpPost("recipes")]
-    public async Task<IActionResult> GetARecipe([FromBody]RecipeRequest req)
+    public async Task<IActionResult> GetARecipe([FromBody] RecipeRequest req)
     {
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
@@ -58,21 +62,22 @@ public class PublicControllerV1 : ControllerBase
 
         if (recipesIncludingIngredients.Any(x => x != null))
             return Ok(recipesIncludingIngredients);
-        
-        NotEnoughRecipes:    
+
+        NotEnoughRecipes:
         var openAiRequest = req.OpenAiString;
 
         foreach (var ingredient in req.Ingredients)
         {
             openAiRequest += ", " + ingredient;
         }
-        
+
         var res = _openAiService.GetAiResponse(openAiRequest);
-        
+
         await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
-        
+
         return Ok(res);
     }
+
     [HttpGet("offer/getOffer")]
     public async Task<IActionResult> GetOffer([FromQuery] OfferRequest req)
     {
@@ -81,19 +86,22 @@ public class PublicControllerV1 : ControllerBase
         {
             return Ok(checkIfOfferExists);
         }
+
         var res = await _eTilbudsAvisService.GetAllOffers(req);
-        
+
         if (res != null)
         {
             foreach (var offer in res)
             {
-                await _cachedOfferRepository.UpsertOffer(offer.Name,offer.Price,offer.Store);
+                await _cachedOfferRepository.UpsertOffer(offer.Name, offer.Price, offer.Store);
             }
+
             return Ok(res);
         }
+
         return BadRequest("No offer found");
     }
-    
+
     [HttpGet("offer/getOfferByStoreFromCache")]
     public async Task<IActionResult> GetOfferByStoreIfAvailableFromCache([FromQuery] string ingredient, string store)
     {
@@ -102,24 +110,26 @@ public class PublicControllerV1 : ControllerBase
         {
             return Ok(checkIfOfferExists);
         }
+
         return BadRequest("Offer did not exist in cache");
     }
+
     #endregion
 
     #region User Endpoints
+
     [HttpPost("user/create-user")]
     public async Task<IActionResult> CreateUser([FromQuery] CreateUserRequest req)
-    { 
-        
+    {
         var user = _userRepository.CreateUser(req.Name, req.EmailAddress);
         var res = await _userRepository.Upsert(user, req.Password);
-        if(!res)
+        if (!res)
             return BadRequest("User with the specified Username already exists, please choose another Username");
         await _emailService.ConfirmEmail(user.EmailAddress, user.Name);
         var response = new LogInResponse(user.Id, user.Name, user.EmailAddress);
         return Ok(response);
     }
-    
+
     [HttpPost("user/login")]
     public async Task<IActionResult> Login([FromQuery] LogInRequest req)
     {
@@ -132,6 +142,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("Username or password is incorrect please try again");
     }
+
     [HttpPost("user/favourite-recipe")]
     public async Task<IActionResult> AddFavouriteRecipe([FromQuery] AddFavouriteRecipeRequest req)
     {
@@ -143,6 +154,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("This should never happen");
     }
+
     [HttpGet("user/favourite-recipes")]
     public async Task<IActionResult> GetFavouriteRecipes([FromQuery] GetFavouriteRecipesRequest req)
     {
@@ -154,7 +166,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("No favourite recipes found");
     }
-    
+
     [HttpDelete("user/favourite-recipe")]
     public async Task<IActionResult> DeleteFavouriteRecipe([FromQuery] DeleteFavouriteRecipeRequest req)
     {
@@ -166,8 +178,9 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("This should never happen");
     }
+
     [HttpPost("user/reset-password-request")]
-    public async Task<IActionResult> ResetPassword([EmailAddress]string email, string userName)
+    public async Task<IActionResult> ResetPassword([EmailAddress] string email, string userName)
     {
         var user = await _userRepository.GetUser(userName);
         if (user != null)
@@ -178,7 +191,8 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("User does not exist");
     }
-    
+
+    //NOTE: IKKE BRUG DET HER ENDPOINT TIL TESTING DER ER KUN 100 GRATIS EMAILS OM DAGEN
     [HttpPost("user/reset-password")]
     public async Task<IActionResult> ResetPassword([FromQuery] ResetPasswordRequest req)
     {
@@ -187,9 +201,10 @@ public class PublicControllerV1 : ControllerBase
         {
             return Ok("Password reset, you can now login using your new password");
         }
-        
+
         return BadRequest("This should never happen");
     }
+
     [HttpPost("user/change-password")]
     public async Task<IActionResult> ChangePassword([FromQuery] ChangePasswordRequest req)
     {
@@ -198,10 +213,11 @@ public class PublicControllerV1 : ControllerBase
         {
             return Ok("Password changed");
         }
-        
+
         return BadRequest("Username or password is incorrect please try again");
     }
-    
+
+    //NOTE: IKKE BRUG DET HER ENDPOINT TIL TESTING DER ER KUN 100 GRATIS EMAILS OM DAGEN
     [HttpPost("user/confirm-email")]
     public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailRequest req)
     {
@@ -210,12 +226,14 @@ public class PublicControllerV1 : ControllerBase
         {
             return Ok("Email confirmed");
         }
-        
+
         return BadRequest("This should never happen");
     }
+
     #endregion
 
     #region Utility functions
+
     private static bool ContainsEveryString(List<string> stringList, string targetString)
     {
         foreach (string str in stringList)
@@ -225,7 +243,9 @@ public class PublicControllerV1 : ControllerBase
                 return false;
             }
         }
+
         return true;
     }
+
     #endregion
 }

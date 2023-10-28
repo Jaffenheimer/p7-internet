@@ -9,6 +9,5 @@ public class AddFavouriteRecipeRequest
 
     public AddFavouriteRecipeRequest()
     {
-        
     }
 }

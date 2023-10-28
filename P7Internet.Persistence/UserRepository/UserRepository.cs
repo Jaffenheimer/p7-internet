@@ -96,7 +96,8 @@ public class UserRepository : IUserRepository
             $@"UPDATE {TableName} SET Password_hash = @passwordHash, Password_salt = @passwordSalt, Updated = @Updated WHERE Name = @userName";
         var salt = GenerateSalt();
         var passwordHash = GenerateHash(password + salt);
-        var result = await Connection.ExecuteAsync(query, new {Name = userName, Password_hash = passwordHash,Password_salt = salt, Updated = DateTime.UtcNow});
+        var result = await Connection.ExecuteAsync(query,
+            new {Name = userName, Password_hash = passwordHash, Password_salt = salt, Updated = DateTime.UtcNow});
         return result > 0;
     }
 
@@ -113,7 +114,7 @@ public class UserRepository : IUserRepository
 
         var query =
             $@"UPDATE {TableName} SET Password_hash = @Password_hash, Password_salt = @Password_salt, Updated = @Updated WHERE Id = @Id";
-        
+
         var salt = GenerateSalt();
         var passwordHash = GenerateHash(newPassword + salt);
 
@@ -124,9 +125,9 @@ public class UserRepository : IUserRepository
             Password_salt = salt,
             Updated = DateTime.UtcNow,
         };
-        
+
         var result = await Connection.ExecuteAsync(query, parameters);
-        
+
         return result > 0;
     }
 

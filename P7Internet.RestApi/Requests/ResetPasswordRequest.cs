@@ -7,13 +7,11 @@ public class ResetPasswordRequest
 
     public ResetPasswordRequest()
     {
-        
     }
-    
+
     public ResetPasswordRequest(string userName, string password)
     {
         UserName = userName;
         Password = password;
     }
-    
 }

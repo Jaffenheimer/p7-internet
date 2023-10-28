@@ -8,6 +8,5 @@ public class GetFavouriteRecipesRequest
 
     public GetFavouriteRecipesRequest()
     {
-        
     }
 }
