@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ using P7Internet.Services;
 namespace P7Internet.Controllers;
 
 [ApiController]
-[Route("public/sample")]
+[Route("public")]
 public class PublicControllerV1 : ControllerBase
 {
     private readonly IUserRepository _userRepository;
@@ -22,14 +23,16 @@ public class PublicControllerV1 : ControllerBase
     private readonly ICachedOfferRepository _cachedOfferRepository;
     private readonly OpenAiService _openAiService;
     private readonly ETilbudsAvisService _eTilbudsAvisService;
+    private readonly EmailService _emailService;
 
-    public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService, IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository, ICachedOfferRepository cachedOfferRepository)
+    public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService, IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository, ICachedOfferRepository cachedOfferRepository, EmailService emailService)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
         _cachedRecipeRepository = cachedRecipeRepository;
         _favouriteRecipeRepository = favouriteRecipeRepository;
         _cachedOfferRepository = cachedOfferRepository;
+        _emailService = emailService;
         _eTilbudsAvisService = new ETilbudsAvisService();
     }
     #region Recipe Endpoints
@@ -112,6 +115,7 @@ public class PublicControllerV1 : ControllerBase
         var res = await _userRepository.Upsert(user, req.Password);
         if(!res)
             return BadRequest("User with the specified Username already exists, please choose another Username");
+        await _emailService.ConfirmEmail(user.EmailAddress, user.Name);
         var response = new LogInResponse(user.Id, user.Name, user.EmailAddress);
         return Ok(response);
     }
@@ -162,11 +166,44 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("This should never happen");
     }
+    [HttpPost("user/reset-password-request")]
+    public async Task<IActionResult> ResetPassword([EmailAddress]string email, string userName)
+    {
+        var user = await _userRepository.GetUser(userName);
+        if (user != null)
+        {
+            await _emailService.ResetPassword(email, userName);
+            return Ok("Email sent");
+        }
+
+        return BadRequest("User does not exist");
+    }
     
+    [HttpPost("user/reset-password")]
+    public async Task<IActionResult> ResetPassword([FromQuery] ResetPasswordRequest req)
+    {
+        var result = await _userRepository.ResetPassword(req.UserName, req.Password);
+        if (result)
+        {
+            return Ok("Password reset, you can now login using your new password");
+        }
+        
+        return BadRequest("This should never happen");
+    }
+    [HttpPost("user/confirm-email")]
+    public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailRequest req)
+    {
+        var result = await _userRepository.ConfirmEmail(req.UserName, req.EmailAddress);
+        if (result)
+        {
+            return Ok("Email confirmed");
+        }
+        
+        return BadRequest("This should never happen");
+    }
     #endregion
 
     #region Utility functions
-    //Tak til chatgpt for nedenstående metode wup wup
     private static bool ContainsEveryString(List<string> stringList, string targetString)
     {
         foreach (string str in stringList)

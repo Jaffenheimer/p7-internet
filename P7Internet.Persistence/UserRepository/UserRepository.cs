@@ -20,7 +20,7 @@ public class UserRepository : IUserRepository
         _connectionFactory = connectionFactory;
     }
     
-    private async Task<User> GetUser(string name)
+    public async Task<User> GetUser(string name)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Name = @name";
         var result = await Connection.QuerySingleOrDefaultAsync(query, new {name});
@@ -42,8 +42,8 @@ public class UserRepository : IUserRepository
         if(checkIfUserExist != null)
             return false;
         
-            var query = $@"INSERT INTO {TableName} (Id, Name, Email, Password_hash, Password_salt, Creation_date, Updated)
-                            VALUES (@Id, @Name, @Email, @PasswordHash, @PasswordSalt, @CreatedAt, @UpdatedAt)";
+            var query = $@"INSERT INTO {TableName} (Id, Name, Email, Password_hash, Password_salt, Creation_date, EmailConfirmed, Updated)
+                            VALUES (@Id, @Name, @Email, @PasswordHash, @PasswordSalt, @CreatedAt, false, @UpdatedAt)";
             var salt = GenerateSalt();
             var parameters = new
             {
@@ -75,6 +75,25 @@ public class UserRepository : IUserRepository
             }
         }
         return null;
+    }
+    public async Task<bool> ConfirmEmail(string userName, string emailAddress)
+    {
+        var query = $@"UPDATE {TableName} SET EmailConfirmed = true WHERE Name = @userName AND Email = @email";
+        var result = await Connection.ExecuteAsync(query, new {Name = userName, Email = emailAddress});
+        return result > 0;
+    }
+    
+    public async Task<bool> ResetPassword(string userName, string password)
+    {
+        var checkIfUserExist = await GetUser(userName);
+        if(checkIfUserExist == null)
+            return false;
+        
+        var query = $@"UPDATE {TableName} SET Password_hash = @passwordHash AND Password_salt = @passwordSalt WHERE Name = @userName";
+        var salt = GenerateSalt();
+        var passwordHash = GenerateHash(password+salt);
+        var result = await Connection.ExecuteAsync(query, new {userName, passwordHash,salt});
+        return result > 0;
     }
 
     public User CreateUser(string userName, string email)

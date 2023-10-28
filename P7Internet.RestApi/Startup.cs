@@ -40,7 +40,7 @@ namespace P7Internet
                 services.ConfigurePersistenceMySqlConnection(Configuration.GetConnectionString("MySqlDatabase"));
 
                 services.AddSingleton(new OpenAiService(Configuration.GetSection("OpenAI").GetValue<string>("APIKey")));
-                
+                services.AddSingleton(new EmailService(Configuration.GetSection("SendGrid").GetValue<string>("APIKey")));
             }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
