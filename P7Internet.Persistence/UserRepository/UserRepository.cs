@@ -122,7 +122,7 @@ public class UserRepository : IUserRepository
             Id = checkIfUserExist.Id,
             Password_hash = passwordHash,
             Password_salt = salt,
-            UpdatedAt = DateTime.UtcNow,
+            Updated = DateTime.UtcNow,
         };
         
         var result = await Connection.ExecuteAsync(query, parameters);
