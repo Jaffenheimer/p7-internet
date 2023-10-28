@@ -190,6 +190,18 @@ public class PublicControllerV1 : ControllerBase
         
         return BadRequest("This should never happen");
     }
+    [HttpPost("user/change-password")]
+    public async Task<IActionResult> ChangePassword([FromQuery] ChangePasswordRequest req)
+    {
+        var result = await _userRepository.ChangePassword(req.UserName, req.OldPassword, req.NewPassword);
+        if (result)
+        {
+            return Ok("Password changed");
+        }
+        
+        return BadRequest("Username or password is incorrect please try again");
+    }
+    
     [HttpPost("user/confirm-email")]
     public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailRequest req)
     {

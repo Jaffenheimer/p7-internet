@@ -19,7 +19,7 @@ public class UserRepository : IUserRepository
     {
         _connectionFactory = connectionFactory;
     }
-    
+
     public async Task<User> GetUser(string name)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Name = @name";
@@ -33,66 +33,100 @@ public class UserRepository : IUserRepository
             user.CreatedAt = result.Creation_date;
             return user;
         }
+
         return null;
     }
 
     public async Task<bool> Upsert(User user, string password)
     {
         var checkIfUserExist = await GetUser(user.Name);
-        if(checkIfUserExist != null)
+        if (checkIfUserExist != null)
             return false;
-        
-            var query = $@"INSERT INTO {TableName} (Id, Name, Email, Password_hash, Password_salt, Creation_date, EmailConfirmed, Updated)
+
+        var query =
+            $@"INSERT INTO {TableName} (Id, Name, Email, Password_hash, Password_salt, Creation_date, EmailConfirmed, Updated)
                             VALUES (@Id, @Name, @Email, @PasswordHash, @PasswordSalt, @CreatedAt, false, @UpdatedAt)";
-            var salt = GenerateSalt();
-            var parameters = new
-            {
-                Id = user.Id,
-                Name = user.Name,
-                Email = user.EmailAddress,
-                PasswordHash = GenerateHash(password+salt),
-                PasswordSalt = salt,
-                CreatedAt = user.CreatedAt,
-                UpdatedAt = DateTime.UtcNow,
-            };
-            return await Connection.ExecuteAsync(query, parameters) > 0;
-        
+        var salt = GenerateSalt();
+        var parameters = new
+        {
+            Id = user.Id,
+            Name = user.Name,
+            Email = user.EmailAddress,
+            PasswordHash = GenerateHash(password + salt),
+            PasswordSalt = salt,
+            CreatedAt = user.CreatedAt,
+            UpdatedAt = DateTime.UtcNow,
+        };
+        return await Connection.ExecuteAsync(query, parameters) > 0;
     }
 
     public async Task<User> LogIn(string userName, string password)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Name = @userName";
-        
+
         var result = await Connection.QuerySingleAsync(query, new {userName});
-        
+
         if (result != null)
         {
             var salt = result.Password_salt;
-            var passwordHash = GenerateHash(password+salt);
+            var passwordHash = GenerateHash(password + salt);
             if (passwordHash == result.Password_hash)
             {
                 return GetUser(userName).Result;
             }
         }
+
         return null;
     }
+
     public async Task<bool> ConfirmEmail(string userName, string emailAddress)
     {
         var query = $@"UPDATE {TableName} SET EmailConfirmed = true WHERE Name = @userName AND Email = @email";
         var result = await Connection.ExecuteAsync(query, new {Name = userName, Email = emailAddress});
         return result > 0;
     }
-    
+
     public async Task<bool> ResetPassword(string userName, string password)
     {
         var checkIfUserExist = await GetUser(userName);
-        if(checkIfUserExist == null)
+        if (checkIfUserExist == null)
             return false;
-        
-        var query = $@"UPDATE {TableName} SET Password_hash = @passwordHash AND Password_salt = @passwordSalt WHERE Name = @userName";
+
+        var query =
+            $@"UPDATE {TableName} SET Password_hash = @passwordHash, Password_salt = @passwordSalt, Updated = @Updated WHERE Name = @userName";
         var salt = GenerateSalt();
-        var passwordHash = GenerateHash(password+salt);
-        var result = await Connection.ExecuteAsync(query, new {userName, passwordHash,salt});
+        var passwordHash = GenerateHash(password + salt);
+        var result = await Connection.ExecuteAsync(query, new {Name = userName, Password_hash = passwordHash,Password_salt = salt, Updated = DateTime.UtcNow});
+        return result > 0;
+    }
+
+    public async Task<bool> ChangePassword(string userName, string oldPassword, string newPassword)
+    {
+        var checkIfUserExist = await GetUser(userName);
+        if (checkIfUserExist == null)
+            return false;
+        var oldPasswordHash = GenerateHash(oldPassword + checkIfUserExist.PasswordSalt);
+        if (oldPasswordHash != checkIfUserExist.PasswordHash)
+        {
+            return false;
+        }
+
+        var query =
+            $@"UPDATE {TableName} SET Password_hash = @Password_hash, Password_salt = @Password_salt, Updated = @Updated WHERE Id = @Id";
+        
+        var salt = GenerateSalt();
+        var passwordHash = GenerateHash(newPassword + salt);
+
+        var parameters = new
+        {
+            Id = checkIfUserExist.Id,
+            Password_hash = passwordHash,
+            Password_salt = salt,
+            UpdatedAt = DateTime.UtcNow,
+        };
+        
+        var result = await Connection.ExecuteAsync(query, parameters);
+        
         return result > 0;
     }
 
@@ -101,6 +135,7 @@ public class UserRepository : IUserRepository
         User user = new User(userName, email);
         return user;
     }
+
     private static string GenerateHash(string source)
     {
         //Generates hash from string
@@ -115,6 +150,7 @@ public class UserRepository : IUserRepository
 
         return sb.ToString();
     }
+
     private string GenerateSalt()
     {
         var random = RandomNumberGenerator.Create();

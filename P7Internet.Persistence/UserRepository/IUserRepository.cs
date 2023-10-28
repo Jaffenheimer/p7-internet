@@ -11,5 +11,6 @@ public interface IUserRepository
     public User CreateUser(string userName, string email);
     public Task<bool> ConfirmEmail(string userName, string emailAdress);
     public Task<bool> ResetPassword(string userName, string password);
+    public Task<bool> ChangePassword(string userName, string oldPassword, string newPassword);
 
 }
