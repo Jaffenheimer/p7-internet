@@ -125,7 +125,8 @@ public class PublicControllerV1 : ControllerBase
         var res = await _userRepository.Upsert(user, req.Password);
         if (!res)
             return BadRequest("User with the specified Username already exists, please choose another Username");
-        await _emailService.ConfirmEmail(user.EmailAddress, user.Name);
+        // ONLY COMMENT THIS IN WHEN WE NEED TO SHOW THIS FEATURE
+        //await _emailService.ConfirmEmail(user.EmailAddress, user.Name);
         var response = new LogInResponse(user.Id, user.Name, user.EmailAddress);
         return Ok(response);
     }
