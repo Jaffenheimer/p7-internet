@@ -23,14 +23,18 @@ const Allergens = () => {
   return (
     <div className="Allergens">
       <h3 id="AllergensText">Allergener</h3>
-      <Select
-        // makes it possible to select multiple options
-        isMulti
-        id="AllergensSelect"
-        options={options}
-        placeholder="Vælg allergener"
-        onChange={handleChange}
-      />
+      <form data-testid="AllergensForm">
+        <Select
+          // makes it possible to select multiple options
+          isMulti
+          id="AllergensSelect"
+          options={options}
+          placeholder="Vælg allergener"
+          onChange={handleChange}
+          name="AllergenOptions"
+          inputId="AllergenOptions"
+        />
+      </form>
     </div>
   );
 };
