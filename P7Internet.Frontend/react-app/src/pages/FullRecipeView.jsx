@@ -8,34 +8,42 @@ import React from "react";
 import ForPersons from "../components/ForPersons";
 
 function FullRecipeView() {
-  const dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-  const recipes = useSelector((state) => state.recipe.recipes);
+    const recipes = useSelector((state) => state.recipe.recipes);
 
-  const currentRecipeIndex = useSelector(
-    (state) => state.recipe.currentRecipeIndex
-  );
+    const currentRecipeIndex = useSelector(
+        (state) => state.recipe.currentRecipeIndex
+    );
 
-  const recipe = recipes[currentRecipeIndex];
+    const recipe = recipes[currentRecipeIndex];
 
-  function goToPageRecipeSelection() {
-    //pt har vi ikke den side, så det er bare frontpage
-    dispatch(pageActions.goToPage(Pages.frontPage));
-  }
+    function goToPageRecipeSelection() {
+        //pt har vi ikke den side, så det er bare frontpage
+        dispatch(pageActions.goToPage(Pages.frontPage));
+    }
+    function PrintRecipe() {
+        window.print();
+    }
 
-  return (
-    <div className="App">
-      <div className="FullRecipeView">
-        <RecipeTitle id="RecipeTitle" title={recipe.title} />
-        <ForPersons />
-        <IngredientsList ingredients={recipe.ingredients} />
-        <MethodsList methods={recipe.method} />
-        <button id="backButton" onClick={goToPageRecipeSelection}>
-          Tilbage
-        </button>
-      </div>
-    </div>
-  );
+    return (
+        <div className="App">
+            <div className="FullRecipeView">
+                <RecipeTitle id="RecipeTitle" title={recipe.title} />
+                <ForPersons />
+                <IngredientsList ingredients={recipe.ingredients} />
+                <MethodsList methods={recipe.method} />
+                <div className="bottomButtons no-print">
+                    <button id="backButton" onClick={goToPageRecipeSelection}>
+                        Tilbage
+                    </button>
+                    <button id="printButton" onClick={PrintRecipe}>
+                        Print
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default FullRecipeView;
