@@ -2,72 +2,75 @@
   height: 100vh;
 } */
 
-*, *::before, *::after {
-  box-sizing: inherit;
+*,
+*::before,
+*::after {
+    box-sizing: inherit;
 }
 
 html {
-  /* this makes sure the padding and the border is included in the box sizing */
-  box-sizing: inherit;
-  overflow-x: hidden;
+    /* this makes sure the padding and the border is included in the box sizing */
+    box-sizing: inherit;
+    overflow-x: hidden;
 }
 
-html, body {
-  margin: 0;
-  min-height: 100vh;
-  width: 100%;
-  padding: 0;
-  margin: 0;
+html,
+body {
+    margin: 0;
+    min-height: 100vh;
+    width: 100%;
+    padding: 0;
+    margin: 0;
 }
 
 .AppContainer {
-  height: 100vh;
-  width: 100%;
-  background: #FFF2D8;
+    height: 100vh;
+    width: 100%;
+    background: #fff2d8;
 }
 
-.headerContainer{
-  height: 50px;
-  background-color: #BCA37F;
-  padding: 10px;
-  text-align: center;
+.headerContainer {
+    height: auto;
+    background-color: #bca37f;
+    padding: 10px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
 }
 
-.split-container{
-  position: relative;
-  min-height: calc(100vh - 110px);
-  display: flex;
-  flex-direction: row;
+.split-container {
+    position: relative;
+    min-height: calc(100vh - 110px);
+    display: flex;
+    flex-direction: row;
 }
 
-.split-screen-left{
-  width: 75%;
-  background: #FFF2D8;
-  min-height: 100vh;
+.split-screen-left {
+    width: 75%;
+    background: #fff2d8;
+    min-height: 100vh;
 }
 
-.split-screen-right{
-  width: 25%;
-  background: #EAD7BB;
-  min-height: 100vh;
-}
-
-.split-screen-left, 
 .split-screen-right {
-  min-height: 100vh;
-  padding: 20px;
-  display: block;
+    width: 25%;
+    background: #ead7bb;
+    min-height: 100vh;
 }
 
-.searchfield{
-  min-width: 250px;
-  width: 400px;
-  height: 35px;
-  border: none;
-  border-radius: 5px;
+.split-screen-left,
+.split-screen-right {
+    min-height: 100vh;
+    padding: 20px;
+    display: block;
 }
 
-
+.searchfield {
+    min-width: 250px;
+    width: 400px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
+}
 
 /* .AppContainer{
   height: 100%;
@@ -89,22 +92,20 @@ html, body {
   margin-top: -22px;
 } */
 
-
 .header {
-  padding: 0;
-  margin: 0 ;
-  height: 100%;
-  width: 100%;
-  display: flex;
-  align-items: center;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
 }
 
-
-.title{
-  text-align: center;
-  font-size: 40px;
-  font-family: Verdana;
-  flex: 1;
+.title {
+    text-align: center;
+    font-size: 40px;
+    font-family: Verdana;
+    display: flex;
 }
 
 /* .App > .AppLeft > .ContainerUpper {
@@ -114,35 +115,34 @@ html, body {
   position: relative;
 }  */
 
-
 .RecipeSelectionContainerLeft {
-  padding: 10px;
-  height: 60%;
+    padding: 10px;
+    height: 60%;
 }
 
 .App > .AppRight {
-  background: #EAD7BB;
-  width: 25%;
-  min-height: 100vh;
+    background: #ead7bb;
+    width: 25%;
+    min-height: 100vh;
 }
 
 h1 {
-  font-family: Verdana;
-  /* display: block; */
-  /* height: 65px; */
-  font-size: xx-large;
-  text-align: center;
-  /* flex-shrink: 0; */
+    font-family: Verdana;
+    /* display: block; */
+    /* height: 65px; */
+    font-size: xx-large;
+    text-align: center;
+    /* flex-shrink: 0; */
 }
 
 h2 {
-  color: #000;
-  font-family: Verdana;
-  font-size: x-large;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 16px; /* 45.714% */
-  letter-spacing: 0.75px;
+    color: #000;
+    font-family: Verdana;
+    font-size: x-large;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px; /* 45.714% */
+    letter-spacing: 0.75px;
 }
 
 /* h3 {
@@ -150,80 +150,81 @@ h2 {
 } */
 
 ul {
-  padding: 0;
+    padding: 0;
 }
 
 .IngredientElement {
-  margin-left: 10px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 #OwnedIngredientsList > div > ul > .IngredientElement {
-  width: 30%;
+    width: 30%;
 }
 
 #ExcludedIngredientsList > .ingredientsList > ul > .IngredientElement {
-  width: 70%;
+    width: 70%;
 }
 
 .RemoveIngredientImage {
-  float: right;
+    float: right;
 }
 
-input[type="text"], input[type="password"] {
-  color: rgba(0, 0, 0, 0.5);
-  width: 30%;
-  margin-right: 3%;
-  font-feature-settings: "clig" off, "liga" off;
-  font-family: Verdana;
-  font-size: 17px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px; /* 129.412% */
-  letter-spacing: -0.408px;
+input[type="text"],
+input[type="password"] {
+    color: rgba(0, 0, 0, 0.5);
+    width: 30%;
+    margin-right: 3%;
+    font-feature-settings: "clig" off, "liga" off;
+    font-family: Verdana;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px; /* 129.412% */
+    letter-spacing: -0.408px;
 }
 
 li {
-  color: black;
-  font-feature-settings: "clig" off, "liga" off;
-  font-family: Verdana;
-  font-size: 17px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
-  letter-spacing: -0.408px;
+    color: black;
+    font-feature-settings: "clig" off, "liga" off;
+    font-family: Verdana;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: -0.408px;
 }
 
 img {
-  margin-bottom: -0.1em;
-  height: 1em;
-  cursor: pointer;
+    margin-bottom: -0.1em;
+    height: 1em;
+    cursor: pointer;
 }
 
 button {
-  width: 145px;
-  height: 40px;
-  /* background-color: white; */
-  background-color: #113946;
-  color: white;
-  border: 2px solid black;
-  border-radius: 5px; /* rounded corners */
-  border-color: #113946;
-  /* color: #000; */
-  cursor: pointer;
-  text-align: center;
-  font-family: Verdana;
-  font-size: 14px;
-  font-weight: 550;
-  line-height: 16px;
-  letter-spacing: 0.75px;
-  text-transform: uppercase;
+    width: 145px;
+    height: 40px;
+    /* background-color: white; */
+    background-color: #113946;
+    color: white;
+    border: 2px solid black;
+    border-radius: 5px; /* rounded corners */
+    border-color: #113946;
+    /* color: #000; */
+    cursor: pointer;
+    text-align: center;
+    font-family: Verdana;
+    font-size: 14px;
+    font-weight: 550;
+    line-height: 16px;
+    letter-spacing: 0.75px;
+    text-transform: uppercase;
 }
 
 button:hover {
-  background: #e7e7e7;
+    background: #e7e7e7;
 }
 /* 
 .FormStyle{
@@ -236,11 +237,11 @@ button:hover {
 } */
 
 .excludedIngredientListItems {
-  width: 90%;
+    width: 90%;
 }
 
 .ownedIngredientListItems {
-  width: 40%;
+    width: 40%;
 }
 
 /* #GenerateRecipeButton {
@@ -252,22 +253,22 @@ button:hover {
 }  */
 
 .RecipeView > #RecipeTitleDiv > h1 {
-  text-align: left;
+    text-align: left;
 }
 
 #SelectArrows {
-  margin-left: 45%;
-  outline: none;
+    margin-left: 45%;
+    outline: none;
 }
 
 #selectRecipeButton {
-  float: right;
-  align-items: right;
+    float: right;
+    align-items: right;
 }
 
 #SelectArrows > img {
-  margin: 5%;
-  transform: scale(2);
+    margin: 5%;
+    transform: scale(2);
 }
 
 /* .ProfilePicture > img {
@@ -279,326 +280,350 @@ button:hover {
   margin-right: 15%;
 } */
 
-.Profile{
-  width: 40px;
-  height: 40px;
-  flex: 1;
-  text-align: center;
+.Profile {
+    width: 40px;
+    height: 40px;
+    flex: 1;
+    text-align: center;
 }
 
-.NumberFieldContainer{
-  position: absolute;
-  height: 35px;
-  width: 30%;
+.NumberFieldContainer {
+    position: absolute;
+    height: 35px;
+    width: 30%;
 }
 
 .NumberField {
-  transform: scale(1.5);
-  display: flex;
-  justify-content: center;
-  margin-left: 22px;
-  /* margin-top: 10%; */
+    transform: scale(1.5);
+    display: flex;
+    justify-content: center;
+    margin-left: 22px;
+    /* margin-top: 10%; */
 }
 
 #NumberFieldToast {
-  transform: scale(0.7);
-  text-align: center;
-  justify-content: center;
+    transform: scale(0.7);
+    text-align: center;
+    justify-content: center;
 }
 #InputNumberField {
-  width: 30px;
-  height: auto;
-  border: 1px solid black;
-  display: inline-block;
-  font-size: small;
-  text-align: center;
-  appearance: textfield;
-  /*Hides arrows on input field number Firefox*/
-  -moz-appearance: textfield;
+    width: 30px;
+    height: auto;
+    border: 1px solid black;
+    display: inline-block;
+    font-size: small;
+    text-align: center;
+    appearance: textfield;
+    /*Hides arrows on input field number Firefox*/
+    -moz-appearance: textfield;
 }
 
 #InputNumberField::-webkit-outer-spin-button,
 #InputNumberField::-webkit-inner-spin-button {
-  /*Hides arrows on input field number Chrome*/
-  -webkit-appearance: none;
-  margin: 0;
+    /*Hides arrows on input field number Chrome*/
+    -webkit-appearance: none;
+    margin: 0;
 }
 
 .ContainerRight
-  > .ContainerRightTop
-  > .ContainerRightColumn
-  > .NumberField
-  > .PlusMinusButton {
-  text-align: center;
-  width: 30px;
-  height: auto;
-  border: 1px solid black;
-  display: inline-block;
-  cursor: pointer;
-  border-radius: 0;
-  font-size: small;
+    > .ContainerRightTop
+    > .ContainerRightColumn
+    > .NumberField
+    > .PlusMinusButton {
+    text-align: center;
+    width: 30px;
+    height: auto;
+    border: 1px solid black;
+    display: inline-block;
+    cursor: pointer;
+    border-radius: 0;
+    font-size: small;
 }
 
 .numberPersonsText {
-  margin-top: 0%;
-  padding: 0%;
-  margin-left: 20%;
+    margin-top: 0%;
+    padding: 0%;
+    margin-left: 20%;
 }
 
 .ContainerRightColumn {
-  float: left;
-  /*width: 33.33%;*/
-  justify-content: center;
-  margin-top: 3%;
+    float: left;
+    /*width: 33.33%;*/
+    justify-content: center;
+    margin-top: 3%;
 }
 
 .ContainerRightTop:after {
-  content: "";
-  display: table;
-  clear: both;
-  justify-content: center;
+    content: "";
+    display: table;
+    clear: both;
+    justify-content: center;
 }
 
 #DietaryRestrictions {
-  text-align: left;
-  margin-left: 2.5%;
+    text-align: left;
+    margin-left: 2.5%;
 }
 
 .ContainerRightMiddle > .DietaryRestrictions > #DietaryRestrictionsCheckbox {
-  text-align: left;
-  font-size: x-large;
+    text-align: left;
+    font-size: x-large;
 }
 
 .dropdown {
-  position: relative;
+    position: relative;
 }
 
 .menu {
-  position: absolute;
-  list-style-type: none;
-  margin: 5px 0;
-  padding: 0;
-  border: 1px solid grey;
-  width: 150px;
-  transform: translateY(-5px);
-  transform: translateX(-105px);
-  z-index: 1000;
+    position: absolute;
+    list-style-type: none;
+    margin: 5px 0;
+    padding: 0;
+    border: 1px solid grey;
+    width: 150px;
+    transform: translateY(-5px);
+    transform: translateX(-105px);
+    z-index: 1000;
 }
 
 .menu > li {
-  margin: 0;
-  background-color: white;
+    margin: 0;
+    background-color: white;
 }
 
 .menu > li:hover {
-  background-color: lightgray;
+    background-color: lightgray;
 }
 
 .menu > li > button {
-  width: 100%;
-  height: 100%;
-  text-align: left;
+    width: 100%;
+    height: 100%;
+    text-align: left;
 
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 5px;
-  margin: 0;
-  font: inherit;
-  cursor: pointer;
+    background: none;
+    color: inherit;
+    border: none;
+    padding: 5px;
+    margin: 0;
+    font: inherit;
+    cursor: pointer;
 }
 
 #ExcludeList {
-  text-align: center;
+    text-align: center;
 }
 
 #InputFieldExclude {
-  width: 60%;
-  height: 100%;
-  border: 1px solid black;
-  font-size: medium;
-  text-align: center;
-  float: center;
-  margin-left: 2.5%;
+    width: 60%;
+    height: 100%;
+    border: 1px solid black;
+    font-size: medium;
+    text-align: center;
+    float: center;
+    margin-left: 2.5%;
 
-  height: 35px;
-  border: none;
-  border-radius: 5px;
+    height: 35px;
+    border: none;
+    border-radius: 5px;
 }
 
 #RemoveAllExcludeIngredientsButton {
-  margin-top: 5%;
+    margin-top: 5%;
 }
 
 #ExcludeListText {
-  text-align: left;
-  margin-left: 2.5%;
-  margin-top: 12%;
+    text-align: left;
+    margin-left: 2.5%;
+    margin-top: 12%;
 }
 
 #ExcludedIngredientsList {
-  text-align: left;
-  margin-left: 8%;
+    text-align: left;
+    margin-left: 8%;
 }
 
 .App > .FullRecipeView {
-  flex: 1;
+    flex: 1;
 }
 
 .ForPersons > h4 {
-  text-align: center;
-  margin-top: -20px;
+    text-align: center;
+    margin-top: -20px;
 }
 
 #backButton {
-  float: right;
-  margin-top: 25px;
-  margin-right: 25px;
+    float: right;
+    margin-top: 25px;
+    margin-right: 25px;
+}
+
+#printButton {
+    float: right;
+    margin-top: 25px;
+    margin-right: 25px;
 }
 
 .App > .RecipeSelectionContainerLeft {
-  flex: 1;
-  position: relative;
+    flex: 1;
+    position: relative;
 }
 
 .RecipeView {
-  margin-left: 2%;
+    margin-left: 2%;
 }
 
 #selectRecipeButton {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  margin-bottom: 3%;
-  margin-right: 3%;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin-bottom: 3%;
+    margin-right: 3%;
 }
 
 /* Login */
 .LoginForm {
-  background-color: white;
-  height: 600px;
-  width: 400px;
-  margin: auto;
+    background-color: white;
+    height: 600px;
+    width: 400px;
+    margin: auto;
 }
 
 .LoginForm input[type="text"],
 input[type="password"] {
-  width: 100%;
-  padding: 12px 20px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  box-sizing: border-box;
+    width: 100%;
+    padding: 12px 20px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
 }
 
 #loginCross {
-  padding: 3%;
-  transform: scale(1.2);
-  float: right;
+    padding: 3%;
+    transform: scale(1.2);
+    float: right;
 }
 
 #alreadyHasUserText,
 #noUserText {
-  display: inline-block;
+    display: inline-block;
 }
 
 .LoginPage {
-  display: flex;
-  margin: auto;
+    display: flex;
+    margin: auto;
 }
 
 .LoginForm button {
-  width: 100%;
+    width: 100%;
 }
 
 .imgcontainer {
-  text-align: center;
-  margin: 24px 0 12px 0;
+    text-align: center;
+    margin: 24px 0 12px 0;
 }
 
 img.avatar {
-  width: 50%;
-  height: 50%;
-  border-radius: 50%;
+    width: 50%;
+    height: 50%;
+    border-radius: 50%;
 }
 
 img.avatar:hover {
-  cursor: default;
+    cursor: default;
 }
 
 .container {
-  padding: 16px;
+    padding: 16px;
 }
 
 /* The switch - the box around the slider */
 .switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-  margin-left: 10px;
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-left: 10px;
 }
 
 /* Hide default HTML checkbox */
 .switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
+    opacity: 0;
+    width: 0;
+    height: 0;
 }
 
 /* The slider */
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
 }
 
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: 0.4s;
+    transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #2196f3;
+    background-color: #2196f3;
 }
 
 input:focus + .slider {
-  box-shadow: 0 0 1px #2196f3;
+    box-shadow: 0 0 1px #2196f3;
 }
 
 input:checked + .slider:before {
-  -webkit-transform: translateX(26px);
-  -ms-transform: translateX(26px);
-  transform: translateX(26px);
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
 }
 
 /* Rounded sliders */
 .slider.round {
-  border-radius: 34px;
+    border-radius: 34px;
 }
 
 .slider.round:before {
-  border-radius: 50%;
+    border-radius: 50%;
 }
 
 #loginModal {
-  top: 50%;
-  left: 50%;
-  right: auto;
-  bottom: auto;
-  margin-right: -50%;
-  transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+    right: auto;
+    bottom: auto;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+}
+
+@media print {
+    .no-print,
+    .no-print * {
+        display: none !important;
+    }
+    @page {
+        margin: 0;
+    }
+}
+
+.FullRecipeView {
+    flex: 1;
+    margin: 1cm;
+}
+.ingredientsList > ul {
+    padding-left: 40px;
 }
