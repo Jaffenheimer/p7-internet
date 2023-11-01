@@ -225,7 +225,6 @@ button {
 button:disabled {
   background-color: #e7e7e7;
   border-color: #e7e7e7;
-  color: #000;
   cursor: not-allowed;
   border: 2px solid black;
 }
