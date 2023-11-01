@@ -7,6 +7,7 @@ export default class RemoveAllButton extends Component {
 
     return (
       <button
+        type="button" //ensures that the button does not submit the form 
         id="RemoveAllExcludeIngredientsButton"
         disabled={isDisabled}
         onClick={handleClick}
