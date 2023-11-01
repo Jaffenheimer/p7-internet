@@ -32,12 +32,14 @@ test("Default options is the placeholder", () => {
 test("Choosing an option - the option gets selected", () => {
   renderComponent(<Allergens />);
   let selectText = screen.getByText(/Vælg allergener/);
+  const selectElement = screen.getByRole('combobox');
   expect(selectText).toBeInTheDocument(); //default text of Select is the placeholder
   
   fireEvent.change(screen.getByRole('combobox'), {
     target: {value: "Lactosefree"},
   });
   selectText = screen.getByText(/Laktosefri/);
+  expect(selectElement.value).toBe('Lactosefree')
   expect(selectText).toBeInTheDocument(); //after choosing an option, the Select text is the option
 });
 
