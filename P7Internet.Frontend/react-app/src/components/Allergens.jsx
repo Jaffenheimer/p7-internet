@@ -1,6 +1,6 @@
 import React from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Select from "react-select";
 import { useState } from "react";
 
@@ -28,11 +28,11 @@ const Allergens = () => {
   return (
     <div className="Allergens">
       <h3 id="AllergensText">Allergener</h3>
-      <form data-testid="AllergensForm">
         <Select
           // makes it possible to select multiple options
           isMulti
           id="AllergensSelect"
+          data-testid="AllergensSelect"
           options={options}
           placeholder="Vælg allergener"
           onChange={handleChange}
@@ -40,7 +40,6 @@ const Allergens = () => {
           inputId="AllergenOptions"
           value={allergensValues}
         />
-      </form>
     </div>
   );
 };
