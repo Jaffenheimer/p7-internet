@@ -6,6 +6,8 @@ import MethodsList from "../components/MethodsList";
 import Pages from "../objects/Pages";
 import React from "react";
 import ForPersons from "../components/ForPersons";
+import Header from "../components/Header";
+import RecipeIngredientElement from "../components/RecipeIngredientElement";
 
 function FullRecipeView() {
   const dispatch = useDispatch();
@@ -24,11 +26,17 @@ function FullRecipeView() {
   }
 
   return (
-    <div className="App">
+    <div className="AppContainer">
+      <div className="headerContainer">
+        <Header />
+      </div>
       <div className="FullRecipeView">
         <RecipeTitle id="RecipeTitle" title={recipe.title} />
         <ForPersons />
-        <IngredientsList ingredients={recipe.ingredients} />
+        <IngredientsList
+          ingredients={recipe.ingredients}
+          ListElement={RecipeIngredientElement}
+        />
         <MethodsList methods={recipe.method} />
         <button id="backButton" onClick={goToPageRecipeSelection}>
           Tilbage
