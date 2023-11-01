@@ -58,7 +58,7 @@ test("Clicking the minus button when the value is 1 does not decrease the value 
     fireEvent.click(minus);
     expect(inputField.value).toBe('1');
     fireEvent.click(minus);
-    expect(await screen.findByText(/minimum er 1/)).toBeInTheDocument();
+    expect(await screen.findByText(/Minimum er 1/)).toBeInTheDocument();
     expect(inputField.value).toBe('1');
   });
 
@@ -76,7 +76,7 @@ test("Clicking the plus button when the value is 10 does not increase the value 
     fireEvent.click(plus);
     expect(inputField.value).toBe('10');
     fireEvent.click(plus);
-    expect(await screen.findByText(/maximum er 1/)).toBeInTheDocument();
+    expect(await screen.findByText(/Maximum er 1/)).toBeInTheDocument();
     expect(inputField.value).toBe('10');
     });
 
