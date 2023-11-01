@@ -68,7 +68,7 @@ const Header = () => {
           {loggedIn ? (
             <ProfilePicture openFavoritesModal={openFavoritesModal}/>
           ) : (
-            <button onClick={openLoginModal}>Log In</button>
+            <button onClick={openLoginModal}>Log Ind</button>
           )}
     </div>
   );
