@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import { useEffect } from "react";
 import { pageActions } from "../features/pageSlice";
 import { useDispatch, useSelector } from "react-redux";
+import FavoritesBox from "./FavoritesBox";
 
 //styling for the modal
 const customStyles = {
@@ -23,11 +24,15 @@ const Header = () => {
   const dispatch = useDispatch();
   
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
-  const modalShown = useSelector((state) => state.page.modalShown);
+  const loginModalShown = useSelector((state) => state.page.loginModalShown);
+  const favoritesModalShown = useSelector((state) => state.page.favoritesModalShown);
+
   const [loggedIn, setLoggedIn] = useState(false);
 
-  const openModal = () => dispatch(pageActions.openModal());
-  const closeModal = () => dispatch(pageActions.closeModal());
+  const openLoginModal = () => dispatch(pageActions.openLoginModal());
+  const closeLoginModal = () => dispatch(pageActions.closeLoginModal());
+	const openFavoritesModal = () => dispatch(pageActions.openFavoritesModal());
+  const closeFavoritesModal = () => dispatch(pageActions.closeFavoritesModal());
 
   function SetLoggedInOnChange() {
     //component that dynamically changes when log in status changes
@@ -40,20 +45,30 @@ const Header = () => {
   return (
     <div className="header">
       <Modal
-        isOpen={modalShown}
+        isOpen={loginModalShown}
         style={customStyles}
-        onRequestClose={closeModal}
-        contentLabel="Example Modal"
+        onRequestClose={closeLoginModal}
+        contentLabel="Login Modal"
         ariaHideApp={false}
       >
-        <LoginBox closeModal={closeModal} />
+        <LoginBox closeModal={closeLoginModal} />
       </Modal>
+			<Modal
+        isOpen={favoritesModalShown}
+        style={customStyles}
+        onRequestClose={closeFavoritesModal}
+        contentLabel="Favorites Modal"
+        ariaHideApp={false}
+      >
+        <FavoritesBox closeModal={closeFavoritesModal} />
+      </Modal>
+
       <div className="title">Opskriftsgenerator</div>
-      <SetLoggedInOnChange /> {/* Dynamically check if user is logged in */}
+      <SetLoggedInOnChange/> {/* Dynamically check if user is logged in */}
           {loggedIn ? (
-            <ProfilePicture />
+            <ProfilePicture openFavoritesModal={openFavoritesModal}/>
           ) : (
-            <button onClick={openModal}>Log In</button>
+            <button onClick={openLoginModal}>Log In</button>
           )}
     </div>
   );
