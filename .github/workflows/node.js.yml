@@ -27,5 +27,7 @@ jobs:
         node-version: '20.x'
     - name: install packages
       run: npm i
+      working-directory: P7Internet.Frontend/react-app
     - name: testing
       run: npm test
+      working-directory: P7Internet.Frontend/react-app
