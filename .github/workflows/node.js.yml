@@ -25,6 +25,8 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '20.x'
+    - name: Install correct npm version
+      run: npm install -g npm@7.11.2
     - name: install packages
       run: npm i
       working-directory: P7Internet.Frontend/react-app
