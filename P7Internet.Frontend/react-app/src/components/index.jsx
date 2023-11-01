@@ -9,7 +9,7 @@ export { default as RecipeSelectionContainerLeft } from "./RecipeSelectionContai
 export { default as ContainerRight } from "./ContainerRight";
 export { default as GenerateRecipeButton } from "./GenerateRecipeButton";
 export { default as ProfilePicture } from "./ProfilePicture";
-export { default as NumberField } from "./NumberField";
+export { default as NumPersonsField } from "./NumPersonsField";
 export { default as RecipeView } from "./RecipeView";
 export { default as DietaryRestrictions } from "./DietaryRestrictions";
 export { default as ExcludeList } from "./ExcludeList";

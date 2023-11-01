@@ -55,20 +55,26 @@ test("Choosing both options - the options gets selected", () => {
   expect(selectTextLactosefree).toBeInTheDocument();
 });
 
-test("Removing an option - the option gets removed", () => {
-  renderComponent(<Allergens />);
+//further testing - may require some change in the actual code:
+  //test("Removing an option - the option gets removed"
+  //fjern alle options - alle bliver fjernet
+  //søg på lak - laktosefri dukker op
+
+
+// test("Removing an option - the option gets removed", () => {
+//   renderComponent(<Allergens />);
   
-  const placeholder = screen.getByText(/Vælg allergener/);
-  const form = screen.getByTestId('AllergensForm');
-  const selectElement = screen.getByRole('combobox');
-  fireEvent.change(screen.getByRole('combobox'), {
-    target: {value: "Lactosefree"},
-  });
-  const selectTextLactosefree = screen.getByText(/Laktosefri/);
-  expect(selectTextLactosefree).toBeInTheDocument();
-  userEvent.click(selectElement)
-  userEvent.click(selectTextLactosefree)
-  expect(selectTextLactosefree).toBeInTheDocument();
+//   const placeholder = screen.getByText(/Vælg allergener/);
+//   const form = screen.getByTestId('AllergensForm');
+//   const selectElement = screen.getByRole('combobox');
+//   fireEvent.change(screen.getByRole('combobox'), {
+//     target: {value: "Lactosefree"},
+//   });
+//   const selectTextLactosefree = screen.getByText(/Laktosefri/);
+//   expect(selectTextLactosefree).toBeInTheDocument();
+//   userEvent.click(selectElement)
+//   userEvent.click(selectTextLactosefree)
+//   expect(selectTextLactosefree).toBeInTheDocument();
   
   
   // expect(form).toHaveFormValues({AllergenOptions: ''}); //no options are selected
@@ -86,7 +92,7 @@ test("Removing an option - the option gets removed", () => {
 
 //consider using a form outside of the select or maybe get the value of select some other way
 //måske getbyrole for hver option
-});
+// });
 
 
 

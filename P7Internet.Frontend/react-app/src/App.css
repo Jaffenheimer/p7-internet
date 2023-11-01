@@ -286,13 +286,13 @@ button:hover {
   text-align: center;
 }
 
-.NumberFieldContainer{
+.NumPersonsFieldContainer{
   position: absolute;
   height: 35px;
   width: 30%;
 }
 
-.NumberField {
+.NumPersonsField {
   transform: scale(1.5);
   display: flex;
   justify-content: center;
@@ -300,12 +300,12 @@ button:hover {
   /* margin-top: 10%; */
 }
 
-#NumberFieldToast {
+#NumPersonsFieldToast {
   transform: scale(0.7);
   text-align: center;
   justify-content: center;
 }
-#InputNumberField {
+#InputNumPersonsField {
   width: 30px;
   height: auto;
   border: 1px solid black;
@@ -317,8 +317,8 @@ button:hover {
   -moz-appearance: textfield;
 }
 
-#InputNumberField::-webkit-outer-spin-button,
-#InputNumberField::-webkit-inner-spin-button {
+#InputNumPersonsField::-webkit-outer-spin-button,
+#InputNumPersonsField::-webkit-inner-spin-button {
   /*Hides arrows on input field number Chrome*/
   -webkit-appearance: none;
   margin: 0;
@@ -327,7 +327,7 @@ button:hover {
 .ContainerRight
   > .ContainerRightTop
   > .ContainerRightColumn
-  > .NumberField
+  > .NumPersonsField
   > .PlusMinusButton {
   text-align: center;
   width: 30px;
