@@ -8,7 +8,7 @@ const initialState = {
       email: "admin@admin.com",
       username: "admin",
       password: "admin",
-      heartedRecipes: ["Spaghetti Aglio e Olio", "Chicken Stir-Fry", "Caprese Salad", "test4", "test5", "test6", "test7", "test8", "test9", "test10","Spaghetti Aglio e Olio", "Chicken Stir-Fry", "Caprese Salad", "test4", "test5", "test6", "test7", "test8", "test9", "test10","Spaghetti Aglio e Olio", "Chicken Stir-Fry", "Caprese Salad", "test4", "test5", "test6", "test7", "test8", "test9", "test10"],
+      heartedRecipes: [],
     },
   ],
   loggedInUser: {},
