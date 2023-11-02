@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import cross from "../data/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginBox = ({ closeModal }) => {
   const dispatch = useDispatch();

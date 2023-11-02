@@ -5,6 +5,8 @@ import Header from "../components/Header";
 import RadiusSlider from "../components/RadiusSlider";
 import {useState} from 'react'
 import ToggleButton from "../components/ToggleButton";
+import { ToastContainer } from "react-toastify";
+
 
 const RecipeSelection = () => {
   const [toggleButton, setToggleButton] = useState("radius")
@@ -19,6 +21,9 @@ const RecipeSelection = () => {
 
   return (
     <div className="AppContainer">
+      <ToastContainer 
+        position="top-center"
+        newestOnTop={true}/>
       <div className="headerContainer">
         <Header />
       </div>

@@ -45,7 +45,7 @@ const RecipeTitle = ({ title}) => {
       <h1 id="RecipeTitle">
         {title}
         <img src={heart} alt="heart" onClick={handleClick} />
-        <SetHeartIconOnChange/> {/* dynamically updates the heart icon*/}
+        <SetHeartIconOnChange /> {/* dynamically updates the heart icon*/}
       </h1>
     </div>
   );
