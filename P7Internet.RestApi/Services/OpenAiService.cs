@@ -43,7 +43,7 @@ public class OpenAiService
         }
         catch (Exception e)
         {
-            return RecipeResponse.Error(e.Message,recipeId);
+            return RecipeResponse.Error(e.Message, recipeId);
         }
     }
 }

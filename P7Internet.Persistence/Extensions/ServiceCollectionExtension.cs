@@ -6,6 +6,7 @@ using P7Internet.Persistence.Dapper;
 using P7Internet.Persistence.FavouriteRecipeRepository;
 using P7Internet.Persistence.RecipeCacheRepository;
 using P7Internet.Persistence.UserRepository;
+using P7Internet.Persistence.UserSessionRepository;
 
 namespace P7Internet.Persistence.Extensions;
 
@@ -21,7 +22,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<IRecipeCacheRepository, RecipeCacheRepository.RecipeCacheRepository>();
         services.AddScoped<IFavouriteRecipeRepository, FavouriteRecipeRepository.FavouriteRecipeRepository>();
         services.AddScoped<ICachedOfferRepository, CachedOfferRepository.CachedOfferRepository>();
-        
+        services.AddScoped<IUserSessionRepository, UserSessionRepository.UserSessionRepository>();
 
         // Dapper
         SqlMapper.AddTypeHandler(new GuidTypeHandler());

@@ -25,7 +25,6 @@ public class ETilbudsAvisService
 
     public async Task<IList<Offer>> GetAllOffers(OfferRequest req)
     {
-        
         var url = new Uri(_client.BaseAddress.ToString());
         var request = new HttpRequestMessage(HttpMethod.Post, url);
 
@@ -51,7 +50,8 @@ public class ETilbudsAvisService
             offer.Price = offerArray[i]["price"].Value<decimal>();
             offer.Currency = offerArray[i]["currency_code"].Value<string>();
             offer.Store = offerArray[i]["business"]["name"].Value<string>();
-            offer.Size = new KeyValuePair<float, float>(offerArray[i]["unit_size"]["from"].Value<float>(), offerArray[i]["unit_size"]["to"].Value<float>());
+            offer.Size = new KeyValuePair<float, float>(offerArray[i]["unit_size"]["from"].Value<float>(),
+                offerArray[i]["unit_size"]["to"].Value<float>());
             offer.Created = offerArray[i]["validity"]["from"].Value<DateTime>();
             offer.Ending = offerArray[i]["validity"]["to"].Value<DateTime>();
             offers.Add(offer);
@@ -59,6 +59,7 @@ public class ETilbudsAvisService
 
         return offers;
     }
+
     public T CreateObjectFromDeserializedJson<T>(JObject jsonObject)
     {
         return jsonObject.ToObject<T>();
