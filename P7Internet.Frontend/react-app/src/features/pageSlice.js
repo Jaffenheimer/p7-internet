@@ -3,7 +3,8 @@ import Pages from "../objects/Pages"
 
 
 const initialState = {
-    page: Pages.frontPage
+    page: Pages.frontPage,
+    modalShown: false
 };
 
 export const pageSlice = createSlice({
@@ -13,6 +14,12 @@ export const pageSlice = createSlice({
         goToPage(state, action) {
             state.page = action.payload
         }, 
+        openModal(state) {
+            state.modalShown = true
+        }, 
+        closeModal(state) {
+            state.modalShown = false
+        }
     },
 });
 

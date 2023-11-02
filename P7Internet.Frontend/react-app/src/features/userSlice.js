@@ -37,6 +37,18 @@ export const userSlice = createSlice({
     logoutUser(state) {
       state.loggedInUser = {};
     },
+    addRecipe(state, action) {
+      state.loggedInUser[0]['heartedRecipes'].push(action.payload)
+
+      const indexInUsers = state.users.findIndex((user) => user.id === state.loggedInUser[0]['id'])
+      state.users[indexInUsers]['heartedRecipes'].push(action.payload)
+    },
+    removeRecipe(state, action) {
+      state.loggedInUser[0]['heartedRecipes'] = state.loggedInUser[0]['heartedRecipes'].filter(recipe => recipe !== action.payload)
+      
+      const indexInUsers = state.users.findIndex((user) => user.id === state.loggedInUser[0]['id'])
+      state.users[indexInUsers]['heartedRecipes'] = state.users[indexInUsers]['heartedRecipes'].filter(recipe => recipe !== action.payload)
+    }
   },
 });
 
