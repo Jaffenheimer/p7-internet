@@ -7,6 +7,7 @@ using P7Internet.Persistence.CachedIngredientPricesRepository;
 using P7Internet.Persistence.FavouriteRecipeRepository;
 using P7Internet.Persistence.RecipeCacheRepository;
 using P7Internet.Persistence.UserRepository;
+using P7Internet.Persistence.UserSessionRepository;
 using P7Internet.Requests;
 using P7Internet.Response;
 using P7Internet.Services;
@@ -24,10 +25,11 @@ public class PublicControllerV1 : ControllerBase
     private readonly OpenAiService _openAiService;
     private readonly ETilbudsAvisService _eTilbudsAvisService;
     private readonly EmailService _emailService;
+    private readonly IUserSessionRepository _userSessionRepository;
 
     public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService,
         IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository,
-        ICachedOfferRepository cachedOfferRepository, EmailService emailService)
+        ICachedOfferRepository cachedOfferRepository, EmailService emailService, IUserSessionRepository userSessionRepository)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
@@ -35,6 +37,7 @@ public class PublicControllerV1 : ControllerBase
         _favouriteRecipeRepository = favouriteRecipeRepository;
         _cachedOfferRepository = cachedOfferRepository;
         _emailService = emailService;
+        _userSessionRepository = userSessionRepository;
         _eTilbudsAvisService = new ETilbudsAvisService();
     }
 
@@ -127,7 +130,9 @@ public class PublicControllerV1 : ControllerBase
             return BadRequest("User with the specified Username already exists, please choose another Username");
         // ONLY COMMENT THIS IN WHEN WE NEED TO SHOW THIS FEATURE
         //await _emailService.ConfirmEmail(user.EmailAddress, user.Name);
-        var response = new LogInResponse(user.Id, user.Name, user.EmailAddress);
+        var token = await _userSessionRepository.GenerateSessionToken(user.Id);
+        var response = new LogInResponse(user.Id, token, user.Name, user.EmailAddress);
+        
         return Ok(response);
     }
 
@@ -137,16 +142,32 @@ public class PublicControllerV1 : ControllerBase
         var result = await _userRepository.LogIn(req.Username, req.Password);
         if (result != null)
         {
-            var response = new LogInResponse(result.Id, result.Name, result.EmailAddress);
+            var token = await _userSessionRepository.GenerateSessionToken(result.Id);
+            var response = new LogInResponse(result.Id, token, result.Name, result.EmailAddress);
             return Ok(response);
         }
 
         return BadRequest("Username or password is incorrect please try again");
     }
+    [HttpPost("user/logout")]
+    public async Task<IActionResult> Logout([FromQuery] LogOutRequest req)
+    {
+        var result = await _userSessionRepository.DeleteSessionToken(req.UserId, req.SessionToken);
+        if (result)
+        {
+            return Ok("User logged out");
+        }
+
+        return BadRequest("This should never happen");
+    }
 
     [HttpPost("user/favourite-recipe")]
     public async Task<IActionResult> AddFavouriteRecipe([FromQuery] AddFavouriteRecipeRequest req)
     {
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
+        if(!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
+        
         var result = await _favouriteRecipeRepository.Upsert(req.UserId, req.RecipeId);
         if (result)
         {
@@ -159,6 +180,10 @@ public class PublicControllerV1 : ControllerBase
     [HttpGet("user/favourite-recipes")]
     public async Task<IActionResult> GetFavouriteRecipes([FromQuery] GetFavouriteRecipesRequest req)
     {
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
+        if(!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
+
         var result = await _favouriteRecipeRepository.Get(req.UserId);
         if (result != null)
         {
@@ -171,6 +196,10 @@ public class PublicControllerV1 : ControllerBase
     [HttpDelete("user/favourite-recipe")]
     public async Task<IActionResult> DeleteFavouriteRecipe([FromQuery] DeleteFavouriteRecipeRequest req)
     {
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
+        if(!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
+
         var result = await _favouriteRecipeRepository.Delete(req.UserId, req.RecipeId);
         if (result)
         {
@@ -193,22 +222,13 @@ public class PublicControllerV1 : ControllerBase
         return BadRequest("User does not exist");
     }
 
-    //NOTE: IKKE BRUG DET HER ENDPOINT TIL TESTING DER ER KUN 100 GRATIS EMAILS OM DAGEN
-    [HttpPost("user/reset-password")]
-    public async Task<IActionResult> ResetPassword([FromQuery] ResetPasswordRequest req)
-    {
-        var result = await _userRepository.ResetPassword(req.UserName, req.Password);
-        if (result)
-        {
-            return Ok("Password reset, you can now login using your new password");
-        }
-
-        return BadRequest("This should never happen");
-    }
-
     [HttpPost("user/change-password")]
     public async Task<IActionResult> ChangePassword([FromQuery] ChangePasswordRequest req)
     {
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
+        if(!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
+
         var result = await _userRepository.ChangePassword(req.UserName, req.OldPassword, req.NewPassword);
         if (result)
         {
