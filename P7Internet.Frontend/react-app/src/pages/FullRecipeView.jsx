@@ -22,7 +22,7 @@ function FullRecipeView() {
 
     function goToPageRecipeSelection() {
         //pt har vi ikke den side, så det er bare frontpage
-        dispatch(pageActions.goToPage(Pages.frontPage));
+        dispatch(pageActions.goToPage(Pages.RecipeSelection));
     }
 
     function PrintRecipe() {

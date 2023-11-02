@@ -610,11 +610,13 @@ input:checked + .slider:before {
     transform: translate(-50%, -50%);
 }
 
+/* Apply style only when printing */
 @media print {
     .no-print,
     .no-print * {
         display: none !important;
     }
+    /* Styles applied to the printed page */
     @page {
         margin: 0;
     }
