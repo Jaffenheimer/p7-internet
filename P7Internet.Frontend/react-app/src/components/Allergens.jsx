@@ -15,7 +15,6 @@ const Allergens = () => {
   ];
   
   const handleChange = (event) => {
-    console.log(event);
     const allergens = [];
     for (const element of event) {
       const value = element.value.toLowerCase();

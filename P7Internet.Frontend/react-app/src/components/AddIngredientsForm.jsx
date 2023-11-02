@@ -38,7 +38,6 @@ const AddIngredientsForm = ({ingredientsList, addIngredient, removeAllHandler}) 
       ingredientText.push(ingredient["text"])
       );
 
-      console.log("what",handleChange)
       // only adds to ownedIngredient if non-dublicate
       if (!ingredientText.includes(ingredient))
         dispatch(addIngredient(ingredient));
