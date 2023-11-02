@@ -81,15 +81,15 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> ConfirmEmail(string userName, string emailAddress)
     {
-        var query = $@"UPDATE {TableName} SET EmailConfirmed = true WHERE Name = @userName AND Email = @email";
+        var query = $@"UPDATE {TableName} SET EmailConfirmed = true WHERE Name = @Name AND Email = @Email";
         var result = await Connection.ExecuteAsync(query, new {Name = userName, Email = emailAddress});
         return result > 0;
     }
 
     public async Task<bool> ResetPassword(string userName, string password)
     {
-        var checkIfUserExist = await GetUser(userName);
-        if (checkIfUserExist == null)
+        var user = await GetUser(userName);
+        if (user == null)
             return false;
 
         var query =
@@ -103,11 +103,11 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> ChangePassword(string userName, string oldPassword, string newPassword)
     {
-        var checkIfUserExist = await GetUser(userName);
-        if (checkIfUserExist == null)
+        var user = await GetUser(userName);
+        if (user == null)
             return false;
-        var oldPasswordHash = GenerateHash(oldPassword + checkIfUserExist.PasswordSalt);
-        if (oldPasswordHash != checkIfUserExist.PasswordHash)
+        var oldPasswordHash = GenerateHash(oldPassword + user.PasswordSalt);
+        if (oldPasswordHash != user.PasswordHash)
         {
             return false;
         }
@@ -120,7 +120,7 @@ public class UserRepository : IUserRepository
 
         var parameters = new
         {
-            Id = checkIfUserExist.Id,
+            Id = user.Id,
             Password_hash = passwordHash,
             Password_salt = salt,
             Updated = DateTime.UtcNow,
