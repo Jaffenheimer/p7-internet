@@ -9,7 +9,7 @@ const RadiusSlider = () => {
     setSliderValue(event.target.value)
   }
 
-  function logslider(position) {
+  function logSlider(position) {
     var minp = 1;
     var maxp = 100;
   
@@ -24,7 +24,6 @@ const RadiusSlider = () => {
   }
 
   function round(value, step) {
-    step || (step = 1.0);
     var inv = 1.0 / step;
     return Math.round(value * inv) / inv;
   }
@@ -46,7 +45,7 @@ const RadiusSlider = () => {
 
   return (
     <div class="slidecontainer">
-        <p>Radius: {filterSliderValue(logslider(sliderValue))}</p>
+        <p>Radius: {filterSliderValue(logSlider(sliderValue))}</p>
         <input type="range" min="1" max="100" value={sliderValue} onChange={sliderChange}/>
     </div>
   )
