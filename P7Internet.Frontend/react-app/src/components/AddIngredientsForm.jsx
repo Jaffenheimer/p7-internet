@@ -1,24 +1,17 @@
-import React, { useState, useEffect } from "react";
-import { recipeGenerationActions } from "../features/recipeGenerationSlice";
-import { useDispatch, useSelector } from "react-redux";
-import AddButton from "./AddButton";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import RemoveAllButton from "./RemoveAllButton";
 import AddIngredientInput from "./AddIngredientInput";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-const AddIngredientsForm = ({ingredientsList, addIngredient, removeAllHandler}) => {
+const AddIngredientsForm = ({
+  ingredientsList,
+  addIngredient,
+  removeAllHandler,
+}) => {
   const dispatch = useDispatch();
-  const [ingredient, setIngredient] = useState('');
-  //const ownedIngredientsList = useSelector(state => state.recipeGeneration.ownedIngredients);
-  const [addButtonIsDisabled, setAddButtonDisabled] = useState(true);
-  const [removeAllButtonIsDisabled, setRemoveAllButtonDisabled] = useState(true);
-
-  useEffect(() => {
-    handleRemoveAllButtonDisabling();
-  }, [ingredientsList]);
-
-  useEffect(() => {
-    handleAddButtonDisabling(ingredient);
-  }, [ingredient]);
+  const [ingredient, setIngredient] = useState("");
 
   const handleChange = (event) => {
     setIngredient(event.target.value);
@@ -27,7 +20,7 @@ const AddIngredientsForm = ({ingredientsList, addIngredient, removeAllHandler}) 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (ingredient !== null && typeof ingredient !== "undefined") {
-      if (ingredient == "") return;
+      if (ingredient === "") return;
 
       // receives the ingredient text (aka. name) from dict on store in format
       // {0:{id: '', text: ''}, 1:{id: '', text: ''}}¨
@@ -35,39 +28,34 @@ const AddIngredientsForm = ({ingredientsList, addIngredient, removeAllHandler}) 
       var ingredientText = [];
 
       ingredientsDictionary.forEach((ingredient) =>
-      ingredientText.push(ingredient["text"])
+        ingredientText.push(ingredient["text"])
       );
-
+      if (ingredientText.includes(ingredient)) {
+        toast.error(`"${ingredient}" er allerede tilføjet til listen!`);
+        return;
+      }
+      if (ingredientsList.length >= 10) {
+        toast.error("Du kan ikke tilføje flere end 10 ingredienser");
+        return;
+      }
       // only adds to ownedIngredient if non-dublicate
-      if (!ingredientText.includes(ingredient))
-        dispatch(addIngredient(ingredient));
-      else alert(`Elementet "${ingredient}" er allerede tilføjet til listen!`);
+      dispatch(addIngredient(ingredient));
     }
     setIngredient("");
   };
 
-  //add button is disabled if input is empty, else enabled
-  const handleAddButtonDisabling = (value) => {
-    if (value === "")
-      setAddButtonDisabled(true)
-    else
-      setAddButtonDisabled(false)
-  }
-
-  //remove all button is disabled if there are no ingredients to remove, else enabled
-  const handleRemoveAllButtonDisabling = () => {
-    if (ingredientsList.length === 0)
-      setRemoveAllButtonDisabled(true)
-    else
-      setRemoveAllButtonDisabled(false)
-  }
-    
   return (
-      <form onSubmit={handleSubmit}>
-        <AddIngredientInput ingredient={ingredient} handleChange={handleChange} placeholder="Tilføj en ingrediens..." />
-        <AddButton type="submit" isDisabled={addButtonIsDisabled} className="AddIngredientButton" />
-        <RemoveAllButton handleClick={removeAllHandler} isDisabled={removeAllButtonIsDisabled} />
-      </form>
+    <form onSubmit={handleSubmit}>
+      <AddIngredientInput
+        ingredient={ingredient}
+        handleChange={handleChange}
+        placeholder="Tilføj en ingrediens..."
+      />
+      <button type="submit" >Tilføj</button>
+      <RemoveAllButton
+        handleClick={removeAllHandler}
+      />
+    </form>
   );
 };
 
