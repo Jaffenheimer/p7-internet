@@ -1,5 +1,5 @@
 import React from "react";
-import NumberField from "./NumberField";
+import NumberOfPersonsField from "./NumberOfPersonsField";
 import DietaryRestrictions from "./DietaryRestrictions";
 import ExcludeList from "./ExcludeList";
 import Allergens from "./Allergens";
@@ -8,10 +8,11 @@ const ContainerRight = () => {
   return (
     <div className="ContainerRight">
       <div className="ContainerRightTop">
-        <h3>Personer</h3>
-        <div className="NumberFieldContainer"></div>
-        <div className="ContainerRightColumn">
-          <NumberField />
+          <h3>Personer</h3>
+          <div className="NumberOfPersonsFieldContainer">
+          </div>
+          <div className="ContainerRightColumn">
+              <NumberOfPersonsField />
         </div>
       </div>
 

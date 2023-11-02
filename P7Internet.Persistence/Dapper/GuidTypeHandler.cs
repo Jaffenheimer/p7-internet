@@ -13,6 +13,6 @@ public class GuidTypeHandler : SqlMapper.TypeHandler<Guid>
 
     public override Guid Parse(object value)
     {
-        return new Guid((string)value);
+        return new Guid((string) value);
     }
 }
