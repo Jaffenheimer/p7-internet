@@ -1,0 +1,19 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+
+export const recipeApi = createApi({
+    reducerPath: 'recipeApi', 
+    baseQuery: fetchBaseQuery ({ baseUrl: 'http://localhost:5000/'}), 
+    endpoints: (builder) => ({
+        postRecipe: builder.mutation({
+            query: (openAiString, ingredients, amount) => ({
+                url: 'public/sample/testrecipes',
+                method: 'POST', 
+                body: {openAiString, ingredients, amount}, 
+                prepareHeaders: (headers) => {
+                    headers.set("Access-Control-Allow-Origin", "*")
+                    return headers
+                }, 
+            }), 
+        })
+    })
+})

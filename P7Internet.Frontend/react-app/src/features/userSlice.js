@@ -9,9 +9,10 @@ const initialState = {
       username: "admin",
       password: "admin",
       heartedRecipes: [],
-    },
+    }, 
   ],
   loggedInUser: {},
+  testlogin: false, 
 };
 
 export const userSlice = createSlice({
@@ -37,6 +38,9 @@ export const userSlice = createSlice({
     logoutUser(state) {
       state.loggedInUser = {};
     },
+    toggleTestLogin(state){
+      state.testlogin = !state.testlogin; 
+    }
   },
 });
 

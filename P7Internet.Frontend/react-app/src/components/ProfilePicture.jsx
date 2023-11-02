@@ -3,6 +3,9 @@ import profile from "../data/profile.svg";
 import "../App.css";
 import { userActions } from "../features/userSlice";
 import { useDispatch } from "react-redux";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 const ProfilePicture = () => {
   const dispatch = useDispatch();
@@ -21,7 +24,9 @@ const ProfilePicture = () => {
   };
 
   const handleLogOut = () => {
-    dispatch(userActions.logoutUser()); //the user is now logged out
+    toast.success("Logget ud");
+    dispatch(userActions.toggleTestLogin());
+    //dispatch(userActions.logoutUser()); //the user is now logged out
     setOpen(false);
   };
 

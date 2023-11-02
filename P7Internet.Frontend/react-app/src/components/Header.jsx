@@ -19,21 +19,22 @@ const customStyles = {
 };
 
 const Header = () => {
-  const loggedInUser = useSelector((state) => state.user.loggedInUser);
-  const [loggedIn, setLoggedIn] = useState(false);
+  //const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  const testLogin = useSelector((state) => state.user.testlogin);
+  //const [loggedIn, setLoggedIn] = useState(false);
 
   const [modalIsOpen, setIsOpen] = React.useState(false);
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
-  function SetLoggedInOnChange() {
-    //component that dynamically changes when log in status changes
-    useEffect(() => {
-      if (loggedInUser.length === 1) setLoggedIn(true);
-      else setLoggedIn(false);
-    })
+  // function SetLoggedInOnChange() {
+  //   //component that dynamically changes when log in status changes
+  //   useEffect(() => {
+  //     if (testLogin == false) setLoggedIn(true);
+  //     else setLoggedIn(false);
+  //   })
   
-  }
+  // }
 
   return (
     <div className="header">
@@ -47,8 +48,7 @@ const Header = () => {
         <LoginBox closeModal={closeModal} />
       </Modal>
       <div className="title">Opskriftsgenerator</div>
-      <SetLoggedInOnChange />
-          {loggedIn ? (
+          {testLogin ? (
             <ProfilePicture />
           ) : (
             <button onClick={openModal}>Log In</button>
