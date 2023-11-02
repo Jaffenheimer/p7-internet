@@ -10,9 +10,9 @@ namespace P7Internet.Requests
         public string SearchTerm { get; set; }
         public int Radius { get; set; }
         public string Upcoming { get; set; }
+
         public OfferRequest()
         {
-
         }
 
         public OfferRequest(int pagesize, string searchTerm, int radius, string upcoming)
@@ -38,6 +38,7 @@ namespace P7Internet.Requests
 
             return res;
         }
+
         public string CalculateGeohash()
         {
             var geohasher = new Geohasher();
