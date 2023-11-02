@@ -6,17 +6,21 @@ import RadiusSlider from "../components/RadiusSlider";
 import {useState} from 'react'
 import ToggleButton from "../components/ToggleButton";
 import { ToastContainer } from "react-toastify";
-
+import { toast } from "react-toastify";
+import getGeoLocation from "../components/GenerateRecipeButton";
 
 const RecipeSelection = () => {
-  const [toggleButton, setToggleButton] = useState("radius")
+  const [toggleState, setToggleState] = useState(localStorage.getItem("geolocation") !== null ? "radius" : "store")
 
   function toggle(){
-    if (toggleButton === "radius"){
-      setToggleButton("store")
-    } else if (toggleButton === "store"){
-      setToggleButton("radius")
-    }
+    if (toggleState === "radius"){
+      setToggleState("store")
+    } else if (toggleState === "store"){
+        if (localStorage.getItem("geolocation") === null)
+          toast.error("Du skal slå geolokation til og reloade siden for at benytte radius.")
+        else
+          setToggleState("radius")
+      }
   }
 
   return (
@@ -32,9 +36,8 @@ const RecipeSelection = () => {
         <RecipeSelectionContainerLeft />
         </div>
         <div className={"split-screen-right"}>
-          <ToggleButton />
-          <RadiusSlider />
-          <StoreSelection />
+          <ToggleButton toggle={toggle} toggleState={toggleState}/>
+          {toggleState === "radius" ? <RadiusSlider /> : <StoreSelection />}
         </div>
       </div>
     </div>

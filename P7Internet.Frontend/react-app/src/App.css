@@ -606,3 +606,16 @@ input:checked + .slider:before {
 input[type="range"]{
   width:100%;
 }
+
+.toggleButton {
+  width: 100%
+}
+
+.toggleButton button{
+  font-family: Verdana;
+  background-color: #ebebeb;
+  color: black;
+  border: 0;
+  text-transform:none;
+  width:45%
+}

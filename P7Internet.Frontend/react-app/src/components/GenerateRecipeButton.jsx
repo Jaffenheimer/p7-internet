@@ -55,7 +55,7 @@ const GenerateRecipeButton = () => {
   return <button onClick={handleOnClick}>Generer opskrifter</button>;
 };
 
-function getGeoLocation() {
+export const getGeoLocation = () => {
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition((pos) => {
             localStorage.setItem(
