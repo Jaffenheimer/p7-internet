@@ -11,9 +11,9 @@ const RecipeSelectionContainerLeft = () => {
   return (
     <div className="RecipeSelectionContainerLeft" onClick={enableArrowKeyPress}>
       <RecipeView />
-      <div style={{position: 'relative'}}>
-      <SelectRecipeButton />
-      <SelectArrows />
+      <div style={{ position: "relative" }}>
+        <SelectRecipeButton />
+        <SelectArrows />
       </div>
     </div>
   );

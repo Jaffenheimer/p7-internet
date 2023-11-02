@@ -39,7 +39,7 @@ const Header = () => {
     useEffect(() => {
       if (loggedInUser.length === 1) setLoggedIn(true);
       else setLoggedIn(false);
-    })
+    });
   }
 
   return (
