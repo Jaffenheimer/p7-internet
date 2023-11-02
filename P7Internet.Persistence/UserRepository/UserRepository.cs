@@ -36,13 +36,32 @@ public class UserRepository : IUserRepository
 
         return null;
     }
+    private async Task<User> GetUserByEmail(string email)
+    {
+        var query = $@"SELECT * FROM {TableName} WHERE Email = @email";
+        var result = await Connection.QuerySingleOrDefaultAsync(query, new {email});
+        if (result != null)
+        {
+            var user = new User(result.Name, result.Email);
+            user.Id = Guid.Parse(result.Id);
+            user.PasswordHash = result.Password_hash;
+            user.PasswordSalt = result.Password_salt;
+            user.CreatedAt = result.Creation_date;
+            return user;
+        }
+
+        return null;
+    }
 
     public async Task<bool> Upsert(User user, string password)
     {
         var checkIfUserExist = await GetUser(user.Name);
         if (checkIfUserExist != null)
             return false;
-
+        var checkIfUserWithEmailExist = await GetUserByEmail(user.EmailAddress);
+        if (checkIfUserWithEmailExist != null)
+            return false;
+        
         var query =
             $@"INSERT INTO {TableName} (Id, Name, Email, Password_hash, Password_salt, Creation_date, EmailConfirmed, Updated)
                             VALUES (@Id, @Name, @Email, @PasswordHash, @PasswordSalt, @CreatedAt, false, @UpdatedAt)";
