@@ -58,7 +58,7 @@ function getGeoLocation() {
                 })
             );
         });
-    } else toast("Geolokation understøttes ikke af din browser");
+    } else toast.error("Geolokation understøttes ikke af din browser");
 }
 
 export default GenerateRecipeButton;
