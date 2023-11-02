@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import AddButton from "./AddButton";
 import RemoveAllButton from "./RemoveAllButton";
 import AddIngredientInput from "./AddIngredientInput";
 import { toast } from "react-toastify";
@@ -13,18 +12,6 @@ const AddIngredientsForm = ({
 }) => {
   const dispatch = useDispatch();
   const [ingredient, setIngredient] = useState("");
-  const [addButtonIsDisabled, setAddButtonDisabled] = useState(true);
-  const [removeAllButtonIsDisabled, setRemoveAllButtonDisabled] =
-    useState(true);
-
-  
-  useEffect(() => {
-    handleRemoveAllButtonDisabling();// eslint-disable-next-line
-  }, [ingredientsList]);
-
-  useEffect(() => {
-    handleAddButtonDisabling(ingredient);
-  }, [ingredient]);
 
   const handleChange = (event) => {
     setIngredient(event.target.value);
@@ -57,18 +44,6 @@ const AddIngredientsForm = ({
     setIngredient("");
   };
 
-  //add button is disabled if input is empty, else enabled
-  const handleAddButtonDisabling = (value) => {
-    if (value === "") setAddButtonDisabled(true);
-    else setAddButtonDisabled(false);
-  };
-
-  //remove all button is disabled if there are no ingredients to remove, else enabled
-  const handleRemoveAllButtonDisabling = () => {
-    if (ingredientsList.length === 0) setRemoveAllButtonDisabled(true);
-    else setRemoveAllButtonDisabled(false);
-  };
-
   return (
     <form onSubmit={handleSubmit}>
       <AddIngredientInput
@@ -76,14 +51,9 @@ const AddIngredientsForm = ({
         handleChange={handleChange}
         placeholder="Tilføj en ingrediens..."
       />
-      <AddButton
-        type="submit"
-        isDisabled={addButtonIsDisabled}
-        className="AddIngredientButton"
-      />
+      <button type="submit" >Tilføj</button>
       <RemoveAllButton
         handleClick={removeAllHandler}
-        isDisabled={removeAllButtonIsDisabled}
       />
     </form>
   );

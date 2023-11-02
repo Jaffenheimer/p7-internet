@@ -222,13 +222,6 @@ button {
   text-transform: uppercase;
 }
 
-button:disabled {
-  background-color: #e7e7e7;
-  border-color: #e7e7e7;
-  cursor: not-allowed;
-  border: 2px solid black;
-}
-
 button:hover {
   background: #e7e7e7;
 }
