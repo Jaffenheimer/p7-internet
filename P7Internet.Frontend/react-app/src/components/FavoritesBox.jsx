@@ -3,10 +3,10 @@ import cross from "../data/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import { recipeActions } from "../features/recipeSlice";
-
 import Pages from "../objects/Pages";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { nanoid } from "@reduxjs/toolkit";
 
 const FavoritesBox = ({ closeModal }) => {
 	const dispatch = useDispatch();
@@ -37,7 +37,7 @@ const FavoritesBox = ({ closeModal }) => {
     <form className="LoginForm" onSubmit={handleSubmit}>
       <div className="imgcontainer">
         <h3>
-					Hjertede opskrifter
+					Favoritter
           <img
             src={cross}
             alt="Back Cross"
@@ -47,11 +47,11 @@ const FavoritesBox = ({ closeModal }) => {
         </h3>
       </div>
       <div className="container">
-				{heartedRecipes.length === 0 ? <p>Ingen opskrifter er blevet hjertet.</p> : 
+				{heartedRecipes.length === 0 ? <p>Ingen opskrifter er blevet markeret som favorit.</p> : 
 				<>
 					<select size="14" value={selectValue} onChange={handleChangeSelect}>
 						{heartedRecipes.map((recipeTitle) => (
-							<option value={recipeTitle}>{recipeTitle} </option>
+							<option value={recipeTitle} key={nanoid()}>{recipeTitle} </option>
 						))}
 					</select>
 					<button onClick={handleSubmit}>Vælg</button>
