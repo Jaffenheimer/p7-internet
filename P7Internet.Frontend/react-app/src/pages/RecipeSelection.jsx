@@ -9,7 +9,8 @@ const RecipeSelection = () => {
   return (
     <div className="AppContainer">
       <ToastContainer 
-        position="top-center"/>
+        position="top-center"
+        newestOnTop={true}/>
       <div className="headerContainer">
         <Header />
       </div>
