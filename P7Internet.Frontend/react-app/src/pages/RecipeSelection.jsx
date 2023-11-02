@@ -7,7 +7,6 @@ import {useState} from 'react'
 import ToggleButton from "../components/ToggleButton";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
-import getGeoLocation from "../components/GenerateRecipeButton";
 
 const RecipeSelection = () => {
   const [toggleState, setToggleState] = useState(localStorage.getItem("geolocation") !== null ? "radius" : "store")
