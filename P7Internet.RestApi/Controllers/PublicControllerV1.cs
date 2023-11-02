@@ -152,6 +152,10 @@ public class PublicControllerV1 : ControllerBase
     [HttpPost("user/logout")]
     public async Task<IActionResult> Logout([FromQuery] LogOutRequest req)
     {
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
+        if (!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
+
         var result = await _userSessionRepository.DeleteSessionToken(req.UserId, req.SessionToken);
         if (result)
         {
