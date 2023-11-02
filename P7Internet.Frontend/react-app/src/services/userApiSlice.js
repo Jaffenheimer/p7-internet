@@ -10,14 +10,14 @@ export const userApiSlice = createApi({
     endpoints: (builder) => ({
         userLogin: builder.mutation({
             query: ({username, password}) => ({ 
-                url: `/public/sample/user/login?Username=${username}&Password=${password}`,
+                url: `/public/user/login?Username=${username}&Password=${password}`,
                 method: 'POST', 
                 body: '',
             }), 
         }), 
         userCreate: builder.mutation({
             query: ({username, password, email}) => ({
-                url: `/public/sample/user/create-user?Name=${username}&EmailAddress=${email}&Password=${password}`,
+                url: `/public/user/create-user?Name=${username}&EmailAddress=${email}&Password=${password}`,
                 method: 'POST', 
                 body: '', 
             }),
@@ -28,3 +28,7 @@ export const userApiSlice = createApi({
 export const { useUserLoginMutation, useUserCreateMutation } = userApiSlice;
 
 //https://localhost:5001/public/sample/user/create-user?Name=user2&EmailAddress=user2%40mail.dk&Password=1234
+
+//https://localhost:5001/public/user/create-user?Name=u&EmailAddress=user%40mail.dk&Password=1
+
+

@@ -2,20 +2,24 @@
 export const generateOpenAiString = (recipeGenerationSlice) => {
     const { ownedIngredients, dietaryRestrictions, allergens, excludeList, numPeople} = recipeGenerationSlice;
 
-    console.log(recipeGenerationSlice.allergens); 
+    console.log("From generateOpenAiString -- ", recipeGenerationSlice); 
 
     const openAiString = ""; 
     
-    // let ownedIngredientsString; 
-    // let excludeListsString;  
+    let ownedIngredientsString; 
+    let excludeListsString;  
 
     // if(!ownedIngredients || !excludeList){
     //     return '';
     // }
     
-    // ownedIngredients.Array.forEach((ingredient) => {
-    //     ownedIngredientsString += `${ingredient.text}  `; 
-    // });
+    ownedIngredients.forEach((ingredient) => {
+        if(ingredient != 'undefined'){
+            ownedIngredientsString += `${ingredient.text}  `;
+        } 
+    });
+
+    console.log("Owned string -- ", ownedIngredientsString);
 
     // excludeList.Array.forEach((ingredient) => {
     //     excludeListsString += `${ingredient.text}  `; 
