@@ -42,11 +42,11 @@ function FullRecipeView() {
                     ListElement={RecipeIngredientElement}
                 />
                 <MethodsList methods={recipe.method} />
-                <div className="bottomButtons no-print">
-                    <button id="backButton" onClick={goToPageRecipeSelection}>
+                <div className="BottomButtons no-print">
+                    <button id="BackButton" onClick={goToPageRecipeSelection}>
                         Tilbage
                     </button>
-                    <button id="printButton" onClick={PrintRecipe}>
+                    <button id="PrintButton" onClick={PrintRecipe}>
                         Print
                     </button>
                 </div>
