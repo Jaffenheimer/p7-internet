@@ -1,13 +1,17 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { recipeGenerationActions } from "../features/recipeGenerationSlice";
+import { generateOpenAiString } from "../helperFunctions/generateOpenAiString";
 
 const GenerateRecipeButton = () => {
     const dispatch = useDispatch();
     getGeoLocation();
+
+    const recipeGenData = useSelector((state) => state.recipeGeneration);
 
     function goToPageFullRecipeSelection() {
         dispatch(pageActions.goToPage(Pages.RecipeSelection));
@@ -21,6 +25,9 @@ const GenerateRecipeButton = () => {
 
     //insert comment about what the function does here
     const GenerateRecipesHandler = async () => {
+        console.log("Data -- ", recipeGenData); 
+        const OpenAiString = generateOpenAiString(recipeGenData); 
+        console.log(OpenAiString);
     //     const req = "Create 3 short and simple recipes for 4 people";
 
     //     try {

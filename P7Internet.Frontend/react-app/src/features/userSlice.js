@@ -45,7 +45,7 @@ export const userSlice = createSlice({
       state.loggedInUser[0]['heartedRecipes'].push(action.payload)
 
       const indexInUsers = state.users.findIndex((user) => user.id === state.loggedInUser[0]['id'])
-      state.users[indexInUsers]['heartedRecipes'].push(action.payload)
+      state.users[indexInUsers]['heaxrtedRecipes'].push(action.payload)
     },
     removeRecipe(state, action) {
       state.loggedInUser[0]['heartedRecipes'] = state.loggedInUser[0]['heartedRecipes'].filter(recipe => recipe !== action.payload)

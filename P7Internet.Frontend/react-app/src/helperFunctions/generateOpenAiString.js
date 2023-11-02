@@ -1,31 +1,36 @@
 
 export const generateOpenAiString = (recipeGenerationSlice) => {
     const { ownedIngredients, dietaryRestrictions, allergens, excludeList, numPeople} = recipeGenerationSlice;
-    let ownedIngredientsString; 
-    let excludeListsString;  
 
-    if(!ownedIngredients || !excludeList){
-        return '';
-    }
+    console.log(recipeGenerationSlice.allergens); 
+
+    const openAiString = ""; 
     
-    ownedIngredients.Array.forEach((ingredient) => {
-        ownedIngredientsString += `${ingredient.text}  `; 
-    });
+    // let ownedIngredientsString; 
+    // let excludeListsString;  
 
-    excludeList.Array.forEach((ingredient) => {
-        excludeListsString += `${ingredient.text}  `; 
-    });
+    // if(!ownedIngredients || !excludeList){
+    //     return '';
+    // }
+    
+    // ownedIngredients.Array.forEach((ingredient) => {
+    //     ownedIngredientsString += `${ingredient.text}  `; 
+    // });
 
-    const openAiString = `
-        Generate three recipes from ${numPeople} people using the following ingreident: 
-        ${ownedIngredientsString}
-        Exclude the following ingreidents: 
-        ${excludeListsString}
-        The following dietary restrictions apply: 
-        ${dietaryRestrictions}
-        The following allergens should be avoided: 
-        ${allergens}
-    `; 
+    // excludeList.Array.forEach((ingredient) => {
+    //     excludeListsString += `${ingredient.text}  `; 
+    // });
+
+    // const openAiString = `
+    //     Generate three recipes from ${numPeople} people using the following ingreident: 
+    //     ${ownedIngredientsString}
+    //     Exclude the following ingreidents: 
+    //     ${excludeListsString}
+    //     The following dietary restrictions apply: 
+    //     ${dietaryRestrictions}
+    //     The following allergens should be avoided: 
+    //     ${allergens}
+    // `; 
 
     return openAiString; 
 
