@@ -6,16 +6,12 @@ import Allergens from "../components/Allergens";
 
 afterEach(cleanup)
 
-test("Renders the allergens caption", () => {
-  renderComponent(<Allergens />);
-  const linkElement = screen.getByText(/Allergener/);
-  expect(linkElement).toBeInTheDocument();
-});
-
-test("Renders the select element with correct placeholder and no values selected", () => {
+test("Renders the select element with correct title, placeholder, and no values selected", () => {
     renderComponent(<Allergens />);
+    const title = screen.getByText(/Allergener/)
     const placeholder = screen.getByText(/Vælg allergener/);
     const selectElement = screen.getByRole('combobox');
+    expect(title).toBeInTheDocument();
     expect(selectElement).toBeInTheDocument();
     expect(placeholder).toBeInTheDocument();
     expect(selectElement.value).toBe('')

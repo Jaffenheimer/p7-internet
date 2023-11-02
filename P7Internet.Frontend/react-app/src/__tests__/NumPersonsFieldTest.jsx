@@ -1,17 +1,14 @@
-import { act, cleanup, fireEvent, getAllByRole, render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import React from "react";
 import {renderComponent} from "../testSetupHelper/Helper.jsx";
-import NumPersonsField from "../components/NumPersonsField.jsx";
-import { Provider } from "react";
-import { store } from "../app/store";
-import { useDispatch, useStore } from "react-redux";
+import NumberOfPersonsField from "../components/NumberOfPersonsField.jsx";
 import { ToastContainer } from "react-toastify";
 
 
 afterEach(cleanup)
 beforeEach(() => {
-    renderComponent(<NumPersonsField />);
+    renderComponent(<NumberOfPersonsField />);
 
     });
 
@@ -19,7 +16,7 @@ beforeEach(() => {
 test("Renders the input field as well as the plus and minus button", () => {
     const minus = screen.getByText(/-/);
     const plus = screen.getByText(/\+/);
-    const inputField = screen.getByTestId('InputNumPersonsField')
+    const inputField = screen.getByTestId('InputNumberOfPersonsField')
 
     expect(minus).toBeInTheDocument();
     expect(plus).toBeInTheDocument();
@@ -27,12 +24,12 @@ test("Renders the input field as well as the plus and minus button", () => {
   });
 
 test("default value of the input field is 4", () => {
-    const inputField = screen.getByTestId('InputNumPersonsField')
+    const inputField = screen.getByTestId('InputNumberOfPersonsField')
     expect(inputField.value).toBe('4');
   });
 
 test("Clicking the plus button increases the value of the input field", () => {
-    const inputField = screen.getByTestId('InputNumPersonsField')
+    const inputField = screen.getByTestId('InputNumberOfPersonsField')
     const plus = screen.getByText(/\+/);
     expect(inputField.value).toBe('4');
     fireEvent.click(plus);
@@ -40,7 +37,7 @@ test("Clicking the plus button increases the value of the input field", () => {
   });
 
 test("Clicking the minus button decreases the value of the input field", () => {
-    const inputField = screen.getByTestId('InputNumPersonsField')
+    const inputField = screen.getByTestId('InputNumberOfPersonsField')
     const minus = screen.getByText(/-/);
     expect(inputField.value).toBe('4');
     fireEvent.click(minus);
@@ -50,7 +47,7 @@ test("Clicking the minus button decreases the value of the input field", () => {
 test("Clicking the minus button when the value is 1 does not decrease the value of the input field", async () => {
     render(<ToastContainer 
         position="top-center"/>)
-    const inputField = screen.getByTestId('InputNumPersonsField')
+    const inputField = screen.getByTestId('InputNumberOfPersonsField')
     const minus = screen.getByText(/-/);
     expect(inputField.value).toBe('4');
     fireEvent.click(minus);
@@ -65,7 +62,7 @@ test("Clicking the minus button when the value is 1 does not decrease the value 
 test("Clicking the plus button when the value is 10 does not increase the value of the input field", async () => {
     render(<ToastContainer 
         position="top-center"/>)
-    const inputField = screen.getByTestId('InputNumPersonsField')
+    const inputField = screen.getByTestId('InputNumberOfPersonsField')
     const plus = screen.getByText(/\+/);
     expect(inputField.value).toBe('4');
     fireEvent.click(plus);

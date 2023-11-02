@@ -4,7 +4,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch, useSelector } from "react-redux";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 
-const NumPersonsField = () => {
+const NumberOfPersonsField = () => {
   //Set the intial value of the number field
   const numPeople = useSelector((state) => state.recipeGeneration.numPeople);
   const dispatch = useDispatch();
@@ -24,13 +24,13 @@ const NumPersonsField = () => {
   };
 
   return (
-    <div className="NumPersonsField">
+    <div className="NumberOfPersonsField">
       <button className="PlusMinusButton" onClick={subtract}>
         -
       </button>
       <input
-        id="InputNumPersonsField"
-        data-testid="InputNumPersonsField"
+        id="InputNumberOfPersonsField"
+        data-testid="InputNumberOfPersonsField"
         type="number"
         size={3}
         value={numPeople}
@@ -43,4 +43,4 @@ const NumPersonsField = () => {
   );
 };
 
-export default NumPersonsField;
+export default NumberOfPersonsField;
