@@ -2,35 +2,43 @@ import React, { useState } from "react";
 import heartHollow from "../data/heart-hollow.svg";
 import heartSolid from "../data/heart-solid.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { recipeActions } from "../features/recipeSlice";
+import { userActions } from "../features/userSlice";
+import { useEffect } from "react";
+import { pageActions } from "../features/pageSlice";
 
-const RecipeTitle = ({ title }) => {
-    const [heart, setHeart] = useState(heartHollow);
-    const dispatch = useDispatch();
-    const heartedRecipeTitles = useSelector(
-        (state) => state.recipe.heartedRecipeTitles
-    );
+const RecipeTitle = ({ title}) => {
+  const dispatch = useDispatch();
+  const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  const [heart, setHeart] = useState(heartHollow);
 
-    function handleClick(event) {
-        event.preventDefault();
-
-        if (heart === heartSolid) {
-            setHeart(heartHollow);
-            dispatch(recipeActions.removeHeartedRecipeTitles(title));
-        } else {
-            setHeart(heartSolid);
-            dispatch(recipeActions.addHeartedRecipeTitles(title));
-        }
+  function handleClick(event) {
+    event.preventDefault();
+    if (loggedInUser.length !== 1){ //if not logged in
+      dispatch(pageActions.openModal())
     }
-
-    function SetHeartIconOnChange() {
-        //component that dynamically changes heart icon when using arrows
-        if (heartedRecipeTitles.includes(title)) {
-            setHeart(heartSolid);
-        } else {
-            setHeart(heartHollow);
-        }
+    else{
+      if (heart === heartSolid) {
+        setHeart(heartHollow)
+        dispatch(userActions.removeRecipe(title))
+      }
+      else {
+        setHeart(heartSolid)
+        dispatch(userActions.addRecipe(title))
+      }
     }
+  }
+
+  function SetHeartIconOnChange(){ //component that dynamically changes heart icon when using arrows
+    useEffect(() => {
+      if (loggedInUser.length !== 1) return
+      if (loggedInUser[0]['heartedRecipes'].includes(title)){
+        setHeart(heartSolid)
+      }
+      else{
+        setHeart(heartHollow)
+      }
+    })
+  }
 
     return (
         <div id="RecipeTitleDiv">

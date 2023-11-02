@@ -287,57 +287,57 @@ button:hover {
     text-align: center;
 }
 
-.NumberFieldContainer {
-    position: absolute;
-    height: 35px;
-    width: 30%;
+.NumberOfPersonsFieldContainer{
+  position: absolute;
+  height: 35px;
+  width: 30%;
 }
 
-.NumberField {
-    transform: scale(1.5);
-    display: flex;
-    justify-content: center;
-    margin-left: 22px;
-    /* margin-top: 10%; */
+.NumberOfPersonsField {
+  transform: scale(1.5);
+  display: flex;
+  justify-content: center;
+  margin-left: 22px;
+  /* margin-top: 10%; */
 }
 
-#NumberFieldToast {
-    transform: scale(0.7);
-    text-align: center;
-    justify-content: center;
+#NumberOfPersonsFieldToast {
+  transform: scale(0.7);
+  text-align: center;
+  justify-content: center;
 }
-#InputNumberField {
-    width: 30px;
-    height: auto;
-    border: 1px solid black;
-    display: inline-block;
-    font-size: small;
-    text-align: center;
-    appearance: textfield;
-    /*Hides arrows on input field number Firefox*/
-    -moz-appearance: textfield;
+#InputNumberOfPersonsField {
+  width: 30px;
+  height: auto;
+  border: 1px solid black;
+  display: inline-block;
+  font-size: small;
+  text-align: center;
+  appearance: textfield;
+  /*Hides arrows on input field number Firefox*/
+  -moz-appearance: textfield;
 }
 
-#InputNumberField::-webkit-outer-spin-button,
-#InputNumberField::-webkit-inner-spin-button {
-    /*Hides arrows on input field number Chrome*/
-    -webkit-appearance: none;
-    margin: 0;
+#InputNumberOfPersonsField::-webkit-outer-spin-button,
+#InputNumberOfPersonsField::-webkit-inner-spin-button {
+  /*Hides arrows on input field number Chrome*/
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .ContainerRight
-    > .ContainerRightTop
-    > .ContainerRightColumn
-    > .NumberField
-    > .PlusMinusButton {
-    text-align: center;
-    width: 30px;
-    height: auto;
-    border: 1px solid black;
-    display: inline-block;
-    cursor: pointer;
-    border-radius: 0;
-    font-size: small;
+  > .ContainerRightTop
+  > .ContainerRightColumn
+  > .NumberOfPersonsField
+  > .PlusMinusButton {
+  text-align: center;
+  width: 30px;
+  height: auto;
+  border: 1px solid black;
+  display: inline-block;
+  cursor: pointer;
+  border-radius: 0;
+  font-size: small;
 }
 
 .numberPersonsText {
