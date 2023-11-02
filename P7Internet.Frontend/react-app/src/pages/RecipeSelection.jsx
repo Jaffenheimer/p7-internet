@@ -2,6 +2,7 @@ import React from "react";
 import RecipeSelectionContainerLeft from "../components/RecipeSelectionContainerLeft";
 import StoreSelection from "../components/StoreSelection";
 import Header from "../components/Header";
+import RadiusSlider from "../components/RadiusSlider";
 
 
 const RecipeSelection = () => {
@@ -15,6 +16,7 @@ const RecipeSelection = () => {
         <RecipeSelectionContainerLeft />
         </div>
         <div className={"split-screen-right"}>
+          <RadiusSlider />
           <StoreSelection />
         </div>
       </div>
