@@ -19,13 +19,13 @@ public class UserSessionRepository : IUserSessionRepository
     
     public async Task<string> GenerateSessionToken(Guid userId)
     {
-        var query = $@"INSERT INTO {TableName} (UserId, SessionToken, ExpiresAt
+        var query = $@"INSERT INTO {TableName} (UserId, SessionToken, ExpiresAt)
                             VALUES (@UserId, @SessionToken, @ExpiresAt)";
         var token = GenerateToken();
         var parameters = new
         {
             UserId = userId,
-            Token = token,
+            SessionToken = token,
             ExpiresAt = DateTime.UtcNow.AddHours(1),
         }; 
         await Connection.ExecuteAsync(query, parameters);

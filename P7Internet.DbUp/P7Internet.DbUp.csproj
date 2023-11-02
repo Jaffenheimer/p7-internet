@@ -32,7 +32,8 @@
       <None Remove="Scripts\0004-CachedOfferTable.sql" />
       <EmbeddedResource Include="Scripts\0004-CachedOfferTable.sql" />
       <None Remove="Scripts\0005-UserAuthTable.sql" />
-      <EmbeddedResource Include="Scripts\0005-UserAuthTable.sql" />
+      <None Remove="Scripts\0005-UserSessionTable.sql" />
+      <EmbeddedResource Include="Scripts\0005-UserSessionTable.sql" />
     </ItemGroup>
 
 </Project>
