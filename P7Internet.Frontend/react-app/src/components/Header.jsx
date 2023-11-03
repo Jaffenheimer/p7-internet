@@ -21,7 +21,7 @@ const customStyles = {
 
 const Header = () => {
   const dispatch = useDispatch();
-  
+
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const modalShown = useSelector((state) => state.page.modalShown);
   const [loggedIn, setLoggedIn] = useState(false);
@@ -38,7 +38,7 @@ const Header = () => {
   }
 
   return (
-    <div className="header">
+    <div className="header no-print">
       <Modal
         isOpen={modalShown}
         style={customStyles}
@@ -50,11 +50,11 @@ const Header = () => {
       </Modal>
       <div className="title">Opskriftsgenerator</div>
       <SetLoggedInOnChange /> {/* Dynamically check if user is logged in */}
-          {loggedIn ? (
-            <ProfilePicture />
-          ) : (
-            <button onClick={openModal}>Log In</button>
-          )}
+      {loggedIn ? (
+        <ProfilePicture />
+      ) : (
+        <button onClick={openModal}>Log In</button>
+      )}
     </div>
   );
 };
