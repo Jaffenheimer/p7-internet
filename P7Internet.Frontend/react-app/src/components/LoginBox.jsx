@@ -24,6 +24,9 @@ const LoginBox = ({ closeModal }) => {
   const [userLogin, {isLoginLoading, isLoginError, data}] =  useUserLoginMutation();
   const [userCreate, {isCreateLoading, isCreateError}] =  useUserCreateMutation();
 
+
+
+
   const handleLogin =  async() => {
     if(!isLoginLoading || !isLoginError){
         try {
@@ -31,6 +34,10 @@ const LoginBox = ({ closeModal }) => {
           if(response){
             toast.success("Velkommen tilbage, " + response.name);
             console.log(response);
+
+            document.cookie = `username=${response.name};`;
+            document.cookie = `sessionToken=${response.sessionToken};`;  
+
             dispatch(userActions.toggleTestLogin());
             closeModal();
             setUsername("");
@@ -42,6 +49,20 @@ const LoginBox = ({ closeModal }) => {
           console.log("Error -- ", error.message); 
         }
     }
+
+    //Collect Cookie
+    // Get cookies using document.cookie
+    const cookies = document.cookie;
+    const cookieArray = cookies.split(';').map(cookie => cookie.trim());
+
+    const storedUsername = cookieArray.find(cookie => cookie.startsWith('username='));
+    const storedSessionToken = cookieArray.find(cookie => cookie.startsWith('sessionToken='));
+
+    const storedNewUsername = storedUsername.split('=')[1];
+    const storedNewSessionToken = storedSessionToken.split('=')[1];
+
+    console.log(storedNewUsername); // Access the stored username
+    console.log(storedNewSessionToken); // Access the stored session token
 
 
     //Find users that matches the username and password typed.
