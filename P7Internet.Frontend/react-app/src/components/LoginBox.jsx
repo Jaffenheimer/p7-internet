@@ -21,7 +21,7 @@ const LoginBox = ({ closeModal }) => {
   const handleUserToLogIn = () => setCreatingAccount(false);
   const handleUserToCreateAccount = () => setCreatingAccount(true);
 
-  const [userLogin, {isLoginLoading, isLoginError, data}] =  useUserLoginMutation();
+  const [userLogin, {isLoginLoading, isLoginError}] =  useUserLoginMutation();
   const [userCreate, {isCreateLoading, isCreateError}] =  useUserCreateMutation();
 
 
@@ -59,11 +59,11 @@ const LoginBox = ({ closeModal }) => {
     const storedSessionToken = cookieArray.find(cookie => cookie.startsWith('sessionToken='));
 
     const storedNewUsername = storedUsername.split('=')[1];
-    const storedNewSessionToken = storedSessionToken.split('=')[1];
+    const splitToken = storedSessionToken.split('=');
+    const value = splitToken.slice(1).join('=');
 
     console.log(storedNewUsername); // Access the stored username
-    console.log(storedNewSessionToken); // Access the stored session token
-
+    console.log(value); // Access the stored session token
 
     //Find users that matches the username and password typed.
     // const validUser = users.filter(

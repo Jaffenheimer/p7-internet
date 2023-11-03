@@ -21,6 +21,13 @@ export const userApiSlice = createApi({
                 method: 'POST', 
                 body: '', 
             }),
+        }), 
+        userLogOut: builder.mutation({
+            query: ({username, sessionstoken}) => ({
+                url: `/public/user/create-user?Name=${username}&Sessionstoken=${sessionstoken}`,
+                method: 'POST', 
+                body: '', 
+            }),
         })
     })
 }); 
@@ -31,4 +38,5 @@ export const { useUserLoginMutation, useUserCreateMutation } = userApiSlice;
 
 //https://localhost:5001/public/user/create-user?Name=u&EmailAddress=user%40mail.dk&Password=1
 
+//https://localhost:5001/public/user/logout?UserId=caea430e-2766-4f95-bcfa-53be60938d94&SessionToken=C2gwmeWDgkqawEPJrs6ICw%3D%3D
 
