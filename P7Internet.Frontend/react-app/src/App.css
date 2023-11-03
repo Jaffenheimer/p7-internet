@@ -2,7 +2,9 @@
   height: 100vh;
 } */
 
-*, *::before, *::after {
+*,
+*::before,
+*::after {
   box-sizing: inherit;
 }
 
@@ -12,7 +14,8 @@ html {
   overflow-x: hidden;
 }
 
-html, body {
+html,
+body {
   margin: 0;
   min-height: 100vh;
   width: 100%;
@@ -23,51 +26,51 @@ html, body {
 .AppContainer {
   height: 100vh;
   width: 100%;
-  background: #FFF2D8;
+  background: #fff2d8;
 }
 
-.headerContainer{
-  height: 50px;
-  background-color: #BCA37F;
+.headerContainer {
+  height: auto;
+  background-color: #bca37f;
   padding: 10px;
   text-align: center;
+  display: flex;
+  justify-content: center;
 }
 
-.split-container{
+.split-container {
   position: relative;
   min-height: calc(100vh - 110px);
   display: flex;
   flex-direction: row;
 }
 
-.split-screen-left{
+.split-screen-left {
   width: 75%;
-  background: #FFF2D8;
+  background: #fff2d8;
   min-height: 100vh;
 }
 
-.split-screen-right{
+.split-screen-right {
   width: 25%;
-  background: #EAD7BB;
+  background: #ead7bb;
   min-height: 100vh;
 }
 
-.split-screen-left, 
+.split-screen-left,
 .split-screen-right {
   min-height: 100vh;
   padding: 20px;
   display: block;
 }
 
-.searchfield{
+.searchfield {
   min-width: 250px;
   width: 400px;
   height: 35px;
   border: none;
   border-radius: 5px;
 }
-
-
 
 /* .AppContainer{
   height: 100%;
@@ -89,22 +92,20 @@ html, body {
   margin-top: -22px;
 } */
 
-
 .header {
   padding: 0;
-  margin: 0 ;
+  margin: 0;
   height: 100%;
   width: 100%;
   display: flex;
-  align-items: center;
+  justify-content: space-between;
 }
 
-
-.title{
+.title {
   text-align: center;
   font-size: 40px;
   font-family: Verdana;
-  flex: 1;
+  display: flex;
 }
 
 /* .App > .AppLeft > .ContainerUpper {
@@ -114,14 +115,13 @@ html, body {
   position: relative;
 }  */
 
-
 .RecipeSelectionContainerLeft {
   padding: 10px;
   height: 60%;
 }
 
 .App > .AppRight {
-  background: #EAD7BB;
+  background: #ead7bb;
   width: 25%;
   min-height: 100vh;
 }
@@ -172,7 +172,8 @@ ul {
   float: right;
 }
 
-input[type="text"], input[type="password"] {
+input[type="text"],
+input[type="password"] {
   color: rgba(0, 0, 0, 0.5);
   width: 30%;
   margin-right: 3%;
@@ -279,14 +280,14 @@ button:hover {
   margin-right: 15%;
 } */
 
-.Profile{
+.Profile {
   width: 40px;
   height: 40px;
   flex: 1;
   text-align: center;
 }
 
-.NumberOfPersonsFieldContainer{
+.NumberOfPersonsFieldContainer {
   position: absolute;
   height: 35px;
   width: 30%;
@@ -456,6 +457,12 @@ button:hover {
   margin-right: 25px;
 }
 
+#printButton {
+  float: right;
+  margin-top: 25px;
+  margin-right: 25px;
+}
+
 .App > .RecipeSelectionContainerLeft {
   flex: 1;
   position: relative;
@@ -601,4 +608,24 @@ input:checked + .slider:before {
   bottom: auto;
   margin-right: -50%;
   transform: translate(-50%, -50%);
+}
+
+/* Apply style only when printing */
+@media print {
+  .no-print,
+  .no-print * {
+    display: none !important;
+  }
+  /* Styles applied to the printed page */
+  @page {
+    margin: 0;
+  }
+}
+
+.FullRecipeView {
+  flex: 1;
+  margin: 1cm;
+}
+.ingredientsList > ul {
+  padding-left: 40px;
 }

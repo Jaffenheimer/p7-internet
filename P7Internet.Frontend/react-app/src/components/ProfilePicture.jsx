@@ -32,7 +32,12 @@ const ProfilePicture = () => {
 
   return (
     <div className="ProfilePicture">
-      <img className="Profile" src={profile} alt="ProfilePicture" onClick={profileClick} />
+      <img
+        className="Profile"
+        src={profile}
+        alt="ProfilePicture"
+        onClick={profileClick}
+      />
       {open ? (
         <ul className="menu">
           <li className="menu-item">

@@ -23,6 +23,8 @@ const Header = () => {
   //const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const dispatch = useDispatch();
   const testLogin = useSelector((state) => state.user.testlogin);
+
+  const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const modalShown = useSelector((state) => state.page.modalShown);
   //const [loggedIn, setLoggedIn] = useState(false);
 
@@ -39,7 +41,7 @@ const Header = () => {
   // }
 
   return (
-    <div className="header">
+    <div className="header no-print">
       <Modal
         isOpen={modalShown}
         style={customStyles}

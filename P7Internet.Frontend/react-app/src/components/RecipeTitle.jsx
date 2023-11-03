@@ -6,46 +6,50 @@ import { userActions } from "../features/userSlice";
 import { useEffect } from "react";
 import { pageActions } from "../features/pageSlice";
 
-const RecipeTitle = ({ title}) => {
+const RecipeTitle = ({ title }) => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const [heart, setHeart] = useState(heartHollow);
 
   function handleClick(event) {
     event.preventDefault();
-    if (loggedInUser.length !== 1){ //if not logged in
-      dispatch(pageActions.openModal())
-    }
-    else{
+    if (loggedInUser.length !== 1) {
+      //if not logged in
+      dispatch(pageActions.openModal());
+    } else {
       if (heart === heartSolid) {
-        setHeart(heartHollow)
-        dispatch(userActions.removeRecipe(title))
-      }
-      else {
-        setHeart(heartSolid)
-        dispatch(userActions.addRecipe(title))
+        setHeart(heartHollow);
+        dispatch(userActions.removeRecipe(title));
+      } else {
+        setHeart(heartSolid);
+        dispatch(userActions.addRecipe(title));
       }
     }
   }
 
-  function SetHeartIconOnChange(){ //component that dynamically changes heart icon when using arrows
+  function SetHeartIconOnChange() {
+    //component that dynamically changes heart icon when using arrows
     useEffect(() => {
-      if (loggedInUser.length !== 1) return
-      if (loggedInUser[0]['heartedRecipes'].includes(title)){
-        setHeart(heartSolid)
+      if (loggedInUser.length !== 1) return;
+      if (loggedInUser[0]["heartedRecipes"].includes(title)) {
+        setHeart(heartSolid);
+      } else {
+        setHeart(heartHollow);
       }
-      else{
-        setHeart(heartHollow)
-      }
-    })
+    });
   }
 
   return (
     <div id="RecipeTitleDiv">
       <h1 id="RecipeTitle">
         {title}
-        <img src={heart} alt="heart" onClick={handleClick} />
-        <SetHeartIconOnChange/> {/* dynamically updates the heart icon*/}
+        <img
+          src={heart}
+          alt="heart"
+          className="no-print"
+          onClick={handleClick}
+        />
+        <SetHeartIconOnChange /> {/* dynamically updates the heart icon*/}
       </h1>
     </div>
   );
