@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-
+    if: ${{ github.event.label.name == 'frontend' }}
     runs-on: windows-latest
 
     strategy:
