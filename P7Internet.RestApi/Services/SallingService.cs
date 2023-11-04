@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using System.Text.Json.Nodes;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace P7Internet.Services
 {
@@ -25,8 +26,8 @@ namespace P7Internet.Services
         }
         public async Task<List<Offer>> GetRelevantProducts(string query)
         {
-            var url = new Uri(_httpClient.BaseAddress, "v1-beta/product-suggestions/relevant-products");
-            url = new Uri(QueryHelpers.AddQueryString(url.ToString(), "query", query));
+            var url = new Uri(QueryHelpers.AddQueryString(Path.Combine(_httpClient.BaseAddress.ToString(), "v1-beta/product-suggestions/relevant-products"), "query", query));
+            //url = new Uri(QueryHelpers.AddQueryString(url.ToString(), "query", query));
             var request = new HttpRequestMessage(HttpMethod.Get, url);
             var response = await _httpClient.SendAsync(request);
             var responseContent = await response.Content.ReadAsStringAsync();
