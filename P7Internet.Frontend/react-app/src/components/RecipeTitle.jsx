@@ -15,7 +15,7 @@ const RecipeTitle = ({ title }) => {
     event.preventDefault();
     if (loggedInUser.length !== 1) {
       //if not logged in
-      dispatch(pageActions.openModal());
+      dispatch(pageActions.openLoginModal());
     } else {
       if (heart === heartSolid) {
         setHeart(heartHollow);
@@ -30,8 +30,10 @@ const RecipeTitle = ({ title }) => {
   function SetHeartIconOnChange() {
     //component that dynamically changes heart icon when using arrows
     useEffect(() => {
-      if (loggedInUser.length !== 1) return;
-      if (loggedInUser[0]["heartedRecipes"].includes(title)) {
+      if (loggedInUser.length !== 1) {
+				setHeart(heartHollow);
+			}
+      else if (loggedInUser[0]["heartedRecipes"].includes(title)) {
         setHeart(heartSolid);
       } else {
         setHeart(heartHollow);
