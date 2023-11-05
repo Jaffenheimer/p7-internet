@@ -9,23 +9,27 @@ const RadiusSlider = () => {
     setSliderValue(event.target.value)
   }
 
-  function logSlider(position) {
-    var minp = 1;
-    var maxp = 100;
+	// Calculates the position from 1 to 100 by logarithmically taking the min and max distance range
+	// and scaling the value relative to the sliders min and max value.
+  function getPositionByLogarithmScaling(position) {
+    var minPosition = 1;
+    var maxPosition = 100;
   
     // The result should be between 100m and 700km
-    var minv = Math.log(100);
-    var maxv = Math.log(700000);
+    var minValue = Math.log(100);
+    var maxValue = Math.log(700000);
   
     // calculate adjustment factor
-    var scale = (maxv-minv) / (maxp-minp);
+    var scale = (maxValue-minValue) / (maxPosition-minPosition);
   
-    return Math.exp(minv + scale*(position-minp));
+    return Math.exp(minValue + scale*(position-minPosition));
   }
 
+	// used in filterSliderValue to round the number to the closest step,
+	// e.g. step=50 means round() rounds to the nearest 50.
   function round(value, step) {
-    var inv = 1.0 / step;
-    return Math.round(value * inv) / inv;
+    var inverse = 1.0 / step;
+    return Math.round(value * inverse) / inverse;
   }
 
   function filterSliderValue(value){
@@ -45,7 +49,7 @@ const RadiusSlider = () => {
 
   return (
     <div class="slidecontainer">
-        <p>Radius: {filterSliderValue(logSlider(sliderValue))}</p>
+        <p>Radius: {filterSliderValue(getPositionByLogarithmScaling(sliderValue))}</p>
         <input type="range" min="1" max="100" value={sliderValue} onChange={sliderChange}/>
     </div>
   )

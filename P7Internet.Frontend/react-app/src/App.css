@@ -600,3 +600,11 @@ input[type="range"]{
 .ingredientsList > ul {
   padding-left: 40px;
 }
+
+.toggleButtonLeft {
+	border-Radius: '5px 0px 0px 5px';
+}
+
+.toggleButtonRight {
+	border-Radius: '0px 5px 5px 0px';
+}
