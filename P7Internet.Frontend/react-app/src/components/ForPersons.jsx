@@ -6,7 +6,7 @@ const ForPersons = () => {
 
   return (
     <div className="ForPersons">
-      <h4>For {numPeople} personer</h4>
+      <h4>{numPeople} personer</h4>
     </div>
   );
 };

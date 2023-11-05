@@ -22,7 +22,11 @@ function FullRecipeView() {
 
   function goToPageRecipeSelection() {
     //pt har vi ikke den side, så det er bare frontpage
-    dispatch(pageActions.goToPage(Pages.frontPage));
+    dispatch(pageActions.goToPage(Pages.RecipeSelection));
+  }
+
+  function PrintRecipe() {
+    window.print();
   }
 
   return (
@@ -38,9 +42,14 @@ function FullRecipeView() {
           ListElement={RecipeIngredientElement}
         />
         <MethodsList methods={recipe.method} />
-        <button id="backButton" onClick={goToPageRecipeSelection}>
-          Tilbage
-        </button>
+        <div className="BottomButtons no-print">
+          <button id="BackButton" onClick={goToPageRecipeSelection}>
+            Tilbage
+          </button>
+          <button id="PrintButton" onClick={PrintRecipe}>
+            Print
+          </button>
+        </div>
       </div>
     </div>
   );

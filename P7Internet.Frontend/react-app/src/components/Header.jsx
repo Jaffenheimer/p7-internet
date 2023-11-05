@@ -22,7 +22,7 @@ const customStyles = {
 
 const Header = () => {
   const dispatch = useDispatch();
-  
+
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const loginModalShown = useSelector((state) => state.page.loginModalShown);
   const favoritesModalShown = useSelector((state) => state.page.favoritesModalShown);
@@ -43,7 +43,7 @@ const Header = () => {
   }
 
   return (
-    <div className="header">
+    <div className="header no-print">
       <Modal
         isOpen={loginModalShown}
         style={customStyles}
