@@ -36,6 +36,7 @@ const LoginBox = ({ closeModal }) => {
             console.log(response);
 
             document.cookie = `username=${response.name};`;
+            document.cookie = `userid=${response.id};`;
             document.cookie = `sessionToken=${response.sessionToken};`;  
 
             dispatch(userActions.toggleTestLogin());

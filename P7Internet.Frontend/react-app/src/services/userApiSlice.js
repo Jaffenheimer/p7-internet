@@ -23,8 +23,8 @@ export const userApiSlice = createApi({
             }),
         }), 
         userLogOut: builder.mutation({
-            query: ({username, sessionstoken}) => ({
-                url: `/public/user/create-user?Name=${username}&Sessionstoken=${sessionstoken}`,
+            query: ({userId, sessionToken}) => ({
+                url: `public/user/logout?UserId=${userId}&SessionToken=${sessionToken}`,
                 method: 'POST', 
                 body: '', 
             }),
@@ -32,7 +32,7 @@ export const userApiSlice = createApi({
     })
 }); 
 
-export const { useUserLoginMutation, useUserCreateMutation } = userApiSlice;
+export const { useUserLoginMutation, useUserCreateMutation, useUserLogOutMutation } = userApiSlice;
 
 //https://localhost:5001/public/sample/user/create-user?Name=user2&EmailAddress=user2%40mail.dk&Password=1234
 
