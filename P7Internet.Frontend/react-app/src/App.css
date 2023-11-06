@@ -264,6 +264,15 @@ button:hover {
 #selectRecipeButton {
   float: right;
   align-items: right;
+  right: 0;
+  bottom: 0;
+  margin-bottom: 3%;
+  margin-right: 3%;
+}
+#BackToFrontPageButton {
+  float: right;
+  align-items: right;
+  margin-right: 1%;
 }
 
 #SelectArrows > img {
@@ -429,6 +438,7 @@ button:hover {
 
 #RemoveAllExcludeIngredientsButton {
   margin-top: 5%;
+  margin-left: 1%;
 }
 
 #ExcludeListText {
@@ -470,14 +480,6 @@ button:hover {
 
 .RecipeView {
   margin-left: 2%;
-}
-
-#selectRecipeButton {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  margin-bottom: 3%;
-  margin-right: 3%;
 }
 
 /* Login */
