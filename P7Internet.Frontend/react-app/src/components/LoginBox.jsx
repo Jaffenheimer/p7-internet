@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import cross from "../data/cross.svg";
+
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { toast } from 'react-toastify';
@@ -8,33 +9,35 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const LoginBox = ({ closeModal }) => {
+
+
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.users);
+  
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [creatingAccount, setCreatingAccount] = useState(false);
 
-  const handleChangeEmail = (event) => setEmail(event.target.value);
-  const handleChangeUsername = (event) => setUsername(event.target.value);
-  const handleChangePassword = (event) => setPassword(event.target.value);
-  const handleUserToLogIn = () => setCreatingAccount(false);
-  const handleUserToCreateAccount = () => setCreatingAccount(true);
-
+  //States used to fetch data from backend
   const [userLogin, {isLoginLoading, isLoginError}] =  useUserLoginMutation();
   const [userCreate, {isCreateLoading, isCreateError}] =  useUserCreateMutation();
 
 
-
-
+  //Functions is async because the need to wait for the response from the backend
   const handleLogin =  async() => {
+    const cookies = document.cookie;  
+
+    //Functions from redux that allows to test weather error or loading
     if(!isLoginLoading || !isLoginError){
         try {
+          // Waits for the response and allows to use response (unwrap, because JSON)
           const response = await userLogin({username, password}).unwrap();
           if(response){
             toast.success("Velkommen tilbage, " + response.name);
             console.log(response);
 
+            //Add data about user to cookie
             document.cookie = `username=${response.name};`;
             document.cookie = `userid=${response.id};`;
             document.cookie = `sessionToken=${response.sessionToken};`;  
@@ -50,21 +53,6 @@ const LoginBox = ({ closeModal }) => {
           console.log("Error -- ", error.message); 
         }
     }
-
-    //Collect Cookie
-    // Get cookies using document.cookie
-    const cookies = document.cookie;
-    const cookieArray = cookies.split(';').map(cookie => cookie.trim());
-
-    const storedUsername = cookieArray.find(cookie => cookie.startsWith('username='));
-    const storedSessionToken = cookieArray.find(cookie => cookie.startsWith('sessionToken='));
-
-    const storedNewUsername = storedUsername.split('=')[1];
-    const splitToken = storedSessionToken.split('=');
-    const value = splitToken.slice(1).join('=');
-
-    console.log(storedNewUsername); // Access the stored username
-    console.log(value); // Access the stored session token
 
     //Find users that matches the username and password typed.
     // const validUser = users.filter(
@@ -134,9 +122,11 @@ const LoginBox = ({ closeModal }) => {
           const response = await userCreate({username, password, email}).unwrap();
           if (response){
             toast.success("Din bruger er nu oprettet!");
+
             document.cookie = `username=${response.name};`;
             document.cookie = `userid=${response.id};`;
             document.cookie = `sessionToken=${response.sessionToken};`;  
+            
             dispatch(userActions.toggleTestLogin());
             dispatch(userActions.addUser([email, username, password, []]));
             setCreatingAccount(false);
@@ -184,7 +174,7 @@ const LoginBox = ({ closeModal }) => {
               type="text"
               placeholder="Indtast din email"
               value={email}
-              onChange={handleChangeEmail}
+              onChange={(event) => setEmail(event.target.value)}
               required
             />
           </>
@@ -196,7 +186,7 @@ const LoginBox = ({ closeModal }) => {
           type="text"
           placeholder="Indtast brugernavn"
           value={username}
-          onChange={handleChangeUsername}
+          onChange={(event) => setUsername(event.target.value)}
           required
         />
 
@@ -207,7 +197,7 @@ const LoginBox = ({ closeModal }) => {
           type="password"
           placeholder="Indtast kodeordet"
           value={password}
-          onChange={handleChangePassword}
+          onChange={(event) => setPassword(event.target.value)}
           required
         />
 
@@ -223,14 +213,14 @@ const LoginBox = ({ closeModal }) => {
             <a href="/#">Glemt kodeord?</a>
             <br />
             <p id="noUserText">Ingen bruger:</p>
-            <a href="/#" onClick={handleUserToCreateAccount}>
+            <a href="/#" onClick={() => setCreatingAccount(true)}>
               Opret Bruger
             </a>
           </>
         ) : (
           <>
             <p id="alreadyHasUserText">Har allerede en bruger:</p>
-            <a href="/#" onClick={handleUserToLogIn}>
+            <a href="/#" onClick={() => setCreatingAccount(false)}>
               Log in
             </a>
           </>
