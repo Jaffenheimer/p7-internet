@@ -32,12 +32,6 @@ export const userSlice = createSlice({
     removeUser(state, action) {
       state.users = state.users.filter((user) => user.id !== action.payload);
     },
-    loginUser(state, action) {
-      state.loggedInUser = action.payload;
-    },
-    logoutUser(state) {
-      state.loggedInUser = {};
-    },
     toggleTestLogin(state){
       state.testlogin = !state.testlogin; 
     },  

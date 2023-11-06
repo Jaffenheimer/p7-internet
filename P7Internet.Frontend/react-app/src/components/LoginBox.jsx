@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import cross from "../data/cross.svg";
-
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { toast } from 'react-toastify';
@@ -9,8 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const LoginBox = ({ closeModal }) => {
-
-
   const dispatch = useDispatch();
   const users = useSelector((state) => state.user.users);
   
@@ -53,23 +50,6 @@ const LoginBox = ({ closeModal }) => {
           console.log("Error -- ", error.message); 
         }
     }
-
-    //Find users that matches the username and password typed.
-    // const validUser = users.filter(
-    //   (user) => user.username === username && user.password === password
-    // );    
-
-    
-
-    // if (validUser.length === 1) {
-    //   //if the user exists
-    //   dispatch(userActions.loginUser(validUser)); //the user is now logged in on redux
-    //   closeModal();
-    // } else {
-    //   toast.error("Kodeordet eller brugernavnet er indtastet forkert");
-    //   setUsername("");
-    //   setPassword("");
-    // }
   }
 
   //should happen in backend
@@ -102,10 +82,12 @@ const LoginBox = ({ closeModal }) => {
   }
 
   const handleCreateAccount = async() => {
-    const existsUser = users.filter((user) => user.username === username);
+    // const existsUser = users.filter((user) => user.username === username);
 
-    if (existsUser.length > 0) toast.error("Brugernavnet er allerede taget.");
-    else if (checkValidEmail() === false)
+    // if (existsUser.length > 0) toast.error("Brugernavnet er allerede taget.");
+    // else 
+    
+    if (checkValidEmail() === false)
       toast.error("Den indtastede email er ugyldig eller allerede i brug.");
     else if (checkValidUsername() === false)
       toast.error(
@@ -131,9 +113,11 @@ const LoginBox = ({ closeModal }) => {
             dispatch(userActions.addUser([email, username, password, []]));
             setCreatingAccount(false);
             closeModal();
+            
             setEmail("");
             setUsername("");
             setPassword("");
+            
           }
         } catch (error) {
           toast.error("Kodeordet eller brugernavnet er indtastet forkert");

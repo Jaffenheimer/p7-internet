@@ -1,4 +1,5 @@
 
+//Skal fjernes når endpoint er klar. Blev lavet for at kunne test OpenAi
 export const generateOpenAiString = (recipeGenerationSlice) => {
     const { ownedIngredients, dietaryRestrictions, allergens, excludeList, numPeople} = recipeGenerationSlice;
     
