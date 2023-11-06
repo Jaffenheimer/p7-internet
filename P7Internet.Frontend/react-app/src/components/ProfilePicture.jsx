@@ -43,7 +43,6 @@ const ProfilePicture = () => {
       const splitIdToken = storedUserId.split('=');
       const userId = splitIdToken.slice(1).join('=');
       
-
       
       try {
         const response = await userLogOut({ userId: userId, sessionToken: sessionToken });

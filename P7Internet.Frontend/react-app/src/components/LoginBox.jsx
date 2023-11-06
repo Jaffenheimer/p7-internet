@@ -131,29 +131,24 @@ const LoginBox = ({ closeModal }) => {
 
       if(!isCreateLoading || !isCreateError){
         try {
-          let emailConverted = encodeURIComponent(email); 
-          console.log("Email -- ", email); 
-          console.log("Email converted -- ", emailConverted); 
-
-          await userCreate({username, password, email}).unwrap();
-          toast.success("Din bruger er nu tilføjet til databasen!");
-          dispatch(userActions.toggleTestLogin());
-          dispatch(userActions.addUser([email, username, password, []]));
-          setCreatingAccount(false);
-          closeModal();
-          setEmail("");
-          setUsername("");
-          setPassword("");
+          const response = await userCreate({username, password, email}).unwrap();
+          if (response){
+            toast.success("Din bruger er nu oprettet!");
+            document.cookie = `username=${response.name};`;
+            document.cookie = `userid=${response.id};`;
+            document.cookie = `sessionToken=${response.sessionToken};`;  
+            dispatch(userActions.toggleTestLogin());
+            dispatch(userActions.addUser([email, username, password, []]));
+            setCreatingAccount(false);
+            closeModal();
+            setEmail("");
+            setUsername("");
+            setPassword("");
+          }
         } catch (error) {
           toast.error("Kodeordet eller brugernavnet er indtastet forkert");
         }
       } 
-     
-      // setEmail("");
-      // setUsername("");
-      // setPassword("");
-      // toast.success("Indsæt nu dine oplysninger for at logge ind.");
-      // toast.success("Din bruger er nu tilføjet til databasen!");
     }
   }
 
