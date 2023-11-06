@@ -10,6 +10,7 @@ using System.Text.Json.Nodes;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.IO;
+using P7Internet.Persistence.CachedOfferRepository;
 
 namespace P7Internet.Services
 {
@@ -27,15 +28,15 @@ namespace P7Internet.Services
         public async Task<List<Offer>> GetRelevantProducts(string query)
         {
             var url = new Uri(QueryHelpers.AddQueryString(Path.Combine(_httpClient.BaseAddress.ToString(), "v1-beta/product-suggestions/relevant-products"), "query", query));
-            //url = new Uri(QueryHelpers.AddQueryString(url.ToString(), "query", query));
             var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
             var response = await _httpClient.SendAsync(request);
             var responseContent = await response.Content.ReadAsStringAsync();
             
             //Parsing the response JSON into a list of Offer objects
             var offers = new List<Offer>();
             var deserializedContent = JsonConvert.DeserializeObject<JObject>(responseContent);
-            var offerArray = deserializedContent.Value<JArray>("suggestions").ToString();
+            var offerArray = deserializedContent.Value<JArray>("suggestions").ToString(); 
 
             JsonConvert.PopulateObject(offerArray, offers);
 
