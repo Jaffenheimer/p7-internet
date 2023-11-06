@@ -12,7 +12,7 @@ const initialState = {
     }, 
   ],
   loggedInUser: {},
-  testlogin: false, 
+  loggedInd: false, 
 };
 
 export const userSlice = createSlice({
@@ -33,7 +33,7 @@ export const userSlice = createSlice({
       state.users = state.users.filter((user) => user.id !== action.payload);
     },
     toggleTestLogin(state){
-      state.testlogin = !state.testlogin; 
+      state.loggedInd = !state.loggedInd; 
     },  
     addRecipe(state, action) {
       state.loggedInUser[0]['heartedRecipes'].push(action.payload)

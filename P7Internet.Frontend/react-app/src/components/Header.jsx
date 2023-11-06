@@ -22,7 +22,7 @@ const customStyles = {
 const Header = () => {
   //const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const dispatch = useDispatch();
-  const testLogin = useSelector((state) => state.user.testlogin);
+  const loggedInd = useSelector((state) => state.user.loggedInd);
 
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const modalShown = useSelector((state) => state.page.modalShown);
@@ -52,7 +52,7 @@ const Header = () => {
         <LoginBox closeModal={closeModal} />
       </Modal>
       <div className="title">Opskriftsgenerator</div>
-          {testLogin ? (
+          {loggedInd ? (
             <ProfilePicture />
           ) : (
             <button onClick={openModal}>Log In</button>
