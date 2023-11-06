@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import RemoveAllButton from "./RemoveAllButton";
 import AddIngredientInput from "./AddIngredientInput";
 import { toast } from "react-toastify";
@@ -13,25 +13,41 @@ const AddIngredientsForm = ({
   const dispatch = useDispatch();
   const [ingredient, setIngredient] = useState("");
 
+  const excludeList = useSelector(
+    (state) => state.recipeGeneration.excludeList
+  );
+
+  const ownedIngredientsList = useSelector(
+    (state) => state.recipeGeneration.ownedIngredients
+  );
+
   const handleChange = (event) => {
     setIngredient(event.target.value);
+  };
+
+  const ingredientIsInIngredientsObject = (ingredient, ingredientsObject) => {
+    for (const ingredientObject of ingredientsObject) {
+      if (ingredientObject.text === ingredient) {
+        return true;
+      }
+    }
+    return false;
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
     if (ingredient !== null && typeof ingredient !== "undefined") {
       if (ingredient === "") return;
-
-      // receives the ingredient text (aka. name) from dict on store in format
-      // {0:{id: '', text: ''}, 1:{id: '', text: ''}}¨
-      var ingredientsDictionary = Object.values(ingredientsList);
-      var ingredientText = [];
-
-      ingredientsDictionary.forEach((ingredient) =>
-        ingredientText.push(ingredient["text"])
-      );
-      if (ingredientText.includes(ingredient)) {
-        toast.error(`"${ingredient}" er allerede tilføjet til listen!`);
+      if (ingredientIsInIngredientsObject(ingredient, excludeList)) {
+        toast.error(
+          `"${ingredient}" er allerede tilføjet til listen af eksluderede ingredienser!`
+        );
+        return;
+      }
+      if (ingredientIsInIngredientsObject(ingredient, ownedIngredientsList)) {
+        toast.error(
+          `"${ingredient}" er allerede tilføjet til listen af ejede ingredienser!`
+        );
         return;
       }
       if (ingredientsList.length >= 10) {
@@ -49,12 +65,9 @@ const AddIngredientsForm = ({
       <AddIngredientInput
         ingredient={ingredient}
         handleChange={handleChange}
-        placeholder="Tilføj en ingrediens..."
       />
-      <button type="submit" >Tilføj</button>
-      <RemoveAllButton
-        handleClick={removeAllHandler}
-      />
+      <button type="submit">Tilføj</button>
+      <RemoveAllButton handleClick={removeAllHandler} />
     </form>
   );
 };
