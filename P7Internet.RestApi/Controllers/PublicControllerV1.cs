@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using MySql.Data.MySqlClient;
 using P7Internet.Persistence.CachedIngredientPricesRepository;
 using P7Internet.Persistence.FavouriteRecipeRepository;
 using P7Internet.Persistence.RecipeCacheRepository;
@@ -96,6 +97,8 @@ public class PublicControllerV1 : ControllerBase
         {
             foreach (var offer in res)
             {
+                var currentOffer = await _cachedOfferRepository.GetOffer(offer.Name);
+                if (offer == currentOffer) break;
                 await _cachedOfferRepository.UpsertOffer(offer.Name, offer.Price, offer.Store);
             }
 
