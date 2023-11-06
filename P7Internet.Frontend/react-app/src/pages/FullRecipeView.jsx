@@ -21,7 +21,6 @@ function FullRecipeView() {
   const recipe = recipes[currentRecipeIndex];
 
   function goToPageRecipeSelection() {
-    //pt har vi ikke den side, så det er bare frontpage
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
   }
 
