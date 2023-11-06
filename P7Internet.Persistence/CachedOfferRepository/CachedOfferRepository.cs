@@ -48,7 +48,7 @@ public class CachedOfferRepository : ICachedOfferRepository
         await Connection.ExecuteAsync(deleteDeprecatedQuery);
 
         var query = $@"INSERT INTO {TableName} (Id, IngredientName, Price, Store, CreatedAt)
-                       VALUES (@Id, @IngredientName, @Price, @Store @CreatedAt)
+                       VALUES (@Id, @IngredientName, @Price, @Store, @CreatedAt)
                        ON DUPLICATE KEY UPDATE Price = @Price";
 
         var parameters = new
