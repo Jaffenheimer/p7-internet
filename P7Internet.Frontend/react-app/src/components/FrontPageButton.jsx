@@ -4,17 +4,12 @@ import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
 import "react-toastify/dist/ReactToastify.css";
 
-const FrontPageButton = () => {
+const FrontPageButton = ({ buttonText }) => {
   const dispatch = useDispatch();
-
   function goToPageFrontPage() {
     dispatch(pageActions.goToPage(Pages.frontPage));
   }
-  return (
-    <button onClick={goToPageFrontPage}>
-      Tilbage til forsiden
-    </button>
-  );
+  return <button onClick={goToPageFrontPage}>{buttonText}</button>;
 };
 
 export default FrontPageButton;

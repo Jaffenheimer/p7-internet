@@ -15,7 +15,7 @@ const RecipeSelectionContainerLeft = () => {
       <div style={{ position: "relative" }}>
         <SelectRecipeButton />
         <div id="BackToFrontPageButtonRecipeSelection">
-          <FrontPageButton />
+          <FrontPageButton buttonText="Tilbage" />
         </div>
         <SelectArrows />
       </div>

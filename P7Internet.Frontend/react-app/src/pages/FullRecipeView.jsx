@@ -44,7 +44,7 @@ function FullRecipeView() {
         <MethodsList methods={recipe.method} />
         <div className="BottomButtons no-print">
           <div id="BackToFrontPageButtonRecipeView">
-          <FrontPageButton />
+          <FrontPageButton buttonText="Tilbage til forsiden" />
           </div>
           <button id="BackButton" onClick={goToPageRecipeSelection}>
             Tilbage
