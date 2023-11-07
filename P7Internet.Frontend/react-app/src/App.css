@@ -427,7 +427,7 @@ button:hover {
   border-radius: 5px;
 }
 
-.RemoveAllExcludeIngredientsButton {
+.RemoveAllButton {
   margin-top: 5%;
 }
 
@@ -609,7 +609,6 @@ input[type="range"]{
 }
 
 .toggleButton button{
-  font-family: Verdana;
   background-color: white;
   color: black;
   border: 0;
@@ -617,7 +616,6 @@ input[type="range"]{
   width:40%;
   margin:8px;
   text-align: center;
-  font-family: Verdana;
   font-size: 14px;
   font-weight: 550;
   line-height: 16px;
