@@ -10,7 +10,8 @@ const RecipeSelection = () => {
     <div className="AppContainer">
       <ToastContainer 
         position="top-center"
-        newestOnTop={true}/>
+        newestOnTop={true}
+        closeButton={false}/>
       <div className="headerContainer">
         <Header />
       </div>

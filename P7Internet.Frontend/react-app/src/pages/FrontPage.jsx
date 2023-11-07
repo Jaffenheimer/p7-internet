@@ -9,7 +9,9 @@ const FrontPage = () => {
     <div className="AppContainer">
       <ToastContainer 
         position="top-center"
-        newestOnTop={true}/>
+        newestOnTop={true}
+        closeButton={false}
+        draggablePercent/>
       <div className="headerContainer">
         <Header />
       </div>
