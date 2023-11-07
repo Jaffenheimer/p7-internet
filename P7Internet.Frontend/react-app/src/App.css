@@ -569,18 +569,6 @@ input[type="range"]{
   width:100%;
 }
 
-.toggleButton {
-  width: 100%
-}
-
-.toggleButton button{
-  font-family: Verdana;
-  background-color: #ebebeb;
-  color: black;
-  border: 0;
-  text-transform:none;
-  width:45%
-}
 /* Apply style only when printing */
 @media print {
   .no-print,
@@ -607,4 +595,36 @@ input[type="range"]{
 
 .toggleButtonRight {
 	border-Radius: '0px 5px 5px 0px';
+}
+
+.toggleButton {
+  width: 100%;
+  background-color: #113946;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  border-radius: 5px; /* rounded corners */
+  border-color: #113946;
+}
+
+.toggleButton button{
+  font-family: Verdana;
+  background-color: white;
+  color: black;
+  border: 0;
+  text-transform:none;
+  width:40%;
+  margin:8px;
+  text-align: center;
+  font-family: Verdana;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 16px;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+}
+
+.slidecontainer h3,p {
+  display: inline;
 }

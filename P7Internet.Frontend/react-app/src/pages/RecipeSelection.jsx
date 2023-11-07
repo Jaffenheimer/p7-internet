@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 
 const RecipeSelection = () => {
   const [toggleState, setToggleState] = useState(localStorage.getItem("geolocation") !== null ? "radius" : "store")
+  const [sliderValue, setSliderValue] = useState(1);
 
   function toggle(){
     if (toggleState === "radius"){
@@ -36,7 +37,7 @@ const RecipeSelection = () => {
         </div>
         <div className={"split-screen-right"}>
           <ToggleButton toggle={toggle} toggleState={toggleState}/>
-          {toggleState === "radius" ? <RadiusSlider /> : <StoreSelection />}
+          {toggleState === "radius" ? <RadiusSlider sliderValue={sliderValue} setSliderValue={setSliderValue} /> : <StoreSelection />}
         </div>
       </div>
     </div>

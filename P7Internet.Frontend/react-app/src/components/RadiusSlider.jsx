@@ -1,8 +1,6 @@
 import React from 'react'
-import {useState} from 'react'
 
-const RadiusSlider = () => {
-  const [sliderValue, setSliderValue] = useState(1);
+const RadiusSlider = ({sliderValue, setSliderValue}) => {
 
   function sliderChange(event) {
     event.preventDefault()
@@ -48,8 +46,9 @@ const RadiusSlider = () => {
   }
 
   return (
-    <div class="slidecontainer">
-        <p>Radius: {filterSliderValue(getPositionByLogarithmScaling(sliderValue))}</p>
+    <div className="slidecontainer">
+        <br/>
+        <h3>Radius:</h3> <p>{filterSliderValue(getPositionByLogarithmScaling(sliderValue))}</p>
         <input type="range" min="1" max="100" value={sliderValue} onChange={sliderChange}/>
     </div>
   )
