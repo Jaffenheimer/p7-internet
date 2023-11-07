@@ -9,7 +9,7 @@ const FrontPageButton = ({ buttonText }) => {
   function goToPageFrontPage() {
     dispatch(pageActions.goToPage(Pages.frontPage));
   }
-  return <button onClick={goToPageFrontPage}>{buttonText}</button>;
+  return <button onClick={goToPageFrontPage} data-testid="FrontPageButtonTest">{buttonText}</button>;
 };
 
 export default FrontPageButton;
