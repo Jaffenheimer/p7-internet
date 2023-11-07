@@ -24,18 +24,20 @@ test("testing elements in store selection is initialized as expected in recipe s
 })
 
 test("testing slider and text exists in radius slider component", () => {
-	renderComponent(<RadiusSlider />);
+	renderComponent(<RecipeSelection testingRadius={true} />);
 	const slider = screen.getByRole('slider')
 	expect(slider).toBeInTheDocument()
-	expect(screen.getByText(/Radius: 100 m/)).toBeInTheDocument()
+	expect(screen.getByText(/Radius:/)).toBeInTheDocument() //h3 element
+	expect(screen.getByText(/100 m/)).toBeInTheDocument()   //p element
 })
 
 test("testing slider value changes properly in radius slider component", () => {
-	renderComponent(<RadiusSlider />);
+	renderComponent(<RecipeSelection testingRadius={true} />);
 	const slider = screen.getByRole('slider')
 	expect(slider).toBeInTheDocument()
 	fireEvent.change(slider, {target: {value: 25}})
 	expect(slider).toHaveValue("25")
-	expect(screen.getByText(/Radius: 900 m/)).toBeInTheDocument()
+	expect(screen.getByText(/Radius:/)).toBeInTheDocument() //h3 element
+	expect(screen.getByText(/900 m/)).toBeInTheDocument()   //p element
 })
 

@@ -8,8 +8,8 @@ import ToggleButton from "../components/ToggleButton";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
 
-const RecipeSelection = () => {
-  const [toggleState, setToggleState] = useState(localStorage.getItem("geolocation") !== null ? "radius" : "store")
+const RecipeSelection = ({testingRadius}) => {
+  const [toggleState, setToggleState] = useState(localStorage.getItem("geolocation") !== null || testingRadius ? "radius" : "store")
   const [sliderValue, setSliderValue] = useState(1);
 
   function toggle(){
