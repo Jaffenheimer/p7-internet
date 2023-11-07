@@ -38,6 +38,10 @@ const AddIngredientsForm = ({
     event.preventDefault();
     if (ingredient !== null && typeof ingredient !== "undefined") {
       if (ingredient === "") return;
+      if (ingredientsList.length >= 10) {
+        toast.error("Du kan ikke tilføje flere end 10 ingredienser");
+        return;
+      }
       if (ingredientIsInIngredientsObject(ingredient, excludeList)) {
         toast.error(
           `"${ingredient}" er allerede tilføjet til listen af eksluderede ingredienser!`
@@ -50,24 +54,19 @@ const AddIngredientsForm = ({
         );
         return;
       }
-      if (ingredientsList.length >= 10) {
-        toast.error("Du kan ikke tilføje flere end 10 ingredienser");
-        return;
-      }
-      // only adds to ownedIngredient if non-dublicate
       dispatch(addIngredient(ingredient));
     }
     setIngredient("");
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} data-testid="AddIngredientsForm">
       <AddIngredientInput
         ingredient={ingredient}
         handleChange={handleChange}
       />
-      <button type="submit">Tilføj</button>
-      <RemoveAllButton handleClick={removeAllHandler} />
+      <button type="submit" data-testid="AddButton">Tilføj</button>
+      <RemoveAllButton handleClick={removeAllHandler}/>
     </form>
   );
 };
