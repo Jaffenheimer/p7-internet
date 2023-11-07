@@ -269,11 +269,6 @@ button:hover {
   margin-bottom: 3%;
   margin-right: 3%;
 }
-#BackToFrontPageButton {
-  float: right;
-  align-items: right;
-  margin-right: 1%;
-}
 
 #SelectArrows > img {
   margin: 5%;
@@ -628,4 +623,17 @@ input:checked + .slider:before {
 }
 .ingredientsList > ul {
   padding-left: 40px;
+}
+
+#BackToFrontPageButtonRecipeSelection {
+  float: right;
+  align-items: right;
+  margin-right: 1%;
+}
+
+#BackToFrontPageButtonRecipeView {
+  float: right;
+  align-items: right;
+  margin-top: 25px;
+  margin-right: 1%;
 }

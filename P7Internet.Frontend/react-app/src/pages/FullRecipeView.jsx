@@ -8,6 +8,7 @@ import React from "react";
 import ForPersons from "../components/ForPersons";
 import Header from "../components/Header";
 import RecipeIngredientElement from "../components/RecipeIngredientElement";
+import FrontPageButton from "../components/FrontPageButton";
 
 function FullRecipeView() {
   const dispatch = useDispatch();
@@ -42,6 +43,9 @@ function FullRecipeView() {
         />
         <MethodsList methods={recipe.method} />
         <div className="BottomButtons no-print">
+          <div id="BackToFrontPageButtonRecipeView">
+          <FrontPageButton />
+          </div>
           <button id="BackButton" onClick={goToPageRecipeSelection}>
             Tilbage
           </button>

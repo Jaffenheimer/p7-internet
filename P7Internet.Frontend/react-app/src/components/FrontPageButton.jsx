@@ -11,7 +11,7 @@ const FrontPageButton = () => {
     dispatch(pageActions.goToPage(Pages.frontPage));
   }
   return (
-    <button id="BackToFrontPageButton" onClick={goToPageFrontPage}>
+    <button onClick={goToPageFrontPage}>
       Tilbage til forsiden
     </button>
   );
