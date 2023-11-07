@@ -264,6 +264,10 @@ button:hover {
 #selectRecipeButton {
   float: right;
   align-items: right;
+  right: 0;
+  bottom: 0;
+  margin-bottom: 3%;
+  margin-right: 3%;
 }
 
 #SelectArrows > img {
@@ -429,6 +433,7 @@ button:hover {
 
 .RemoveAllButton {
   margin-top: 5%;
+  margin-left: 1%;
 }
 
 #ExcludeListText {
@@ -442,26 +447,11 @@ button:hover {
   margin-left: 8%;
 }
 
-.App > .FullRecipeView {
-  flex: 1;
-}
-
 .ForPersons > h4 {
   text-align: center;
   margin-top: -20px;
 }
 
-#backButton {
-  float: right;
-  margin-top: 25px;
-  margin-right: 25px;
-}
-
-#printButton {
-  float: right;
-  margin-top: 25px;
-  margin-right: 25px;
-}
 
 .App > .RecipeSelectionContainerLeft {
   flex: 1;
@@ -470,14 +460,6 @@ button:hover {
 
 .RecipeView {
   margin-left: 2%;
-}
-
-#selectRecipeButton {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  margin-bottom: 3%;
-  margin-right: 3%;
 }
 
 /* Login */
@@ -573,12 +555,25 @@ input[type="range"]{
 @media print {
   .no-print,
   .no-print * {
-    display: none !important;
+    display: none;
   }
   /* Styles applied to the printed page */
   @page {
     margin: 0;
   }
+}
+
+#BackButton {
+  float: right;
+  margin-top: 25px;
+  margin-right: 25px;
+}
+
+#PrintButton {
+  float: left;
+  margin-top: 25px;
+  margin-right: 25px;
+  margin-left: 1%;
 }
 
 .FullRecipeView {
@@ -625,4 +620,17 @@ input[type="range"]{
 
 .slidecontainer h3,p {
   display: inline;
+}
+
+#BackToFrontPageButtonRecipeSelection {
+  float: right;
+  align-items: right;
+  margin-right: 1%;
+}
+
+#BackToFrontPageButtonRecipeView {
+  float: right;
+  align-items: right;
+  margin-top: 25px;
+  margin-right: 1%;
 }
