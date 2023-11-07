@@ -13,7 +13,7 @@ test("Renders the button with correct text", () => {
   expect(button).toHaveTextContent("test");
 });
 
-test("Clicking the button calls the goToPageFrontPage function", () => {
+test("Clicking the button calls the onClick function", () => {
   renderComponent(<FrontPageButton />);
   const button = screen.getByTestId("FrontPageButtonTest");
   const goToPageFrontPage = jest.fn();
