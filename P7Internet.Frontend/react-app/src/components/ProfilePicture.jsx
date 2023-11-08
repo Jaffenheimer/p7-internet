@@ -32,10 +32,17 @@ const ProfilePicture = () => {
     if(!isLogOutLoading || !isLogOutError){   
       const sessionToken = retriveCookie('sessionToken='); 
       const userId = retriveCookie('userid=');
+
+      console.log(`Retrived tokens: UserId: ${userId}, sessionToken: ${sessionToken}`);
       
       try {
-        const response = await userLogOut({ userId: userId, sessionToken: sessionToken });
+        const encodedSessionToken = encodeURIComponent(sessionToken);
+        const encodedUserId = encodeURIComponent(userId);
+
+        //const response = await userLogOut({ userId: encodedUserId, sessionToken: encodedSessionToken });
+        const response = await userLogOut({ userId: encodedUserId, sessionToken: encodedSessionToken });
         if(response){
+          console.log(response);
           toast.success("Logget ud");
           dispatch(userActions.toggleTestLogin());
         }

@@ -8,9 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 
 const LoginBox = ({ closeModal }) => {
-  const dispatch = useDispatch();
-  const users = useSelector((state) => state.user.users);
-  
+  const dispatch = useDispatch();  
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -23,7 +21,7 @@ const LoginBox = ({ closeModal }) => {
 
   //Functions is async because the need to wait for the response from the backend
   const handleLogin =  async() => {
-    const cookies = document.cookie;  
+    //const cookies = document.cookie;  
 
     //Functions from redux that allows to test weather error or loading
     if(!isLoginLoading || !isLoginError){
