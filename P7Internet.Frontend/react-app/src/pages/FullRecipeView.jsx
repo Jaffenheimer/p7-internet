@@ -8,6 +8,7 @@ import React from "react";
 import ForPersons from "../components/ForPersons";
 import Header from "../components/Header";
 import RecipeIngredientElement from "../components/RecipeIngredientElement";
+import FrontPageButton from "../components/FrontPageButton";
 
 function FullRecipeView() {
   const dispatch = useDispatch();
@@ -21,7 +22,6 @@ function FullRecipeView() {
   const recipe = recipes[currentRecipeIndex];
 
   function goToPageRecipeSelection() {
-    //pt har vi ikke den side, så det er bare frontpage
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
   }
 
@@ -43,6 +43,9 @@ function FullRecipeView() {
         />
         <MethodsList methods={recipe.method} />
         <div className="BottomButtons no-print">
+          <div id="BackToFrontPageButtonRecipeView">
+          <FrontPageButton buttonText="Tilbage til forsiden" />
+          </div>
           <button id="BackButton" onClick={goToPageRecipeSelection}>
             Tilbage
           </button>
