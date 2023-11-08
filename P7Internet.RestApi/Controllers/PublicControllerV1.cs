@@ -29,7 +29,8 @@ public class PublicControllerV1 : ControllerBase
 
     public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService,
         IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository,
-        ICachedOfferRepository cachedOfferRepository, EmailService emailService, IUserSessionRepository userSessionRepository)
+        ICachedOfferRepository cachedOfferRepository, EmailService emailService,
+        IUserSessionRepository userSessionRepository)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
@@ -42,7 +43,7 @@ public class PublicControllerV1 : ControllerBase
     }
 
     #region Recipe Endpoints
-   
+
     [HttpPost("recipes")]
     public async Task<IActionResult> GetARecipe([FromBody] RecipeRequest req)
     {
@@ -80,7 +81,7 @@ public class PublicControllerV1 : ControllerBase
 
         return Ok(res);
     }
-  
+
     [HttpGet("offer/getOffer")]
     public async Task<IActionResult> GetOffer([FromQuery] OfferRequest req)
     {
@@ -104,7 +105,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("No offer found");
     }
-   
+
     [HttpGet("offer/getOfferByStoreFromCache")]
     public async Task<IActionResult> GetOfferByStoreIfAvailableFromCache([FromQuery] string ingredient, string store)
     {
@@ -120,7 +121,7 @@ public class PublicControllerV1 : ControllerBase
     #endregion
 
     #region User Endpoints
- 
+
     [HttpPost("user/create-user")]
     public async Task<IActionResult> CreateUser([FromQuery] CreateUserRequest req)
     {
@@ -132,10 +133,10 @@ public class PublicControllerV1 : ControllerBase
         //await _emailService.ConfirmEmail(user.EmailAddress, user.Name);
         var token = await _userSessionRepository.GenerateSessionToken(user.Id);
         var response = new LogInResponse(user.Id, token, user.Name, user.EmailAddress);
-        
+
         return Ok(response);
     }
-  
+
     [HttpPost("user/login")]
     public async Task<IActionResult> Login([FromQuery] LogInRequest req)
     {
@@ -149,7 +150,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("Username or password is incorrect please try again");
     }
-   
+
     [HttpPost("user/logout")]
     public async Task<IActionResult> Logout([FromQuery] LogOutRequest req)
     {
@@ -165,14 +166,14 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("This should never happen");
     }
-  
+
     [HttpPost("user/favourite-recipe")]
     public async Task<IActionResult> AddFavouriteRecipe([FromQuery] AddFavouriteRecipeRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
-        if(!checkIfUserSessionIsValid)
+        if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
-        
+
         var result = await _favouriteRecipeRepository.Upsert(req.UserId, req.RecipeId);
         if (result)
         {
@@ -181,12 +182,12 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("This should never happen");
     }
-   
+
     [HttpGet("user/favourite-recipes")]
     public async Task<IActionResult> GetFavouriteRecipes([FromQuery] GetFavouriteRecipesRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
-        if(!checkIfUserSessionIsValid)
+        if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
 
         var result = await _favouriteRecipeRepository.Get(req.UserId);
@@ -197,12 +198,12 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("No favourite recipes found");
     }
-   
+
     [HttpDelete("user/favourite-recipe")]
     public async Task<IActionResult> DeleteFavouriteRecipe([FromQuery] DeleteFavouriteRecipeRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
-        if(!checkIfUserSessionIsValid)
+        if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
 
         var result = await _favouriteRecipeRepository.Delete(req.UserId, req.RecipeId);
@@ -213,7 +214,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("This should never happen");
     }
-    
+
     [HttpPost("user/reset-password-request")]
     public async Task<IActionResult> ResetPassword([EmailAddress] string email, string userName)
     {
@@ -226,13 +227,13 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("User does not exist");
     }
-    
-    
+
+
     [HttpPost("user/change-password")]
     public async Task<IActionResult> ChangePassword([FromQuery] ChangePasswordRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
-        if(!checkIfUserSessionIsValid)
+        if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
 
         var result = await _userRepository.ChangePassword(req.UserName, req.OldPassword, req.NewPassword);
@@ -243,9 +244,9 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("Username or password is incorrect please try again");
     }
-    
+
     //NOTE: IKKE BRUG DET HER ENDPOINT TIL TESTING DER ER KUN 100 GRATIS EMAILS OM DAGEN
-    
+
     [HttpPost("user/confirm-email")]
     public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailRequest req)
     {
@@ -261,7 +262,7 @@ public class PublicControllerV1 : ControllerBase
     #endregion
 
     #region Utility functions
-    
+
     /// <summary>
     /// Used to check if the recipe contains all the ingredients
     /// </summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 
 namespace P7Internet.Requests;
+
 /// <summary>
 /// 
 /// </summary>
@@ -21,7 +22,8 @@ public class ChangePasswordRequest
     {
     }
 
-    public ChangePasswordRequest(Guid userId, string sessionToken,string userName, string oldPassword, string newPassword)
+    public ChangePasswordRequest(Guid userId, string sessionToken, string userName, string oldPassword,
+        string newPassword)
     {
         UserName = userName;
         OldPassword = oldPassword;

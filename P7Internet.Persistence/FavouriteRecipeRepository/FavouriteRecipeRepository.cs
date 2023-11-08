@@ -67,6 +67,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 
         return await Connection.ExecuteAsync(query, new {UserId = userId, RecipeId = recipeId}) > 0;
     }
+
     /// <summary>
     /// Deletes a favourite recipe from the database
     /// </summary>
@@ -79,6 +80,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 
         return await Connection.ExecuteAsync(query, new {UserId = userId, RecipeId = recipeId}) > 0;
     }
+
     /// <summary>
     /// Checks if a recipe is already a favourite recipe
     /// </summary>

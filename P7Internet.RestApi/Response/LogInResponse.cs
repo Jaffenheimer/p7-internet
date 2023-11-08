@@ -1,6 +1,7 @@
 using System;
 
 namespace P7Internet.Response;
+
 /// <summary>
 /// 
 /// </summary>
@@ -15,7 +16,7 @@ public class LogInResponse
     public string Name { get; set; }
     public string EmailAddress { get; set; }
 
-    public LogInResponse(Guid id,string sessionToken, string name, string emailAddress)
+    public LogInResponse(Guid id, string sessionToken, string name, string emailAddress)
     {
         Id = id;
         SessionToken = sessionToken;

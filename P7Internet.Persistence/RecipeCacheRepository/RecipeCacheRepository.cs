@@ -17,7 +17,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     {
         _connectionFactory = connectionFactory;
     }
-   
+
     /// <summary>
     /// Checks if recipe exist in the database
     /// </summary>
@@ -46,12 +46,13 @@ public class RecipeCacheRepository : IRecipeCacheRepository
 
         return result.AsList();
     }
-   /// <summary>
-   /// Inserts or updates a recipe in the database
-   /// </summary>
-   /// <param name="openAiResponse"></param>
-   /// <param name="recipeId"></param>
-   /// <returns>Returns true of the process was successful E.g. the number of rows affected was more than 0 else it returns false</returns>
+
+    /// <summary>
+    /// Inserts or updates a recipe in the database
+    /// </summary>
+    /// <param name="openAiResponse"></param>
+    /// <param name="recipeId"></param>
+    /// <returns>Returns true of the process was successful E.g. the number of rows affected was more than 0 else it returns false</returns>
     public async Task<bool> Upsert(string openAiResponse, Guid recipeId)
     {
         var query = $@"INSERT INTO {TableName} (Id, Recipe)
@@ -66,12 +67,12 @@ public class RecipeCacheRepository : IRecipeCacheRepository
 
         return await Connection.ExecuteAsync(query, parameters) > 0;
     }
-   
-   /// <summary>
-   /// Gets a list of recipes from the database based on a list of Id's
-   /// </summary>
-   /// <param name="ids"></param>
-   /// <returns>Returns a list of recipes as strings</returns>
+
+    /// <summary>
+    /// Gets a list of recipes from the database based on a list of Id's
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns>Returns a list of recipes as strings</returns>
     public async Task<List<string>> GetListOfRecipes(List<Guid> ids)
     {
         var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";

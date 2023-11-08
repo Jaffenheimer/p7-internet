@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 
 namespace P7Internet.Requests;
+
 /// <summary>
 /// 
 /// </summary>
@@ -12,7 +13,7 @@ public class RecipeRequest
     public string OpenAiString { get; }
     public List<string> Ingredients { get; }
     public int? Amount { get; set; }
-    
+
     public RecipeRequest(string openAiString, List<string> ingredients, int? amount)
     {
         OpenAiString = openAiString;

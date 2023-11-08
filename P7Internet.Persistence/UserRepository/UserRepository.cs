@@ -19,7 +19,7 @@ public class UserRepository : IUserRepository
     {
         _connectionFactory = connectionFactory;
     }
-    
+
     /// <summary>
     /// Gets a user by username
     /// </summary>
@@ -41,7 +41,7 @@ public class UserRepository : IUserRepository
 
         return null;
     }
-    
+
     /// <summary>
     /// Gets a user by email
     /// </summary>
@@ -120,7 +120,7 @@ public class UserRepository : IUserRepository
 
         return null;
     }
-  
+
     /// <summary>
     /// Confirms an email bu setting the EmailConfirmed column to true in the database
     /// </summary>
@@ -133,7 +133,7 @@ public class UserRepository : IUserRepository
         var result = await Connection.ExecuteAsync(query, new {Name = userName, Email = emailAddress});
         return result > 0;
     }
-    
+
     /// <summary>
     /// Resets the password of a user, must be directed to said site from an email
     /// </summary>
@@ -154,7 +154,7 @@ public class UserRepository : IUserRepository
             new {Name = userName, Password_hash = passwordHash, Password_salt = salt, Updated = DateTime.UtcNow});
         return result > 0;
     }
-    
+
     /// <summary>
     /// Changes the password of a user, if the old password matches the correct password stores in the database
     /// </summary>
@@ -191,7 +191,7 @@ public class UserRepository : IUserRepository
 
         return result > 0;
     }
-    
+
     /// <summary>
     /// Creates a user from a username and email (Helper function)
     /// </summary>
@@ -203,7 +203,7 @@ public class UserRepository : IUserRepository
         User user = new User(userName, email);
         return user;
     }
-    
+
     /// <summary>
     /// Generates a hash from a string
     /// </summary>
@@ -223,6 +223,7 @@ public class UserRepository : IUserRepository
 
         return sb.ToString();
     }
+
     /// <summary>
     /// Generates a salt
     /// </summary>

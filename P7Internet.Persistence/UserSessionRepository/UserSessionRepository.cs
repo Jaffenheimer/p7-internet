@@ -16,7 +16,7 @@ public class UserSessionRepository : IUserSessionRepository
     {
         _connectionFactory = connectionFactory;
     }
-    
+
     /// <summary>
     /// Generates a session token for the user and inserts it into the database
     /// </summary>
@@ -32,11 +32,11 @@ public class UserSessionRepository : IUserSessionRepository
             UserId = userId,
             SessionToken = token,
             ExpiresAt = DateTime.UtcNow.AddHours(1),
-        }; 
+        };
         await Connection.ExecuteAsync(query, parameters);
         return token;
     }
-    
+
     /// <summary>
     /// Checks if the sessiontoken provided by the user is still valid
     /// </summary>
@@ -51,10 +51,11 @@ public class UserSessionRepository : IUserSessionRepository
         {
             return true;
         }
+
         await DeleteSessionToken(userId, token);
         return false;
     }
-    
+
     /// <summary>
     /// Deletes the sessiontoken from the database if requested
     /// </summary>
@@ -66,7 +67,7 @@ public class UserSessionRepository : IUserSessionRepository
         var query = $@"DELETE FROM {TableName} WHERE UserId = @UserId AND SessionToken = @SessionToken";
         return await Connection.ExecuteAsync(query, new {UserId = userId, SessionToken = sessionToken}) > 0;
     }
-    
+
     /// <summary>
     /// Generates a token from a Guid
     /// </summary>
@@ -77,5 +78,4 @@ public class UserSessionRepository : IUserSessionRepository
 
         return token;
     }
-    
 }

@@ -11,6 +11,7 @@ public interface IUserSessionRepository
     /// <param name="userId"></param>
     /// <returns>Returns the generated token</returns>
     public Task<bool> CheckIfTokenIsValid(Guid userId, string token);
+
     /// <summary>
     /// Checks if the sessiontoken provided by the user is still valid
     /// </summary>
@@ -18,6 +19,7 @@ public interface IUserSessionRepository
     /// <param name="token"></param>
     /// <returns>Returns true if the sessiontoken is valid and present, otherwise 0</returns>
     public Task<string> GenerateSessionToken(Guid userId);
+
     /// <summary>
     /// Deletes the sessiontoken from the database if requested
     /// </summary>

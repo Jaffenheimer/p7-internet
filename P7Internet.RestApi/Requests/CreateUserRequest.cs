@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
 namespace P7Internet.Requests;
+
 /// <summary>
 /// 
 /// </summary>

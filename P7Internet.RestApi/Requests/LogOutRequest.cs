@@ -1,6 +1,7 @@
 using System;
 
 namespace P7Internet.Requests;
+
 /// <summary>
 /// 
 /// </summary>
@@ -13,8 +14,8 @@ public class LogOutRequest
 
     public LogOutRequest()
     {
-        
     }
+
     public LogOutRequest(Guid userId, string sessionToken)
     {
         UserId = userId;

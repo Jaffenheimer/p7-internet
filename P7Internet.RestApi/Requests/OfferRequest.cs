@@ -22,7 +22,7 @@ namespace P7Internet.Requests
         {
         }
 
-        
+
         public OfferRequest(int pagesize, string searchTerm, int radius, string upcoming)
         {
             Pagesize = pagesize;
@@ -30,6 +30,7 @@ namespace P7Internet.Requests
             Radius = radius;
             Upcoming = upcoming;
         }
+
         /// <summary>
         /// Composes the offer object to be sent to the etilbudsavis API as JsonObject
         /// </summary>

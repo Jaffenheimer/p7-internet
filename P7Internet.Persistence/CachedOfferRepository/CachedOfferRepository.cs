@@ -33,12 +33,13 @@ public class CachedOfferRepository : ICachedOfferRepository
 
         return resultFromDb;
     }
-/// <summary>
-/// Gets offer by store
-/// </summary>
-/// <param name="ingredientName"></param>
-/// <param name="store"></param>
-/// <returns>Returns an offer of type Offer</returns>
+
+    /// <summary>
+    /// Gets offer by store
+    /// </summary>
+    /// <param name="ingredientName"></param>
+    /// <param name="store"></param>
+    /// <returns>Returns an offer of type Offer</returns>
     public async Task<Offer> GetOfferByStore(string ingredientName, string store)
     {
         var query =
@@ -50,13 +51,14 @@ public class CachedOfferRepository : ICachedOfferRepository
 
         return resultFromDb;
     }
-/// <summary>
-/// Inserts or updates offer in the database
-/// </summary>
-/// <param name="ingredientName"></param>
-/// <param name="price"></param>
-/// <param name="store"></param>
-/// <returns> Returns true of the process was successful E.g. the number of rows affected was more than 0 else it returns false </returns>
+
+    /// <summary>
+    /// Inserts or updates offer in the database
+    /// </summary>
+    /// <param name="ingredientName"></param>
+    /// <param name="price"></param>
+    /// <param name="store"></param>
+    /// <returns> Returns true of the process was successful E.g. the number of rows affected was more than 0 else it returns false </returns>
     public async Task<bool> UpsertOffer(string ingredientName, decimal price, string store)
     {
         var deleteDeprecatedQuery = $@"DELETE FROM {TableName} WHERE CreatedAt < DATE_SUB(NOW(), INTERVAL 7 DAY)";

@@ -8,7 +8,7 @@ public class LogInRequest
     public LogInRequest()
     {
     }
-    
+
     public LogInRequest(string username, string password)
     {
         Username = username;

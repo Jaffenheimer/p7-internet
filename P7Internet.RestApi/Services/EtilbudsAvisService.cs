@@ -22,6 +22,7 @@ public class ETilbudsAvisService
     {
         _client.BaseAddress = new Uri("https://squid-api.tjek.com/v4/rpc/get_offers");
     }
+
     /// <summary>
     /// Sends a request to the eTilbudsavis API and returns a list of offers from the given parameters in the OfferRequest.
     /// </summary>
@@ -63,5 +64,4 @@ public class ETilbudsAvisService
 
         return offers;
     }
-    
 }

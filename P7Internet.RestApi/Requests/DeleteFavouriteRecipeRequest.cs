@@ -1,6 +1,7 @@
 using System;
 
 namespace P7Internet.Requests;
+
 /// <summary>
 /// 
 /// </summary>
@@ -15,8 +16,8 @@ public class DeleteFavouriteRecipeRequest
 
     public DeleteFavouriteRecipeRequest()
     {
-        
     }
+
     public DeleteFavouriteRecipeRequest(Guid userId, string sessionToken, Guid recipeId)
     {
         UserId = userId;

@@ -11,6 +11,7 @@ public interface ICachedOfferRepository
     /// <param name="ingredientName"></param>
     /// <returns>Returns an offer of type Offer</returns>
     public Task<Offer> GetOffer(string ingredientName);
+
     /// <summary>
     /// Gets offer by store
     /// </summary>
@@ -18,6 +19,7 @@ public interface ICachedOfferRepository
     /// <param name="store"></param>
     /// <returns>Returns an offer of type Offer</returns>
     public Task<Offer> GetOfferByStore(string ingredientName, string store);
+
     /// <summary>
     /// Inserts or updates offer in the database
     /// </summary>

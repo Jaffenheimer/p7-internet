@@ -15,6 +15,7 @@ public class OpenAiService
     {
         _openAi = new OpenAIAPI(apiKey);
     }
+
     /// <summary>
     /// Makes a request to the OpenAI API to generate a recipe response, this is done from a list of ingredients and an amount of recipes wanted
     /// </summary>
