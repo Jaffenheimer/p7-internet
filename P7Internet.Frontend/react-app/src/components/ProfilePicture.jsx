@@ -50,7 +50,7 @@ const ProfilePicture = () => {
         }
         
       } catch (error) {
-        toast.error("Kunne ikke loge ud", error);
+        toast.error("Kunne ikke logge ud", error);
       }
   }
 

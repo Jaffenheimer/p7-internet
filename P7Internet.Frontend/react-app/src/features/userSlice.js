@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: {}, 
   heartedRecipes: [],
-  loggedInd: false, 
+  loggedIn: false, 
 };
 
 export const userSlice = createSlice({
@@ -14,12 +14,12 @@ export const userSlice = createSlice({
     loginUser(state, action) {
       state.user = action.payload;
       state.heartedRecipes = [];
-      state.loggedInd = true; 
+      state.loggedIn = true; 
     },
     logoutUser(state) {
       state.user = {};
       state.heartedRecipes = [];
-      state.loggedInd = false; 
+      state.loggedIn = false; 
     },
     addRecipe(state, action) {
       state.heartedRecipes.push(action.payload);

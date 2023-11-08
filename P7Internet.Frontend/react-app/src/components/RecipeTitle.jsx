@@ -8,7 +8,7 @@ import { pageActions } from "../features/pageSlice";
 
 const RecipeTitle = ({ title }) => {
   const dispatch = useDispatch();
-  const loggedIn = useSelector((state) => state.user.loggedInd);
+  const loggedIn = useSelector((state) => state.user.loggedIn);
   const heartedRecipes = useSelector((state) => state.user.heartedRecipes);
   const [heart, setHeart] = useState(heartHollow);
 
