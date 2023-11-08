@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import cross from "../data/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
@@ -14,23 +14,20 @@ const FavoritesBox = ({ closeModal }) => {
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const heartedRecipes = loggedInUser[0]["heartedRecipes"];
   const recipes = useSelector((state) => state.recipe.recipes);
-  const [selectValue, setSelectValue] = useState(
-    heartedRecipes.length === 0 ? "" : heartedRecipes[0]
-  );
 
-  function handleSubmit(event) {
+  function selectRecipe(event, recipeTitle) {
     event.preventDefault();
 
     var recipeTitles = [];
     recipes.forEach((recipe) => recipeTitles.push(recipe["title"]));
 
-    if (!recipeTitles.includes(selectValue)) {
+    if (!recipeTitles.includes(recipeTitle)) {
       toast.error(
-        `${selectValue} er ikke i listen af opskrifter på databasen. Prøv at vælge en anden opskrift.`
+        `${recipeTitle} er ikke i listen af opskrifter på databasen. Prøv at vælge en anden opskrift.`
       );
     } else {
       dispatch(
-        recipeActions.setCurrentRecipeIndex(recipeTitles.indexOf(selectValue))
+        recipeActions.setCurrentRecipeIndex(recipeTitles.indexOf(recipeTitle))
       );
       dispatch(pageActions.goToPage(Pages.fullRecipeView));
       closeModal();
@@ -38,22 +35,16 @@ const FavoritesBox = ({ closeModal }) => {
   }
 
   function handleRemove(_, recipeTitle) {
-    dispatch(userActions.removeRecipe(recipeTitle));
-  }
-
-  function handleClick(event, recipeTitle) {
-    event.preventDefault();
-    setSelectValue(recipeTitle);
-
-    var options = document.querySelectorAll(".option");
-    for (var i = 0; i < options.length; i++) {
-      options[i].style.backgroundColor = "white";
-    }
-    event.target.style.backgroundColor = "grey";
+    if (
+      window.confirm(
+        `Are you sure you want to remove ${recipeTitle} as favorite recipe`
+      )
+    )
+      dispatch(userActions.removeRecipe(recipeTitle));
   }
 
   return (
-    <form className="LoginForm" onSubmit={handleSubmit}>
+    <>
       <div className="imgcontainer">
         <h3>
           Favoritter
@@ -70,30 +61,28 @@ const FavoritesBox = ({ closeModal }) => {
           <p>Ingen opskrifter er blevet markeret som favorit.</p>
         ) : (
           <>
-            <div className="options">
-              {heartedRecipes.map((recipeTitle) => (
-                <div
-                  id={recipeTitle}
-                  className="option noselect"
+            {heartedRecipes.map((recipeTitle) => (
+              <div className="FavoriteRecipeElement">
+                <button
+                  className="FavoriteRecipeButton"
+                  value={recipeTitle}
                   key={nanoid()}
-                  onClick={(event) => handleClick(event, recipeTitle)}
+                  onClick={(event) => selectRecipe(event, recipeTitle)}
                 >
-                  {" "}
-                  {recipeTitle}
-                  <img
-                    className="RemoveFavoritedElement"
-                    src={cross}
-                    alt="cross"
-                    onClick={(event) => handleRemove(event, recipeTitle)}
-                  />
-                </div>
-              ))}
-            </div>
-            <button onClick={handleSubmit}>Vælg</button>
+                  {recipeTitle}{" "}
+                </button>
+                <img
+                  className="RemoveFavoritedElement"
+                  src={cross}
+                  alt="cross"
+                  onClick={(event) => handleRemove(event, recipeTitle)}
+                />
+              </div>
+            ))}
           </>
         )}
       </div>
-    </form>
+    </>
   );
 };
 
