@@ -498,11 +498,11 @@ input[type="password"] {
   box-sizing: border-box;
 }
 
-.LoginForm select{
-	width: 100%;
+.LoginForm select {
+  width: 100%;
 }
 
-.LoginForm option{
+.LoginForm option {
   font-size: 18px;
   font-family: Verdana;
 }
@@ -532,10 +532,10 @@ input[type="password"] {
   margin: 24px 0 12px 0;
 }
 
-.container {
+.favoriteRecipesContainer {
+  display: block;
   padding: 16px;
 }
-
 
 input:focus + .slider {
   box-shadow: 0 0 1px #2196f3;
@@ -587,14 +587,14 @@ input:checked + .slider:before {
 }
 
 .options {
-  background:white;
-  border:1px solid #ccc;
-  position:absolute;
-  top:-1px;
-  left:-1px;
-  width:100%;
-  height:88px;
-  overflow-y:scroll;
+  background: white;
+  border: 1px solid #ccc;
+  top: -1px;
+  left: -1px;
+  width: 100%;
+  min-height: 30vh;
+  cursor: pointer;
+  overflow-y: scroll;
 }
 
 .option {
@@ -603,10 +603,15 @@ input:checked + .slider:before {
 
 .noselect {
   -webkit-touch-callout: none; /* iOS Safari */
-    -webkit-user-select: none; /* Safari */
-     -khtml-user-select: none; /* Konqueror HTML */
-       -moz-user-select: none; /* Old versions of Firefox */
-        -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently
+  -webkit-user-select: none; /* Safari */
+  -khtml-user-select: none; /* Konqueror HTML */
+  -moz-user-select: none; /* Old versions of Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome, Edge, Opera and Firefox */
+}
+
+.RemoveFavoritedElement {
+  float: right;
+  margin-right: 2%;
 }

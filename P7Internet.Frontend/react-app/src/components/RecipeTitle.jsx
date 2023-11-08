@@ -31,9 +31,8 @@ const RecipeTitle = ({ title }) => {
     //component that dynamically changes heart icon when using arrows
     useEffect(() => {
       if (loggedInUser.length !== 1) {
-				setHeart(heartHollow);
-			}
-      else if (loggedInUser[0]["heartedRecipes"].includes(title)) {
+        setHeart(heartHollow);
+      } else if (loggedInUser[0]["heartedRecipes"].includes(title)) {
         setHeart(heartSolid);
       } else {
         setHeart(heartHollow);

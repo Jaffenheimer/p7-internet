@@ -13,7 +13,7 @@ const ProfilePicture = ({ openFavoritesModal }) => {
   }
 
   const handleFavorites = () => {
-		openFavoritesModal()
+    openFavoritesModal();
     setOpen(false);
   };
 

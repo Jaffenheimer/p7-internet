@@ -25,13 +25,15 @@ const Header = () => {
 
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const loginModalShown = useSelector((state) => state.page.loginModalShown);
-  const favoritesModalShown = useSelector((state) => state.page.favoritesModalShown);
+  const favoritesModalShown = useSelector(
+    (state) => state.page.favoritesModalShown
+  );
 
   const [loggedIn, setLoggedIn] = useState(false);
 
   const openLoginModal = () => dispatch(pageActions.openLoginModal());
   const closeLoginModal = () => dispatch(pageActions.closeLoginModal());
-	const openFavoritesModal = () => dispatch(pageActions.openFavoritesModal());
+  const openFavoritesModal = () => dispatch(pageActions.openFavoritesModal());
   const closeFavoritesModal = () => dispatch(pageActions.closeFavoritesModal());
 
   function SetLoggedInOnChange() {
@@ -53,7 +55,7 @@ const Header = () => {
       >
         <LoginBox closeModal={closeLoginModal} />
       </Modal>
-			<Modal
+      <Modal
         isOpen={favoritesModalShown}
         style={customStyles}
         onRequestClose={closeFavoritesModal}
@@ -62,14 +64,13 @@ const Header = () => {
       >
         <FavoritesBox closeModal={closeFavoritesModal} />
       </Modal>
-
       <div className="title">Opskriftsgenerator</div>
-      <SetLoggedInOnChange/> {/* Dynamically check if user is logged in */}
-          {loggedIn ? (
-            <ProfilePicture openFavoritesModal={openFavoritesModal}/>
-          ) : (
-            <button onClick={openLoginModal}>Log Ind</button>
-          )}
+      <SetLoggedInOnChange /> {/* Dynamically check if user is logged in */}
+      {loggedIn ? (
+        <ProfilePicture openFavoritesModal={openFavoritesModal} />
+      ) : (
+        <button onClick={openLoginModal}>Log Ind</button>
+      )}
     </div>
   );
 };
