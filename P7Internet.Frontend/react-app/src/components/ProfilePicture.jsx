@@ -36,14 +36,15 @@ const ProfilePicture = () => {
       console.log(`Retrived tokens: UserId: ${userId}, sessionToken: ${sessionToken}`);
       
       try {
+        //Enconding request to URI standart (handles symbols in request)
         const encodedSessionToken = encodeURIComponent(sessionToken);
         const encodedUserId = encodeURIComponent(userId);
 
-        //const response = await userLogOut({ userId: encodedUserId, sessionToken: encodedSessionToken });
         const response = await userLogOut({ userId: encodedUserId, sessionToken: encodedSessionToken });
         if(response){
           console.log(response);
           toast.success("Logget ud");
+          dispatch(userActions.logoutUser());
           dispatch(userActions.toggleTestLogin());
         }
         

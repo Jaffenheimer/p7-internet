@@ -8,12 +8,14 @@ import { pageActions } from "../features/pageSlice";
 
 const RecipeTitle = ({ title }) => {
   const dispatch = useDispatch();
-  const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  const loggedIn = useSelector((state) => state.user.loggedInd);
+  const heartedRecipes = useSelector((state) => state.user.heartedRecipes);
   const [heart, setHeart] = useState(heartHollow);
 
   function handleClick(event) {
     event.preventDefault();
-    if (loggedInUser.length !== 1) {
+    console.log(loggedIn); 
+    if (loggedIn === false) {
       //if not logged in
       dispatch(pageActions.openModal());
     } else {
@@ -30,12 +32,13 @@ const RecipeTitle = ({ title }) => {
   function SetHeartIconOnChange() {
     //component that dynamically changes heart icon when using arrows
     useEffect(() => {
-      if (loggedInUser.length !== 1) return;
-      if (loggedInUser[0]["heartedRecipes"].includes(title)) {
-        setHeart(heartSolid);
-      } else {
-        setHeart(heartHollow);
-      }
+      if (heartedRecipes === undefined){
+        console.log(heartedRecipes);
+    } else if (heartedRecipes.includes(title)) {
+      setHeart(heartSolid);
+    } else {
+      setHeart(heartHollow);
+    }
     });
   }
 

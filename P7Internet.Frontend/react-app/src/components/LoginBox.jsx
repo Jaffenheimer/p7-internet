@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import cross from "../data/cross.svg";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { toast } from 'react-toastify';
 import { useUserCreateMutation, useUserLoginMutation } from "../services/usersEndpoints";
@@ -36,7 +36,8 @@ const LoginBox = ({ closeModal }) => {
             document.cookie = `username=${response.name};`;
             document.cookie = `userid=${response.id};`;
             document.cookie = `sessionToken=${response.sessionToken};`;  
-
+            
+            dispatch(userActions.loginUser({id: response.id, name: response.name, email: response.emailAddress}));
             dispatch(userActions.toggleTestLogin());
             closeModal();
             setUsername("");
@@ -80,10 +81,6 @@ const LoginBox = ({ closeModal }) => {
   }
 
   const handleCreateAccount = async() => {
-    // const existsUser = users.filter((user) => user.username === username);
-
-    // if (existsUser.length > 0) toast.error("Brugernavnet er allerede taget.");
-    // else 
     
     if (checkValidEmail() === false)
       toast.error("Den indtastede email er ugyldig eller allerede i brug.");
@@ -108,7 +105,7 @@ const LoginBox = ({ closeModal }) => {
             document.cookie = `sessionToken=${response.sessionToken};`;  
             
             dispatch(userActions.toggleTestLogin());
-            dispatch(userActions.addUser([email, username, password, []]));
+            dispatch(userActions.loginUser({id: response.id, name: response.name, email: response.emailAddress}));
             setCreatingAccount(false);
             closeModal();
             

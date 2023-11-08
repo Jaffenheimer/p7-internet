@@ -1,8 +1,7 @@
 import ProfilePicture from "./ProfilePicture";
-import React, { useState } from "react";
+import React from "react";
 import LoginBox from "./LoginBox";
 import Modal from "react-modal";
-import { useEffect } from "react";
 import { pageActions } from "../features/pageSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -24,21 +23,12 @@ const Header = () => {
   const dispatch = useDispatch();
   const loggedInd = useSelector((state) => state.user.loggedInd);
 
-  const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  //const loggedInUser = useSelector((state) => state.user.loggedInUser);
   const modalShown = useSelector((state) => state.page.modalShown);
-  //const [loggedIn, setLoggedIn] = useState(false);
 
   const openModal = () => dispatch(pageActions.openModal());
   const closeModal = () => dispatch(pageActions.closeModal());
 
-  // function SetLoggedInOnChange() {
-  //   //component that dynamically changes when log in status changes
-  //   useEffect(() => {
-  //     if (testLogin == false) setLoggedIn(true);
-  //     else setLoggedIn(false);
-  //   })
-  
-  // }
 
   return (
     <div className="header no-print">

@@ -36,7 +36,7 @@ const GenerateRecipeButton = () => {
     const GenerateRecipesHandler = async () => {
         console.log("Data -- ", recipeGenData); 
         const OpenAiString = generateOpenAiString(recipeGenData); 
-        console.log("String to openAi - ", OpenAiString);
+        console.log("String to openAi - \n", OpenAiString);
     //     const req = "Create 3 short and simple recipes for 4 people";
 
     //     try {
