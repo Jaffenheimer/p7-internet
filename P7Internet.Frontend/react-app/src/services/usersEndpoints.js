@@ -1,12 +1,6 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { apiSlice } from "./apiSlice"
 
-export const userApiSlice = createApi({
-    reducerPath: 'elementTest', 
-    baseQuery: fetchBaseQuery ({ baseUrl: 'http://localhost:5000/'}), 
-    prepareHeaders: (headers) => {
-        headers.set('Access-Control-Allow-Origin', '*');
-        return headers;
-    },
+const userEndpoints = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         userLogin: builder.mutation({
             query: ({username, password}) => ({ 
@@ -28,15 +22,10 @@ export const userApiSlice = createApi({
                 method: 'POST', 
                 body: '', 
             }),
-        })
-    })
-}); 
+        }),
+    }),
+    overrideExisting: false,
+});
 
-export const { useUserLoginMutation, useUserCreateMutation, useUserLogOutMutation } = userApiSlice;
-
-//https://localhost:5001/public/sample/user/create-user?Name=user2&EmailAddress=user2%40mail.dk&Password=1234
-
-//https://localhost:5001/public/user/create-user?Name=u&EmailAddress=user%40mail.dk&Password=1
-
-//https://localhost:5001/public/user/logout?UserId=caea430e-2766-4f95-bcfa-53be60938d94&SessionToken=C2gwmeWDgkqawEPJrs6ICw%3D%3D
+export const { useUserLoginMutation, useUserCreateMutation, useUserLogOutMutation } = userEndpoints;
 

@@ -4,7 +4,7 @@ import { recipeReducer } from "../features/recipeSlice";
 import { pageReducer } from "../features/pageSlice";
 import { userReducer } from "../features/userSlice";
 import { storesReducer } from "../features/storesSlice";
-import { userApiSlice } from "../services/userApiSlice";
+import { apiSlice } from "../services/apiSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,10 +14,10 @@ export const store = configureStore({
     user: userReducer,
     stores: storesReducer,
 
-    [userApiSlice.reducerPath]: userApiSlice.reducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
 
   },
-  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(userApiSlice.middleware),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(apiSlice.middleware),
   // middleware: (getDefaultMiddleware) =>
   //   getDefaultMiddleware({
   //     serializableCheck: false,

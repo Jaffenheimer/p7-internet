@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-import { useUserLogOutMutation } from "../services/userApiSlice";
+import { useUserLogOutMutation } from "../services/usersEndpoints";
 import retriveCookie from "../helperFunctions/retriveCookie";
 
 
