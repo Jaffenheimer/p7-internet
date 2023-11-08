@@ -24,6 +24,11 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     }
 
 
+    /// <summary>
+    /// Gets all favourite recipes by user id
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns>Returns a list of all recipes favourited by the user. Returns 0 if none is present</returns>
     public async Task<List<string>> Get(Guid userId)
     {
         var query = $@"SELECT RecipeId FROM {TableName} WHERE UserId = @UserId";
@@ -39,6 +44,13 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
         return null;
     }
 
+    /// <summary>
+    /// Inserts a favourite recipe in the database
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="recipeId"></param>
+    /// <returns>Returns true of the process was successful E.g. the number of rows affected was more than 0 else it returns false</returns>
+    /// <exception cref="ArgumentException"></exception>
     public async Task<bool> Upsert(Guid userId, Guid recipeId)
     {
         var checkIfRecipeExist = await _cachedRecipeRepository.CheckIfRecipeExist(recipeId);
@@ -55,14 +67,24 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 
         return await Connection.ExecuteAsync(query, new {UserId = userId, RecipeId = recipeId}) > 0;
     }
-
+    /// <summary>
+    /// Deletes a favourite recipe from the database
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="recipeId"></param>
+    /// <returns>Returns true of the process was successful E.g. the number of rows affected was more than 0 else it returns false</returns>
     public async Task<bool> Delete(Guid userId, Guid recipeId)
     {
         var query = $@"DELETE FROM {TableName} WHERE UserId = @UserId AND RecipeId = @RecipeId";
 
         return await Connection.ExecuteAsync(query, new {UserId = userId, RecipeId = recipeId}) > 0;
     }
-
+    /// <summary>
+    /// Checks if a recipe is already a favourite recipe
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="recipeId"></param>
+    /// <returns>Returns true of the process was successful E.g resultFromDb is something else than NULL else it returns false</returns>
     private async Task<bool> CheckIfRecipeIsAlreadyFavourite(Guid userId, Guid recipeId)
     {
         var query = $@"SELECT RecipeId FROM {TableName} WHERE UserId = @UserId AND RecipeId = @RecipeId";

@@ -15,7 +15,12 @@ public class OpenAiService
     {
         _openAi = new OpenAIAPI(apiKey);
     }
-
+    /// <summary>
+    /// Makes a request to the OpenAI API to generate a recipe response, this is done from a list of ingredients and an amount of recipes wanted
+    /// </summary>
+    /// <param name="sourceText"></param>
+    /// <returns>A list of RecipeResponses corresponding to the amount of requested recipes</returns>
+    //TODO: Make a request to the OpenAI API to generate a recipe response, this is done from a list of ingredients and an amount of recipes wanted dietary restrictions etc LAV I MORGEN
     public RecipeResponse GetAiResponse(string sourceText)
     {
         var request = new ChatRequest()

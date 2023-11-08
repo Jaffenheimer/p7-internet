@@ -1,7 +1,14 @@
 ﻿using System;
 
 namespace P7Internet.Requests;
-
+/// <summary>
+/// 
+/// </summary>
+/// <param name="userId"></param>
+/// <param name="sessionToken"></param>
+/// <param name="userName"></param>
+/// <param name="oldPassword"></param>
+/// <param name="newPassword"></param>
 public class ChangePasswordRequest
 {
     public Guid UserId { get; set; }

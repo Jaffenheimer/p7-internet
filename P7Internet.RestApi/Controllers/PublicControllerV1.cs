@@ -42,7 +42,7 @@ public class PublicControllerV1 : ControllerBase
     }
 
     #region Recipe Endpoints
-
+   
     [HttpPost("recipes")]
     public async Task<IActionResult> GetARecipe([FromBody] RecipeRequest req)
     {
@@ -80,7 +80,7 @@ public class PublicControllerV1 : ControllerBase
 
         return Ok(res);
     }
-
+  
     [HttpGet("offer/getOffer")]
     public async Task<IActionResult> GetOffer([FromQuery] OfferRequest req)
     {
@@ -104,7 +104,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("No offer found");
     }
-
+   
     [HttpGet("offer/getOfferByStoreFromCache")]
     public async Task<IActionResult> GetOfferByStoreIfAvailableFromCache([FromQuery] string ingredient, string store)
     {
@@ -120,7 +120,7 @@ public class PublicControllerV1 : ControllerBase
     #endregion
 
     #region User Endpoints
-
+ 
     [HttpPost("user/create-user")]
     public async Task<IActionResult> CreateUser([FromQuery] CreateUserRequest req)
     {
@@ -135,7 +135,7 @@ public class PublicControllerV1 : ControllerBase
         
         return Ok(response);
     }
-
+  
     [HttpPost("user/login")]
     public async Task<IActionResult> Login([FromQuery] LogInRequest req)
     {
@@ -149,6 +149,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("Username or password is incorrect please try again");
     }
+   
     [HttpPost("user/logout")]
     public async Task<IActionResult> Logout([FromQuery] LogOutRequest req)
     {
@@ -164,7 +165,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("This should never happen");
     }
-
+  
     [HttpPost("user/favourite-recipe")]
     public async Task<IActionResult> AddFavouriteRecipe([FromQuery] AddFavouriteRecipeRequest req)
     {
@@ -180,7 +181,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("This should never happen");
     }
-
+   
     [HttpGet("user/favourite-recipes")]
     public async Task<IActionResult> GetFavouriteRecipes([FromQuery] GetFavouriteRecipesRequest req)
     {
@@ -196,7 +197,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("No favourite recipes found");
     }
-
+   
     [HttpDelete("user/favourite-recipe")]
     public async Task<IActionResult> DeleteFavouriteRecipe([FromQuery] DeleteFavouriteRecipeRequest req)
     {
@@ -212,7 +213,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("This should never happen");
     }
-
+    
     [HttpPost("user/reset-password-request")]
     public async Task<IActionResult> ResetPassword([EmailAddress] string email, string userName)
     {
@@ -225,7 +226,8 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("User does not exist");
     }
-
+    
+    
     [HttpPost("user/change-password")]
     public async Task<IActionResult> ChangePassword([FromQuery] ChangePasswordRequest req)
     {
@@ -241,8 +243,9 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("Username or password is incorrect please try again");
     }
-
+    
     //NOTE: IKKE BRUG DET HER ENDPOINT TIL TESTING DER ER KUN 100 GRATIS EMAILS OM DAGEN
+    
     [HttpPost("user/confirm-email")]
     public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailRequest req)
     {
@@ -258,7 +261,13 @@ public class PublicControllerV1 : ControllerBase
     #endregion
 
     #region Utility functions
-
+    
+    /// <summary>
+    /// Used to check if the recipe contains all the ingredients
+    /// </summary>
+    /// <param name="stringList"></param>
+    /// <param name="targetString"></param>
+    /// <returns>Returns true if so otherwise false</returns>
     private static bool ContainsEveryString(List<string> stringList, string targetString)
     {
         foreach (string str in stringList)

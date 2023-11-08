@@ -1,7 +1,13 @@
 using System;
 
 namespace P7Internet.Response;
-
+/// <summary>
+/// 
+/// </summary>
+/// <param name="id"></param>
+/// <param name="sessionToken"></param>
+/// <param name="name"></param>
+/// <param name="emailAddress"></param>
 public class LogInResponse
 {
     public Guid Id { get; set; }
