@@ -2,54 +2,68 @@ import React, { useState } from "react";
 import cross from "../data/cross.svg";
 import { useDispatch } from "react-redux";
 import { userActions } from "../features/userSlice";
-import { toast } from 'react-toastify';
-import { useUserCreateMutation, useUserLoginMutation } from "../services/usersEndpoints";
-import 'react-toastify/dist/ReactToastify.css';
-
+import { toast } from "react-toastify";
+import {
+  useUserCreateMutation,
+  useUserLoginMutation,
+} from "../services/usersEndpoints";
+import "react-toastify/dist/ReactToastify.css";
 
 const LoginBox = ({ closeModal }) => {
-  const dispatch = useDispatch();  
+  const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [creatingAccount, setCreatingAccount] = useState(false);
 
   //States used to fetch data from backend
-  const [userLogin, {isLoginLoading, isLoginError}] =  useUserLoginMutation();
-  const [userCreate, {isCreateLoading, isCreateError}] =  useUserCreateMutation();
+  const [userLogin, { isLoginLoading, isLoginError }] = useUserLoginMutation();
+  const [userCreate, { isCreateLoading, isCreateError }] =
+    useUserCreateMutation();
 
-
-  //Functions is async because the need to wait for the response from the backend
-  const handleLogin =  async() => {
-
+  //Functions is async because it needs to wait for the response from the backend
+  const handleLogin = async () => {
     //Functions from redux that allows to test weather error or loading
-    if(!isLoginLoading || !isLoginError){
-        try {
-          // Waits for the response and allows to use response (unwrap, because JSON)
-          const response = await userLogin({username, password}).unwrap();
-          if(response){
-            toast.success("Velkommen tilbage, " + response.name);
-            console.log(response);
+    if (!isLoginLoading || !isLoginError) {
+      try {
 
-            //Add data about user to cookie
-            document.cookie = `username=${response.name};`;
-            document.cookie = `userid=${response.id};`;
-            document.cookie = `sessionToken=${response.sessionToken};`;  
-            
-            //Ændre redux store med tilføjelse af bruger og ændre toggle til login
-            dispatch(userActions.loginUser({id: response.id, name: response.name, email: response.emailAddress}));
+        //Enconding request to URI standart (handles symbols in request)
+        const encodedUsername = encodeURIComponent(username);
+        const encodedPassword = encodeURIComponent(password);
+        
+        // Waits for the response and allows to use response (unwrap, because JSON)
+        const response = await userLogin({ username: encodedUsername, password: encodedPassword }).unwrap();
+        if (response) {
+          toast.success("Velkommen tilbage, " + response.name);
+          //console.log(response);
 
-            closeModal();
-            setUsername("");
-            setPassword("");
-          }
-          
-        } catch (error) {
-          toast.error("Kodeordet eller brugernavnet er indtastet forkert", error.massage);
-          console.log("Error -- ", error.message); 
+          //Add data about user to cookie
+          document.cookie = `username=${response.name};`;
+          document.cookie = `userid=${response.id};`;
+          document.cookie = `sessionToken=${response.sessionToken};`;
+
+          //Ændre redux store med tilføjelse af bruger og ændre toggle til login
+          dispatch(
+            userActions.loginUser({
+              id: response.id,
+              name: response.name,
+              email: response.emailAddress,
+            })
+          );
+
+          closeModal();
+          setUsername("");
+          setPassword("");
         }
+      } catch (error) {
+        toast.error(
+          "Kodeordet eller brugernavnet er indtastet forkert",
+          error.massage
+        );
+        console.log("Error -- ", error.message);
+      }
     }
-  }
+  };
 
   //should happen in backend
   //see what this regex accepts at https://jsfiddle.net/ghvj4gy9/
@@ -80,7 +94,8 @@ const LoginBox = ({ closeModal }) => {
     else return true;
   }
 
-  const handleCreateAccount = async() => {
+  //Functions is async because it needs to wait for the response from the backend
+  const handleCreateAccount = async () => {
     if (checkValidEmail() === false)
       toast.error("Den indtastede email er ugyldig eller allerede i brug.");
     else if (checkValidUsername() === false)
@@ -93,34 +108,49 @@ const LoginBox = ({ closeModal }) => {
       );
     else {
       //Functions from redux that allows to test weather error or loading
-      if(!isCreateLoading || !isCreateError){
+      if (!isCreateLoading || !isCreateError) {
         try {
+
+          //Enconding request to URI standart (handles symbols in request)
+          const encodedUsername = encodeURIComponent(username);
+          const encodedPassword = encodeURIComponent(password); 
+          const encodedEmail = encodeURIComponent(email);
+
           // Waits for the response and allows to use response (unwrap, because JSON)
-          const response = await userCreate({username, password, email}).unwrap();
-          if (response){
+          const response = await userCreate({
+            username: encodedUsername,
+            password: encodedPassword,
+            email: encodedEmail,
+          }).unwrap();
+          if (response) {
             toast.success("Din bruger er nu oprettet!");
 
             //Add data about user to cookie
             document.cookie = `username=${response.name};`;
             document.cookie = `userid=${response.id};`;
-            document.cookie = `sessionToken=${response.sessionToken};`;  
-            
+            document.cookie = `sessionToken=${response.sessionToken};`;
+
             //Ændre redux store med tilføjelse af bruger og ændre toggle til login
-            dispatch(userActions.loginUser({id: response.id, name: response.name, email: response.emailAddress}));
+            dispatch(
+              userActions.loginUser({
+                id: response.id,
+                name: response.name,
+                email: response.emailAddress,
+              })
+            );
             setCreatingAccount(false);
             closeModal();
-            
+
             setEmail("");
             setUsername("");
             setPassword("");
-            
           }
         } catch (error) {
           toast.error("Kodeordet eller brugernavnet er indtastet forkert");
         }
-      } 
+      }
     }
-  }
+  };
 
   function handleSubmit(event) {
     event.preventDefault();

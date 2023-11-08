@@ -28,24 +28,25 @@ const ProfilePicture = () => {
 
   const [userLogOut, {isLogOutLoading, isLogOutError}] =  useUserLogOutMutation();
 
+  //Functions is async because it needs to wait for the response from the backend
   const handleLogOut = async() => {
     if(!isLogOutLoading || !isLogOutError){   
       const sessionToken = retriveCookie('sessionToken='); 
       const userId = retriveCookie('userid=');
 
-      console.log(`Retrived tokens: UserId: ${userId}, sessionToken: ${sessionToken}`);
+      //console.log(`Retrived tokens: UserId: ${userId}, sessionToken: ${sessionToken}`);
       
       try {
         //Enconding request to URI standart (handles symbols in request)
         const encodedSessionToken = encodeURIComponent(sessionToken);
         const encodedUserId = encodeURIComponent(userId);
 
+        // Waits for the response and allows to use response (unwrap, because JSON)
         const response = await userLogOut({ userId: encodedUserId, sessionToken: encodedSessionToken });
         if(response){
-          console.log(response);
+          //console.log(response);
           toast.success("Logget ud");
           dispatch(userActions.logoutUser());
-          //dispatch(userActions.toggleTestLogin());
         }
         
       } catch (error) {

@@ -14,7 +14,6 @@ const RecipeTitle = ({ title }) => {
 
   function handleClick(event) {
     event.preventDefault();
-    console.log(loggedIn); 
     if (loggedIn === false) {
       //if not logged in
       dispatch(pageActions.openModal());
@@ -33,12 +32,12 @@ const RecipeTitle = ({ title }) => {
     //component that dynamically changes heart icon when using arrows
     useEffect(() => {
       if (heartedRecipes === undefined){
-        console.log(heartedRecipes);
-    } else if (heartedRecipes.includes(title)) {
-      setHeart(heartSolid);
-    } else {
-      setHeart(heartHollow);
-    }
+        //console.log(heartedRecipes);
+      } else if (heartedRecipes.includes(title)) {
+        setHeart(heartSolid);
+      } else {
+        setHeart(heartHollow);
+      }
     });
   }
 
