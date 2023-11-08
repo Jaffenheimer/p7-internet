@@ -18,12 +18,4 @@ export const store = configureStore({
 
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware({serializableCheck: false}).concat(apiSlice.middleware),
-  // middleware: (getDefaultMiddleware) =>
-  //   getDefaultMiddleware({
-  //     serializableCheck: false,
-      
-  //   }),
 });
-
-// optional, but required for refetchOnFocus/refetchOnReconnect behaviors
-//setupListeners(store.dispatch);
