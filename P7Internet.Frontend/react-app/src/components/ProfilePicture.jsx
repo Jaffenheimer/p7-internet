@@ -45,7 +45,7 @@ const ProfilePicture = () => {
           console.log(response);
           toast.success("Logget ud");
           dispatch(userActions.logoutUser());
-          dispatch(userActions.toggleTestLogin());
+          //dispatch(userActions.toggleTestLogin());
         }
         
       } catch (error) {

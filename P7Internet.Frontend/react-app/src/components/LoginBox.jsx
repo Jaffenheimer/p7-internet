@@ -21,7 +21,6 @@ const LoginBox = ({ closeModal }) => {
 
   //Functions is async because the need to wait for the response from the backend
   const handleLogin =  async() => {
-    //const cookies = document.cookie;  
 
     //Functions from redux that allows to test weather error or loading
     if(!isLoginLoading || !isLoginError){
@@ -37,8 +36,9 @@ const LoginBox = ({ closeModal }) => {
             document.cookie = `userid=${response.id};`;
             document.cookie = `sessionToken=${response.sessionToken};`;  
             
+            //Ændre redux store med tilføjelse af bruger og ændre toggle til login
             dispatch(userActions.loginUser({id: response.id, name: response.name, email: response.emailAddress}));
-            dispatch(userActions.toggleTestLogin());
+
             closeModal();
             setUsername("");
             setPassword("");
@@ -81,7 +81,6 @@ const LoginBox = ({ closeModal }) => {
   }
 
   const handleCreateAccount = async() => {
-    
     if (checkValidEmail() === false)
       toast.error("Den indtastede email er ugyldig eller allerede i brug.");
     else if (checkValidUsername() === false)
@@ -93,18 +92,20 @@ const LoginBox = ({ closeModal }) => {
         "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn."
       );
     else {
-
+      //Functions from redux that allows to test weather error or loading
       if(!isCreateLoading || !isCreateError){
         try {
+          // Waits for the response and allows to use response (unwrap, because JSON)
           const response = await userCreate({username, password, email}).unwrap();
           if (response){
             toast.success("Din bruger er nu oprettet!");
 
+            //Add data about user to cookie
             document.cookie = `username=${response.name};`;
             document.cookie = `userid=${response.id};`;
             document.cookie = `sessionToken=${response.sessionToken};`;  
             
-            dispatch(userActions.toggleTestLogin());
+            //Ændre redux store med tilføjelse af bruger og ændre toggle til login
             dispatch(userActions.loginUser({id: response.id, name: response.name, email: response.emailAddress}));
             setCreatingAccount(false);
             closeModal();

@@ -13,13 +13,14 @@ export const userSlice = createSlice({
   reducers: {
     loginUser(state, action) {
       state.user = action.payload;
+      state.heartedRecipes = [];
+      state.loggedInd = true; 
     },
     logoutUser(state) {
       state.user = {};
+      state.heartedRecipes = [];
+      state.loggedInd = false; 
     },
-    toggleTestLogin(state){
-      state.loggedInd = !state.loggedInd; 
-    },  
     addRecipe(state, action) {
       state.heartedRecipes.push(action.payload);
     },

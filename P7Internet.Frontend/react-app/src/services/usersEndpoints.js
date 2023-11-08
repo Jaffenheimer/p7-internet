@@ -1,8 +1,11 @@
 import { apiSlice } from "./apiSlice"
 
+// Gør det mugligt at injecte user endpoints ind i apiSlicen
 const userEndpoints = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
+        //Da det et en post so mutater den noget
         userLogin: builder.mutation({
+            //Opbygning af hvad queryen skal indeholde
             query: ({username, password}) => ({ 
                 url: `/public/user/login?Username=${username}&Password=${password}`,
                 method: 'POST', 
@@ -24,6 +27,7 @@ const userEndpoints = apiSlice.injectEndpoints({
             }),
         }),
     }),
+    //Er et flag som sættes hvis den ændre noget eksisterende endpoints
     overrideExisting: false,
 });
 

@@ -1,4 +1,4 @@
-
+//Function for retriving data from cookies
 const retriveCookie = (retriveValue) => {
     const cookies = document.cookie;
     const cookieArray = cookies.split(';').map(cookie => cookie.trim());          
