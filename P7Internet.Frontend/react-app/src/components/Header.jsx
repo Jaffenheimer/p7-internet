@@ -23,7 +23,11 @@ const customStyles = {
 const Header = () => {
   const dispatch = useDispatch();
 
+  const recipes = useSelector((state) => state.recipe.recipes);
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  console.log(loggedInUser.length);
+  //if user is not logged in, favoriteRecipes is an empty list
+  const favoriteRecipes = loggedInUser.length === undefined ? [] : loggedInUser[0]["heartedRecipes"];
   const loginModalShown = useSelector((state) => state.page.loginModalShown);
   const favoritesModalShown = useSelector(
     (state) => state.page.favoritesModalShown
@@ -62,7 +66,7 @@ const Header = () => {
         contentLabel="Favorites Modal"
         ariaHideApp={false}
       >
-        <FavoritesBox closeModal={closeFavoritesModal} />
+        <FavoritesBox closeModal={closeFavoritesModal} favoriteRecipes={favoriteRecipes} recipes={recipes} />
       </Modal>
       <div className="title">Opskriftsgenerator</div>
       <SetLoggedInOnChange /> {/* Dynamically check if user is logged in */}
