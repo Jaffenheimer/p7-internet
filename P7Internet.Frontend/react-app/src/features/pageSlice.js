@@ -4,7 +4,8 @@ import Pages from "../objects/Pages"
 
 const initialState = {
     page: Pages.frontPage,
-    modalShown: false
+    loginModalShown: false,
+		favoritesModalShown: false,
 };
 
 export const pageSlice = createSlice({
@@ -14,12 +15,18 @@ export const pageSlice = createSlice({
         goToPage(state, action) {
             state.page = action.payload
         }, 
-        openModal(state) {
-            state.modalShown = true
+        openLoginModal(state) {
+            state.loginModalShown = true
         }, 
-        closeModal(state) {
-            state.modalShown = false
-        }
+        closeLoginModal(state) {
+            state.loginModalShown = false
+        },
+				openFavoritesModal(state) {
+						state.favoritesModalShown = true
+				}, 
+				closeFavoritesModal(state) {
+						state.favoritesModalShown = false
+				}
     },
 });
 

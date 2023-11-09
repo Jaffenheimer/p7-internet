@@ -20,7 +20,6 @@ body {
   min-height: 100vh;
   width: 100%;
   padding: 0;
-  margin: 0;
 }
 
 .AppContainer {
@@ -153,6 +152,11 @@ ul {
   padding: 0;
 }
 
+/*modal*/
+.ReactModal__Content {
+  width: 40%;
+}
+
 .IngredientElement {
   margin-left: 10px;
   display: flex;
@@ -162,6 +166,9 @@ ul {
 
 #OwnedIngredientsList > div > ul > .IngredientElement {
   width: 30%;
+}
+#OwnedIngredientsList{
+  margin-right: 10%;
 }
 
 #ExcludedIngredientsList > .ingredientsList > ul > .IngredientElement {
@@ -431,7 +438,7 @@ button:hover {
   border-radius: 5px;
 }
 
-#RemoveAllExcludeIngredientsButton {
+.RemoveAllExcludeIngredientsButton {
   margin-top: 5%;
   margin-left: 1%;
 }
@@ -451,7 +458,6 @@ button:hover {
   text-align: center;
   margin-top: -20px;
 }
-
 
 .App > .RecipeSelectionContainerLeft {
   flex: 1;
@@ -480,6 +486,15 @@ input[type="password"] {
   box-sizing: border-box;
 }
 
+.LoginForm select {
+  width: 100%;
+}
+
+.LoginForm option {
+  font-size: 18px;
+  font-family: Verdana;
+}
+
 #loginCross {
   padding: 3%;
   transform: scale(1.2);
@@ -497,7 +512,7 @@ input[type="password"] {
 }
 
 .LoginForm button {
-  width: 100%;
+  width: 96%;
 }
 
 .imgcontainer {
@@ -505,63 +520,11 @@ input[type="password"] {
   margin: 24px 0 12px 0;
 }
 
-img.avatar {
-  width: 50%;
-  height: 50%;
-  border-radius: 50%;
-}
-
-img.avatar:hover {
-  cursor: default;
-}
-
-.container {
+.favoriteRecipesContainer {
+  overflow: auto;
+  display: block;
   padding: 16px;
-}
-
-/* The switch - the box around the slider */
-.switch {
-  position: relative;
-  display: inline-block;
-  width: 60px;
-  height: 34px;
-  margin-left: 10px;
-}
-
-/* Hide default HTML checkbox */
-.switch input {
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
-/* The slider */
-.slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: #ccc;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
-}
-
-.slider:before {
-  position: absolute;
-  content: "";
-  height: 26px;
-  width: 26px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  -webkit-transition: 0.4s;
-  transition: 0.4s;
-}
-
-input:checked + .slider {
-  background-color: #2196f3;
+  max-height: 75%;
 }
 
 input:focus + .slider {
@@ -590,6 +553,10 @@ input:checked + .slider:before {
   bottom: auto;
   margin-right: -50%;
   transform: translate(-50%, -50%);
+}
+
+input[type="range"]{
+  width:100%;
 }
 
 /* Apply style only when printing */
@@ -621,8 +588,83 @@ input:checked + .slider:before {
   flex: 1;
   margin: 1cm;
 }
+
 .ingredientsList > ul {
   padding-left: 40px;
+}
+
+.toggleButtonLeft {
+	border-Radius: '5px 0px 0px 5px';
+}
+
+.toggleButtonRight {
+	border-Radius: '0px 5px 5px 0px';
+}
+
+.toggleButton {
+  width: 100%;
+  background-color: #113946;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  border-radius: 5px; /* rounded corners */
+  border-color: #113946;
+}
+
+.toggleButton button{
+  background-color: white;
+  color: black;
+  border: 0;
+  text-transform:none;
+  width:40%;
+  margin:8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 16px;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+}
+
+.slidecontainer h3,p {
+  display: inline;
+}
+
+.options {
+  background: white;
+  border: 1px solid #ccc;
+  top: -1px;
+  left: -1px;
+  width: 100%;
+  min-height: 30vh;
+  cursor: pointer;
+  overflow-y: scroll;
+}
+
+.FavoriteRecipeElement {
+  width: 100%;
+}
+
+.FavoriteRecipeButton {
+  width: 90%;
+  height: 5%;
+  float: left;
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+.RemoveFavoritedElement {
+  /* float: right; */
+  display: inline-block;
+}
+
+.RemoveFavoritedElement {
+  float: right;
+  margin-right: 2%;
 }
 
 #BackToFrontPageButtonRecipeSelection {
