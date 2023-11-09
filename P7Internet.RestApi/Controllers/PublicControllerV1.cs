@@ -288,22 +288,6 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("This should never happen");
     }
-    
-    [HttpPost("user/recipe-history")]
-    public async Task<IActionResult> AddRecipeToHistory([FromQuery] RecipeHistoryRequest req)
-    {
-        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
-        if (!checkIfUserSessionIsValid)
-            return Unauthorized("User session is not valid, please login again");
-
-        var result = await _favouriteRecipeRepository.GetHistory(req.UserId);
-        if (result != null)
-        {
-            return Ok(result);
-        }
-
-        return BadRequest("This should never happen");
-    }
 
     /// <summary>
     /// Gets all the users favourite recipes if the sessiontoken is valid
