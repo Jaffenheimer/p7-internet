@@ -31,7 +31,7 @@ public class UserSessionRepository : IUserSessionRepository
         {
             UserId = userId,
             SessionToken = token,
-            ExpiresAt = DateTime.UtcNow.AddHours(1),
+            ExpiresAt = DateTime.UtcNow.AddHours(2),
         };
         await Connection.ExecuteAsync(query, parameters);
         return token;
