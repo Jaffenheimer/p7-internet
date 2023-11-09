@@ -82,6 +82,11 @@ public class PublicControllerV1 : ControllerBase
         return Ok(res);
     }
 
+    /// <summary>
+    /// Endpoint to get offers from etilbudsavis API if not found in cache
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>Returns a list of offers if found from the API otherwise badrequest</returns>
     [HttpGet("offer/getOffer")]
     public async Task<IActionResult> GetOffer([FromQuery] OfferRequest req)
     {
@@ -106,6 +111,12 @@ public class PublicControllerV1 : ControllerBase
         return BadRequest("No offer found");
     }
 
+    /// <summary>
+    /// Gets an offer from a store if available in cache
+    /// </summary>
+    /// <param name="ingredient"></param>
+    /// <param name="store"></param>
+    /// <returns>Returns the offer if found, otherwise badrequest</returns>
     [HttpGet("offer/getOfferByStoreFromCache")]
     public async Task<IActionResult> GetOfferByStoreIfAvailableFromCache([FromQuery] string ingredient, string store)
     {
@@ -122,6 +133,11 @@ public class PublicControllerV1 : ControllerBase
 
     #region User Endpoints
 
+    /// <summary>
+    /// Endpoint to create a user
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>Returns a login response if the user creation was successful, otherwise badrequest</returns>
     [HttpPost("user/create-user")]
     public async Task<IActionResult> CreateUser([FromQuery] CreateUserRequest req)
     {
@@ -137,6 +153,11 @@ public class PublicControllerV1 : ControllerBase
         return Ok(response);
     }
 
+    /// <summary>
+    /// Logs in the user
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>Returns a login response if successful otherwise bad request</returns>
     [HttpPost("user/login")]
     public async Task<IActionResult> Login([FromQuery] LogInRequest req)
     {
@@ -151,6 +172,12 @@ public class PublicControllerV1 : ControllerBase
         return BadRequest("Username or password is incorrect please try again");
     }
 
+    /// <summary>
+    /// Logs out the user. First it checks whether the sessiontoken is valid, if so it deletes the sessiontoken from the database
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>Returns Unauthorized if the sessiontoken is not valid, returns Ok if the session token is valid,
+    /// and bad request if none of these are met, should never happen tho</returns>
     [HttpPost("user/logout")]
     public async Task<IActionResult> Logout([FromQuery] LogOutRequest req)
     {
@@ -167,6 +194,12 @@ public class PublicControllerV1 : ControllerBase
         return BadRequest("This should never happen");
     }
 
+    /// <summary>
+    /// Adds a recipe to the users favourite recipes
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>Returns unauthorized if the user is not logged in or the sessiontoken has expired, otherwise it returns Ok if it is valid,
+    /// and bad request if none of these are met, should never happen tho</returns>
     [HttpPost("user/favourite-recipe")]
     public async Task<IActionResult> AddFavouriteRecipe([FromQuery] AddFavouriteRecipeRequest req)
     {
@@ -183,6 +216,12 @@ public class PublicControllerV1 : ControllerBase
         return BadRequest("This should never happen");
     }
 
+    /// <summary>
+    /// Gets all the users favourite recipes if the sessiontoken is valid
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>Returns unauthorized if the sessiontoken is invalid, otherwise Ok. If the sessiontoken is valid and no favorite recipes are found
+    /// it returns Badrequest</returns>
     [HttpGet("user/favourite-recipes")]
     public async Task<IActionResult> GetFavouriteRecipes([FromQuery] GetFavouriteRecipesRequest req)
     {
@@ -199,6 +238,12 @@ public class PublicControllerV1 : ControllerBase
         return BadRequest("No favourite recipes found");
     }
 
+    /// <summary>
+    /// Deletes a recipe from the users favourite recipes if the sessiontoken is valid
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>Unauthorized if the session token is invalid, returns ok if it is successful and Badrequest if something unexpected happens
+    /// E.g it should never happen</returns>
     [HttpDelete("user/favourite-recipe")]
     public async Task<IActionResult> DeleteFavouriteRecipe([FromQuery] DeleteFavouriteRecipeRequest req)
     {
@@ -215,6 +260,13 @@ public class PublicControllerV1 : ControllerBase
         return BadRequest("This should never happen");
     }
 
+    /// <summary>
+    /// Endpoint to reset the password of a user if requested.
+    /// This is done by sending an email to the users specified email 
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="userName"></param>
+    /// <returns>Returns Ok if a user is found and the email has been sent, if the user is not found it returns BadRequest</returns>
     [HttpPost("user/reset-password-request")]
     public async Task<IActionResult> ResetPassword([EmailAddress] string email, string userName)
     {
@@ -228,7 +280,12 @@ public class PublicControllerV1 : ControllerBase
         return BadRequest("User does not exist");
     }
 
-
+    /// <summary>
+    /// Endpoint to change the password of a user if requested.
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>Unauthorized if the session token is invalid, returns ok if it is successful
+    /// and Badrequest if the username or password is incorrect</returns>
     [HttpPost("user/change-password")]
     public async Task<IActionResult> ChangePassword([FromQuery] ChangePasswordRequest req)
     {
@@ -246,7 +303,12 @@ public class PublicControllerV1 : ControllerBase
     }
 
     //NOTE: IKKE BRUG DET HER ENDPOINT TIL TESTING DER ER KUN 100 GRATIS EMAILS OM DAGEN
-
+    /// <summary>
+    /// Endpoint to confirm the email of a user if requested.
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>Returns Ok if the link has been followed and and the DB returns that the confirmation was good,
+    /// otherwise badrequest which should never happen</returns>
     [HttpPost("user/confirm-email")]
     public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailRequest req)
     {
