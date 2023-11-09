@@ -113,7 +113,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns the result from either the cache or the API</returns>
     [HttpPost("user/recipe")]
-    public async Task<IActionResult> GetARecipeWhenLoggenIn([FromBody] RecipeRequest req)
+    public async Task<IActionResult> GetARecipeWhenLoggedIn([FromBody] RecipeRequest req)
     {
         if (req.UserId != null && req.SessionToken != null)
         {
