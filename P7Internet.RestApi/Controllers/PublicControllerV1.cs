@@ -44,6 +44,11 @@ public class PublicControllerV1 : ControllerBase
 
     #region Recipe Endpoints
 
+    /// <summary>
+    /// Gets a recipe either from the cache or from the OpenAI API
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>Returns the result from either the cache or the API</returns>
     [HttpPost("recipes")]
     public async Task<IActionResult> GetARecipe([FromBody] RecipeRequest req)
     {
@@ -52,7 +57,8 @@ public class PublicControllerV1 : ControllerBase
         List<string?> recipesIncludingIngredients = new List<string?>();
         foreach (var recipe in recipes)
         {
-            if (ContainsEveryString(req.Ingredients, recipe))
+            if (ContainsEveryString(req.Ingredients, recipe) && !ContainsEveryString(req.ExcludedIngredients, recipe) &&
+                ContainsEveryString(req.DietaryRestrictions, recipe))
             {
                 recipesIncludingIngredients.Add(recipe);
             }
