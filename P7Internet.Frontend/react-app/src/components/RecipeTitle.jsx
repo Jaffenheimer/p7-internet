@@ -15,7 +15,6 @@ const RecipeTitle = ({ title }) => {
   function handleClick(event) {
     event.preventDefault();
     if (loggedIn === false) {
-      //if not logged in
       dispatch(pageActions.openLoginModal());
     } else {
       if (heart === heartSolid) {
@@ -31,12 +30,12 @@ const RecipeTitle = ({ title }) => {
   function SetHeartIconOnChange() {
     //component that dynamically changes heart icon when using arrows
     useEffect(() => {
-      if (heartedRecipes === undefined){
-        //console.log(heartedRecipes);
-      } else if (heartedRecipes.includes(title)) {
-        setHeart(heartSolid);
-      } else {
-        setHeart(heartHollow);
+      if (heartedRecipes !== undefined) {
+        if (heartedRecipes.includes(title)) {
+          setHeart(heartSolid);
+        } else {
+          setHeart(heartHollow);
+        }
       }
     });
   }

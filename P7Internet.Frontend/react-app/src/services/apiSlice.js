@@ -1,18 +1,16 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
-
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 /*
-    Funktion laver en api med en basepath og header fra RTK Query, 
-    Laver et basalt request, bare med ingen endpoints, som man så injecter efter 
-    for at kunne opdele i flere filer
+    Function makes an apiSlice for redux store with basepath and header using RTK Query, 
+    Prepares a basic request, just without endpoints. This allows for injecting endpoints, 
+    so, endpoints can be splitted into different files.
 */
 export const apiSlice = createApi({
-    reducerPath: 'Api', 
-    baseQuery: fetchBaseQuery ({ baseUrl: 'http://localhost:5000/'}), 
-    prepareHeaders: (headers) => {
-        headers.set('Access-Control-Allow-Origin', '*');
-        return headers;
-    },
-    endpoints: () => ({}) //Init to empty endpoints objects
-}); 
-
+  reducerPath: "Api",
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:5000/" }),
+  prepareHeaders: (headers) => {
+    headers.set("Access-Control-Allow-Origin", "*");
+    return headers;
+  },
+  endpoints: () => ({}), //Init to empty endpoints objects
+});

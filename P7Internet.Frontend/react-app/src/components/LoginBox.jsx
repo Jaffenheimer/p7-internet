@@ -23,16 +23,21 @@ const LoginBox = ({ closeModal }) => {
 
   //Functions is async because it needs to wait for the response from the backend
   const handleLogin = async () => {
-    //Functions from redux that allows to test weather error or loading
+    /*
+      If the login is not loading or there were no error then it will try to login, 
+      if there is an an error it will be displayed 
+    */
     if (!isLoginLoading || !isLoginError) {
       try {
-
         //Enconding request to URI standart (handles symbols in request)
         const encodedUsername = encodeURIComponent(username);
         const encodedPassword = encodeURIComponent(password);
-        
+
         // Waits for the response and allows to use response (unwrap, because JSON)
-        const response = await userLogin({ username: encodedUsername, password: encodedPassword }).unwrap();
+        const response = await userLogin({
+          username: encodedUsername,
+          password: encodedPassword,
+        }).unwrap();
         if (response) {
           toast.success("Velkommen tilbage, " + response.name);
           //console.log(response);
@@ -107,13 +112,15 @@ const LoginBox = ({ closeModal }) => {
         "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn."
       );
     else {
-      //Functions from redux that allows to test weather error or loading
+      /*
+        If the login is not loading or there were no error then it will try to login, 
+        if there is an an error it will be displayed 
+      */
       if (!isCreateLoading || !isCreateError) {
         try {
-
           //Enconding request to URI standart (handles symbols in request)
           const encodedUsername = encodeURIComponent(username);
-          const encodedPassword = encodeURIComponent(password); 
+          const encodedPassword = encodeURIComponent(password);
           const encodedEmail = encodeURIComponent(email);
 
           // Waits for the response and allows to use response (unwrap, because JSON)
