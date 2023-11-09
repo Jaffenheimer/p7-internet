@@ -11,7 +11,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { offersActions } from "../features/offersSlice";
 
 const RecipeSelection = () => {
-  const [sliderValue, setSliderValue] = useState(1);
   const toggleStateIsRadius = useSelector(
     (state) => state.offers.toggleStateIsRadius
   );
@@ -46,10 +45,7 @@ const RecipeSelection = () => {
             toggleStateIsRadius={toggleStateIsRadius}
           />
           {toggleStateIsRadius ? (
-            <RadiusSlider
-              sliderValue={sliderValue}
-              setSliderValue={setSliderValue}
-            />
+            <RadiusSlider />
           ) : (
             <StoreSelection />
           )}
