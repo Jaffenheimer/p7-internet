@@ -33,4 +33,12 @@ public interface IRecipeCacheRepository
     /// <param name="ids"></param>
     /// <returns>Returns a list of recipes as strings</returns>
     public Task<List<string>> GetListOfRecipes(List<Guid> ids);
+    
+
+    /// <summary>
+    /// Gets a list of recipes from the database based on a list of Id's as strings
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns>Returns a list of recipes as strings</returns>
+    public Task<List<string>> GetListOfRecipesFromListOfStrings(List<string> ids);
 }

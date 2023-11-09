@@ -87,7 +87,27 @@ public class RecipeCacheRepository : IRecipeCacheRepository
         {
             recipes.Add(recipe);
         }
+        return recipes;
+    }
+    /// <summary>
+    /// Gets a list of recipes from the database based on a list of Id's as strings
+    /// </summary>
+    /// <param name="ids"></param>
+    /// <returns>Returns a list of recipes as strings</returns>
+    public async Task<List<string>> GetListOfRecipesFromListOfStrings(List<string> ids)
+    {
+        var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
 
+        var gridReader = await Connection.QueryMultipleAsync(query, new {Ids = ids});
+
+        var result = gridReader.Read<string>();
+
+        var recipes = new List<string>();
+
+        foreach (var recipe in result)
+        {
+            recipes.Add(recipe);
+        }
         return recipes;
     }
 }

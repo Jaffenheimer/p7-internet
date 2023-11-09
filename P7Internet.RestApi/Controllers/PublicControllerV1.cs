@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -79,6 +80,78 @@ public class PublicControllerV1 : ControllerBase
 
         await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
 
+        return Ok(res);
+    }
+
+    /// <summary>
+    /// Gets a list of recipes from history
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="sessionToken"></param>
+    /// <returns>Returns a list of recipes if found, returns unauthorized of the user is not logged in</returns>
+    [HttpGet("recipes/history")]
+    public async Task<IActionResult> GetRecipeHistory([FromQuery] Guid userId, string sessionToken)
+    {
+        var checkIfUserSessionIsValid =
+            await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
+        if (!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
+        
+        var result = await _favouriteRecipeRepository.GetHistory(userId);
+        if (result != null)
+        {
+            var res = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result);
+            return Ok(res);
+        }
+
+        return BadRequest("No favourite recipes found");
+    }
+    
+    /// <summary>
+    /// Gets a recipe either from the cache or from the OpenAI API
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>Returns the result from either the cache or the API</returns>
+    [HttpPost("user/recipe")]
+    public async Task<IActionResult> GetARecipeWhenLoggenIn([FromBody] RecipeRequest req)
+    {
+        if (req.UserId != null && req.SessionToken != null)
+        {
+
+            var checkIfUserSessionIsValid =
+                await _userSessionRepository.CheckIfTokenIsValid(req.UserId.GetValueOrDefault(), req.SessionToken);
+            if (!checkIfUserSessionIsValid)
+                return Unauthorized("User session is not valid, please login again");
+        }
+
+        var recipes = await _cachedRecipeRepository.GetAllRecipes();
+
+        List<string?> recipesIncludingIngredients = new List<string?>();
+        foreach (var recipe in recipes)
+        {
+            if (ContainsEveryString(req.Ingredients, recipe) && !ContainsEveryString(req.ExcludedIngredients, recipe) &&
+                ContainsEveryString(req.DietaryRestrictions, recipe))
+            {
+                recipesIncludingIngredients.Add(recipe);
+            }
+        }
+
+        if (req.Amount != null)
+        {
+            if (recipesIncludingIngredients.Count < req.Amount)
+                goto NotEnoughRecipes;
+        }
+
+        if (recipesIncludingIngredients.Any(x => x != null))
+            return Ok(recipesIncludingIngredients);
+
+        NotEnoughRecipes:
+        
+        var res = _openAiService.GetAiResponse(req);
+        
+        await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+        if (req.UserId != null && req.SessionToken != null)
+            await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(), res.RecipeId);
         return Ok(res);
     }
 
@@ -211,6 +284,22 @@ public class PublicControllerV1 : ControllerBase
         if (result)
         {
             return Ok("Recipe added to favourites");
+        }
+
+        return BadRequest("This should never happen");
+    }
+    
+    [HttpPost("user/recipe-history")]
+    public async Task<IActionResult> AddRecipeToHistory([FromQuery] RecipeHistoryRequest req)
+    {
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
+        if (!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
+
+        var result = await _favouriteRecipeRepository.GetHistory(req.UserId);
+        if (result != null)
+        {
+            return Ok(result);
         }
 
         return BadRequest("This should never happen");
