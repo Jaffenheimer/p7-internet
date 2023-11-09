@@ -3,42 +3,56 @@ import RecipeSelectionContainerLeft from "../components/RecipeSelectionContainer
 import StoreSelection from "../components/StoreSelection";
 import Header from "../components/Header";
 import RadiusSlider from "../components/RadiusSlider";
-import {useState} from 'react'
+import { useState } from "react";
 import ToggleButton from "../components/ToggleButton";
 import { ToastContainer } from "react-toastify";
 import { toast } from "react-toastify";
+import { useSelector, useDispatch } from "react-redux";
+import { offersActions } from "../features/offersSlice";
 
-const RecipeSelection = ({testingRadius}) => {
-  const [toggleState, setToggleState] = useState(localStorage.getItem("geolocation") !== null || testingRadius ? "radius" : "store")
+const RecipeSelection = () => {
   const [sliderValue, setSliderValue] = useState(1);
+  const toggleStateIsRadius = useSelector(
+    (state) => state.offers.toggleStateIsRadius
+  );
+  const dispatch = useDispatch();
 
-  function toggle(){
-    if (toggleState === "radius"){
-      setToggleState("store")
-    } else if (toggleState === "store"){
-        if (localStorage.getItem("geolocation") === null)
-          toast.error("Du skal slå geolokation til og reloade siden for at benytte radius.")
-        else
-          setToggleState("radius")
-      }
+  function toggle() {
+    //If the toggle state is already store (so you are trying to change it to radius), but geolocation is not enabled
+    if (!toggleStateIsRadius && localStorage.getItem("geolocation") === null)
+      toast.error(
+        "Du skal slå geolokation til og genindlæse siden for at benytte radius."
+      );
+    else dispatch(offersActions.setToggleState());
   }
 
   return (
     <div className="AppContainer">
-      <ToastContainer 
+      <ToastContainer
         position="top-center"
         newestOnTop={true}
-        closeButton={false}/>
+        closeButton={false}
+      />
       <div className="headerContainer">
         <Header />
       </div>
       <div className={"split-container"}>
         <div className={"split-screen-left"}>
-        <RecipeSelectionContainerLeft />
+          <RecipeSelectionContainerLeft />
         </div>
         <div className={"split-screen-right"}>
-          <ToggleButton toggle={toggle} toggleState={toggleState}/>
-          {toggleState === "radius" ? <RadiusSlider sliderValue={sliderValue} setSliderValue={setSliderValue} /> : <StoreSelection />}
+          <ToggleButton
+            toggle={toggle}
+            toggleStateIsRadius={toggleStateIsRadius}
+          />
+          {toggleStateIsRadius ? (
+            <RadiusSlider
+              sliderValue={sliderValue}
+              setSliderValue={setSliderValue}
+            />
+          ) : (
+            <StoreSelection />
+          )}
         </div>
       </div>
     </div>

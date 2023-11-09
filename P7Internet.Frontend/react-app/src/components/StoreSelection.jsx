@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { storesActions } from "../features/storesSlice";
+import { offersActions } from "../features/offersSlice";
 import Select from "react-select";
 
 const StoreSelection = () => {
@@ -25,7 +25,7 @@ const StoreSelection = () => {
 
   //whenever we update the store hook, we update the redux
   useEffect(() => {
-    dispatch(storesActions.setStores(values));
+    dispatch(offersActions.setStores(values));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
 
