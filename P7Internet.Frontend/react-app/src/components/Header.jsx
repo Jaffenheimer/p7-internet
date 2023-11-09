@@ -25,7 +25,6 @@ const Header = () => {
 
   const recipes = useSelector((state) => state.recipe.recipes);
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
-  console.log(loggedInUser.length);
   //if user is not logged in, favoriteRecipes is an empty list
   const favoriteRecipes = loggedInUser.length === undefined ? [] : loggedInUser[0]["heartedRecipes"];
   const loginModalShown = useSelector((state) => state.page.loginModalShown);
