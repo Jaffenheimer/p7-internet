@@ -86,6 +86,10 @@ public class OpenAiService
         {
             prompt += $" der er {string.Join(",", req.DietaryRestrictions)}";
         }
+        if(req.AmountOfPeople != null)
+        {
+            prompt += $" til {req.AmountOfPeople} personer";
+        }
 
         return prompt;
     }
