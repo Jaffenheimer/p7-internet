@@ -40,14 +40,13 @@ const LoginBox = ({ closeModal }) => {
         }).unwrap();
         if (response) {
           toast.success("Velkommen tilbage, " + response.name);
-          //console.log(response);
 
           //Add data about user to cookie
           document.cookie = `username=${response.name};`;
           document.cookie = `userid=${response.id};`;
           document.cookie = `sessionToken=${response.sessionToken};`;
 
-          //Ændre redux store med tilføjelse af bruger og ændre toggle til login
+          //adds user to redux store
           dispatch(
             userActions.loginUser({
               id: response.id,
@@ -137,7 +136,7 @@ const LoginBox = ({ closeModal }) => {
             document.cookie = `userid=${response.id};`;
             document.cookie = `sessionToken=${response.sessionToken};`;
 
-            //Ændre redux store med tilføjelse af bruger og ændre toggle til login
+            //adds user to redux store
             dispatch(
               userActions.loginUser({
                 id: response.id,
@@ -153,7 +152,7 @@ const LoginBox = ({ closeModal }) => {
             setPassword("");
           }
         } catch (error) {
-          toast.error("Kodeordet eller brugernavnet er indtastet forkert");
+          toast.error("Kunne ikke lave en bruger");
         }
       }
     }

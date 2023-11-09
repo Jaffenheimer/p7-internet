@@ -3,12 +3,11 @@ import profile from "../data/profile.svg";
 import "../App.css";
 import { userActions } from "../features/userSlice";
 import { useDispatch } from "react-redux";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import { useUserLogOutMutation } from "../services/usersEndpoints";
 import retriveCookie from "../helperFunctions/retriveCookie";
-
 
 const ProfilePicture = ({ openFavoritesModal }) => {
   const dispatch = useDispatch();
@@ -27,37 +26,35 @@ const ProfilePicture = ({ openFavoritesModal }) => {
     setOpen(false);
   };
 
-  const [userLogOut, {isLogOutLoading, isLogOutError}] =  useUserLogOutMutation();
+  const [userLogOut, { isLogOutLoading, isLogOutError }] =
+    useUserLogOutMutation();
 
   //Functions is async because it needs to wait for the response from the backend
-  const handleLogOut = async() => {
-    if(!isLogOutLoading || !isLogOutError){   
-      const sessionToken = retriveCookie('sessionToken='); 
-      const userId = retriveCookie('userid=');
+  const handleLogOut = async () => {
+    if (!isLogOutLoading || !isLogOutError) {
+      const sessionToken = retriveCookie("sessionToken=");
+      const userId = retriveCookie("userid=");
 
-      //console.log(`Retrived tokens: UserId: ${userId}, sessionToken: ${sessionToken}`);
-      
       try {
         //Enconding request to URI standart (handles symbols in request)
         const encodedSessionToken = encodeURIComponent(sessionToken);
         const encodedUserId = encodeURIComponent(userId);
 
         // Waits for the response and allows to use response (unwrap, because JSON)
-        const response = await userLogOut({ userId: encodedUserId, sessionToken: encodedSessionToken });
-        if(response){
-          //console.log(response);
+        const response = await userLogOut({
+          userId: encodedUserId,
+          sessionToken: encodedSessionToken,
+        });
+        if (response) {
           toast.success("Logget ud");
           dispatch(userActions.logoutUser());
         }
-        
       } catch (error) {
         toast.error("Kunne ikke logge ud", error);
       }
-  }
+    }
 
-  setOpen(false);
-
-    
+    setOpen(false);
   };
 
   return (
