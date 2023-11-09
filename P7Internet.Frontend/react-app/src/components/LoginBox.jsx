@@ -101,7 +101,7 @@ const LoginBox = ({ closeModal }) => {
   //Functions is async because it needs to wait for the response from the backend
   const handleCreateAccount = async () => {
     if (checkValidEmail() === false)
-      toast.error("Den indtastede email er ugyldig eller allerede i brug.");
+      toast.error("Den indtastede email er ugyldig");
     else if (checkValidUsername() === false)
       toast.error(
         "Brugernavnet er ugyldigt, da det kun må bestå af bogstaver og tal."
