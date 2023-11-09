@@ -1,5 +1,4 @@
-import { cleanup, fireEvent, getByRole, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import { renderComponent } from "../testSetupHelper/Helper.jsx";

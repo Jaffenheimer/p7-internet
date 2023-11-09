@@ -1,10 +1,8 @@
-import { cleanup, fireEvent, getByRole, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import { renderComponent } from "../testSetupHelper/Helper.jsx";
 import ToggleButton from "../components/ToggleButton.jsx";
-import styles from "../App.css";
 
 test("render toggle button with correct text, when radius is toggled, stores gets untoggled styling", () => {
   renderComponent(<ToggleButton toggleStateIsRadius={true} />);
@@ -30,7 +28,7 @@ test("render toggle button with correct text, when stores is toggled, radius get
   expect(radius).toHaveStyle("color: white");
 });
 
-test("toggle button is clicked, toggle function is called", () => {
+test("when toggle button is clicked, toggle function is called", () => {
   const toggle = jest.fn();
   renderComponent(<ToggleButton toggle={toggle} />);
   const radius = screen.getByText(/Radius/);
