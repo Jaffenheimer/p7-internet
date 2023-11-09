@@ -25,6 +25,7 @@ const Header = () => {
 
   const recipes = useSelector((state) => state.recipe.recipes);
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  
   //if user is not logged in, favoriteRecipes is an empty list
   const favoriteRecipes = loggedInUser.length === undefined ? [] : loggedInUser[0]["heartedRecipes"];
   const loginModalShown = useSelector((state) => state.page.loginModalShown);
@@ -67,6 +68,7 @@ const Header = () => {
       >
         <FavoritesBox closeModal={closeFavoritesModal} favoriteRecipes={favoriteRecipes} recipes={recipes} />
       </Modal>
+
       <div className="title">Opskriftsgenerator</div>
       <SetLoggedInOnChange /> {/* Dynamically check if user is logged in */}
       {loggedIn ? (

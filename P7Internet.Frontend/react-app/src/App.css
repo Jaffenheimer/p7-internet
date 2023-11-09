@@ -509,6 +509,10 @@ input[type="password"] {
   margin: auto;
 }
 
+.LoginForm button {
+  width: 96%;
+}
+
 .imgcontainer {
   text-align: center;
   margin: 24px 0 12px 0;
@@ -549,6 +553,10 @@ input:checked + .slider:before {
   transform: translate(-50%, -50%);
 }
 
+input[type="range"]{
+  width:100%;
+}
+
 /* Apply style only when printing */
 @media print {
   .no-print,
@@ -581,6 +589,44 @@ input:checked + .slider:before {
 
 .ingredientsList > ul {
   padding-left: 40px;
+}
+
+.toggleButtonLeft {
+	border-Radius: '5px 0px 0px 5px';
+}
+
+.toggleButtonRight {
+	border-Radius: '0px 5px 5px 0px';
+}
+
+.toggleButton {
+  width: 100%;
+  background-color: #113946;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  border-radius: 5px; /* rounded corners */
+  border-color: #113946;
+}
+
+.toggleButton button{
+  background-color: white;
+  color: black;
+  border: 0;
+  text-transform:none;
+  width:40%;
+  margin:8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 16px;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+}
+
+.slidecontainer h3,p {
+  display: inline;
 }
 
 .options {
@@ -618,6 +664,7 @@ input:checked + .slider:before {
   float: right;
   margin-right: 2%;
 }
+
 #BackToFrontPageButtonRecipeSelection {
   float: right;
   align-items: right;

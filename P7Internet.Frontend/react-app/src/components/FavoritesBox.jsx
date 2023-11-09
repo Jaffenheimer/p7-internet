@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import cross from "../data/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
