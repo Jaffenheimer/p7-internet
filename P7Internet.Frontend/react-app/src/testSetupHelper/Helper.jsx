@@ -25,7 +25,7 @@ function renderComponent(component) {
   render(<Provider store={store}>{component}</Provider>);
 } 
 
-export { renderComponent}
+export { renderComponent }
 
 
 
