@@ -23,15 +23,21 @@ const customStyles = {
 const Header = () => {
   const dispatch = useDispatch();
 
+  const recipes = useSelector((state) => state.recipe.recipes);
   const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  
+  //if user is not logged in, favoriteRecipes is an empty list
+  const favoriteRecipes = loggedInUser.length === undefined ? [] : loggedInUser[0]["heartedRecipes"];
   const loginModalShown = useSelector((state) => state.page.loginModalShown);
-  const favoritesModalShown = useSelector((state) => state.page.favoritesModalShown);
+  const favoritesModalShown = useSelector(
+    (state) => state.page.favoritesModalShown
+  );
 
   const [loggedIn, setLoggedIn] = useState(false);
 
   const openLoginModal = () => dispatch(pageActions.openLoginModal());
   const closeLoginModal = () => dispatch(pageActions.closeLoginModal());
-	const openFavoritesModal = () => dispatch(pageActions.openFavoritesModal());
+  const openFavoritesModal = () => dispatch(pageActions.openFavoritesModal());
   const closeFavoritesModal = () => dispatch(pageActions.closeFavoritesModal());
 
   function SetLoggedInOnChange() {
@@ -53,23 +59,23 @@ const Header = () => {
       >
         <LoginBox closeModal={closeLoginModal} />
       </Modal>
-			<Modal
+      <Modal
         isOpen={favoritesModalShown}
         style={customStyles}
         onRequestClose={closeFavoritesModal}
         contentLabel="Favorites Modal"
         ariaHideApp={false}
       >
-        <FavoritesBox closeModal={closeFavoritesModal} />
+        <FavoritesBox closeModal={closeFavoritesModal} favoriteRecipes={favoriteRecipes} recipes={recipes} />
       </Modal>
 
       <div className="title">Opskriftsgenerator</div>
-      <SetLoggedInOnChange/> {/* Dynamically check if user is logged in */}
-          {loggedIn ? (
-            <ProfilePicture openFavoritesModal={openFavoritesModal}/>
-          ) : (
-            <button onClick={openLoginModal}>Log Ind</button>
-          )}
+      <SetLoggedInOnChange /> {/* Dynamically check if user is logged in */}
+      {loggedIn ? (
+        <ProfilePicture openFavoritesModal={openFavoritesModal} />
+      ) : (
+        <button onClick={openLoginModal}>Log Ind</button>
+      )}
     </div>
   );
 };

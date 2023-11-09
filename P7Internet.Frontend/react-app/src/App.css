@@ -153,6 +153,11 @@ ul {
   padding: 0;
 }
 
+/*modal*/
+.ReactModal__Content {
+  width: 40%;
+}
+
 .IngredientElement {
   margin-left: 10px;
   display: flex;
@@ -431,7 +436,7 @@ button:hover {
   border-radius: 5px;
 }
 
-.RemoveAllButton {
+.RemoveAllExcludeIngredientsButton {
   margin-top: 5%;
   margin-left: 1%;
 }
@@ -451,7 +456,6 @@ button:hover {
   text-align: center;
   margin-top: -20px;
 }
-
 
 .App > .RecipeSelectionContainerLeft {
   flex: 1;
@@ -480,11 +484,11 @@ input[type="password"] {
   box-sizing: border-box;
 }
 
-.LoginForm select{
-	width: 100%;
+.LoginForm select {
+  width: 100%;
 }
 
-.LoginForm option{
+.LoginForm option {
   font-size: 18px;
   font-family: Verdana;
 }
@@ -514,10 +518,12 @@ input[type="password"] {
   margin: 24px 0 12px 0;
 }
 
-.container {
+.favoriteRecipesContainer {
+  overflow: auto;
+  display: block;
   padding: 16px;
+  max-height: 75%;
 }
-
 
 input:focus + .slider {
   box-shadow: 0 0 1px #2196f3;
@@ -580,6 +586,7 @@ input[type="range"]{
   flex: 1;
   margin: 1cm;
 }
+
 .ingredientsList > ul {
   padding-left: 40px;
 }
@@ -620,6 +627,42 @@ input[type="range"]{
 
 .slidecontainer h3,p {
   display: inline;
+}
+
+.options {
+  background: white;
+  border: 1px solid #ccc;
+  top: -1px;
+  left: -1px;
+  width: 100%;
+  min-height: 30vh;
+  cursor: pointer;
+  overflow-y: scroll;
+}
+
+.FavoriteRecipeElement {
+  width: 100%;
+}
+
+.FavoriteRecipeButton {
+  width: 90%;
+  height: 5%;
+  float: left;
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+.RemoveFavoritedElement {
+  /* float: right; */
+  display: inline-block;
+}
+
+.RemoveFavoritedElement {
+  float: right;
+  margin-right: 2%;
 }
 
 #BackToFrontPageButtonRecipeSelection {
