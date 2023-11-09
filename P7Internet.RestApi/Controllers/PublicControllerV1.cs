@@ -112,7 +112,6 @@ public class PublicControllerV1 : ControllerBase
         {
             foreach (var product in res)
             {
-                product.Store = "BilkaToGo";
                 if (_cachedOfferRepository.GetOffer(product.Name) != null) break;
                 _cachedOfferRepository.UpsertOffer(product.Name, product.Price, product.Store);
             }

@@ -11,6 +11,7 @@ using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using System.IO;
 using P7Internet.Persistence.CachedOfferRepository;
+using P7Internet.CustomExceptions;
 
 namespace P7Internet.Services
 {
@@ -36,9 +37,16 @@ namespace P7Internet.Services
             //Parsing the response JSON into a list of Offer objects
             var offers = new List<Offer>();
             var deserializedContent = JsonConvert.DeserializeObject<JObject>(responseContent);
+            if (deserializedContent == null) { throw new NoProductsFoundException("No products were fetched"); }
+            
             var offerArray = deserializedContent.Value<JArray>("suggestions").ToString(); 
 
             JsonConvert.PopulateObject(offerArray, offers);
+
+            foreach (var offer in offers)
+            {
+                offer.Store = "BilkaToGo";
+            }
 
             return offers;
         }
