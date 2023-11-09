@@ -20,7 +20,6 @@ body {
   min-height: 100vh;
   width: 100%;
   padding: 0;
-  margin: 0;
 }
 
 .AppContainer {
@@ -162,6 +161,9 @@ ul {
 
 #OwnedIngredientsList > div > ul > .IngredientElement {
   width: 30%;
+}
+#OwnedIngredientsList{
+  margin-right: 10%;
 }
 
 #ExcludedIngredientsList > .ingredientsList > ul > .IngredientElement {
@@ -636,4 +638,8 @@ input:checked + .slider:before {
   align-items: right;
   margin-top: 25px;
   margin-right: 1%;
+}
+
+#IngredientsBodyText{
+  
 }
