@@ -46,11 +46,11 @@ const ProfilePicture = ({ openFavoritesModal }) => {
           sessionToken: encodedSessionToken,
         });
         if (response) {
-          toast.success("Logget ud");
+          toast.success("Du loggede succesfuldt ud");
           dispatch(userActions.logoutUser());
         }
       } catch (error) {
-        toast.error("Kunne ikke logge ud", error);
+        toast.error("Kunne ikke logge ud");
       }
     }
 
