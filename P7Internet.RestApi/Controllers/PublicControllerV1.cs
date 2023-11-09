@@ -68,14 +68,8 @@ public class PublicControllerV1 : ControllerBase
             return Ok(recipesIncludingIngredients);
 
         NotEnoughRecipes:
-        var openAiRequest = req.OpenAiString;
-
-        foreach (var ingredient in req.Ingredients)
-        {
-            openAiRequest += ", " + ingredient;
-        }
-
-        var res = _openAiService.GetAiResponse(openAiRequest);
+        
+        var res = _openAiService.GetAiResponse(req);
 
         await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
 
