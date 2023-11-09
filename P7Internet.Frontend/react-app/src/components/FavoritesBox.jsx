@@ -33,7 +33,7 @@ const FavoritesBox = ({ closeModal, favoriteRecipes, recipes }) => {
   function handleRemove(_, recipeTitle) {
     if (
       window.confirm(
-        `Are you sure you want to remove ${recipeTitle} as favorite recipe`
+        `Er du sikker på du gerne vil fjerne ${recipeTitle} fra dine favoritter`
       )
     )
       dispatch(userActions.removeRecipe(recipeTitle));
