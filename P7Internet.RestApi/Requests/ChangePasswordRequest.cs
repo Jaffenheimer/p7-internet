@@ -2,6 +2,14 @@
 
 namespace P7Internet.Requests;
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="userId"></param>
+/// <param name="sessionToken"></param>
+/// <param name="userName"></param>
+/// <param name="oldPassword"></param>
+/// <param name="newPassword"></param>
 public class ChangePasswordRequest
 {
     public Guid UserId { get; set; }
@@ -14,7 +22,8 @@ public class ChangePasswordRequest
     {
     }
 
-    public ChangePasswordRequest(Guid userId, string sessionToken,string userName, string oldPassword, string newPassword)
+    public ChangePasswordRequest(Guid userId, string sessionToken, string userName, string oldPassword,
+        string newPassword)
     {
         UserName = userName;
         OldPassword = oldPassword;

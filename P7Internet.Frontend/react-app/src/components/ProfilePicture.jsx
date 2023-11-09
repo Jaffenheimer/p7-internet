@@ -10,7 +10,7 @@ import { useUserLogOutMutation } from "../services/usersEndpoints";
 import retriveCookie from "../helperFunctions/retriveCookie";
 
 
-const ProfilePicture = () => {
+const ProfilePicture = ({ openFavoritesModal }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -19,6 +19,7 @@ const ProfilePicture = () => {
   }
 
   const handleFavorites = () => {
+    openFavoritesModal();
     setOpen(false);
   };
 

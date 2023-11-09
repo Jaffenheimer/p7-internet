@@ -23,6 +23,11 @@ public class ETilbudsAvisService
         _client.BaseAddress = new Uri("https://squid-api.tjek.com/v4/rpc/get_offers");
     }
 
+    /// <summary>
+    /// Sends a request to the eTilbudsavis API and returns a list of offers from the given parameters in the OfferRequest.
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>An IList of offers from the api</returns>
     public async Task<IList<Offer>> GetAllOffers(OfferRequest req)
     {
         var url = new Uri(_client.BaseAddress.ToString());
@@ -58,10 +63,5 @@ public class ETilbudsAvisService
         }
 
         return offers;
-    }
-
-    public T CreateObjectFromDeserializedJson<T>(JObject jsonObject)
-    {
-        return jsonObject.ToObject<T>();
     }
 }

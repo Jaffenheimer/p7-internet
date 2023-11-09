@@ -16,7 +16,7 @@ const RecipeTitle = ({ title }) => {
     event.preventDefault();
     if (loggedIn === false) {
       //if not logged in
-      dispatch(pageActions.openModal());
+      dispatch(pageActions.openLoginModal());
     } else {
       if (heart === heartSolid) {
         setHeart(heartHollow);

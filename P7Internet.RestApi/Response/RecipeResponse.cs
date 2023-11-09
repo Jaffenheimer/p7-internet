@@ -2,6 +2,11 @@
 
 namespace P7Internet.Response
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="recipes"></param>
+    /// <param name="recipeId"></param>
     public class RecipeResponse
     {
         public string Recipes { get; }
@@ -9,6 +14,11 @@ namespace P7Internet.Response
         public bool Success => string.IsNullOrEmpty(ErrorMessage);
         public string ErrorMessage { get; }
 
+        /// <summary>
+        /// Composes a response from a recipe string and a recipe id. It trims away unwanted characters from the recipe string.
+        /// </summary>
+        /// <param name="recipes"></param>
+        /// <param name="recipeId"></param>
         public RecipeResponse(string recipes, Guid recipeId)
         {
             recipes = recipes.Trim();
