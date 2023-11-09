@@ -8,7 +8,7 @@ import { pageActions } from "../features/pageSlice";
 import { ToastContainer } from "react-toastify";
 
 afterEach(cleanup);
-global.confirm = jest.fn();
+jest.spyOn(window, "confirm").mockImplementation(() => {});
 
 test("Renders the favoriteBox with correct title, back button and for each favorite recipe added the element as well as the remove cross", () => {
   renderComponent(<FavoritesBox favoriteRecipes={["1", "2"]} />);
