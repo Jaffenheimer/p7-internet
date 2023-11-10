@@ -427,7 +427,7 @@ button:hover {
   border-radius: 5px;
 }
 
-#RemoveAllExcludeIngredientsButton {
+.RemoveAllButton {
   margin-top: 5%;
 }
 
