@@ -10,7 +10,6 @@ namespace P7Internet.Services;
 
 public class OpenAiServiceMock
 {
-    private readonly OpenAIAPI _openAi;
 
     public OpenAiServiceMock()
     {
