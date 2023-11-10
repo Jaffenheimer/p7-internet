@@ -64,7 +64,7 @@ public class PublicControllerV1 : ControllerBase
                 recipesIncludingIngredients.Add(recipe);
             }
         }
-
+        
         if (req.Amount != null)
         {
             if (recipesIncludingIngredients.Count < req.Amount)
@@ -75,7 +75,7 @@ public class PublicControllerV1 : ControllerBase
             return Ok(recipesIncludingIngredients);
 
         NotEnoughRecipes:
-        
+
         var res = _openAiService.GetAiResponse(req);
 
         await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
@@ -96,7 +96,7 @@ public class PublicControllerV1 : ControllerBase
             await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
         if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
-        
+
         var result = await _favouriteRecipeRepository.GetHistory(userId);
         if (result != null)
         {
@@ -106,7 +106,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("No favourite recipes found");
     }
-    
+
     /// <summary>
     /// Gets a recipe either from the cache or from the OpenAI API
     /// </summary>
@@ -117,7 +117,6 @@ public class PublicControllerV1 : ControllerBase
     {
         if (req.UserId != null && req.SessionToken != null)
         {
-
             var checkIfUserSessionIsValid =
                 await _userSessionRepository.CheckIfTokenIsValid(req.UserId.GetValueOrDefault(), req.SessionToken);
             if (!checkIfUserSessionIsValid)
@@ -146,9 +145,9 @@ public class PublicControllerV1 : ControllerBase
             return Ok(recipesIncludingIngredients);
 
         NotEnoughRecipes:
-        
+
         var res = _openAiService.GetAiResponse(req);
-        
+
         await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
         if (req.UserId != null && req.SessionToken != null)
             await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(), res.RecipeId);
@@ -169,6 +168,8 @@ public class PublicControllerV1 : ControllerBase
             return Ok(checkIfOfferExists);
         }
 
+        
+        
         var res = await _eTilbudsAvisService.GetAllOffers(req);
 
         if (res != null)
