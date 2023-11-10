@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import { RecipeSelectionContainerRight } from "../components";
 
 const RecipeSelection = () => {
+  
   return (
     <div className="AppContainer">
       <ToastContainer
