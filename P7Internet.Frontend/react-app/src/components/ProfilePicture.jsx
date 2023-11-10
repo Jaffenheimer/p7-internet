@@ -4,7 +4,7 @@ import "../App.css";
 import { userActions } from "../features/userSlice";
 import { useDispatch } from "react-redux";
 
-const ProfilePicture = () => {
+const ProfilePicture = ({ openFavoritesModal }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -13,6 +13,7 @@ const ProfilePicture = () => {
   }
 
   const handleFavorites = () => {
+    openFavoritesModal();
     setOpen(false);
   };
 

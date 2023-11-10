@@ -2,6 +2,11 @@
 
 namespace P7Internet.Requests;
 
+/// <summary>
+/// 
+/// </summary>
+/// <param name="userName"></param>
+/// <param name="emailAddress"></param>
 public class ConfirmEmailRequest
 {
     public string UserName { get; set; }
