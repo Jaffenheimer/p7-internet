@@ -73,7 +73,7 @@ test("Clicking the plus button when the value is 10 does not increase the value 
     fireEvent.click(plus);
     expect(inputField.value).toBe('10');
     fireEvent.click(plus);
-    expect(await screen.findByText(/Maximum er 1/)).toBeInTheDocument();
+    expect(await screen.findByText(/Maximum er 10/)).toBeInTheDocument();
     expect(inputField.value).toBe('10');
     });
 

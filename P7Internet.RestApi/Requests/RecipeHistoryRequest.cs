@@ -7,17 +7,13 @@ namespace P7Internet.Requests;
 /// </summary>
 /// <param name="userId"></param>
 /// <param name="sessionToken"></param>
-public class GetFavouriteRecipesRequest
+public class RecipeHistoryRequest
 {
     public Guid UserId { get; set; }
-
     public string SessionToken { get; set; }
 
-    public GetFavouriteRecipesRequest()
-    {
-    }
-
-    public GetFavouriteRecipesRequest(Guid userId, string sessionToken)
+    
+    public RecipeHistoryRequest(Guid userId, string sessionToken)
     {
         UserId = userId;
         SessionToken = sessionToken;

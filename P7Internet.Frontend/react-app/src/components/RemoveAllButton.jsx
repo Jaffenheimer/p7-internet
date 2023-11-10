@@ -8,7 +8,7 @@ export default class RemoveAllButton extends Component {
       <button
         data-testid="RemoveAllButton"
         type="button" //ensures that the button does not submit the form 
-        id="RemoveAllExcludeIngredientsButton"
+        id="RemoveAllButton"
         onClick={handleClick}
       >
         Fjern alle
