@@ -25,14 +25,8 @@ const GenerateRecipeButton = () => {
       );
       return;
     }
-    GenerateRecipesHandler();
     goToPageFullRecipeSelection();
   }
-
-    //insert comment about what the function does here
-    const GenerateRecipesHandler = async () => {
-        console.log("Data -- ", recipeGenData); 
-    };
 
   return <button onClick={handleOnClick}>Generer opskrifter</button>;
 };

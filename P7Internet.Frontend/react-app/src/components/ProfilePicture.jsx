@@ -31,6 +31,10 @@ const ProfilePicture = ({ openFavoritesModal }) => {
 
   //Functions is async because it needs to wait for the response from the backend
   const handleLogOut = async () => {
+    /*
+        If the login is not loading or there were no error then it will try to login, 
+        if there is an an error it will be displayed 
+    */
     if (!isLogOutLoading || !isLogOutError) {
       const sessionToken = retriveCookie("sessionToken=");
       const userId = retriveCookie("userid=");
