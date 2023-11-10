@@ -8,6 +8,11 @@ import {
   useUserLoginMutation,
 } from "../services/usersEndpoints";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  checkValidEmail,
+  checkValidUsername,
+  checkValidPassword,
+} from "../helperFunctions/inputValidation";
 
 const LoginBox = ({ closeModal }) => {
   const dispatch = useDispatch();
@@ -69,44 +74,15 @@ const LoginBox = ({ closeModal }) => {
     }
   };
 
-  //should happen in backend
-  //see what this regex accepts at https://jsfiddle.net/ghvj4gy9/
-  function checkValidEmail() {
-    const emailRegex =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    const isValidEmail = emailRegex.exec(email);
-    if (isValidEmail === null) return false;
-    else return true;
-  }
-
-  //THE USERNAME VALIDATION SHOULD HAPPEN IN THE BACKEND
-  //username: allowed characters are integers and upper/lowercase letters
-  function checkValidUsername() {
-    const usernameRegex = /^[a-zA-Z0-9]+$/;
-    const isValidUsername = usernameRegex.exec(username);
-    if (isValidUsername === null) return false;
-    else return true;
-  }
-
-  //THE PASSWORD VALIDATION SHOULD HAPPEN IN THE BACKEND
-  //password: allowed characters are at least 1 numeric degit, one uppercase, one lowercase
-  //and between 6 to 20 characters, excluding special characters.
-  function checkValidPassword() {
-    const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; //
-    const isValidPassword = passwordRegex.exec(password);
-    if (isValidPassword === null) return false;
-    else return true;
-  }
-
   //Functions is async because it needs to wait for the response from the backend
   const handleCreateAccount = async () => {
-    if (checkValidEmail() === false)
+    if (checkValidEmail(email) === false)
       toast.error("Den indtastede email er ugyldig");
-    else if (checkValidUsername() === false)
+    else if (checkValidUsername(username) === false)
       toast.error(
         "Brugernavnet er ugyldigt, da det kun må bestå af bogstaver og tal."
       );
-    else if (checkValidPassword() === false)
+    else if (checkValidPassword(password) === false)
       toast.error(
         "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn."
       );
