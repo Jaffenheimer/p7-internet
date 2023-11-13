@@ -18,11 +18,15 @@ function renderComponent(component) {
       user: userReducer,
       offers: offersReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
   });
   render(<Provider store={store}>{component}</Provider>);
 }
 
-function renderComponentWithChangeToStore(component,type,payload) {
+function renderComponentWithChangeToStore(component, type, payload) {
   //this resets the store for each test
   const store = configureStore({
     reducer: {
@@ -32,9 +36,13 @@ function renderComponentWithChangeToStore(component,type,payload) {
       user: userReducer,
       offers: offersReducer,
     },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
   });
   store.dispatch({ type: type }, { payload: payload });
   render(<Provider store={store}>{component}</Provider>);
 }
 
-export { renderComponent, renderComponentWithChangeToStore};
+export { renderComponent, renderComponentWithChangeToStore };
