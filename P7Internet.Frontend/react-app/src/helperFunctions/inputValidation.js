@@ -32,17 +32,17 @@ function checkValidPassword(password) {
 export const inputValidation = (username, password, email) => {
   if (checkValidEmail(email) === false) {
     toast.error("Den indtastede email er ugyldig");
-    return false; 
+    return false;
   } else if (checkValidUsername(username) === false) {
     toast.error(
       "Brugernavnet er ugyldigt, da det kun må bestå af bogstaver og tal."
     );
-    return false; 
+    return false;
   } else if (checkValidPassword(password) === false) {
     toast.error(
       "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn."
     );
-    return false; 
+    return false;
   }
   return true;
 };

@@ -13,8 +13,8 @@ export const retriveCookie = (retriveValue) => {
 };
 
 //Add cookies when login in
-export const addCookie = (userName, userId, sessionToken) => {
-  const now = getTime(); 
+export const addCookies = (userName, userId, sessionToken) => {
+  const now = getTime();
   document.cookie = `username=${userName}; expires=${now.toUTCString()} UTC; path=/;`;
   document.cookie = `userid=${userId}; expires=${now.toUTCString()} UTC; path=/;`;
   document.cookie = `sessionToken=${sessionToken}; expires=${now.toUTCString()} UTC; path=/;`;
@@ -27,10 +27,10 @@ export const deleteCookies = () => {
   document.cookie = `sessionToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };
 
-function getTime(){
-  var now = new Date(); 
-  var time = now.getTime(); 
-  time += 3600*1000; 
-  now.setTime(time); 
+function getTime() {
+  var now = new Date();
+  var time = now.getTime();
+  time += 3600 * 1000;
+  now.setTime(time);
   return now;
 }

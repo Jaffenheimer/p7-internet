@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useUserLogOutMutation } from "../services/usersEndpoints";
-import {deleteCookies, retriveCookie} from "../helperFunctions/cookieHandler";
+import { deleteCookies, retriveCookie } from "../helperFunctions/cookieHandler";
 
 const ProfilePicture = ({ openFavoritesModal }) => {
   const dispatch = useDispatch();
@@ -26,8 +26,7 @@ const ProfilePicture = ({ openFavoritesModal }) => {
     setOpen(false);
   };
 
-  const [userLogOut, { isLogOutLoading }] =
-    useUserLogOutMutation();
+  const [userLogOut, { isLogOutLoading }] = useUserLogOutMutation();
 
   //Functions is async because it needs to wait for the response from the backend
   const handleLogOut = async () => {

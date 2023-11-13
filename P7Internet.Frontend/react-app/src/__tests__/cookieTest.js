@@ -1,4 +1,8 @@
-import { addCookie, deleteCookies, retriveCookie } from "../helperFunctions/cookieHandler";
+import {
+  addCookies,
+  deleteCookies,
+  retriveCookie,
+} from "../helperFunctions/cookieHandler";
 
 test("Does retriveCookie retrive the cookie correctly", () => {
   const testUsername = "username";
@@ -15,7 +19,7 @@ test("Can Cookies be added", () => {
   const testUserId = "userid";
   const testUserSessionToken = "sessiontoken";
 
-  addCookie(testUsername, testUserId, testUserSessionToken); 
+  addCookies(testUsername, testUserId, testUserSessionToken);
 
   const retrivedUsername = retriveCookie("username=");
   const retrivedUserId = retriveCookie("userid=");

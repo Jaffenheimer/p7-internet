@@ -12,8 +12,7 @@ const GenerateRecipeButton = () => {
   );
   getGeoLocation();
 
-  //const recipeGenData = useSelector((state) => state.recipeGeneration);
-
+  
   function goToPageFullRecipeSelection() {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
   }

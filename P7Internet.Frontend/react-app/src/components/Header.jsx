@@ -24,10 +24,10 @@ const Header = () => {
 
   const recipes = useSelector((state) => state.recipe.recipes);
   const loggedIn = useSelector((state) => state.user.loggedIn);
-  const favoriteRecipesRedux = useSelector((state) => state.user.heartedRecipes);
-  //const loggedInUser = useSelector((state) => state.user);
-  //const loggedInUser = useSelector((state) => state.user.loggedInUser);
-  
+  const favoriteRecipesRedux = useSelector(
+    (state) => state.user.heartedRecipes
+  );
+
   //if user is not logged in, favoriteRecipes is an empty list
   const favoriteRecipes = loggedIn === undefined ? [] : favoriteRecipesRedux;
   const loginModalShown = useSelector((state) => state.page.loginModalShown);
@@ -35,13 +35,10 @@ const Header = () => {
     (state) => state.page.favoritesModalShown
   );
 
-  //const [loggedIn, setLoggedIn] = useState(false);
-
   const openLoginModal = () => dispatch(pageActions.openLoginModal());
   const closeLoginModal = () => dispatch(pageActions.closeLoginModal());
   const openFavoritesModal = () => dispatch(pageActions.openFavoritesModal());
   const closeFavoritesModal = () => dispatch(pageActions.closeFavoritesModal());
-
 
   return (
     <div className="header no-print">
@@ -61,7 +58,11 @@ const Header = () => {
         contentLabel="Favorites Modal"
         ariaHideApp={false}
       >
-        <FavoritesBox closeModal={closeFavoritesModal} favoriteRecipes={favoriteRecipes} recipes={recipes} />
+        <FavoritesBox
+          closeModal={closeFavoritesModal}
+          favoriteRecipes={favoriteRecipes}
+          recipes={recipes}
+        />
       </Modal>
 
       <div className="title">Opskriftsgenerator</div>

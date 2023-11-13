@@ -7,7 +7,6 @@ import Pages from "./objects/Pages";
 import RecipeSelection from "./pages/RecipeSelection";
 
 export default function App() {
-
   const page = useSelector((state) => state.page.page);
 
   if (page === Pages.frontPage) {

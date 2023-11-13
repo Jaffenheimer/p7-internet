@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { toast } from "react-toastify";
 import { inputValidation } from "../helperFunctions/inputValidation";
-import { addCookie } from "../helperFunctions/cookieHandler";
+import { addCookies } from "../helperFunctions/cookieHandler";
 import "react-toastify/dist/ReactToastify.css";
 import {
   useUserCreateMutation,
@@ -25,57 +25,55 @@ const LoginBox = ({ closeModal }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    if(!isLogInLoading || isCreateLoading){
+    if (!isLogInLoading || isCreateLoading) {
       /*
       Will try to createAcount or logIn to api Endpoint
-    */
-    try {
-      const encodedUsername = encodeURIComponent(username);
-      const encodedPassword = encodeURIComponent(password);
+      */
+      try {
+        const encodedUsername = encodeURIComponent(username);
+        const encodedPassword = encodeURIComponent(password);
 
-      let response;
-      if (!creatingAccount) {
-        response = await userLogin({
-          username: encodedUsername,
-          password: encodedPassword,
-        }).unwrap();
-      } else if (inputValidation(username, password, email) === true) {
-        const encodedEmail = encodeURIComponent(email);
-        response = await userCreate({
-          username: encodedUsername,
-          password: encodedPassword,
-          email: encodedEmail,
-        }).unwrap();
+        let response;
+        if (!creatingAccount) {
+          response = await userLogin({
+            username: encodedUsername,
+            password: encodedPassword,
+          }).unwrap();
+        } else if (inputValidation(username, password, email) === true) {
+          const encodedEmail = encodeURIComponent(email);
+          response = await userCreate({
+            username: encodedUsername,
+            password: encodedPassword,
+            email: encodedEmail,
+          }).unwrap();
+        }
+
+        if (response) {
+          if (!creatingAccount) toast.success("Din bruger er nu oprettet!");
+          else toast.success("Velkommen tilbage, " + response.name);
+
+          //Add data about user to cookie
+          addCookies(response.name, response.id, response.sessionToken);
+
+          //adds user to redux store
+          dispatch(
+            userActions.loginUser({
+              id: response.id,
+              name: response.name,
+              email: response.emailAddress,
+            })
+          );
+
+          if (!creatingAccount) setCreatingAccount(false);
+
+          clearandclose();
+        }
+      } catch (error) {
+        if (!creatingAccount)
+          toast.error("Brugernavn eller Kodeord er forkert, prøv igen");
+        else toast.error("Kunne ikke oprette bruger");
       }
-
-      if (response) {
-        if (!creatingAccount) toast.success("Din bruger er nu oprettet!");
-        else toast.success("Velkommen tilbage, " + response.name);
-
-        //Add data about user to cookie
-        addCookie(response.name, response.id, response.sessionToken);
-
-        //adds user to redux store
-        dispatch(
-          userActions.loginUser({
-            id: response.id,
-            name: response.name,
-            email: response.emailAddress,
-          })
-        );
-
-        if (!creatingAccount) setCreatingAccount(false);
-
-        clearandclose();
-      }
-    } catch (error) {
-      console.log(error);
-      if (!creatingAccount) toast.error("Brugernavn eller Kodeord er forkert, prøv igen");
-      else toast.error("Kunne ikke oprette bruger");
     }
-    }
-
-    
   };
 
   function clearandclose() {
