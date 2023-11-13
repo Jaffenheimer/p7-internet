@@ -15,7 +15,3 @@
 * r_lat (double)
 * r_lng (double)
 
-## Få ingredientser ind i DB
-* Kør db-up projektet
-* Start rest-apiet
-* Kør det ene endpoint der er i AdminController

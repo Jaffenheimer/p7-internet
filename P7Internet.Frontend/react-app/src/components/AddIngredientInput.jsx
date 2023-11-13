@@ -4,6 +4,7 @@ export class AddIngredientInput extends Component {
   render() {
     const ingredient = this.props.ingredient;
     const handleChange = this.props.handleChange;
+    const placeholder = this.props.placeholder;
 
     return (
       <input
@@ -11,8 +12,7 @@ export class AddIngredientInput extends Component {
         name="ingredient"
         value={ingredient}
         onChange={handleChange}
-        placeholder="Tilføj en ingrediens..."
-        data-testid="AddIngredientInput"
+        placeholder={placeholder}
       />
     );
   }

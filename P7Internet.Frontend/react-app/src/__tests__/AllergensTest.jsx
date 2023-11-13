@@ -49,7 +49,7 @@ test("Removing an option - the option gets removed", () => {
     expect(screen.getByText(/Vælg allergener/)).toBeInTheDocument(); //placeholder is back after deleting the option
   });
     
-//other tests to make if i knew how to do it:
+//other tests to make i i knew how to do it:
 test("Choosing both options - both options get selected", () => {
 
 });
