@@ -1,5 +1,5 @@
 import React from "react";
-import ContainerRight from "../components/ContainerRight";
+import FrontPageContainerRight from "../components/FrontPageContainerRight";
 import FrontPageContainerLeft from "../components/FrontPageContainerLeft";
 import Header from "../components/Header";
 import { ToastContainer } from "react-toastify";
@@ -7,11 +7,12 @@ import { ToastContainer } from "react-toastify";
 const FrontPage = () => {
   return (
     <div className="AppContainer">
-      <ToastContainer 
+      <ToastContainer
         position="top-center"
         newestOnTop={true}
         closeButton={false}
-        draggablePercent/>
+        draggablePercent
+      />
       <div className="headerContainer">
         <Header />
       </div>
@@ -20,7 +21,7 @@ const FrontPage = () => {
           <FrontPageContainerLeft />
         </div>
         <div className={"split-screen-right"}>
-          <ContainerRight />
+          <FrontPageContainerRight />
         </div>
       </div>
     </div>

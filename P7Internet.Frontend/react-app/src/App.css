@@ -160,7 +160,7 @@ ul {
 #OwnedIngredientsList > div > ul > .IngredientElement {
   width: 30%;
 }
-#OwnedIngredientsList{
+#OwnedIngredientsList {
   margin-right: 10%;
 }
 
@@ -329,7 +329,7 @@ button:hover {
   margin: 0;
 }
 
-.ContainerRight
+.FrontPageContainerRight
   > .ContainerRightTop
   > .ContainerRightColumn
   > .NumberOfPersonsField
@@ -548,8 +548,8 @@ input:checked + .slider:before {
   transform: translate(-50%, -50%);
 }
 
-input[type="range"]{
-  width:100%;
+input[type="range"] {
+  width: 100%;
 }
 
 /* Apply style only when printing */
@@ -587,11 +587,11 @@ input[type="range"]{
 }
 
 .toggleButtonLeft {
-	border-Radius: '5px 0px 0px 5px';
+  border-radius: "5px 0px 0px 5px";
 }
 
 .toggleButtonRight {
-	border-Radius: '0px 5px 5px 0px';
+  border-radius: "0px 5px 5px 0px";
 }
 
 .toggleButton {
@@ -605,13 +605,13 @@ input[type="range"]{
   border-color: #113946;
 }
 
-.toggleButton button{
+.toggleButton button {
   background-color: white;
   color: black;
   border: 0;
-  text-transform:none;
-  width:40%;
-  margin:8px;
+  text-transform: none;
+  width: 40%;
+  margin: 8px;
   text-align: center;
   font-size: 14px;
   font-weight: 550;
@@ -620,7 +620,8 @@ input[type="range"]{
   text-transform: uppercase;
 }
 
-.SliderContainer h3,p {
+.SliderContainer h3,
+p {
   display: inline;
 }
 

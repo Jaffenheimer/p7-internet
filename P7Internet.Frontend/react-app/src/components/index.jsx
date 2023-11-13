@@ -6,7 +6,7 @@ export { default as RecipeTitle } from "./RecipeTitle";
 export { default as AddIngredientsForm } from "./AddIngredientsForm";
 export { default as FrontPageContainerLeft } from "./FrontPageContainerLeft";
 export { default as RecipeSelectionContainerLeft } from "./RecipeSelectionContainerLeft";
-export { default as ContainerRight } from "./ContainerRight";
+export { default as FrontPageContainerRight } from "./FrontPageContainerRight";
 export { default as RecipeSelectionContainerRight } from "./RecipeSelectionContainerRight";
 export { default as GenerateRecipeButton } from "./GenerateRecipeButton";
 export { default as ProfilePicture } from "./ProfilePicture";
