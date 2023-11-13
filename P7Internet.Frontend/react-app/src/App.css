@@ -438,7 +438,7 @@ button:hover {
   border-radius: 5px;
 }
 
-.RemoveAllExcludeIngredientsButton {
+.RemoveAllButton {
   margin-top: 5%;
   margin-left: 1%;
 }
@@ -627,7 +627,7 @@ input[type="range"]{
   text-transform: uppercase;
 }
 
-.slidecontainer h3,p {
+.SliderContainer h3,p {
   display: inline;
 }
 

@@ -7,7 +7,10 @@ import "react-toastify/dist/ReactToastify.css";
 
 const SelectRecipeButton = () => {
   const dispatch = useDispatch();
-  const stores = useSelector((state) => state.stores.stores);
+  const stores = useSelector((state) => state.offers.stores);
+  const toggleStateIsRadius = useSelector(
+    (state) => state.offers.toggleStateIsRadius
+  );
 
   function goToPageFullRecipeView() {
     dispatch(pageActions.goToPage(Pages.fullRecipeView));
@@ -15,7 +18,7 @@ const SelectRecipeButton = () => {
 
   //handles all the logic for when the button is clicked
   function handleOnClick() {
-    if (stores.length === 0) {
+    if (!toggleStateIsRadius && stores.length === 0) {
       toast.error("Tilføj mindst 1 butik for at vælge opskriften");
       return;
     }

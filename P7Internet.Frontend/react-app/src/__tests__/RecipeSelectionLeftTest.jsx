@@ -2,7 +2,6 @@ import { cleanup, fireEvent, screen  } from "@testing-library/react";
 import '@testing-library/jest-dom'
 import React from "react";
 import {renderComponent} from "../testSetupHelper/Helper.jsx";
-import RecipeView from "../components/RecipeView";
 import SelectArrows from "../components/SelectArrows";
 import RecipeTitle from "../components/RecipeTitle";
 import SelectRecipeButton from "../components/SelectRecipeButton";
