@@ -69,6 +69,7 @@ const LoginBox = ({ closeModal }) => {
           clearandclose();
         }
       } catch (error) {
+        console.log(error);
         if (!creatingAccount)
           toast.error("Brugernavn eller Kodeord er forkert, prøv igen");
         else toast.error("Kunne ikke oprette bruger");
