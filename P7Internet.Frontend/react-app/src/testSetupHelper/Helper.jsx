@@ -5,7 +5,7 @@ import { recipeGenerationReducer } from "../features/recipeGenerationSlice";
 import { recipeReducer } from "../features/recipeSlice";
 import { pageReducer } from "../features/pageSlice";
 import { userReducer } from "../features/userSlice";
-import { storesReducer } from "../features/storesSlice";
+import { offersReducer } from "../features/offersSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
 function renderComponent(component) {
@@ -16,7 +16,7 @@ function renderComponent(component) {
       recipe: recipeReducer,
       page: pageReducer,
       user: userReducer,
-      stores: storesReducer,
+      offers: offersReducer,
     },
     middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
@@ -26,4 +26,23 @@ function renderComponent(component) {
   render(<Provider store={store}>{component}</Provider>);
 }
 
-export { renderComponent };
+function renderComponentWithChangeToStore(component, type, payload) {
+  //this resets the store for each test
+  const store = configureStore({
+    reducer: {
+      recipeGeneration: recipeGenerationReducer,
+      recipe: recipeReducer,
+      page: pageReducer,
+      user: userReducer,
+      offers: offersReducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
+  });
+  store.dispatch({ type: type }, { payload: payload });
+  render(<Provider store={store}>{component}</Provider>);
+}
+
+export { renderComponent, renderComponentWithChangeToStore };

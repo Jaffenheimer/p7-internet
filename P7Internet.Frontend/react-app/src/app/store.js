@@ -3,7 +3,7 @@ import { recipeGenerationReducer } from "../features/recipeGenerationSlice";
 import { recipeReducer } from "../features/recipeSlice";
 import { pageReducer } from "../features/pageSlice";
 import { userReducer } from "../features/userSlice";
-import { storesReducer } from "../features/storesSlice";
+import { offersReducer } from "../features/offersSlice";
 import { apiSlice } from "../services/apiSlice";
 
 export const store = configureStore({
@@ -12,9 +12,7 @@ export const store = configureStore({
     recipe: recipeReducer,
     page: pageReducer,
     user: userReducer,
-    stores: storesReducer,
-
-    [apiSlice.reducerPath]: apiSlice.reducer,
+    offers: offersReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
