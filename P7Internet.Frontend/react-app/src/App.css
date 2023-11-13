@@ -107,13 +107,6 @@ body {
   display: flex;
 }
 
-/* .App > .AppLeft > .ContainerUpper {
-  width: 100%;
-.App > .AppLeft > .ContainerLeft {
-  height: 100%;
-  position: relative;
-}  */
-
 .RecipeSelectionContainerLeft {
   padding: 10px;
   height: 60%;
