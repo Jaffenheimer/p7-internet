@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useUserLogOutMutation } from "../services/usersEndpoints";
-import retriveCookie from "../helperFunctions/retriveCookie";
+import {deleteCookies, retriveCookie} from "../helperFunctions/cookieHandler";
 
 const ProfilePicture = ({ openFavoritesModal }) => {
   const dispatch = useDispatch();
@@ -52,6 +52,7 @@ const ProfilePicture = ({ openFavoritesModal }) => {
         if (response) {
           toast.success("Du loggede succesfuldt ud");
           dispatch(userActions.logoutUser());
+          deleteCookies();
         }
       } catch (error) {
         toast.error("Kunne ikke logge ud");

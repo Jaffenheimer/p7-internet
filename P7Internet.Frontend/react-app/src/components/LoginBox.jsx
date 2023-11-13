@@ -3,16 +3,13 @@ import cross from "../data/cross.svg";
 import { useDispatch } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { toast } from "react-toastify";
+import { inputValidation } from "../helperFunctions/inputValidation";
+import { addCookie } from "../helperFunctions/cookieHandler";
+import "react-toastify/dist/ReactToastify.css";
 import {
   useUserCreateMutation,
   useUserLoginMutation,
 } from "../services/usersEndpoints";
-import "react-toastify/dist/ReactToastify.css";
-import {
-  checkValidEmail,
-  checkValidUsername,
-  checkValidPassword,
-} from "../helperFunctions/inputValidation";
 
 const LoginBox = ({ closeModal }) => {
   const dispatch = useDispatch();
@@ -22,122 +19,66 @@ const LoginBox = ({ closeModal }) => {
   const [creatingAccount, setCreatingAccount] = useState(false);
 
   //States used to fetch data from backend
-  const [userLogin, { isLoginLoading, isLoginError }] = useUserLoginMutation();
-  const [userCreate, { isCreateLoading, isCreateError }] =
-    useUserCreateMutation();
+  const [userLogin] = useUserLoginMutation();
+  const [userCreate] = useUserCreateMutation();
 
-  //Functions is async because it needs to wait for the response from the backend
-  const handleLogin = async () => {
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
     /*
-      If the login is not loading or there were no error then it will try to login, 
-      if there is an an error it will be displayed 
+      Will try to createAcount or logIn to api Endpoint
     */
-    if (!isLoginLoading || !isLoginError) {
-      try {
-        //Enconding request to URI standart (handles symbols in request)
-        const encodedUsername = encodeURIComponent(username);
-        const encodedPassword = encodeURIComponent(password);
+    try {
+      const encodedUsername = encodeURIComponent(username);
+      const encodedPassword = encodeURIComponent(password);
 
-        // Waits for the response and allows to use response (unwrap, because JSON)
-        const response = await userLogin({
+      let response;
+      if (!creatingAccount) {
+        response = await userLogin({
           username: encodedUsername,
           password: encodedPassword,
         }).unwrap();
-        if (response) {
-          toast.success("Velkommen tilbage, " + response.name);
+      } else if (inputValidation(username, password, email) === true) {
+        const encodedEmail = encodeURIComponent(email);
+        response = await userCreate({
+          username: encodedUsername,
+          password: encodedPassword,
+          email: encodedEmail,
+        }).unwrap();
+      }
 
-          //Add data about user to cookie
-          document.cookie = `username=${response.name};`;
-          document.cookie = `userid=${response.id};`;
-          document.cookie = `sessionToken=${response.sessionToken};`;
+      if (response) {
+        if (!creatingAccount) toast.success("Din bruger er nu oprettet!");
+        else toast.success("Velkommen tilbage, " + response.name);
 
-          //adds user to redux store
-          dispatch(
-            userActions.loginUser({
-              id: response.id,
-              name: response.name,
-              email: response.emailAddress,
-            })
-          );
+        //Add data about user to cookie
+        addCookie(response.name, response.id, response.sessionToken);
 
-          closeModal();
-          setUsername("");
-          setPassword("");
-        }
-      } catch (error) {
-        toast.error(
-          "Kodeordet eller brugernavnet er indtastet forkert",
-          error.massage
+        //adds user to redux store
+        dispatch(
+          userActions.loginUser({
+            id: response.id,
+            name: response.name,
+            email: response.emailAddress,
+          })
         );
-        console.log("Error -- ", error.message);
+
+        if (!creatingAccount) setCreatingAccount(false);
+
+        clearandclose();
       }
+    } catch (error) {
+      console.log(error);
+      if (!creatingAccount) toast.error("Kunne ikke logge ind");
+      else toast.error("Kunne ikke oprette bruger");
     }
   };
 
-  //Functions is async because it needs to wait for the response from the backend
-  const handleCreateAccount = async () => {
-    if (checkValidEmail(email) === false)
-      toast.error("Den indtastede email er ugyldig");
-    else if (checkValidUsername(username) === false)
-      toast.error(
-        "Brugernavnet er ugyldigt, da det kun må bestå af bogstaver og tal."
-      );
-    else if (checkValidPassword(password) === false)
-      toast.error(
-        "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn."
-      );
-    else {
-      /*
-        If the login is not loading or there were no error then it will try to login, 
-        if there is an an error it will be displayed 
-      */
-      if (!isCreateLoading || !isCreateError) {
-        try {
-          //Enconding request to URI standart (handles symbols in request)
-          const encodedUsername = encodeURIComponent(username);
-          const encodedPassword = encodeURIComponent(password);
-          const encodedEmail = encodeURIComponent(email);
-
-          // Waits for the response and allows to use response (unwrap, because JSON)
-          const response = await userCreate({
-            username: encodedUsername,
-            password: encodedPassword,
-            email: encodedEmail,
-          }).unwrap();
-          if (response) {
-            toast.success("Din bruger er nu oprettet!");
-
-            //Add data about user to cookie
-            document.cookie = `username=${response.name};`;
-            document.cookie = `userid=${response.id};`;
-            document.cookie = `sessionToken=${response.sessionToken};`;
-
-            //adds user to redux store
-            dispatch(
-              userActions.loginUser({
-                id: response.id,
-                name: response.name,
-                email: response.emailAddress,
-              })
-            );
-            setCreatingAccount(false);
-            closeModal();
-
-            setEmail("");
-            setUsername("");
-            setPassword("");
-          }
-        } catch (error) {
-          toast.error("Kunne ikke lave en bruger");
-        }
-      }
-    }
-  };
-
-  function handleSubmit(event) {
-    event.preventDefault();
-    if (!creatingAccount) handleLogin();
-    else handleCreateAccount();
+  function clearandclose() {
+    closeModal();
+    setEmail("");
+    setUsername("");
+    setPassword("");
   }
 
   return (
@@ -198,9 +139,10 @@ const LoginBox = ({ closeModal }) => {
         </button>
         {!creatingAccount ? (
           <>
-            <label>
+            {/* <label>
               Husk mig: <input type="checkbox" />{" "}
-            </label>
+            </label> */}
+            <br />
             <br />
             <a href="/#">Glemt kodeord?</a>
             <br />
