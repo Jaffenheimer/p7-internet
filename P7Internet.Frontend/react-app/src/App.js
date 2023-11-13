@@ -1,6 +1,5 @@
 import React from "react";
 import "./App.css";
-import axios from "axios";
 import FrontPage from "./pages/FrontPage";
 import FullRecipeView from "./pages/FullRecipeView";
 import { useSelector } from "react-redux";
@@ -8,8 +7,6 @@ import Pages from "./objects/Pages";
 import RecipeSelection from "./pages/RecipeSelection";
 
 export default function App() {
-  axios.defaults.baseURL = "http://localhost:5000";
-
   const page = useSelector((state) => state.page.page);
 
   if (page === Pages.frontPage) {
