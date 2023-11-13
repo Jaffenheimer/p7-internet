@@ -106,7 +106,7 @@ public class UserRepository : IUserRepository
     {
         var query = $@"SELECT * FROM {TableName} WHERE Name = @userName";
 
-        var result = await Connection.QuerySingleAsync(query, new {userName});
+        var result = await Connection.QueryFirstOrDefaultAsync(query, new {userName});
 
         if (result != null)
         {

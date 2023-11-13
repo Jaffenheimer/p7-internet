@@ -217,7 +217,7 @@ public class PublicControllerV1 : ControllerBase
         var user = _userRepository.CreateUser(req.Name, req.EmailAddress);
         var res = await _userRepository.Upsert(user, req.Password);
         if (!res)
-            return BadRequest("User with the specified Username already exists, please choose another Username");
+            return BadRequest("User with the specified Username or Email already exists, please choose another Username or Email");
         // ONLY COMMENT THIS IN WHEN WE NEED TO SHOW THIS FEATURE
         //await _emailService.ConfirmEmail(user.EmailAddress, user.Name);
         var token = await _userSessionRepository.GenerateSessionToken(user.Id);
