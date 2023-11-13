@@ -19,13 +19,14 @@ const LoginBox = ({ closeModal }) => {
   const [creatingAccount, setCreatingAccount] = useState(false);
 
   //States used to fetch data from backend
-  const [userLogin] = useUserLoginMutation();
-  const [userCreate] = useUserCreateMutation();
+  const [userLogin, { isLogInLoading }] = useUserLoginMutation();
+  const [userCreate, { isCreateLoading }] = useUserCreateMutation();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    /*
+    if(!isLogInLoading || isCreateLoading){
+      /*
       Will try to createAcount or logIn to api Endpoint
     */
     try {
@@ -69,9 +70,12 @@ const LoginBox = ({ closeModal }) => {
       }
     } catch (error) {
       console.log(error);
-      if (!creatingAccount) toast.error("Kunne ikke logge ind");
+      if (!creatingAccount) toast.error("Brugernavn eller Kodeord er forkert, prøv igen");
       else toast.error("Kunne ikke oprette bruger");
     }
+    }
+
+    
   };
 
   function clearandclose() {
