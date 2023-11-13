@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import cross from "../data/cross.svg";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import { recipeActions } from "../features/recipeSlice";
 import { userActions } from "../features/userSlice";

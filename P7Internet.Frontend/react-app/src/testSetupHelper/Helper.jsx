@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Provider } from "react-redux";
 import { render } from "@testing-library/react";
@@ -9,24 +8,22 @@ import { userReducer } from "../features/userSlice";
 import { storesReducer } from "../features/storesSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
-
-
-
-
 function renderComponent(component) {
   //this resets the store for each test
   const store = configureStore({
-    reducer: {recipeGeneration: recipeGenerationReducer,
+    reducer: {
+      recipeGeneration: recipeGenerationReducer,
       recipe: recipeReducer,
       page: pageReducer,
       user: userReducer,
-      stores: storesReducer,}
-  })
+      stores: storesReducer,
+    },
+    middleware: (getDefaultMiddleware) =>
+      getDefaultMiddleware({
+        serializableCheck: false,
+      }),
+  });
   render(<Provider store={store}>{component}</Provider>);
-} 
+}
 
-export { renderComponent }
-
-
-
-
+export { renderComponent };
