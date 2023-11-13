@@ -2,7 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
-import { toast } from 'react-toastify';
+import { toast } from "react-toastify";
 import { getGeoLocation } from "../helperFunctions/getGeoLocation";
 
 const GenerateRecipeButton = () => {
@@ -12,7 +12,6 @@ const GenerateRecipeButton = () => {
   );
   getGeoLocation();
 
-  
   function goToPageFullRecipeSelection() {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
   }
