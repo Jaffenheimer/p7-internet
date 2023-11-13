@@ -24,6 +24,7 @@ namespace P7Internet.Services
             _apiKey = apiKey;
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://api.sallinggroup.com/");
+            //                                                          Bearer = give access to the bearer of this token
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
         }
         public async Task<List<Offer>> GetRelevantProducts(string query)
