@@ -46,7 +46,7 @@ public class OpenAiService
             var completionResult = _openAi.Chat.CreateChatCompletionAsync(request);
             var result = completionResult.Result;
             if (result.Choices.Count == 0) return null;
-            return new RecipeResponse(result.Choices[0].Message.Content, recipeId);
+            return new RecipeResponse(result.Choices[0].Message.Content, null, recipeId);
         }
         catch (Exception e)
         {
@@ -62,14 +62,8 @@ public class OpenAiService
     private string ComposePromptFromRecipeRequest(RecipeRequest req)
     {
         var prompt = "";
-        if (req.Amount > 1 || req.Amount != null)
-        {
-            prompt += $"Jeg vil gerne have {req.Amount} opskrifter";
-        }
-        else
-        {
-            prompt += "Jeg vil gerne have en opskrift";
-        }
+
+        prompt += "Jeg vil gerne have en opskrift";
 
         if (req.Ingredients != null)
         {
@@ -86,7 +80,7 @@ public class OpenAiService
             prompt += $" der er {string.Join(",", req.DietaryRestrictions)}";
         }
 
-        if (req.AmountOfPeople != null)
+        if (req.AmountOfPeople != null && req.AmountOfPeople > 0)
         {
             prompt += $" til {req.AmountOfPeople} personer";
         }
