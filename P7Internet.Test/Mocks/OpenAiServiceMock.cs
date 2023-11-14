@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Moq;
 using OpenAI_API;
 using OpenAI_API.Chat;
 using OpenAI_API.Models;
+using P7Internet.Persistence.RecipeCacheRepository;
 using P7Internet.Requests;
 using P7Internet.Response;
 
@@ -10,17 +12,14 @@ namespace P7Internet.Services;
 
 public class OpenAiServiceMock
 {
-
+    public Mock<OpenAiService> openAiServiceMock = new Mock<OpenAiService>();
+    public RecipeRequest recipeRequest = new RecipeRequest(Guid.NewGuid(), It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<int>(), It.IsAny<List<string>>(), It.IsAny<List<string>>(), It.IsAny<int>());
+    private readonly RecipeResponse recipeResponse = new RecipeResponse("testRecipe", Guid.NewGuid());
     public OpenAiServiceMock()
     {
-
+        openAiServiceMock.Setup(x => x.GetAiResponse(recipeRequest)).Returns(new RecipeResponse("test", Guid.NewGuid()));
     }
     
-    /// <summary>
-    /// Composes a promt from a RecipeRequest
-    /// </summary>
-    /// <param name="req"></param>
-    /// <returns>Returns a string composed of all the components in the RecipeRequest</returns>
     public string ComposePromptFromRecipeRequest(RecipeRequest req)
     {
         var prompt = "";

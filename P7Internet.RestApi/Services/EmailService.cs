@@ -8,6 +8,10 @@ public class EmailService
 {
     private readonly SendGridClient _client;
 
+    public EmailService()
+    {
+        
+    }
     public EmailService(string? apiKey)
     {
         _client = new SendGridClient(apiKey);

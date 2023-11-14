@@ -33,7 +33,7 @@ public class PublicControllerV1 : ControllerBase
 
     public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService,
         IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository,
-        ICachedOfferRepository cachedOfferRepository, EmailService emailService, IUserSessionRepository userSessionRepository, SallingService sallingService)
+        ICachedOfferRepository cachedOfferRepository, EmailService emailService, IUserSessionRepository userSessionRepository, SallingService sallingService, ETilbudsAvisService eTilbudsAvisService)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
@@ -42,7 +42,7 @@ public class PublicControllerV1 : ControllerBase
         _cachedOfferRepository = cachedOfferRepository;
         _emailService = emailService;
         _userSessionRepository = userSessionRepository;
-        _eTilbudsAvisService = new ETilbudsAvisService();
+        _eTilbudsAvisService = eTilbudsAvisService;
         _sallingService = sallingService;
     }
 
@@ -68,22 +68,16 @@ public class PublicControllerV1 : ControllerBase
             }
         }
 
-        if (req.Amount != null)
-        {
-            if (recipesIncludingIngredients.Count < req.Amount)
-                goto NotEnoughRecipes;
-        }
-
         if (recipesIncludingIngredients.Any(x => x != null))
             return Ok(recipesIncludingIngredients);
 
-        NotEnoughRecipes:
+            if (recipesIncludingIngredients.Count < req.Amount){ 
+                var res = _openAiService.GetAiResponse(req);
+                await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+                return Ok(res);
+            }
+        return BadRequest("No recipe generated");
         
-        var res = _openAiService.GetAiResponse(req);
-
-        await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
-
-        return Ok(res);
     }
 
     /// <summary>
@@ -422,7 +416,7 @@ public class PublicControllerV1 : ControllerBase
     {
         foreach (string str in stringList)
         {
-            if (!targetString.Contains(str))
+            if (!targetString.ToLower().Contains(str.ToLower()))
             {
                 return false;
             }

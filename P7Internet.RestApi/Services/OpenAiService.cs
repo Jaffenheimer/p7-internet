@@ -11,7 +11,10 @@ namespace P7Internet.Services;
 public class OpenAiService
 {
     private readonly OpenAIAPI _openAi;
-
+    public OpenAiService()
+    {
+            
+    }
     public OpenAiService(string? apiKey)
     {
         _openAi = new OpenAIAPI(apiKey);
@@ -23,7 +26,7 @@ public class OpenAiService
     /// </summary>
     /// <param name="req"></param>
     /// <returns>A list of RecipeResponses corresponding to the amount of requested recipes</returns>
-    public RecipeResponse GetAiResponse(RecipeRequest req)
+    public virtual RecipeResponse GetAiResponse(RecipeRequest req)
     {
         var request = new ChatRequest()
         {

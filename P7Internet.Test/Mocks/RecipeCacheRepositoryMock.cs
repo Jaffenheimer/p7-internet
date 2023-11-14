@@ -15,6 +15,7 @@ namespace P7Internet.Test.Mocks
         {
             cachedRecipeRepositoryMock = new Mock<IRecipeCacheRepository>();
             cachedRecipeRepositoryMock.Setup(x => x.GetAllRecipes()).Returns(Task.FromResult(new List<string>()));
+            cachedRecipeRepositoryMock.Setup(x => x.Upsert("TestRecipe", Guid.NewGuid())).Returns(Task.FromResult(true));
         }
 
     }
