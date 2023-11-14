@@ -17,7 +17,7 @@ public class IngredientRepository : IIngredientRepository
     {
         _connectionFactory = connectionFactory;
     }
-    
+
     /// <summary>
     /// Upserts a list of ingredients to the database
     /// </summary>
@@ -37,7 +37,7 @@ public class IngredientRepository : IIngredientRepository
 
         return result > 0;
     }
-    
+
     /// <summary>
     /// Checks if an ingredient exists in the database
     /// </summary>
@@ -51,7 +51,24 @@ public class IngredientRepository : IIngredientRepository
 
         return resultFromDb != null;
     }
-    
+
+    /// <summary>
+    /// Gets all ingredients from the database
+    /// </summary>
+    /// <returns>The same as above</returns>
+    public async Task<List<string>> GetAllIngredients()
+    {
+        var query = $@"SELECT Name FROM {TableName}";
+
+        var resultFromDb = await Connection.QueryAsync<string>(query);
+
+        return resultFromDb.ToList();
+    }
+
+    /// <summary>
+    /// Helper function to get ingredients from a text file
+    /// </summary>
+    /// <returns></returns>
     private List<string> GetIngredientsFromTextFile()
     {
         var ingredients = new List<string>();
@@ -63,5 +80,4 @@ public class IngredientRepository : IIngredientRepository
 
         return ingredients;
     }
-    
 }

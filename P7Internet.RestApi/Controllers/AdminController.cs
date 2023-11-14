@@ -24,7 +24,7 @@ public class AdminController : ControllerBase
     {
         var result = await _ingredientRepository.UpsertIngredients();
 
-        return result ? Ok("Det virkede") : BadRequest("LORT");
+        return result ? Ok("Det virkede :D") : BadRequest("Det virkede ikke :///");
     }
     
     

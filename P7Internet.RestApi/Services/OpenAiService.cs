@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
 using OpenAI_API;
 using OpenAI_API.Chat;
 using OpenAI_API.Models;
@@ -46,11 +48,11 @@ public class OpenAiService
             var completionResult = _openAi.Chat.CreateChatCompletionAsync(request);
             var result = completionResult.Result;
             if (result.Choices.Count == 0) return null;
-            return new RecipeResponse(result.Choices[0].Message.Content, recipeId);
+            return new RecipeResponse(result.Choices[0].Message.Content,null, recipeId);
         }
         catch (Exception e)
         {
-            return RecipeResponse.Error(e.Message, recipeId);
+            return RecipeResponse.Error(e.Message, null, recipeId);
         }
     }
 
