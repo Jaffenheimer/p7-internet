@@ -1,26 +1,27 @@
 import React from "react";
 import RecipeSelectionContainerLeft from "../components/RecipeSelectionContainerLeft";
-import StoreSelection from "../components/StoreSelection";
 import Header from "../components/Header";
 import { ToastContainer } from "react-toastify";
-
+import { RecipeSelectionContainerRight } from "../components";
 
 const RecipeSelection = () => {
+  
   return (
     <div className="AppContainer">
-      <ToastContainer 
+      <ToastContainer
         position="top-center"
         newestOnTop={true}
-        closeButton={false}/>
+        closeButton={false}
+      />
       <div className="headerContainer">
         <Header />
       </div>
       <div className={"split-container"}>
         <div className={"split-screen-left"}>
-        <RecipeSelectionContainerLeft />
+          <RecipeSelectionContainerLeft />
         </div>
         <div className={"split-screen-right"}>
-          <StoreSelection />
+          <RecipeSelectionContainerRight />
         </div>
       </div>
     </div>

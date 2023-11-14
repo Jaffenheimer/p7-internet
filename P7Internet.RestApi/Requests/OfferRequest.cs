@@ -2,6 +2,13 @@
 
 namespace P7Internet.Requests
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="pagesize"></param>
+    /// <param name="searchTerm"></param>
+    /// <param name="radius"></param>
+    /// <param name="upcoming"></param>
     public class OfferRequest
     {
         public double Lat { get; set; }
@@ -15,6 +22,7 @@ namespace P7Internet.Requests
         {
         }
 
+
         public OfferRequest(int pagesize, string searchTerm, int radius, string upcoming)
         {
             Pagesize = pagesize;
@@ -23,6 +31,10 @@ namespace P7Internet.Requests
             Upcoming = upcoming;
         }
 
+        /// <summary>
+        /// Composes the offer object to be sent to the etilbudsavis API as JsonObject
+        /// </summary>
+        /// <returns>Returns the object as a string</returns>
         public string ComposeOfferObject()
         {
             string res = $@"{{

@@ -34,6 +34,10 @@
       <None Remove="Scripts\0005-UserAuthTable.sql" />
       <None Remove="Scripts\0005-UserSessionTable.sql" />
       <EmbeddedResource Include="Scripts\0005-UserSessionTable.sql" />
+      <None Remove="Scripts\0006-UserRecipeHistoryTable.sql" />
+      <EmbeddedResource Include="Scripts\0006-UserRecipeHistoryTable.sql" />
+      <None Remove="Scripts\0007-IngredientTable.sql" />
+      <EmbeddedResource Include="Scripts\0007-IngredientTable.sql" />
     </ItemGroup>
 
 </Project>

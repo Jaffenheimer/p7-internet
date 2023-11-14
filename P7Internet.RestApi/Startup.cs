@@ -34,7 +34,7 @@ namespace P7Internet
                 });
                 services.AddSwaggerGen(s =>
                 {
-                    s.SwaggerDoc("v1", new OpenApiInfo {Title = ServiceName, Version = "v1"});
+                    s.SwaggerDoc("v1", new OpenApiInfo { Title = ServiceName, Version = "v1" });
                 });
 
                 services.ConfigurePersistenceMySqlConnection(Configuration.GetConnectionString("MySqlDatabase"));
@@ -61,7 +61,7 @@ namespace P7Internet
                 });
 
                 program.UseRouting();
-                program.UseCors();
+                program.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
                 program.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             }
         }

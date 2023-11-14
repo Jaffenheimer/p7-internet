@@ -13,6 +13,12 @@ public class EmailService
         _client = new SendGridClient(apiKey);
     }
 
+    /// <summary>
+    /// Sends an email to the user with a link to Confirm the email
+    /// There is no return value to this function
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="userName"></param>
     public async Task ConfirmEmail(string email, string userName)
     {
         var from = new EmailAddress($"jonathanwisborgfog@gmail.com", "P7Internet");
@@ -25,6 +31,12 @@ public class EmailService
         var response = await _client.SendEmailAsync(msg);
     }
 
+    /// <summary>
+    /// Sends an email to the user with a link to reset the password
+    /// There is no return value to this function
+    /// </summary>
+    /// <param name="email"></param>
+    /// <param name="userName"></param>
     public async Task ResetPassword(string email, string userName)
     {
         var from = new EmailAddress($"jonathanwisborgfog@gmail.com", "P7Internet");
