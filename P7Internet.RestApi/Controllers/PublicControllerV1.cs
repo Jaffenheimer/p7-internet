@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using P7Internet.Persistence.CachedIngredientPricesRepository;
-using P7Internet.Persistence.CachedOfferRepository;
 using P7Internet.Persistence.FavouriteRecipeRepository;
 using P7Internet.Persistence.IngredientRepository;
 using P7Internet.Persistence.RecipeCacheRepository;
@@ -15,7 +13,6 @@ using P7Internet.Persistence.UserSessionRepository;
 using P7Internet.Requests;
 using P7Internet.Response;
 using P7Internet.Services;
-using P7Internet.Shared;
 
 namespace P7Internet.Controllers;
 
@@ -37,7 +34,8 @@ public class PublicControllerV1 : ControllerBase
     public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService,
         IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository,
         ICachedOfferRepository cachedOfferRepository, EmailService emailService,
-        IUserSessionRepository userSessionRepository, IIngredientRepository ingredientRepository, SallingService sallingService)
+        IUserSessionRepository userSessionRepository, IIngredientRepository ingredientRepository,
+        SallingService sallingService)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
@@ -58,7 +56,7 @@ public class PublicControllerV1 : ControllerBase
     /// </summary>
     /// <param name="req"></param>
     /// <returns>Returns the result from either the cache or the API</returns>
-    [HttpPost("recipes")]   
+    [HttpPost("recipes")]
     public async Task<IActionResult> GetARecipe([FromBody] RecipeRequest req)
     {
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
@@ -66,7 +64,7 @@ public class PublicControllerV1 : ControllerBase
         List<string?> recipesIncludingIngredients = new List<string?>();
         foreach (var recipe in recipes)
         {
-            if(req.DietaryRestrictions.Count == 0 && req.ExcludedIngredients.Count == 0)
+            if (req.DietaryRestrictions.Count == 0 && req.ExcludedIngredients.Count == 0)
             {
                 if (ContainsEveryString(req.Ingredients, recipe))
                 {
@@ -83,7 +81,7 @@ public class PublicControllerV1 : ControllerBase
                 }
             }
         }
-        
+
         if (req.Amount != null)
         {
             if (recipesIncludingIngredients.Count < req.Amount)
@@ -149,7 +147,7 @@ public class PublicControllerV1 : ControllerBase
         List<string?> recipesIncludingIngredients = new List<string?>();
         foreach (var recipe in recipes)
         {
-            if(req.DietaryRestrictions.Count == 0 && req.ExcludedIngredients.Count == 0)
+            if (req.DietaryRestrictions.Count == 0 && req.ExcludedIngredients.Count == 0)
             {
                 if (ContainsEveryString(req.Ingredients, recipe))
                 {
@@ -201,7 +199,7 @@ public class PublicControllerV1 : ControllerBase
         {
             return Ok(checkIfOfferExists);
         }
-        
+
         var res = await _eTilbudsAvisService.GetAllOffers(req);
 
         if (res != null && res.Count != 0)
@@ -215,7 +213,7 @@ public class PublicControllerV1 : ControllerBase
         }
 
         res = await _sallingService.GetRelevantProducts(req.SearchTerm);
-        
+
         if (res != null)
         {
             foreach (var product in res)
@@ -223,8 +221,10 @@ public class PublicControllerV1 : ControllerBase
                 if (_cachedOfferRepository.GetOffer(product.Name) != null) break;
                 _cachedOfferRepository.UpsertOffer(product.Name, product.Price, product.Store);
             }
+
             return Ok(res);
         }
+
         return BadRequest("No offer found");
     }
 
@@ -261,7 +261,8 @@ public class PublicControllerV1 : ControllerBase
         var user = _userRepository.CreateUser(req.Name, req.EmailAddress);
         var res = await _userRepository.Upsert(user, req.Password);
         if (!res)
-            return BadRequest("User with the specified Username or Email already exists, please choose another Username or Email");
+            return BadRequest(
+                "User with the specified Username or Email already exists, please choose another Username or Email");
         // ONLY COMMENT THIS IN WHEN WE NEED TO SHOW THIS FEATURE
         //await _emailService.ConfirmEmail(user.EmailAddress, user.Name);
         var token = await _userSessionRepository.GenerateSessionToken(user.Id);
@@ -454,6 +455,7 @@ public class PublicControllerV1 : ControllerBase
         {
             stringList[i] = stringList[i].ToLower();
         }
+
         foreach (string str in stringList)
         {
             if (!targetString.Contains(str.ToLower()))
@@ -481,11 +483,12 @@ public class PublicControllerV1 : ControllerBase
         {
             if (result.Contains(ingredient))
                 continue;
-            if(recipe.Contains(" " + ingredient.ToLower() + " "))
-                    result.Add(ingredient);
+            if (recipe.Contains(" " + ingredient.ToLower() + " "))
+                result.Add(ingredient);
         }
 
         return result;
     }
+
     #endregion
 }

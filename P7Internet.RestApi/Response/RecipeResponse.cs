@@ -23,7 +23,7 @@ namespace P7Internet.Response
         /// <param name="recipes"></param>
         /// <param name="ingredients"></param>
         /// <param name="recipeId"></param>
-        public RecipeResponse(string recipes,List<string> ingredients, Guid recipeId)
+        public RecipeResponse(string recipes, List<string> ingredients, Guid recipeId)
         {
             recipes = recipes.Trim();
             if (recipes.StartsWith("\"") || recipes.StartsWith("'"))

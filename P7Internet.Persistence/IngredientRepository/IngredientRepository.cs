@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
@@ -72,7 +73,7 @@ public class IngredientRepository : IIngredientRepository
     private List<string> GetIngredientsFromTextFile()
     {
         var ingredients = new List<string>();
-        var lines = System.IO.File.ReadAllLines("../P7Internet.Persistence/IngredientRepository/Ingredients.txt");
+        var lines = File.ReadAllLines("../P7Internet.Persistence/IngredientRepository/Ingredients.txt");
         foreach (var line in lines)
         {
             ingredients.Add(line);

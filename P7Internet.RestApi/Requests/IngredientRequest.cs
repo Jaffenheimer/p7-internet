@@ -8,8 +8,8 @@ public class IngredientRequest
 
     public IngredientRequest()
     {
-        
     }
+
     public IngredientRequest(List<string> ingredients)
     {
         Ingredients = ingredients;
