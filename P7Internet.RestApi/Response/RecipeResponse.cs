@@ -38,15 +38,15 @@ namespace P7Internet.Response
             Recipes = recipes;
         }
 
-        private RecipeResponse(string errorMessage, string recipes)
+        private RecipeResponse(string errorMessage, Guid id)
         {
             ErrorMessage = errorMessage;
-            Recipes = recipes;
+            RecipeId = id;
         }
 
-        public static RecipeResponse Error(string message,List<string> ingredients, Guid id)
+        public static RecipeResponse Error(string message, Guid id)
         {
-            return new RecipeResponse(message, ingredients,id);
+            return new RecipeResponse(message, id);
         }
     }
 }
