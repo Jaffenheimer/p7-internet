@@ -4,12 +4,19 @@ import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
 import { toast } from "react-toastify";
 import { getGeoLocation } from "../helperFunctions/getGeoLocation";
+import recipeBodyCreator from "../helperFunctions/recipeBodyCreator";
 
 const GenerateRecipeButton = () => {
   const dispatch = useDispatch();
   const ingredients = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
   );
+  const recipeGenData = useSelector((state) => state.recipeGeneration);
+
+
+  //Selector for finde out wheater or not the user is login
+  const loggedIn = useSelector((state) => state.user.loggedIn);
+  
   getGeoLocation();
 
   function goToPageFullRecipeSelection() {
@@ -24,6 +31,10 @@ const GenerateRecipeButton = () => {
       );
       return;
     }
+
+    //Create body for request
+    recipeBodyCreator(loggedIn, recipeGenData);
+
     goToPageFullRecipeSelection();
   }
 
