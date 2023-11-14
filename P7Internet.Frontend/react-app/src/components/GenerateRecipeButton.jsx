@@ -29,6 +29,11 @@ const GenerateRecipeButton = () => {
   const fetchRecipe = async (body) => {
     console.log("Body som bliver sendt med"); 
     console.log(body);
+
+    if (isRecipeLoading) {
+      toast.loading("Laver en opskrift med det valgte");
+    }
+
     if (!isRecipeLoading) {
       try {
         // Waits for the response and allows to use response (unwrap, because JSON)
@@ -43,13 +48,11 @@ const GenerateRecipeButton = () => {
         console.log(recipeError);
         toast.error("Kunne ikke lave en opskrift", error);
       }
-    } else if (isRecipeLoading) {
-      toast.loading("Laver en opskrift med det valgte");
     }
   };
 
   //handles all the logic for when the button is clicked
-  function handleOnClick() {
+  const handleOnClick =  async () => {
     if (ingredients.length === 0) {
       toast.error(
         "Du skal tilføje mindst 1 ingrediens for at generere opskrifter"
@@ -59,7 +62,12 @@ const GenerateRecipeButton = () => {
 
     //Create body for request
     const body = recipeBodyCreator(loggedIn, recipeGenData);
-    fetchRecipe(body);
+    
+    await fetchRecipe(body);
+
+    if (isRecipeLoading) {
+      toast.loading("Laver en opskrift med det valgte");
+    }
 
     goToPageFullRecipeSelection();
   }
