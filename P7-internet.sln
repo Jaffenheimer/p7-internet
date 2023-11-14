@@ -16,7 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		docker-compose.yml = docker-compose.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "P7Internet.Shared", "P7Internet.Shared\P7Internet.Shared.csproj", "{5AE8E67C-855B-4822-96A6-57B68DD4D7FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "P7Internet.Shared", "P7Internet.Shared\P7Internet.Shared.csproj", "{5AE8E67C-855B-4822-96A6-57B68DD4D7FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,7 +53,6 @@ Global
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		SharedObjects\SharedObjects.projitems*{046f8421-ce79-452a-af1c-1e1a74da12b2}*SharedItemsImports = 5
-		SharedObjects\SharedObjects.projitems*{37889419-479f-4868-b405-2a0067dac79a}*SharedItemsImports = 13
 		SharedObjects\SharedObjects.projitems*{65e6b3c9-f7bd-488e-8d7e-e208e45fd3b1}*SharedItemsImports = 5
 	EndGlobalSection
 EndGlobal

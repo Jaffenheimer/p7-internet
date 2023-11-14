@@ -6,6 +6,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using P7Internet.Persistence.CachedIngredientPricesRepository;
+using P7Internet.Persistence.CachedOfferRepository;
 using P7Internet.Persistence.FavouriteRecipeRepository;
 using P7Internet.Persistence.IngredientRepository;
 using P7Internet.Persistence.RecipeCacheRepository;
@@ -14,6 +15,7 @@ using P7Internet.Persistence.UserSessionRepository;
 using P7Internet.Requests;
 using P7Internet.Response;
 using P7Internet.Services;
+using P7Internet.Shared;
 
 namespace P7Internet.Controllers;
 
@@ -28,13 +30,14 @@ public class PublicControllerV1 : ControllerBase
     private readonly OpenAiService _openAiService;
     private readonly ETilbudsAvisService _eTilbudsAvisService;
     private readonly EmailService _emailService;
+    private readonly SallingService _sallingService;
     private readonly IUserSessionRepository _userSessionRepository;
     private readonly IIngredientRepository _ingredientRepository;
 
     public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService,
         IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository,
         ICachedOfferRepository cachedOfferRepository, EmailService emailService,
-        IUserSessionRepository userSessionRepository, IIngredientRepository ingredientRepository)
+        IUserSessionRepository userSessionRepository, IIngredientRepository ingredientRepository, SallingService sallingService)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
@@ -45,6 +48,7 @@ public class PublicControllerV1 : ControllerBase
         _userSessionRepository = userSessionRepository;
         _ingredientRepository = ingredientRepository;
         _eTilbudsAvisService = new ETilbudsAvisService();
+        _sallingService = sallingService;
     }
 
     #region Recipe Endpoints
@@ -200,7 +204,7 @@ public class PublicControllerV1 : ControllerBase
         
         var res = await _eTilbudsAvisService.GetAllOffers(req);
 
-        if (res != null)
+        if (res != null && res.Count != 0)
         {
             foreach (var offer in res)
             {
@@ -210,6 +214,17 @@ public class PublicControllerV1 : ControllerBase
             return Ok(res);
         }
 
+        res = await _sallingService.GetRelevantProducts(req.SearchTerm);
+        
+        if (res != null)
+        {
+            foreach (var product in res)
+            {
+                if (_cachedOfferRepository.GetOffer(product.Name) != null) break;
+                _cachedOfferRepository.UpsertOffer(product.Name, product.Price, product.Store);
+            }
+            return Ok(res);
+        }
         return BadRequest("No offer found");
     }
 

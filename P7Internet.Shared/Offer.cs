@@ -11,7 +11,7 @@ public class Offer
     }
     [JsonProperty("id")]
     public string Id { get; set; }
-    [JsonProperty("name")]
+    [JsonProperty("title")]
     public string Name { get; set; }
     [JsonProperty("description")]
     public string Description { get; set; }
@@ -21,6 +21,8 @@ public class Offer
     public string Store { get; set; }
     public DateTime Created { get; set; }
     public DateTime Ending { get; set; }
+    [JsonProperty("img")]
+    public string image { get; set; }
 
     
 }
