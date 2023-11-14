@@ -67,15 +67,15 @@ public class OpenAiService
 
         if (req.Ingredients != null)
         {
-            prompt += $" med disse ingredientser {string.Join(", ", req.Ingredients)}";
+            prompt += $" med disse ingredienser {string.Join(", ", req.Ingredients)}";
         }
 
-        if (req.ExcludedIngredients != null)
+        if (req.ExcludedIngredients != null && req.ExcludedIngredients.Count > 0)
         {
-            prompt += $" uden disse ingredientser {string.Join(",", req.ExcludedIngredients)}";
+            prompt += $" uden disse ingredienser {string.Join(",", req.ExcludedIngredients)}";
         }
 
-        if (req.DietaryRestrictions != null)
+        if (req.DietaryRestrictions != null && req.DietaryRestrictions.Count > 0)
         {
             prompt += $" der er {string.Join(",", req.DietaryRestrictions)}";
         }
