@@ -62,14 +62,8 @@ public class OpenAiService
     private string ComposePromptFromRecipeRequest(RecipeRequest req)
     {
         var prompt = "";
-        if (req.Amount > 1 || req.Amount != null)
-        {
-            prompt += $"Jeg vil gerne have {req.Amount} opskrifter";
-        }
-        else
-        {
-            prompt += "Jeg vil gerne have en opskrift";
-        }
+
+        prompt += "Jeg vil gerne have en opskrift";
 
         if (req.Ingredients != null)
         {
