@@ -26,8 +26,6 @@ const userEndpoints = apiSlice.injectEndpoints({
       }),
     }),
   }),
-  //Is a flag that tells redux that is does not override existing endpoints
-  overrideExisting: false,
 });
 
 export const {

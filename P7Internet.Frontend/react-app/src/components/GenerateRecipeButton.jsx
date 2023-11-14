@@ -5,6 +5,8 @@ import Pages from "../objects/Pages";
 import { toast } from "react-toastify";
 import { getGeoLocation } from "../helperFunctions/getGeoLocation";
 import recipeBodyCreator from "../helperFunctions/recipeBodyCreator";
+import { useGenerateUserRecipeMutation } from "../services/recipeEndpoints";
+
 
 const GenerateRecipeButton = () => {
   const dispatch = useDispatch();
@@ -13,15 +15,38 @@ const GenerateRecipeButton = () => {
   );
   const recipeGenData = useSelector((state) => state.recipeGeneration);
 
-
   //Selector for finde out wheater or not the user is login
   const loggedIn = useSelector((state) => state.user.loggedIn);
-  
+
   getGeoLocation();
 
   function goToPageFullRecipeSelection() {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
   }
+
+  const [generateUserRecipe, { isLoading:isRecipeLoading, error:recipeError}] = useGenerateUserRecipeMutation();
+
+  const fetchRecipe = async (body) => {
+    console.log("Body som bliver sendt med"); 
+    console.log(body);
+    if (!isRecipeLoading) {
+      try {
+        // Waits for the response and allows to use response (unwrap, because JSON)
+        const response = await generateUserRecipe(body);
+
+        if (response) {
+          console.log(response);
+          toast.success("Opskrifter oprettet");
+        }
+      } catch (error) {
+        console.log(error);
+        console.log(recipeError);
+        toast.error("Kunne ikke lave en opskrift", error);
+      }
+    } else if (isRecipeLoading) {
+      toast.loading("Laver en opskrift med det valgte");
+    }
+  };
 
   //handles all the logic for when the button is clicked
   function handleOnClick() {
@@ -33,7 +58,8 @@ const GenerateRecipeButton = () => {
     }
 
     //Create body for request
-    recipeBodyCreator(loggedIn, recipeGenData);
+    const body = recipeBodyCreator(loggedIn, recipeGenData);
+    fetchRecipe(body);
 
     goToPageFullRecipeSelection();
   }

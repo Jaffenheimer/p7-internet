@@ -20,19 +20,20 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     sessiontoken = retriveCookie("sessionToken=");
   }
 
-  const restrictions = [...allergens];
-  if (dietaryRestrictions.lenght > 0) restrictions.push(dietaryRestrictions);
 
-  console.log("Ingredients");
+  //Combines allgeries with dietaryrestrictions
+  const restrictions = [...allergens];
+  if (dietaryRestrictions !== '') restrictions.push(dietaryRestrictions);
+
   ownedIngredients.forEach((ingredient) => {
     ingredients.push(ingredient.text);
   });
 
-  console.log("Exclude ingreidents  ");
   excludeList.forEach((ingredient) => {
     excludedIngredients.push(ingredient.text);
   });
 
+  //Creates the body
   const body = {
     userId: userid,
     sessionToken: sessiontoken,
@@ -43,8 +44,8 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     dietaryRestrictions: restrictions,
   };
 
-  console.log("Body to post");
-  console.log(body);
+  // console.log("Body to post");
+  // console.log(body);
 
   return body;
 }
