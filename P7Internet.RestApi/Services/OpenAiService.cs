@@ -80,7 +80,7 @@ public class OpenAiService
             prompt += $" der er {string.Join(",", req.DietaryRestrictions)}";
         }
 
-        if (req.AmountOfPeople != null || req.AmountOfPeople > 0)
+        if (req.AmountOfPeople != null && req.AmountOfPeople > 0)
         {
             prompt += $" til {req.AmountOfPeople} personer";
         }
