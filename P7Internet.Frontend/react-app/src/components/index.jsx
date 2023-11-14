@@ -8,7 +8,7 @@ export { default as ContainerLeft } from "./ContainerLeft";
 export { default as RecipeSelectionContainerLeft } from "./RecipeSelectionContainerLeft";
 export { default as ContainerRight } from "./ContainerRight";
 export { default as RecipeSelectionContainerRight } from "./RecipeSelectionContainerRight";
-export { default as GenerateRecipeButton } from "./GenerateRecipeButton";
+export { default as GenerateRecipesButton } from "./GenerateRecipesButton";
 export { default as ProfilePicture } from "./ProfilePicture";
 export { default as NumberOfPersonsField } from "./NumberOfPersonsField";
 export { default as RecipeView } from "./RecipeView";

@@ -2,17 +2,14 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
-import { toast } from 'react-toastify';
-import { getGeoLocation } from "../helperFunctions/getGeoLocation";
+import { toast } from "react-toastify";
 
-const GenerateRecipeButton = () => {
+const GenerateRecipesButton = () => {
   const dispatch = useDispatch();
   const ingredients = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
   );
-  getGeoLocation();
 
-  
   function goToPageFullRecipeSelection() {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
   }
@@ -28,7 +25,11 @@ const GenerateRecipeButton = () => {
     goToPageFullRecipeSelection();
   }
 
-  return <button onClick={handleOnClick}>Generer opskrifter</button>;
+  return (
+    <button onClick={handleOnClick} data-testid="GenerateRecipesButton">
+      Generer opskrifter
+    </button>
+  );
 };
 
-export default GenerateRecipeButton;
+export default GenerateRecipesButton;

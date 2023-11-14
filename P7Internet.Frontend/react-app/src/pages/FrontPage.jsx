@@ -3,15 +3,19 @@ import ContainerRight from "../components/ContainerRight";
 import ContainerLeft from "../components/ContainerLeft";
 import Header from "../components/Header";
 import { ToastContainer } from "react-toastify";
+import { getGeoLocation } from "../helperFunctions/getGeoLocation";
 
 const FrontPage = () => {
+  getGeoLocation();
+
   return (
     <div className="AppContainer">
-      <ToastContainer 
+      <ToastContainer
         position="top-center"
         newestOnTop={true}
         closeButton={false}
-        draggablePercent/>
+        draggablePercent
+      />
       <div className="headerContainer">
         <Header />
       </div>

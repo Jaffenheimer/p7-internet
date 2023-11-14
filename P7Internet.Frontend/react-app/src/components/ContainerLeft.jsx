@@ -1,7 +1,7 @@
 import React from "react";
 import AddIngredientsForm from "./AddIngredientsForm";
 import OwnedIngredientsList from "./OwnedIngredientsList";
-import GenerateRecipeButton from "./GenerateRecipeButton";
+import GenerateRecipesButton from "./GenerateRecipesButton";
 import { useSelector } from "react-redux";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { useDispatch } from "react-redux";
@@ -27,8 +27,8 @@ const ContainerLeft = () => {
         <OwnedIngredientsList />
       </div>
 
-      <div id="GenerateRecipeButton">
-        <GenerateRecipeButton />
+      <div id="GenerateRecipesButton">
+        <GenerateRecipesButton />
       </div>
     </div>
   );
