@@ -96,10 +96,10 @@ public class PublicControllerV1 : ControllerBase
         var recipeList = new List<RecipeResponse>();
         if (req.Amount > 1)
         {
+            var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
             for (int i = 0; i < req.Amount; i++)
             {
                 recipeList.Add(_openAiService.GetAiResponse(req));
-                var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
                 var ingredientsToPassToFrontendIfAmountIsMoreThanOne =
                     CheckListForValidIngredients(recipeList[i].Recipes, validIngredientsIfAmountIsMoreThanOne);
                 recipeList[i].Ingredients = ingredientsToPassToFrontendIfAmountIsMoreThanOne;
@@ -195,10 +195,10 @@ public class PublicControllerV1 : ControllerBase
         var recipeList = new List<RecipeResponse>();
         if (req.Amount > 1)
         {
+            var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
             for (int i = 0; i < req.Amount; i++)
             {
                 recipeList.Add(_openAiService.GetAiResponse(req));
-                var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
                 var ingredientsToPassToFrontendIfAmountIsMoreThanOne =
                     CheckListForValidIngredients(recipeList[i].Recipes, validIngredientsIfAmountIsMoreThanOne);
                 recipeList[i].Ingredients = ingredientsToPassToFrontendIfAmountIsMoreThanOne;
