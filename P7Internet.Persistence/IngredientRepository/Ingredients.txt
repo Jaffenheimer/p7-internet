@@ -1,0 +1,601 @@
+Løg
+Hvidløg
+Olivenolie
+Salt
+Sort peber
+Smør
+Tomater
+Kyllingebouillon
+Rød peber
+Sukker
+Hvedemel
+Oksekød
+Svinekød
+Kylling
+Ris
+Kartofler
+Æg
+Citronsaft
+Gulerødder
+Basilikum
+Oregano
+Paprika
+Koriander
+Kanel
+Ingefær
+Sojasovs
+Honning
+Fløde
+Parmesanost
+Spinat
+Persille
+Limesaft
+Appelsin
+Thyme
+Rosmarin
+Worcestershire-sauce
+Sød chili-sauce
+Dijonsennep
+Risvin
+Brunt sukker
+Hvidvinseddike
+Kokosmælk
+Karrypulver
+Hvedebrød
+Sesamolie
+Peberfrugt
+Agurk
+Majs
+Chilipeber
+Svinekød
+Oksekød
+Kylling
+Fisk
+Laks
+Tofu
+Aubergine
+Courgette
+Squash
+Risnudler
+Quinoa
+Spaghetti
+Græskar
+Mandler
+Cashewnødder
+Valnødder
+Pinjekerner
+Flødeost
+Ricotta
+Balsamicoeddike
+Rødvinseddike
+Æblecidereddike
+Sennep
+Avocado
+Radiser
+Purløg
+Bladselleri
+Dild
+Græsk yoghurt
+Majsmel
+Kapers
+Sojabønner
+Grønne bønner
+Karryblad
+Creme fraiche
+Blomkål
+Broccoli
+Ananas
+Mango
+Pære
+Æble
+Jordbær
+Blåbær
+Hindbær
+Ribs
+Abrikos
+Figen
+Rosiner
+Ansjoser
+Torsk
+Makrel
+Rejer
+Muslinger
+Hummer
+Røget laks
+Græsk feta
+Blåskimmelost
+Mozzarella
+Cheddar
+Gorgonzola
+Parmigiano-Reggiano
+Camembert
+Pecorino
+Risotto
+Pita
+Ciabatta
+Baguette
+Naanbrød
+Fetaost
+Bulgur
+Hvide bønner
+Kikærter
+Linser
+Sojabønner
+Røde bønner
+Kidneybønner
+Chokolade
+Vanilje
+Kakaopulver
+Mel
+Majsstivelse
+Rørsukker
+Mørk chokolade
+Hvid chokolade
+Sød sojasovs
+Æblejuice
+Appelsinjuice
+Limejuice
+Ananasjuice
+Mandelmælk
+Havregryn
+Risalamande
+Risengrød
+Makaroni
+Havregryn
+Majsflager
+Skyr
+Cottage cheese
+Mælk
+Fløde
+Cottage cheese
+Mascarpone
+Saltede peanuts
+Mandler
+Cashewnødder
+Valnødder
+Pebermynte
+Lakrids
+Dild
+Mynte
+Persille
+Timian
+Estragon
+Sød chili
+Tabasco
+Wasabi
+Dijonsennep
+Rødvin
+Hvidvin
+Rosévin
+Champignon
+Asparges
+Rucola
+Radise
+Fennikel
+Vaniljeekstrakt
+Vaniljestang
+Frosne ærter
+Frosne majs
+Frosne bær
+Frosne hindbær
+Frosne blåbær
+Frosne jordbær
+Blommer
+Vindruer
+Granatæble
+Kapers
+Svesker
+Tørrede figner
+Tørrede abrikoser
+Tørrede dadler
+Kanelstang
+Sød paprika
+Røget paprika
+Gær
+Bagepulver
+Citronskal
+Appelsinskal
+Limeskal
+Rødvinssauce
+Bechamelsauce
+Pesto
+Ranchdressing
+Thousand Island-dressing
+Caesar-dressing
+Honning-sennepsdressing
+BBQ-sauce
+Teriyaki-sauce
+Aioli
+Tomatpuré
+Salsa
+Guacamole
+Hummus
+Pølse
+Bacon
+Pølser
+Salami
+Skinke
+Roastbeef
+Kalkun
+Røget skinke
+Pølse
+Løg
+Hvidløg
+Tomater
+Kartofler
+Gulerødder
+Selleri
+Porre
+Agurk
+Broccoli
+Spinat
+Aubergine
+Peberfrugt
+Chili
+Squash
+Champignon
+Zucchini
+Bladselleri
+Persille
+Dild
+Rosmarin
+Timian
+Basilikum
+Oregano
+Koriander
+Mynte
+Estragon
+Ingefær
+Citron
+Appelsin
+Lime
+Citronmelisse
+Limeskal
+Appelsinskal
+Kanel
+Nelliker
+Muskatnød
+Vanilje
+Kardemomme
+Karry
+Spidskommen
+Korianderfrø
+Sennep
+Paprika
+Cayennepeber
+Worcestershiresauce
+Sojasauce
+Fiskesauce
+Oystersauce
+Hoisinsauce
+Teriyakisauce
+Balsamicoeddike
+Æblecidereddike
+Hvidvinseddike
+Risdrik
+Mandelmælk
+Soyamelk
+Kokosmælk
+Fløde
+Yoghurt
+Creme fraiche
+Smør
+Olivenolie
+Rapsolie
+Sesamolie
+Solsikkeolie
+Jordnøddeolie
+Trøffelolie
+Honning
+Ahornsirup
+Agavesirup
+Sukker
+Brunt sukker
+Farin
+Mel
+Hvedemel
+Fuldkornsmel
+Speltmel
+Majsmel
+Rismel
+Kartoffelmel
+Bagepulver
+Natron
+Gær
+Salt
+Peber
+Chili pulver
+Paprika pulver
+Korianderpulver
+Spidskommenpulver
+Kanelstænger
+Kardemommebælg
+Vaniljestang
+Løgpulver
+Hvidløgspulver
+Tomatpuré
+Tomatketchup
+Tomatpassata
+Tomatsauce
+Pesto
+Sennepspulver
+Ricotta
+Feta
+Parmesan
+Cheddar
+Mozzarella
+Gouda
+Blue cheese
+Gorgonzola
+Emmentaler
+Camembert
+Brie
+Gedeost
+Cottage cheese
+Creme fraiche
+Sour cream
+Yogurt
+Mascarpone
+Cream cheese
+Hummus
+Tahini
+Pesto
+Guacamole
+Salsa
+Tomato salsa
+Mango salsa
+Avocado
+Mango
+Ananas
+Kiwi
+Blåbær
+Jordbær
+Hindbær
+Granatæble
+Æble
+Pære
+Appelsin
+Citron
+Lime
+Banan
+Papaya
+Mango
+Vandmelon
+Cantaloupe melon
+Honningmelon
+Græskar
+Butternut squash
+Hokkaido squash
+Courgette
+Aubergine
+Peberfrugt
+Jalapeno
+Syltede jalapenos
+Poblano peber
+Habanero peber
+Grøn peber
+Rød peber
+Gul peber
+Orange peber
+Hvid peber
+Sort peber
+Citronpeber
+Pink peber
+Korianderblade
+Basilikumblade
+Persille
+Dild
+Oregano
+Rosmarin
+Timian
+Salvie
+Estragon
+Kørvel
+Karse
+Koriander
+Mynte
+Stevia
+Sukkerærter
+Snitbønner
+Grønne bønner
+Kidneybønner
+Sorte bønner
+Kikærter
+Linser
+Mungbønner
+Quinoa
+Bulgur
+Couscous
+Ris
+Basmati ris
+Langkornet ris
+Parboiled ris
+Risotto ris
+Risnudler
+Glasnudler
+Soba nudler
+Udon nudler
+Ramen nudler
+Linguine
+Spaghetti
+Fettuccine
+Penne
+Fusilli
+Orzo
+Gnocchi
+Tortellini
+Ravioli
+Pizza dej
+Filodej
+Butterdej
+Puff pastry
+Shortcrust pastry
+Rugbrød
+Fuldkornsbolle
+Ciabatta
+Baguette
+Pita brød
+Naan brød
+Tortilla
+Wraps
+Croissant
+Bagel
+Pretzel
+Hvedebrød
+Speltbrød
+Rugbrød
+Kartoffelbrød
+Hvidløgsbrød
+Solsikkefrøbrød
+Sesamfrøbrød
+Rødvin
+Hvidvin
+Rosévin
+Champagne
+Prosecco
+Øl
+Ale
+Lager
+Stout
+Cider
+Rom
+Gin
+Vodka
+Tequila
+Whisky
+Cognac
+Brandy
+Sherry
+Vermouth
+Campari
+Martini
+Grenadine
+Triple sec
+Kahlúa
+Baileys
+Cointreau
+Grand Marnier
+Amaretto
+Chambord
+Frangelico
+Midori
+Chartreuse
+Absinthe
+Pernod
+Sambuca
+Triple sec
+Orgeat sirup
+Grenadine
+Rosevand
+Appelsinblomstvand
+Vaniljeekstrakt
+Mandelessens
+Citrusskal
+Sukker
+Brunt sukker
+Honning
+Ahornsirup
+Agavesirup
+Glukosesirup
+Mørk sirup
+Lys sirup
+Pastinak
+Rødbede
+Asparges
+Fennikel
+Artiskok
+Radise
+Porrer
+Endivie
+Grønkål
+Majroer
+Aloe vera
+Kaktus
+Blæksprutte
+Muslinger
+Sardiner
+Bison
+Kanin
+Gås
+Lammelever
+Kødsauce
+Kyllingelever”
+And
+Fasan
+Lammebov
+Elg
+Hjort
+Krabbekød
+Abrikoser
+Blommer
+Cantaloupe-melon
+Mango
+Vandmelon
+Guava
+Persimmon
+Granatæble
+Mirabeller
+Ananas
+Papaya
+Jackfrugt
+Kiwi
+Passionsfrugt
+Stikkelsbær
+Solbær
+Brombær
+Hindbær
+Blåbær
+Jordbær
+Tyttebær
+Boysenbær
+Hyldebær
+Tranebær
+Rønnebær
+Gojibær
+Chiafrø
+Hampfrø
+Quinoa
+Bulgur
+Perlebyg
+Risnudler
+Glasnudler
+Miso-pasta
+Hoisinsaus
+Tamarindsirup
+Risvineddike
+Sort ris
+Rød quinoa
+Belugalinser
+Kikærter
+Pintobønner
+Sorte bønner
+Kidneybønner
+Lima-bønner
+Grønne linser
+Røde linser
+Brune linser
+Couscous
+Polenta
+Grits
+Bulghur
+Dashi
+Nori-tang
+Wakame-alger
+Kimchi
+Surkål
+Syltede agurker
+Pickles
+Blæksprutteblæk
+Wasabi
+Sushi ris
+Mirin
+Sake
+Dijonsennep
+Trøffelsalt
+Himalayasalt
+Røget salt
+Citrongræs
+Galangarod
+Kaffir-limeblade
+Sort sesamfrø
+Pistacienødder
