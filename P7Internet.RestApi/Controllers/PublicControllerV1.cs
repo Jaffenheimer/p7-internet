@@ -192,7 +192,20 @@ public class PublicControllerV1 : ControllerBase
             return Ok(recipesIncludingIngredients);
 
         NotEnoughRecipes:
+        var recipeList = new List<RecipeResponse>();
+        if (req.Amount > 1)
+        {
+            for (int i = 0; i < req.Amount; i++)
+            {
+                recipeList.Add(_openAiService.GetAiResponse(req));
+                var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
+                var ingredientsToPassToFrontendIfAmountIsMoreThanOne =
+                    CheckListForValidIngredients(recipeList[i].Recipes, validIngredientsIfAmountIsMoreThanOne);
+                recipeList[i].Ingredients = ingredientsToPassToFrontendIfAmountIsMoreThanOne;
+            }
 
+            return Ok(recipeList);
+        }
         var res = _openAiService.GetAiResponse(req);
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
