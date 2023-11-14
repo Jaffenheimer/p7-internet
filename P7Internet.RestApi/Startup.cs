@@ -34,7 +34,7 @@ namespace P7Internet
                 });
                 services.AddSwaggerGen(s =>
                 {
-                    s.SwaggerDoc("v1", new OpenApiInfo {Title = ServiceName, Version = "v1"});
+                    s.SwaggerDoc("v1", new OpenApiInfo { Title = ServiceName, Version = "v1" });
                 });
 
                 services.ConfigurePersistenceMySqlConnection(Configuration.GetConnectionString("MySqlDatabase"));
@@ -42,6 +42,8 @@ namespace P7Internet
                 services.AddSingleton(new OpenAiService(Configuration.GetSection("OpenAI").GetValue<string>("APIKey")));
                 services.AddSingleton(
                     new EmailService(Configuration.GetSection("SendGrid").GetValue<string>("APIKey")));
+                services.AddSingleton(
+                    new SallingService(Configuration.GetSection("Salling").GetValue<string>("APIKey")));
             }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

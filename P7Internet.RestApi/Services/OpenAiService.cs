@@ -16,7 +16,7 @@ public class OpenAiService
     {
         _openAi = new OpenAIAPI(apiKey);
     }
-    
+
     /// <summary>
     /// Makes a request to the OpenAI API to generate a recipe response, this is done from a list of ingredients,
     /// excluded ingredients, dietary restrictions and amount
@@ -46,14 +46,14 @@ public class OpenAiService
             var completionResult = _openAi.Chat.CreateChatCompletionAsync(request);
             var result = completionResult.Result;
             if (result.Choices.Count == 0) return null;
-            return new RecipeResponse(result.Choices[0].Message.Content, recipeId);
+            return new RecipeResponse(result.Choices[0].Message.Content, null, recipeId);
         }
         catch (Exception e)
         {
             return RecipeResponse.Error(e.Message, recipeId);
         }
     }
-    
+
     /// <summary>
     /// Composes a promt from a RecipeRequest
     /// </summary>
@@ -62,18 +62,11 @@ public class OpenAiService
     private string ComposePromptFromRecipeRequest(RecipeRequest req)
     {
         var prompt = "";
-        if (req.Amount > 1 || req.Amount != null)
-        {
-            prompt += $"Jeg vil gerne have {req.Amount} opskrifter";
-        }
-        else
-        {
-            prompt += "Jeg vil gerne have en opskrift";
-        }
+
+        prompt += "Jeg vil gerne have en opskrift";
 
         if (req.Ingredients != null)
         {
-            
             prompt += $" med disse ingredientser {string.Join(", ", req.Ingredients)}";
         }
 
@@ -86,12 +79,12 @@ public class OpenAiService
         {
             prompt += $" der er {string.Join(",", req.DietaryRestrictions)}";
         }
-        if(req.AmountOfPeople != null)
+
+        if (req.AmountOfPeople != null && req.AmountOfPeople > 0)
         {
             prompt += $" til {req.AmountOfPeople} personer";
         }
 
         return prompt;
     }
-    
 }
