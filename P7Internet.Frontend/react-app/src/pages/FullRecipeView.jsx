@@ -4,16 +4,20 @@ import RecipeTitle from "../components/RecipeTitle";
 import IngredientsList from "../components/IngredientsList";
 import MethodsList from "../components/MethodsList";
 import Pages from "../objects/Pages";
-import React from "react";
+import React, { useEffect } from "react";
 import ForPersons from "../components/ForPersons";
 import Header from "../components/Header";
 import RecipeIngredientElement from "../components/RecipeIngredientElement";
 import FrontPageButton from "../components/FrontPageButton";
+import { recipeActions } from "../features/recipeSlice";
 
 function FullRecipeView() {
   const dispatch = useDispatch();
 
   const recipes = useSelector((state) => state.recipe.recipes);
+  const ownedIngredientsList = useSelector(
+    (state) => state.recipeGeneration.ownedIngredients
+  );
 
   const currentRecipeIndex = useSelector(
     (state) => state.recipe.currentRecipeIndex
@@ -28,7 +32,7 @@ function FullRecipeView() {
   function PrintRecipe() {
     window.print();
   }
-
+  
   return (
     <div className="AppContainer">
       <div className="headerContainer">
@@ -44,7 +48,7 @@ function FullRecipeView() {
         <MethodsList methods={recipe.method} />
         <div className="BottomButtons no-print">
           <div id="BackToFrontPageButtonRecipeView">
-          <FrontPageButton buttonText="Tilbage til forsiden" />
+            <FrontPageButton buttonText="Tilbage til forsiden" />
           </div>
           <button id="BackButton" onClick={goToPageRecipeSelection}>
             Tilbage

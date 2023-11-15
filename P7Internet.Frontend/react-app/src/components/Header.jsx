@@ -5,19 +5,7 @@ import Modal from "react-modal";
 import { pageActions } from "../features/pageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import FavoritesBox from "./FavoritesBox";
-
-//styling for the modal
-const customStyles = {
-  content: {
-    height: "450px",
-    overflow: "hidden",
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    transform: "translate(-50%, -50%)",
-  },
-};
+import { modalStyling } from "../objects/Modal";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -44,7 +32,7 @@ const Header = () => {
     <div className="header no-print">
       <Modal
         isOpen={loginModalShown}
-        style={customStyles}
+        style={modalStyling}
         onRequestClose={closeLoginModal}
         contentLabel="Login Modal"
         ariaHideApp={false}
@@ -53,7 +41,7 @@ const Header = () => {
       </Modal>
       <Modal
         isOpen={favoritesModalShown}
-        style={customStyles}
+        style={modalStyling}
         onRequestClose={closeFavoritesModal}
         contentLabel="Favorites Modal"
         ariaHideApp={false}
