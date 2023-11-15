@@ -2,7 +2,7 @@ import {
   addCookies,
   deleteCookies,
   retriveCookie,
-} from "../helperFunctions/cookieHandler";
+} from "../../helperFunctions/cookieHandler";
 
 test("Does retriveCookie retrive the cookie correctly", () => {
   const testUsername = "username";

@@ -1,7 +1,9 @@
-import { screen, render } from "@testing-library/react";
+import { screen, render, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import IngredientElement from "../components/IngredientElement";
+
+afterEach(cleanup);
 
 test("Renders the ingredient element with correct name", () => {
   const ingredient = { text: "TestIngredient", id: 1 };
