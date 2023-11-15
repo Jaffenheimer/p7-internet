@@ -29,7 +29,7 @@ public class CachedOfferRepository : ICachedOfferRepository
         var query = $@"SELECT IngredientName, Price, Store FROM {TableName} WHERE IngredientName = @IngredientName";
 
         var resultFromDb =
-            await Connection.QueryFirstOrDefaultAsync<Offer>(query, new {IngredientName = ingredientName});
+            await Connection.QueryFirstOrDefaultAsync<Offer>(query, new { IngredientName = ingredientName });
 
         return resultFromDb;
     }
@@ -47,7 +47,7 @@ public class CachedOfferRepository : ICachedOfferRepository
 
         var resultFromDb =
             await Connection.QueryFirstOrDefaultAsync<Offer>(query,
-                new {IngredientName = ingredientName, Store = store});
+                new { IngredientName = ingredientName, Store = store });
 
         return resultFromDb;
     }
