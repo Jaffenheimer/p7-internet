@@ -10,11 +10,8 @@ import React from "react";
 import {
   renderComponent,
   renderComponentWithChangeToStore,
-  renderComponentWithSpecificStore,
-  renderMultipleComponents,
 } from "../testSetupHelper/Helper.jsx";
 import GenerateRecipesButton from "../components/GenerateRecipesButton.jsx";
-import configureMockStore from "redux-mock-store";
 import { ToastContainer } from "react-toastify";
 
 afterEach(cleanup);
