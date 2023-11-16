@@ -1,12 +1,17 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const RadiusSlider = () => {
-  const [sliderValue, setSliderValue] = useState(1);
+const RadiusSlider = ({ sliderValue, onChange }) => {
+  const [radius, setRadius] = useState(
+    updateRadiusBasedOnSliderValue(sliderValue)
+  );
 
-  function sliderChange(event) {
-    event.preventDefault();
-    setSliderValue(event.target.value);
+  useEffect(() => {
+    setRadius(updateRadiusBasedOnSliderValue(sliderValue)); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sliderValue]);
+
+  function updateRadiusBasedOnSliderValue(sliderValue) {
+    return filterSliderValue(getPositionByLogarithmScaling(sliderValue));
   }
 
   // Calculates the position from 1 to 100 by logarithmically taking the min and max distance range
@@ -23,7 +28,6 @@ const RadiusSlider = () => {
     var scale = (maxValue - minValue) / (maxPosition - minPosition);
     return Math.exp(minValue + scale * (position - minPosition));
   }
-
   // used in filterSliderValue to round the number to the closest step,
   // e.g. step=50 means round() rounds to the nearest 50.
   function round(value, step) {
@@ -43,14 +47,14 @@ const RadiusSlider = () => {
   return (
     <div className="SliderContainer">
       <br />
-      <h3>Radius:</h3>{" "}
-      <p>{filterSliderValue(getPositionByLogarithmScaling(sliderValue))}</p>
+      <h3>Radius:</h3>
+      <p>{radius}</p>
       <input
         type="range"
         min="1"
         max="100"
-        value={sliderValue}
-        onChange={sliderChange}
+        defaultValue={sliderValue}
+        onChange={onChange}
         data-testid="radiusSlider"
       />
     </div>

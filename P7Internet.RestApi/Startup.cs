@@ -42,6 +42,8 @@ namespace P7Internet
                 services.AddSingleton(new OpenAiService(Configuration.GetSection("OpenAI").GetValue<string>("APIKey")));
                 services.AddSingleton(
                     new EmailService(Configuration.GetSection("SendGrid").GetValue<string>("APIKey")));
+                services.AddSingleton(
+                    new SallingService(Configuration.GetSection("Salling").GetValue<string>("APIKey")));
             }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -60,7 +62,7 @@ namespace P7Internet
                 });
 
                 program.UseRouting();
-                program.UseCors();
+                program.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
                 program.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             }
         }
