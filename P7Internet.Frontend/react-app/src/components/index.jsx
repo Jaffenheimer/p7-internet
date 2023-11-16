@@ -18,6 +18,8 @@ export { default as RecipeIngredientElement } from "./RecipeIngredientElement";
 export { default as IngredientsList } from "./IngredientsList";
 export { default as FrontPageButton } from "./FrontPageButton";
 export { default as AdditionalOwnedIngredientsPopup } from "./AdditionalOwnedIngredientsPopup";
+export { default as ModalContent } from "./ModalContent";
+export { default as CloseModalCross } from "./CloseModalCross";
 
 //pages
 export { default as FullRecipeView } from "../pages/FullRecipeView";

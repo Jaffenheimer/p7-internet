@@ -7,6 +7,7 @@ import "react-toastify/dist/ReactToastify.css";
 import AdditionalOwnedIngredientsPopup from "./AdditionalOwnedIngredientsPopup";
 import Modal from "react-modal";
 import { modalStyling } from "../objects/Modal";
+import ModalContent from "./ModalContent";
 
 const SelectRecipeButton = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const SelectRecipeButton = () => {
   function handleModalClose() {
     setAdditionalOwnedIngredientsPopupIsOpen(false);
     goToPageFullRecipeView();
+    document.body.style.overflow = "visible"; //the default value
   }
 
   //handles all the logic for when the button is clicked
@@ -34,6 +36,7 @@ const SelectRecipeButton = () => {
       toast.error("Tilføj mindst 1 butik for at vælge opskriften");
       return;
     }
+    document.body.style.overflow = "hidden";
     setAdditionalOwnedIngredientsPopupIsOpen(true);
     //goToPageFullRecipeView();
   }
@@ -47,10 +50,14 @@ const SelectRecipeButton = () => {
         isOpen={AdditionalOwnedIngredientsPopupIsOpen}
         style={modalStyling}
         onRequestClose={handleModalClose}
-        // contentLabel="Favorites Modal"
+        contentLabel="Additional Owned Ingredients Modal"
         ariaHideApp={false}
       >
-        <AdditionalOwnedIngredientsPopup/>
+        <ModalContent
+          title="Andre ingredienser du har?"
+          closeModal={handleModalClose}
+          Container={AdditionalOwnedIngredientsPopup}
+        ></ModalContent>
       </Modal>
     </>
   );

@@ -6,6 +6,7 @@ import { pageActions } from "../features/pageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import FavoritesBox from "./FavoritesBox";
 import { modalStyling } from "../objects/Modal";
+import ModalContent from "./ModalContent";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ const Header = () => {
         contentLabel="Login Modal"
         ariaHideApp={false}
       >
+        <ModalContent title></ModalContent>
         <LoginBox closeModal={closeLoginModal} />
       </Modal>
       <Modal
@@ -46,11 +48,12 @@ const Header = () => {
         contentLabel="Favorites Modal"
         ariaHideApp={false}
       >
-        <FavoritesBox
+        <ModalContent
+          title="Favoritter"
           closeModal={closeFavoritesModal}
-          favoriteRecipes={favoriteRecipes}
-          recipes={recipes}
-        />
+          Container={FavoritesBox}
+        ></ModalContent>
+        {/* <FavoritesBox closeModal={closeFavoritesModal} /> */}
       </Modal>
 
       <div className="title">Opskriftsgenerator</div>
