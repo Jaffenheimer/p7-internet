@@ -1,9 +1,11 @@
-import { fireEvent, screen } from "@testing-library/react";
+import { cleanup, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import { renderComponent } from "../testSetupHelper/Helper.jsx";
 import StoreSelection from "../components/StoreSelection";
 import { allStoreObjects } from "../objects/Stores.js";
+
+afterEach(cleanup)
 
 test("render store selection with correct title and all shops present", () => {
   renderComponent(<StoreSelection values={allStoreObjects} options={[]} />);
@@ -27,4 +29,21 @@ test("changing store selection calls onChange function", () => {
   select.onchange = onChange;
   fireEvent.change(select, { target: { value: "2" } });
   expect(onChange).toHaveBeenCalledTimes(1);
+});
+
+test("remove all but one store from the store selection", () => {
+  setStoreValues = jest.fn();
+  renderComponent(<StoreSelection values={allStoreObjects} setValues={setStoreValues} setOptions={() => {}} options={[]} />);
+  
+  let buttons = screen.getAllByRole("button");
+  expect(buttons.length).toBe(7);
+
+  for (let i = 0; i < buttons.length - 1; i++){
+    expect(buttons[i]).toBeInTheDocument();
+    fireEvent.click(buttons[i]);
+  }
+
+  buttons = screen.getAllByRole("button");
+  expect(setStoreValues).toHaveBeenCalledTimes(6);
+  expect(screen.getByText(/Lidl/)).toBeInTheDocument();
 });

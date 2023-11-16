@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import heartHollow from "../data/heart-hollow.svg";
 import heartSolid from "../data/heart-solid.svg";
-import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 
 const RecipeTitle = ({ title }) => {
@@ -11,7 +11,7 @@ const RecipeTitle = ({ title }) => {
   const loggedIn = useSelector((state) => state.user.loggedIn);
   const heartedRecipes = useSelector((state) => state.user.heartedRecipes);
   const [heart, setHeart] = useState(heartHollow);
-
+  
   function handleClick(event) {
     event.preventDefault();
     if (loggedIn === false) {
