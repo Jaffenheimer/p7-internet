@@ -67,15 +67,15 @@ public class PublicControllerV1 : ControllerBase
                 recipesIncludingIngredients.Add(recipe);
             }
         }
+        if (recipesIncludingIngredients.Count < req.Amount){ 
+            var res = _openAiService.GetAiResponse(req);
+            await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+            return Ok(res);
+        }
 
-        if (recipesIncludingIngredients.Any(x => x != null))
+        if (recipesIncludingIngredients.Any(x => x != null) )
             return Ok(recipesIncludingIngredients);
 
-            if (recipesIncludingIngredients.Count < req.Amount){ 
-                var res = _openAiService.GetAiResponse(req);
-                await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
-                return Ok(res);
-            }
         return BadRequest("No recipe generated");
         
     }

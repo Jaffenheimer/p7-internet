@@ -11,7 +11,6 @@ using P7Internet.Requests;
 using P7Internet.Response;
 using P7Internet.Services;
 using P7Internet.Shared;
-using P7Internet.Test.Mocks;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -27,19 +26,21 @@ namespace P7Internet.Controllers.Tests
     [TestFixture()]
     public class PublicControllerV1Tests
     {
-        public PublicControllerV1 controller;
-        public Mock<IUserRepository> _userRepositoryMock;
-        public Mock<IRecipeCacheRepository> _recipeCacheRepositoryMock;
-        public Mock<IFavouriteRecipeRepository> _favouriteRecipeRepositoryMock;
-        public Mock<ICachedOfferRepository> _cachedOfferRepositoryMock;
-        public Mock<IUserSessionRepository> _userSessionRepositoryMock;
-        public Mock<OpenAiService> _openAiServiceMock;
-        public Mock<ETilbudsAvisService> _etilbudsAvisServiceMock;
-        public Mock<EmailService> _emailServiceMock;
-        public Mock<SallingService> _sallingServiceMock;
-        User _testUser;
-        Recipe _testRecipe;
-        string _seshToken = "SeshToken";
+        private PublicControllerV1 controller;
+        private Mock<IUserRepository> _userRepositoryMock;
+        private Mock<IRecipeCacheRepository> _recipeCacheRepositoryMock;
+        private Mock<IFavouriteRecipeRepository> _favouriteRecipeRepositoryMock;
+        private Mock<ICachedOfferRepository> _cachedOfferRepositoryMock;
+        private Mock<IUserSessionRepository> _userSessionRepositoryMock;
+        private Mock<OpenAiService> _openAiServiceMock;
+        private Mock<ETilbudsAvisService> _etilbudsAvisServiceMock;
+        private Mock<EmailService> _emailServiceMock;
+        private Mock<SallingService> _sallingServiceMock;
+        private User _testUser;
+        private Recipe _testRecipe;
+        private string _seshToken = "SeshToken";
+        private List<string> _testRecipes = new List<string>() { "Æblekage med fløde", "Veganske kartoffelbåde med krydderi, æbler og julebryg", "Test med test på" };
+
 
         [SetUp]
         public void Setup()
@@ -49,7 +50,7 @@ namespace P7Internet.Controllers.Tests
             _testUser = new User("TestUser", "Test@Example.com") { Id = Guid.Parse("833e9c5d-2471-4f40-bbfa-f983ae998075"), CreatedAt = DateTime.Now };
             
             _userRepositoryMock = new Mock<IUserRepository>();
-            _recipeCacheRepositoryMock = new RecipeCacheRepositoryMock(_testRecipe).cachedRecipeRepositoryMock;
+            _recipeCacheRepositoryMock = new Mock<IRecipeCacheRepository>();
             _favouriteRecipeRepositoryMock = new Mock<IFavouriteRecipeRepository>();
             _cachedOfferRepositoryMock = new Mock<ICachedOfferRepository>();
             _userSessionRepositoryMock = new Mock<IUserSessionRepository>();
@@ -61,12 +62,14 @@ namespace P7Internet.Controllers.Tests
         }
 
         [Test()]
-        public void GetARecipeSuccess()
+        public void GetARecipeGeneratedByChatGPTSuccess()
         {
 
             //Arrange
-            var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(), new List<string>() { "æble", "kartoffel", "julebryg" }, 1, new List<string>() { "fløde" }, new List<string>() { "vegansk" }, It.IsAny<int>());
-            var res = new RecipeResponse("testRecipe", Guid.NewGuid());
+            var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(), new List<string>() { "æble", "kartoffel", "julebryg" }, 3, new List<string>() { "fløde" }, new List<string>() { "vegansk" }, It.IsAny<int>());
+            var res = new RecipeResponse(_testRecipe.Name, _testRecipe.Id);
+            _recipeCacheRepositoryMock.Setup(x => x.GetAllRecipes()).ReturnsAsync(_testRecipes);
+            _recipeCacheRepositoryMock.Setup(x => x.Upsert(_testRecipe.Name, _testRecipe.Id)).Returns(Task.FromResult(true));
             _openAiServiceMock.Setup(x => x.GetAiResponse(recipeRequest)).Returns(res);
             
             //Act
@@ -76,6 +79,7 @@ namespace P7Internet.Controllers.Tests
             //Assert
             Assert.NotNull(contentResult);
             _openAiServiceMock.Verify(x => x.GetAiResponse(recipeRequest), Times.Once);
+            _recipeCacheRepositoryMock.Verify(x => x.Upsert(_testRecipe.Name, _testRecipe.Id), Times.Once);
 
         }
 
@@ -87,8 +91,8 @@ namespace P7Internet.Controllers.Tests
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(), new List<string>() { "æble", "kartoffel", "julebryg" }, 1, new List<string>() { "fløde" }, new List<string>() { "vegansk" }, It.IsAny<int>());
             var res = new RecipeResponse(_testRecipe.Name, Guid.NewGuid());
             _openAiServiceMock.Setup(x => x.GetAiResponse(recipeRequest)).Returns(res);
-            //_recipeCacheRepositoryMock.Setup(x => x.GetAllRecipes()).Returns(Task.FromResult(new List<string>() { "Æblekage med fløde", "Veganske kartoffelbåde med krydderi, æbler og julebryg", "Test med test på"}));
-            //_recipeCacheRepositoryMock.Setup(x => x.Upsert(_testRecipe.Name, Guid.NewGuid())).Returns(Task.FromResult(false));
+            _recipeCacheRepositoryMock.Setup(x => x.GetAllRecipes()).Returns(Task.FromResult(new List<string>() { "Æblekage med fløde", "Veganske kartoffelbåde med krydderi, æbler og julebryg", "Test med test på"}));
+            _recipeCacheRepositoryMock.Setup(x => x.Upsert(_testRecipe.Name, Guid.NewGuid())).Returns(Task.FromResult(false));
 
             //Act
             IActionResult actionResult = controller.GetARecipe(recipeRequest).Result;
