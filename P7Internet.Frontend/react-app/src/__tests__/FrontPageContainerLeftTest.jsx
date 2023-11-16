@@ -1,9 +1,17 @@
-import { cleanup, screen, render } from "@testing-library/react";
+import {
+  cleanup,
+  screen,
+  render,
+  fireEvent,
+  act,
+} from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import { FrontPageContainerLeft } from "../components";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
+import { toast } from "react-toastify";
+import userEvent from "@testing-library/user-event";
 
 afterEach(cleanup);
 
@@ -58,3 +66,30 @@ describe("FrontPageContainerLeft", () => {
   });
 });
 
+test("checks if a user has added an ingredient no toast appears when clicking generate recipe button", async () => {
+  let mockStore;
+  const mockState = {
+    recipeGeneration: {
+      excludeList: [],
+      ownedIngredients: [],
+    },
+  };
+  mockStore = configureMockStore()(mockState);
+
+  render(
+    <Provider store={mockStore}>
+      <FrontPageContainerLeft />
+    </Provider>
+  );
+  const input = screen.getByTestId("AddIngredientInput");
+  const addButton = screen.getByTestId("AddButton");
+  userEvent.type(input, "test");
+  fireEvent.click(addButton);
+  const button = screen.getByTestId("GenerateRecipesButton");
+  await act(() => fireEvent.click(button));
+  await expect(() =>
+    screen.getByText(
+      /Du skal tilføje mindst 1 ingrediens for at generere opskrifter/
+    )
+  ).toThrow("Unable to find an element");
+});
