@@ -41,7 +41,7 @@ public class EmailService
     /// </summary>
     /// <param name="email"></param>
     /// <param name="userName"></param>
-    public async Task ResetPassword(string email, string userName)
+    public virtual async Task ResetPassword(string email, string userName)
     {
         var from = new EmailAddress($"jonathanwisborgfog@gmail.com", "P7Internet");
         var subject = "Reset Password has been requested";
