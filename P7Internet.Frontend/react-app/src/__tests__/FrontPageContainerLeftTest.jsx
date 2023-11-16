@@ -10,7 +10,6 @@ import React from "react";
 import { FrontPageContainerLeft } from "../components";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
-import { toast } from "react-toastify";
 import userEvent from "@testing-library/user-event";
 
 afterEach(cleanup);
