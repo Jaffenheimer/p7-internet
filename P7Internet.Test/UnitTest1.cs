@@ -13,7 +13,7 @@ namespace P7Internet.Test
 {
     public class Tests
     {
-
+        //Sætter lige en kommentar
         [Test]
         public void Test1()
         {
