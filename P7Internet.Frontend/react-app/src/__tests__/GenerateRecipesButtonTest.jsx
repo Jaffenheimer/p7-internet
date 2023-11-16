@@ -42,7 +42,7 @@ test("toast does not appear when GenerateRecipesButton is clicked if ingredients
   );
   const button = screen.getByTestId("GenerateRecipesButton");
   await act(() => fireEvent.click(button));
-  expect(() =>
+  await expect(() =>
     screen.getByText(
       /Du skal tilføje mindst 1 ingrediens for at generere opskrifter/
     )
