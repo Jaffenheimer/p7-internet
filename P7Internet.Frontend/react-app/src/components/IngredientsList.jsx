@@ -3,9 +3,10 @@ import React from "react";
 const IngredientsList = ({ ingredients, ListElement, handleRemove }) => {
   return (
     <div className="ingredientsList" data-testid="IngredientsList">
-      <ul>
+      <ul >
         {ingredients.map((ingredient, index) => (
           <ListElement
+            data-testid="ListElement"
             key={index}
             ingredient={ingredient}
             handleRemove={handleRemove}
