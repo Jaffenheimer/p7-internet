@@ -4,9 +4,9 @@
 export { default as OwnedIngredientsList } from "./OwnedIngredientsList";
 export { default as RecipeTitle } from "./RecipeTitle";
 export { default as AddIngredientsForm } from "./AddIngredientsForm";
-export { default as ContainerLeft } from "./ContainerLeft";
+export { default as FrontPageContainerLeft } from "./FrontPageContainerLeft";
 export { default as RecipeSelectionContainerLeft } from "./RecipeSelectionContainerLeft";
-export { default as ContainerRight } from "./ContainerRight";
+export { default as FrontPageContainerRight } from "./FrontPageContainerRight";
 export { default as RecipeSelectionContainerRight } from "./RecipeSelectionContainerRight";
 export { default as GenerateRecipesButton } from "./GenerateRecipesButton";
 export { default as ProfilePicture } from "./ProfilePicture";

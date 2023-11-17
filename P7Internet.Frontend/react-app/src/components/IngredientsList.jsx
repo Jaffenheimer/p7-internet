@@ -6,6 +6,7 @@ const IngredientsList = ({ ingredients, ListElement, handleRemove }) => {
       <ul>
         {ingredients.map((ingredient, index) => (
           <ListElement
+            data-testid="ListElement"
             key={index}
             ingredient={ingredient}
             handleRemove={handleRemove}

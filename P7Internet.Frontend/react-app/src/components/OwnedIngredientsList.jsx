@@ -16,7 +16,7 @@ const OwnedIngredientsList = () => {
   };
 
   return (
-    <div id="OwnedIngredientsList">
+    <div id="OwnedIngredientsList" data-testid="OwnedIngredientsList">
       <IngredientsList
         ingredients={ownedIngredientsList}
         ListElement={IngredientElement}

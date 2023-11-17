@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { useDispatch } from "react-redux";
 
-const ContainerLeft = () => {
+const FrontPageContainerLeft = () => {
   const dispatch = useDispatch();
   const ownedIngredientsList = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
@@ -16,7 +16,10 @@ const ContainerLeft = () => {
   }
 
   return (
-    <div className="ContainerLeft">
+    <div
+      className="FrontPageContainerLeft"
+      data-testid="FrontPageContainerLeftTest"
+    >
       <div id="IngredientsBody">
         <h2>Ingredienser jeg gerne vil bruge:</h2>
         <AddIngredientsForm
@@ -27,11 +30,11 @@ const ContainerLeft = () => {
         <OwnedIngredientsList />
       </div>
 
-      <div id="GenerateRecipesButton">
+      <div id="GenerateRecipesButton" data-testid="GenerateRecipesButton">
         <GenerateRecipesButton />
       </div>
     </div>
   );
 };
 
-export default ContainerLeft;
+export default FrontPageContainerLeft;

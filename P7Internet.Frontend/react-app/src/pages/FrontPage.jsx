@@ -1,6 +1,6 @@
 import React from "react";
-import ContainerRight from "../components/ContainerRight";
-import ContainerLeft from "../components/ContainerLeft";
+import FrontPageContainerRight from "../components/FrontPageContainerRight";
+import FrontPageContainerLeft from "../components/FrontPageContainerLeft";
 import Header from "../components/Header";
 import { ToastContainer } from "react-toastify";
 import { getGeoLocation } from "../helperFunctions/getGeoLocation";
@@ -21,10 +21,10 @@ const FrontPage = () => {
       </div>
       <div className={"split-container"}>
         <div className={"split-screen-left"}>
-          <ContainerLeft />
+          <FrontPageContainerLeft />
         </div>
         <div className={"split-screen-right"}>
-          <ContainerRight />
+          <FrontPageContainerRight />
         </div>
       </div>
     </div>
