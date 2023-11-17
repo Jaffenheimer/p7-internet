@@ -9,6 +9,7 @@ import ForPersons from "../components/ForPersons";
 import Header from "../components/Header";
 import RecipeIngredientElement from "../components/RecipeIngredientElement";
 import FrontPageButton from "../components/FrontPageButton";
+import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientsHelper";
 
 function FullRecipeView() {
   const dispatch = useDispatch();
@@ -37,7 +38,9 @@ function FullRecipeView() {
         <RecipeTitle id="RecipeTitle" title={recipe.title} />
         <ForPersons />
         <IngredientsList
-          ingredients={recipe.ingredients}
+          ingredients={convertIngredientsToIngredientObjects(
+            recipe.ingredients
+          )}
           ListElement={RecipeIngredientElement}
         />
         <MethodsList methods={recipe.method} />
