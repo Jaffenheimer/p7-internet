@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ingredientIsOwned } from "../helperFunctions/ingredientHelper";
 import { nanoid } from "@reduxjs/toolkit";
-import { recipeActions } from "../features/recipeSlice";
+import { recipeGenerationActions } from "../features/recipeGenerationSlice";
+import { pageActions } from "../features/pageSlice";
+import Pages from "../objects/Pages";
 
 const AdditionalOwnedIngredientsPopup = () => {
   const dispatch = useDispatch();
@@ -21,18 +23,38 @@ const AdditionalOwnedIngredientsPopup = () => {
     new Array(currentRecipeUnownedIngredients.length).fill(false)
   );
 
-  function handleCheckboxChange(event, checkBoxIndex) {
-    console.log("index is", checkBoxIndex); //somehow this index is undefined
+  useEffect(() => {
+    //if the user already owns all the ingredients
+    if (currentRecipeUnownedIngredients.length === 0) {
+      closeModalAndGoToFullRecipeView();
+    }
+  });
+
+  function handleCheckboxChange(_, checkBoxIndex) {
     let updatedIngredientsChecked = [...ingredientsChecked];
     updatedIngredientsChecked[checkBoxIndex] =
       !updatedIngredientsChecked[checkBoxIndex];
 
     setIngredientsChecked(updatedIngredientsChecked);
-    console.log(ingredientsChecked);
+  }
+
+  function closeModalAndGoToFullRecipeView() {
+    document.body.style.overflow = "visible";
+    dispatch(pageActions.closeAdditionalOwnedIngredientsPopup());
+    dispatch(pageActions.goToPage(Pages.fullRecipeView));
   }
 
   function handleContinueButtonClick() {
-    dispatch(recipeActions.addOwnedIngredient());
+    for (let i = 0; i < ingredientsChecked.length; i++) {
+      if (ingredientsChecked[i]) {
+        dispatch(
+          recipeGenerationActions.addOwnedIngredient(
+            currentRecipeUnownedIngredients[i]
+          )
+        );
+      }
+    }
+    closeModalAndGoToFullRecipeView();
   }
 
   return (
@@ -42,7 +64,7 @@ const AdditionalOwnedIngredientsPopup = () => {
         className="favoriteRecipesContainer"
       >
         {currentRecipeUnownedIngredients.map((ingredient, index) => (
-          <>
+          <div key={nanoid()}>
             <input
               type="checkbox"
               id={index}
@@ -51,18 +73,22 @@ const AdditionalOwnedIngredientsPopup = () => {
               checked={ingredientsChecked[index]}
               onChange={(event) => handleCheckboxChange(event, index)}
             />
-            <label key={nanoid()} htmlFor={index} className={index}>
+            <label
+              key={nanoid()}
+              htmlFor={index}
+              id={index}
+              className="IngredientCheckboxesLabel"
+            >
               {ingredient}
             </label>
             <br></br>
-          </>
+          </div>
         ))}
       </div>
       <button
         id="acceptAdditionalIngredientsButton"
         onClick={handleContinueButtonClick}
       >
-        {" "}
         fortsæt
       </button>
     </div>

@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
-import Pages from "../objects/Pages";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AdditionalOwnedIngredientsPopup from "./AdditionalOwnedIngredientsPopup";
@@ -12,21 +11,15 @@ import ModalContent from "./ModalContent";
 const SelectRecipeButton = () => {
   const dispatch = useDispatch();
   const stores = useSelector((state) => state.offers.stores);
-  const [
-    AdditionalOwnedIngredientsPopupIsOpen,
-    setAdditionalOwnedIngredientsPopupIsOpen,
-  ] = useState(false);
   const toggleStateIsRadius = useSelector(
     (state) => state.offers.toggleStateIsRadius
   );
-
-  function goToPageFullRecipeView() {
-    dispatch(pageActions.goToPage(Pages.fullRecipeView));
-  }
+  const additionalOwnedIngredientsPopupIsOpen = useSelector(
+    (state) => state.page.additionalOwnedIngredientsPopupIsOpen
+  );
 
   function handleModalClose() {
-    setAdditionalOwnedIngredientsPopupIsOpen(false);
-    goToPageFullRecipeView();
+    dispatch(pageActions.closeAdditionalOwnedIngredientsPopup());
     document.body.style.overflow = "visible"; //the default value
   }
 
@@ -37,8 +30,7 @@ const SelectRecipeButton = () => {
       return;
     }
     document.body.style.overflow = "hidden";
-    setAdditionalOwnedIngredientsPopupIsOpen(true);
-    //goToPageFullRecipeView();
+    dispatch(pageActions.openAdditionalOwnedIngredientsPopup(true));
   }
 
   return (
@@ -47,7 +39,7 @@ const SelectRecipeButton = () => {
         Vælg opskrift
       </button>
       <Modal
-        isOpen={AdditionalOwnedIngredientsPopupIsOpen}
+        isOpen={additionalOwnedIngredientsPopupIsOpen}
         style={modalStyling}
         onRequestClose={handleModalClose}
         contentLabel="Additional Owned Ingredients Modal"

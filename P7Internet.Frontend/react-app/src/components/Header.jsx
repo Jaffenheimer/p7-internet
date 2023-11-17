@@ -11,14 +11,7 @@ import ModalContent from "./ModalContent";
 const Header = () => {
   const dispatch = useDispatch();
 
-  const recipes = useSelector((state) => state.recipe.recipes);
   const loggedIn = useSelector((state) => state.user.loggedIn);
-  const favoriteRecipesRedux = useSelector(
-    (state) => state.user.heartedRecipes
-  );
-
-  //if user is not logged in, favoriteRecipes is an empty list
-  const favoriteRecipes = loggedIn === undefined ? [] : favoriteRecipesRedux;
   const loginModalShown = useSelector((state) => state.page.loginModalShown);
   const favoritesModalShown = useSelector(
     (state) => state.page.favoritesModalShown

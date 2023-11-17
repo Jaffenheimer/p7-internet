@@ -16,6 +16,7 @@ const FavoritesBox = ({ closeModal }) => {
   const favoriteRecipesRedux = useSelector(
     (state) => state.user.heartedRecipes
   );
+  //if user is not logged in, favoriteRecipes is an empty list
   const favoriteRecipes = loggedIn === undefined ? [] : favoriteRecipesRedux;
   const dispatch = useDispatch();
 
