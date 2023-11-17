@@ -1,4 +1,4 @@
-import { convertIngredientsToIngredientObjects } from "../../helperFunctions/ingredientsHelper";
+import { convertIngredientsToIngredientObjects } from "../../helperFunctions/ingredientHelper";
 import "@testing-library/jest-dom";
 
 test("ingredients can be converted to ingredient objects", () => {

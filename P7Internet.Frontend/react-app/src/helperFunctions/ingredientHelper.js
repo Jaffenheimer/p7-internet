@@ -1,9 +1,20 @@
+import { nanoid } from "nanoid";
+
 function ingredientIsOwned(ingredient, ownedIngredients) {
   for (const ownedIngredient of ownedIngredients) {
-    if (ownedIngredient.text === ingredient) {
+    if (ownedIngredient.text === ingredient.text) {
       return true;
     }
   }
   return false;
 }
-export { ingredientIsOwned };
+
+function convertIngredientsToIngredientObjects(ingredients) {
+  var ingredientObjects = [];
+  for (const ingredient of ingredients) {
+    ingredientObjects.push({ text: ingredient, id: nanoid() });
+  }
+  return ingredientObjects;
+}
+
+export { ingredientIsOwned, convertIngredientsToIngredientObjects };

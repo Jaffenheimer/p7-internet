@@ -31,7 +31,6 @@ const Header = () => {
         contentLabel="Login Modal"
         ariaHideApp={false}
       >
-        <ModalContent title></ModalContent>
         <LoginBox closeModal={closeLoginModal} />
       </Modal>
       <Modal

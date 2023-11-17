@@ -9,7 +9,7 @@ import ForPersons from "../components/ForPersons";
 import Header from "../components/Header";
 import RecipeIngredientElement from "../components/RecipeIngredientElement";
 import FrontPageButton from "../components/FrontPageButton";
-import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientsHelper";
+import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientHelper";
 
 function FullRecipeView() {
   const dispatch = useDispatch();

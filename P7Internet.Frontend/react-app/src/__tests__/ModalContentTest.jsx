@@ -10,10 +10,24 @@ import ModalContent from "../components/ModalContent.jsx";
 
 afterEach(cleanup);
 
-test("renders ModalContent with correct title and back button", () => {
-  // renderComponent(<ModalContent title="Title of Modal" />);
-  // const title = screen.getByText(/Title of Modal/);
-  // const backCross = screen.getByTestId("CloseModalCross");
-  // expect(title).toBeInTheDocument();
-  // expect(backCross).toBeInTheDocument();
+test("renders ModalContent with correct title, back button, and container", () => {
+  renderComponent(
+    <ModalContent title="Title of Modal" Container={FavoritesModalContainer} />
+  );
+  const title = screen.getByText(/Title of Modal/);
+  const backCross = screen.getByTestId("CloseModalCross");
+  const container = screen.getByTestId("FavoritesModalContainer");
+  expect(title).toBeInTheDocument();
+  expect(backCross).toBeInTheDocument();
+  expect(container).toBeInTheDocument();
+});
+
+test("Clicking on the back button calls onclick function", () => {
+  renderComponent(
+    <ModalContent title="Title of Modal" Container={FavoritesModalContainer} />
+  );
+  const backCross = screen.getByTestId("CloseModalCross");
+  backCross.onclick = jest.fn();
+  userEvent.click(backCross);
+  expect(backCross.onclick).toHaveBeenCalled();
 });

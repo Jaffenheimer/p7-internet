@@ -1,10 +1,16 @@
 import { screen, cleanup } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import { renderComponent } from "../testSetupHelper/Helper.jsx";
+import {
+  renderComponent,
+  renderComponentWithSpecificStore,
+} from "../testSetupHelper/Helper.jsx";
 import IngredientsList from "../components/IngredientsList.jsx";
 import IngredientElement from "../components/IngredientElement.jsx";
 import RecipeIngredientElement from "../components/RecipeIngredientElement.jsx";
+import { render } from "@testing-library/react";
+import configureMockStore from "redux-mock-store";
+import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientHelper.js";
 
 afterEach(cleanup);
 
@@ -13,7 +19,7 @@ test("IngredientsList renders ingredients properly when given an ingredientEleme
     { text: "TestIngredient1", id: 1 },
     { text: "TestIngredient2", id: 2 },
   ];
-  renderComponent(
+  render(
     <IngredientsList
       ingredients={ingredients}
       ListElement={IngredientElement}

@@ -14,7 +14,7 @@ const FavoritesModalContainer = ({ closeModal }) => {
   const recipes = useSelector((state) => state.recipe.recipes);
   const loggedIn = useSelector((state) => state.user.loggedIn);
   const favoriteRecipesRedux = useSelector(
-    (state) => state.user.heartedRecipes
+    (state) => state.user.favoriteRecipes
   );
   //if user is not logged in, favoriteRecipes is an empty list
   const favoriteRecipes = loggedIn === undefined ? [] : favoriteRecipesRedux;
@@ -48,7 +48,7 @@ const FavoritesModalContainer = ({ closeModal }) => {
   }
 
   return (
-    <>
+    <div id="FavoritesModalContainer" data-testid="FavoritesModalContainer">
       <div className="scrollableModalContainer">
         {favoriteRecipes.length === 0 ? (
           <p>Ingen opskrifter er blevet markeret som favorit.</p>
@@ -77,7 +77,7 @@ const FavoritesModalContainer = ({ closeModal }) => {
           </>
         )}
       </div>
-    </>
+    </div>
   );
 };
 

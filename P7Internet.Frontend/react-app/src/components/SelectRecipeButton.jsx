@@ -17,7 +17,6 @@ const SelectRecipeButton = () => {
   const additionalOwnedIngredientsModalContainerIsOpen = useSelector(
     (state) => state.page.additionalOwnedIngredientsModalContainerIsOpen
   );
-  console.log(additionalOwnedIngredientsModalContainerIsOpen);
 
   function handleModalClose() {
     dispatch(pageActions.closeAdditionalOwnedIngredientsModalContainer());

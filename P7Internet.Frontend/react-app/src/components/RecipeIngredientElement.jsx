@@ -8,9 +8,12 @@ const RecipeIngredientElement = ({ ingredient }) => {
   );
 
   return (
-    <div className="RecipeIngredientElement">
+    <div
+      className="RecipeIngredientElement"
+      data-testid="RecipeIngredientElement"
+    >
       <li>
-        {ingredient}
+        {ingredient.text}
         {ingredientIsOwned(ingredient, ownedIngredientsList) ? (
           <b> Ejet </b>
         ) : (
