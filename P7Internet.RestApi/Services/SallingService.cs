@@ -19,9 +19,11 @@ namespace P7Internet.Services
     {
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
-        public SallingService()
+
+        public SallingService(HttpClient httpClient)
         {
-            
+            _httpClient = httpClient;
+            _httpClient.BaseAddress = new Uri("https://api.sallinggroup.com/");
         }
         public SallingService(string? apiKey)
         {
