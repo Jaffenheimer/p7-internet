@@ -5,6 +5,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
+import { useState } from "react";
 
 const AdditionalOwnedIngredientsModalContainer = () => {
   const dispatch = useDispatch();
@@ -15,11 +16,13 @@ const AdditionalOwnedIngredientsModalContainer = () => {
   const currentRecipeIndex = useSelector(
     (state) => state.recipe.currentRecipeIndex
   );
-  const currentRecipe = recipes[currentRecipeIndex];
+  const [currentRecipe, setCurrentRecipe] = useState(
+    recipes[currentRecipeIndex]
+  );
   const currentRecipeUnownedIngredients = currentRecipe.ingredients.filter(
     (ingredient) => !ingredientIsOwned(ingredient, ownedIngredientsList)
   );
-  const [ingredientsChecked, setIngredientsChecked] = React.useState(
+  const [ingredientsChecked, setIngredientsChecked] = useState(
     new Array(currentRecipeUnownedIngredients.length).fill(false)
   );
 
@@ -60,6 +63,7 @@ const AdditionalOwnedIngredientsModalContainer = () => {
   return (
     <div
       id="AdditionalOwnedIngredientsModalContainer"
+      data-testid="AdditionalOwnedIngredientsModalContainer"
       className="scrollableModalContainer"
     >
       <div id="IngredientsContainer">
@@ -72,6 +76,7 @@ const AdditionalOwnedIngredientsModalContainer = () => {
               className="IngredientCheckboxes"
               checked={ingredientsChecked[index]}
               onChange={(event) => handleCheckboxChange(event, index)}
+              data-testid="IngredientCheckbox"
             />
             <label
               key={nanoid()}
@@ -89,7 +94,7 @@ const AdditionalOwnedIngredientsModalContainer = () => {
         id="acceptAdditionalIngredientsButton"
         onClick={handleContinueButtonClick}
       >
-        fortsæt
+        Fortsæt
       </button>
     </div>
   );

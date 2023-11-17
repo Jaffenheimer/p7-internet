@@ -14,7 +14,10 @@ import configureMockStore from "redux-mock-store";
 afterEach(cleanup);
 jest.spyOn(window, "confirm").mockImplementation(() => {});
 
-test("", () => {});
+test("Renders the favoritesModalContainer", () => {
+  renderComponent(<FavoritesModalContainer />);
+  expect(screen.getByTestId("FavoritesModalContainer")).toBeInTheDocument();
+});
 
 test("Renders the favoriteBox for each favorite recipe added the element as well as the remove cross", () => {
   const mockState = {
