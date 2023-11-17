@@ -63,7 +63,7 @@ const ProfilePicture = ({ openFavoritesModal }) => {
   };
 
   return (
-    <div className="ProfilePicture">
+    <div className="ProfilePicture" data-testid="ProfilePicture">
       <img
         className="Profile"
         src={profile}

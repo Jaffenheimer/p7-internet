@@ -99,10 +99,8 @@ public class PublicControllerV1 : ControllerBase
             var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
             for (int i = 0; i < req.Amount; i++)
             {
-                recipeList.Add(_openAiService.GetAiResponse(req));
-                var ingredientsToPassToFrontendIfAmountIsMoreThanOne =
-                    CheckListForValidIngredients(recipeList[i].Recipes, validIngredientsIfAmountIsMoreThanOne);
-                recipeList[i].Ingredients = ingredientsToPassToFrontendIfAmountIsMoreThanOne;
+                var recipe = GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
+                recipeList.Add(recipe.Result);
             }
 
             return Ok(recipeList);
@@ -198,14 +196,16 @@ public class PublicControllerV1 : ControllerBase
             var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
             for (int i = 0; i < req.Amount; i++)
             {
-                recipeList.Add(_openAiService.GetAiResponse(req));
-                var ingredientsToPassToFrontendIfAmountIsMoreThanOne =
-                    CheckListForValidIngredients(recipeList[i].Recipes, validIngredientsIfAmountIsMoreThanOne);
-                recipeList[i].Ingredients = ingredientsToPassToFrontendIfAmountIsMoreThanOne;
+                var recipe = GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
+                recipeList.Add(recipe.Result);
+                if (req.UserId != null && req.SessionToken != null)
+                    await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(),
+                        recipeList[i].RecipeId);
             }
 
             return Ok(recipeList);
         }
+
         var res = _openAiService.GetAiResponse(req);
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
@@ -518,6 +518,21 @@ public class PublicControllerV1 : ControllerBase
         }
 
         return result;
+    }
+
+    /// <summary>
+    /// Helper function to speed up response times from openAI API
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="validIngredients"></param>
+    /// <returns>A recipe</returns>
+    private async Task<RecipeResponse> GetRecipeAsync(RecipeRequest req, List<string> validIngredients)
+    {
+        var res = _openAiService.GetAiResponse(req);
+        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
+        res.Ingredients = ingredientsToPassToFrontend;
+        await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+        return res;
     }
 
     #endregion

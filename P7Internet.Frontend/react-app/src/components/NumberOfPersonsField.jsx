@@ -24,7 +24,7 @@ const NumberOfPersonsField = () => {
   };
 
   return (
-    <div className="NumberOfPersonsField">
+    <div className="NumberOfPersonsField" data-testid="NumberOfPersonsField">
       <button className="PlusMinusButton" onClick={subtract}>
         -
       </button>

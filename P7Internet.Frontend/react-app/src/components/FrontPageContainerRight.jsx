@@ -4,15 +4,17 @@ import DietaryRestrictions from "./DietaryRestrictions";
 import ExcludeList from "./ExcludeList";
 import Allergens from "./Allergens";
 
-const ContainerRight = () => {
+const FrontPageContainerRight = () => {
   return (
-    <div className="ContainerRight">
+    <div
+      className="FrontPageContainerRight"
+      data-testid="FrontPageContainerRight"
+    >
       <div className="ContainerRightTop">
-          <h3>Personer</h3>
-          <div className="NumberOfPersonsFieldContainer">
-          </div>
-          <div className="ContainerRightColumn">
-              <NumberOfPersonsField />
+        <h3>Personer</h3>
+        <div className="NumberOfPersonsFieldContainer"></div>
+        <div className="ContainerRightColumn">
+          <NumberOfPersonsField />
         </div>
       </div>
 
@@ -27,4 +29,4 @@ const ContainerRight = () => {
   );
 };
 
-export default ContainerRight;
+export default FrontPageContainerRight;

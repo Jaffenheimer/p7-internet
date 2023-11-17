@@ -25,7 +25,7 @@ const Allergens = () => {
   };
   
   return (
-    <div className="Allergens">
+    <div className="Allergens" data-testid="Allergens">
       <h3 id="AllergensText">Allergener</h3>
         <Select
           // makes it possible to select multiple options
