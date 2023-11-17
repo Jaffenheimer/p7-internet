@@ -30,7 +30,7 @@ const FrontPageContainerLeft = () => {
         <OwnedIngredientsList />
       </div>
 
-      <div id="GenerateRecipesButton" data-testid="GenerateRecipesButton">
+      <div id="GenerateRecipesButton">
         <GenerateRecipesButton />
       </div>
     </div>
