@@ -306,7 +306,7 @@ button:hover {
   margin-top: 2%;
 }
 
-#AdditionalOwnedIngredientsPopup {
+#IngredientsContainer {
   height: 90%;
   position: relative;
 }
@@ -540,7 +540,8 @@ input[type="password"] {
   margin: 24px 0 12px 0;
 }
 
-.favoriteRecipesContainer {
+.scrollableModalContainer,
+#AdditionalOwnedIngredientsModalContainer {
   overflow: auto;
   display: block;
   padding: 16px;

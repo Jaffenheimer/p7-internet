@@ -5,7 +5,7 @@ const initialState = {
   page: Pages.frontPage,
   loginModalShown: false,
   favoritesModalShown: false,
-  additionalOwnedIngredientsPopupIsOpen: false,
+  additionalOwnedIngredientsModalContainerIsOpen: false,
 };
 
 export const pageSlice = createSlice({
@@ -27,11 +27,11 @@ export const pageSlice = createSlice({
     closeFavoritesModal(state) {
       state.favoritesModalShown = false;
     },
-    openAdditionalOwnedIngredientsPopup(state) {
-      state.additionalOwnedIngredientsPopupIsOpen = true;
+    openAdditionalOwnedIngredientsModalContainer(state) {
+      state.additionalOwnedIngredientsModalContainerIsOpen = true;
     },
-    closeAdditionalOwnedIngredientsPopup(state) {
-      state.additionalOwnedIngredientsPopupIsOpen = false;
+    closeAdditionalOwnedIngredientsModalContainer(state) {
+      state.additionalOwnedIngredientsModalContainerIsOpen = false;
     },
   },
 });

@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { nanoid } from "@reduxjs/toolkit";
 
-const FavoritesBox = ({ closeModal }) => {
+const FavoritesModalContainer = ({ closeModal }) => {
   const recipes = useSelector((state) => state.recipe.recipes);
   const loggedIn = useSelector((state) => state.user.loggedIn);
   const favoriteRecipesRedux = useSelector(
@@ -49,7 +49,7 @@ const FavoritesBox = ({ closeModal }) => {
 
   return (
     <>
-      <div className="favoriteRecipesContainer">
+      <div className="scrollableModalContainer">
         {favoriteRecipes.length === 0 ? (
           <p>Ingen opskrifter er blevet markeret som favorit.</p>
         ) : (
@@ -81,4 +81,4 @@ const FavoritesBox = ({ closeModal }) => {
   );
 };
 
-export default FavoritesBox;
+export default FavoritesModalContainer;

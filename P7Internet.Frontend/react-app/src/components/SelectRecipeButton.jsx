@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import AdditionalOwnedIngredientsPopup from "./AdditionalOwnedIngredientsPopup";
+import AdditionalOwnedIngredientsModalContainer from "./AdditionalOwnedIngredientsModalContainer";
 import Modal from "react-modal";
 import { modalStyling } from "../objects/Modal";
 import ModalContent from "./ModalContent";
@@ -14,12 +14,13 @@ const SelectRecipeButton = () => {
   const toggleStateIsRadius = useSelector(
     (state) => state.offers.toggleStateIsRadius
   );
-  const additionalOwnedIngredientsPopupIsOpen = useSelector(
-    (state) => state.page.additionalOwnedIngredientsPopupIsOpen
+  const additionalOwnedIngredientsModalContainerIsOpen = useSelector(
+    (state) => state.page.additionalOwnedIngredientsModalContainerIsOpen
   );
+  console.log(additionalOwnedIngredientsModalContainerIsOpen);
 
   function handleModalClose() {
-    dispatch(pageActions.closeAdditionalOwnedIngredientsPopup());
+    dispatch(pageActions.closeAdditionalOwnedIngredientsModalContainer());
     document.body.style.overflow = "visible"; //the default value
   }
 
@@ -30,7 +31,7 @@ const SelectRecipeButton = () => {
       return;
     }
     document.body.style.overflow = "hidden";
-    dispatch(pageActions.openAdditionalOwnedIngredientsPopup(true));
+    dispatch(pageActions.openAdditionalOwnedIngredientsModalContainer(true));
   }
 
   return (
@@ -39,7 +40,7 @@ const SelectRecipeButton = () => {
         Vælg opskrift
       </button>
       <Modal
-        isOpen={additionalOwnedIngredientsPopupIsOpen}
+        isOpen={additionalOwnedIngredientsModalContainerIsOpen}
         style={modalStyling}
         onRequestClose={handleModalClose}
         contentLabel="Additional Owned Ingredients Modal"
@@ -48,7 +49,7 @@ const SelectRecipeButton = () => {
         <ModalContent
           title="Andre ingredienser du har?"
           closeModal={handleModalClose}
-          Container={AdditionalOwnedIngredientsPopup}
+          Container={AdditionalOwnedIngredientsModalContainer}
         ></ModalContent>
       </Modal>
     </>

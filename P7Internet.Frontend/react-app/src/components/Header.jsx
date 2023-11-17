@@ -4,7 +4,7 @@ import LoginBox from "./LoginBox";
 import Modal from "react-modal";
 import { pageActions } from "../features/pageSlice";
 import { useDispatch, useSelector } from "react-redux";
-import FavoritesBox from "./FavoritesBox";
+import FavoritesModalContainer from "./FavoritesModalContainer";
 import { modalStyling } from "../objects/Modal";
 import ModalContent from "./ModalContent";
 
@@ -44,9 +44,8 @@ const Header = () => {
         <ModalContent
           title="Favoritter"
           closeModal={closeFavoritesModal}
-          Container={FavoritesBox}
+          Container={FavoritesModalContainer}
         ></ModalContent>
-        {/* <FavoritesBox closeModal={closeFavoritesModal} /> */}
       </Modal>
 
       <div className="title">Opskriftsgenerator</div>

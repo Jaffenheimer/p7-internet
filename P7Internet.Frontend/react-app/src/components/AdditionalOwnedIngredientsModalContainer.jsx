@@ -6,7 +6,7 @@ import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
 
-const AdditionalOwnedIngredientsPopup = () => {
+const AdditionalOwnedIngredientsModalContainer = () => {
   const dispatch = useDispatch();
   const recipes = useSelector((state) => state.recipe.recipes);
   const ownedIngredientsList = useSelector(
@@ -40,7 +40,7 @@ const AdditionalOwnedIngredientsPopup = () => {
 
   function closeModalAndGoToFullRecipeView() {
     document.body.style.overflow = "visible";
-    dispatch(pageActions.closeAdditionalOwnedIngredientsPopup());
+    dispatch(pageActions.closeAdditionalOwnedIngredientsModalContainer());
     dispatch(pageActions.goToPage(Pages.fullRecipeView));
   }
 
@@ -58,11 +58,11 @@ const AdditionalOwnedIngredientsPopup = () => {
   }
 
   return (
-    <div id="AdditionalOwnedIngredientsPopup">
-      <div
-        id="AdditionalOwnedIngredientsPopup"
-        className="favoriteRecipesContainer"
-      >
+    <div
+      id="AdditionalOwnedIngredientsModalContainer"
+      className="scrollableModalContainer"
+    >
+      <div id="IngredientsContainer">
         {currentRecipeUnownedIngredients.map((ingredient, index) => (
           <div key={nanoid()}>
             <input
@@ -95,4 +95,4 @@ const AdditionalOwnedIngredientsPopup = () => {
   );
 };
 
-export default AdditionalOwnedIngredientsPopup;
+export default AdditionalOwnedIngredientsModalContainer;
