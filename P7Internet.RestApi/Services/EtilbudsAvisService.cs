@@ -14,7 +14,7 @@ namespace P7Internet.Services;
 
 public class ETilbudsAvisService
 {
-    private readonly HttpClient _client = new();
+    private readonly HttpClient _client;
     private readonly QueryBuilder _queryBuilder = new();
     private readonly string _apiKey;
 
@@ -23,8 +23,9 @@ public class ETilbudsAvisService
         
     }
 
-    public ETilbudsAvisService(string? apiKey)
+    public ETilbudsAvisService(string? apiKey, HttpClient httpClient)
     {
+        _client = httpClient;
         _apiKey = apiKey;
         _client.BaseAddress = new Uri("https://squid-api.tjek.com/v4/rpc/get_offers");
     }

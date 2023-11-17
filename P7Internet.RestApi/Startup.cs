@@ -1,4 +1,5 @@
-﻿using System.Text.Json.Serialization;
+﻿using System.Net.Http;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -42,7 +43,7 @@ namespace P7Internet
                 services.AddSingleton(new OpenAiService(Configuration.GetSection("OpenAI").GetValue<string>("APIKey")));
                 services.AddSingleton(
                     new EmailService(Configuration.GetSection("SendGrid").GetValue<string>("APIKey")));
-                services.AddSingleton(new SallingService(Configuration.GetSection("Salling").GetValue<string>("APIKey")));
+                services.AddSingleton(new SallingService(Configuration.GetSection("Salling").GetValue<string>("APIKey"), HttpClientFactory.Create()));
             }
 
             // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

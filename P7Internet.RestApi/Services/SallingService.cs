@@ -20,15 +20,10 @@ namespace P7Internet.Services
         private readonly HttpClient _httpClient;
         private readonly string _apiKey;
 
-        public SallingService(HttpClient httpClient)
-        {
-            _httpClient = httpClient;
-            _httpClient.BaseAddress = new Uri("https://api.sallinggroup.com/");
-        }
-        public SallingService(string? apiKey)
+        public SallingService(string? apiKey, HttpClient httpClient)
         {
             _apiKey = apiKey;
-            _httpClient = new HttpClient();
+            _httpClient = httpClient;
             _httpClient.BaseAddress = new Uri("https://api.sallinggroup.com/");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
         }
