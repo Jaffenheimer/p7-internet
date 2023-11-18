@@ -5,7 +5,7 @@ import Pages from "../objects/Pages"
 const initialState = {
     page: Pages.frontPage,
     loginModalShown: false,
-		favoritesModalShown: false,
+	favoritesModalShown: false,
 };
 
 export const pageSlice = createSlice({
