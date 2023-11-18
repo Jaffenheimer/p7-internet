@@ -18,7 +18,7 @@ const DietaryRestrictions = () => {
   };
 
   return (
-    <div className="DietaryRestrictions">
+    <div className="DietaryRestrictions" data-testid="DietaryRestrictions">
       <h3 id="DietaryRestrictionsText">Kostbegrænsninger</h3>
       <Select
         id="DietaryRestrictionsSelect"
