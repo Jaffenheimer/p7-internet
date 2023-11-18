@@ -11,7 +11,6 @@ import Pages from "../objects/Pages"
 import configureMockStore from "redux-mock-store";
 import { stores } from "../objects/Stores";
 
-
 afterEach(cleanup)
 
 test("Render RecipeSelectionContainerLeft with expected recipe", () => {
@@ -105,5 +104,3 @@ describe("integration tests for RecipeSelectionContainerLeft", () => {
     }, 100); 
   });
 });
-
-

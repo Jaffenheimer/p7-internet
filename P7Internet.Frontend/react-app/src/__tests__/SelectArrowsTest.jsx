@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, render, screen, fireEvent } from "@testing-library/react";
 import { Provider } from 'react-redux';
 import '@testing-library/jest-dom'
 import React from "react";
@@ -8,7 +8,7 @@ import configureMockStore from "redux-mock-store";
 
 afterEach(cleanup);
 
-describe("RecipeTitle", () => {
+describe("SelectArrows", () => {
   let mockStore;
   beforeEach(() => {
     const mockState = {
@@ -35,9 +35,9 @@ describe("RecipeTitle", () => {
   });
   
   it("Renders the arrows", () => {
-    // const arrows = screen.getAllByRole("img");
-    // fireEvent.click(arrows[1])
-    // expect(screen.getByTestId("SelectArrows")).toHaveAttribute('tabIndex', '1');
+    const arrows = screen.getAllByRole("img");
+    fireEvent.click(arrows[1])
+    expect(screen.getByLabelText("SelectArrows")).toHaveAttribute('tabIndex', '1');
   });
 
 });
