@@ -8,7 +8,7 @@ afterEach(cleanup);
 
 test("RemoveAllButton should run function on click", () => {
   onChange = jest.fn();
-  renderComponent(< RemoveAllButton handleClick={onChange} />);
+  renderComponent(<RemoveAllButton handleClick={onChange} />);
   const button = screen.getByRole("button");
   expect(screen.getByText("Fjern alle")).toBeInTheDocument();
   expect(onChange).toHaveBeenCalledTimes(0);

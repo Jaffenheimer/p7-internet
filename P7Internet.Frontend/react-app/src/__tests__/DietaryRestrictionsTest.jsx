@@ -22,11 +22,9 @@ test("Correct value in the select element after selecting a value", () => {
   expect(selectElement.value).toBe("Vegetar");
 });
 
-
 test("Incorrect value in the select element after selecting a value", () => {
-    renderComponent(<DietaryRestriction />);
-    const selectElement = screen.getByRole("combobox");
-    fireEvent.change(selectElement, { target: { value: "Vegetar" } });
-    expect(selectElement.value).not.toBe("Veganer");
-    });
-    
+  renderComponent(<DietaryRestriction />);
+  const selectElement = screen.getByRole("combobox");
+  fireEvent.change(selectElement, { target: { value: "Vegetar" } });
+  expect(selectElement.value).not.toBe("Veganer");
+});

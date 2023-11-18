@@ -1,12 +1,12 @@
 // import { render, screen } from "@testing-library/react";
-import '@testing-library/jest-dom'
+import "@testing-library/jest-dom";
 // import React from "react";
 // import userEvent from "@testing-library/user-event";
 // import Pages from "../objects/Pages"
 // import { useDispatch, useSelector } from "react-redux";
 // import ProfilePicture from "../components/ProfilePicture";
 
-test("", () => {})
+test("", () => {});
 // jest.mock("react-redux");
 
 // const initialState = {
@@ -61,4 +61,3 @@ test("", () => {})
 //     expect(dispatch).toHaveBeenCalledTimes(1);
 //   });
 // });
-

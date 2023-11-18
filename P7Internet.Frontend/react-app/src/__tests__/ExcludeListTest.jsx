@@ -90,5 +90,3 @@ test("checks if the ingredientlist is empty", () => {
   const list = screen.queryByTestId("IngredientElement");
   expect(list).not.toBeInTheDocument();
 });
-
-

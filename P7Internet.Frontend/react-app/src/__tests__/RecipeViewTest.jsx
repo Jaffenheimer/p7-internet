@@ -22,7 +22,7 @@ describe("RecipeView tests", () => {
       recipe: {
         currentRecipeIndex: 0,
       },
-    }
+    };
     mockStore = configureMockStore()(mockState);
 
     render(
@@ -36,22 +36,21 @@ describe("RecipeView tests", () => {
     const heart = screen.getByRole("img");
     expect(screen.getByText(/Spaghetti Aglio e Olio/)).toBeInTheDocument();
     expect(heart).toBeInTheDocument();
-    expect(heart).toHaveAttribute('src', heartHollow);
+    expect(heart).toHaveAttribute("src", heartHollow);
     expect(screen.getByText(/400g spaghetti/)).toBeInTheDocument();
     expect(screen.getByText(/4 cloves garlic, minced/)).toBeInTheDocument();
     expect(screen.getByText(/1\/4 cup olive oil/)).toBeInTheDocument();
-    expect(screen.getByText(/1\/2 teaspoon red pepper flake/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/1\/2 teaspoon red pepper flake/)
+    ).toBeInTheDocument();
     expect(screen.getByText(/Salt and pepper to taste/)).toBeInTheDocument();
     expect(screen.getByText(/Grated Parmesan cheese/)).toBeInTheDocument();
   });
 
   it("Heart should be clickable while logged in", () => {
     const heart = screen.getByRole("img");
-    expect(heart).toHaveAttribute('src', heartHollow)
+    expect(heart).toHaveAttribute("src", heartHollow);
     fireEvent.click(heart);
-    expect(heart).toHaveAttribute('src', heartSolid)
+    expect(heart).toHaveAttribute("src", heartSolid);
   });
 });
-
-
-

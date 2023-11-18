@@ -1,6 +1,6 @@
 import React from "react";
 import { cleanup, fireEvent, render, screen } from "@testing-library/react";
-import '@testing-library/jest-dom'
+import "@testing-library/jest-dom";
 import heartHollow from "../data/heart-hollow.svg";
 import heartSolid from "../data/heart-solid.svg";
 import RecipeTitle from "../components/RecipeTitle";
@@ -15,8 +15,8 @@ describe("RecipeTitle", () => {
     const mockState = {
       user: {
         loggedIn: true,
-      }
-    }
+      },
+    };
     mockStore = configureMockStore()(mockState);
 
     render(
@@ -28,16 +28,16 @@ describe("RecipeTitle", () => {
 
   it("Render recipe title as logged in and expect heart hollow", () => {
     const heart = screen.getByRole("img");
-    expect(screen.getByText("Title Test")).toBeInTheDocument()
+    expect(screen.getByText("Title Test")).toBeInTheDocument();
     expect(heart).toBeInTheDocument();
-    expect(heart).toHaveAttribute('src', heartHollow)
+    expect(heart).toHaveAttribute("src", heartHollow);
   });
 
   it("Render as logged in and expect heart solid on click", () => {
     const heart = screen.getByRole("img");
-    expect(heart).toHaveAttribute('src', heartHollow)
+    expect(heart).toHaveAttribute("src", heartHollow);
     fireEvent.click(heart);
-    expect(heart).toHaveAttribute('src', heartSolid)
+    expect(heart).toHaveAttribute("src", heartSolid);
   });
 });
 
@@ -45,8 +45,8 @@ test("Render without being logged in and expect heart to remain as heartHollow (
   const mockState = {
     user: {
       loggedIn: false,
-    }
-  }
+    },
+  };
   let mockStore = configureMockStore()(mockState);
 
   render(
@@ -56,10 +56,9 @@ test("Render without being logged in and expect heart to remain as heartHollow (
   );
 
   const heart = screen.getByRole("img");
-    
-  expect(heart).toHaveAttribute('src', heartHollow);
+
+  expect(heart).toHaveAttribute("src", heartHollow);
   fireEvent.click(heart);
   //login modal should pop up here, therefore the heart remains hollow
-  expect(heart).toHaveAttribute('src', heartHollow);
+  expect(heart).toHaveAttribute("src", heartHollow);
 });
-  

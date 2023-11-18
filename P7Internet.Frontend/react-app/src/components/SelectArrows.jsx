@@ -30,7 +30,12 @@ const SelectArrows = () => {
   }
 
   return (
-    <div id="SelectArrows" aria-label="SelectArrows" onKeyDown={handleKeyPress} tabIndex="0">
+    <div
+      id="SelectArrows"
+      aria-label="SelectArrows"
+      onKeyDown={handleKeyPress}
+      tabIndex="0"
+    >
       <img src={leftArrow} alt="Left Arrow" onClick={clickLeft} />
       <img src={rightArrow} alt="right Arrow" onClick={clickRight} />
     </div>

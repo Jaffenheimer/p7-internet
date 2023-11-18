@@ -147,7 +147,9 @@ const LoginBox = ({ closeModal }) => {
             </label> */}
             <br />
             <br />
-            <a href="/#" aria-label="glemtKodeord">Glemt kodeord?</a>
+            <a href="/#" aria-label="glemtKodeord">
+              Glemt kodeord?
+            </a>
             <br />
             <p id="noUserText">Ingen bruger:</p>
             <a href="/#" onClick={() => setCreatingAccount(true)}>

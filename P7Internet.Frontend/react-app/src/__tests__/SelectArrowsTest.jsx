@@ -1,10 +1,9 @@
 import { cleanup, render, screen, fireEvent } from "@testing-library/react";
-import { Provider } from 'react-redux';
-import '@testing-library/jest-dom'
+import { Provider } from "react-redux";
+import "@testing-library/jest-dom";
 import React from "react";
 import SelectArrows from "../components/SelectArrows";
 import configureMockStore from "redux-mock-store";
-
 
 afterEach(cleanup);
 
@@ -15,8 +14,8 @@ describe("SelectArrows", () => {
       recipe: {
         recipes: [],
         currentRecipeIndex: 0,
-      }
-    }
+      },
+    };
     mockStore = configureMockStore()(mockState);
 
     render(
@@ -31,6 +30,9 @@ describe("SelectArrows", () => {
     expect(arrows[0]).toBeInTheDocument();
     expect(arrows[1]).toBeInTheDocument();
     expect(screen.getByLabelText("SelectArrows")).toBeInTheDocument();
-    expect(screen.getByLabelText("SelectArrows")).toHaveAttribute('tabIndex', '0');
+    expect(screen.getByLabelText("SelectArrows")).toHaveAttribute(
+      "tabIndex",
+      "0"
+    );
   });
 });

@@ -1,6 +1,12 @@
-import { cleanup, render, screen, act, fireEvent } from "@testing-library/react";
-import { Provider } from 'react-redux';
-import '@testing-library/jest-dom'
+import {
+  cleanup,
+  render,
+  screen,
+  act,
+  fireEvent,
+} from "@testing-library/react";
+import { Provider } from "react-redux";
+import "@testing-library/jest-dom";
 import React from "react";
 import SelectRecipeButton from "../components/SelectRecipeButton";
 import configureMockStore from "redux-mock-store";
@@ -16,8 +22,8 @@ describe("SelectRecipeButton", () => {
         stores: [],
         toggleStateIsRadius: false,
         radius: "100 m",
-      }
-    }
+      },
+    };
     mockStore = configureMockStore()(mockState);
 
     render(
@@ -35,6 +41,8 @@ describe("SelectRecipeButton", () => {
   it("Toast appears when clicking the button", async () => {
     render(<ToastContainer position="top-center" />);
     await act(() => fireEvent.click(screen.getByRole("button")));
-    expect(await screen.findByText(/Tilføj mindst 1 butik for at vælge opskriften/)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/Tilføj mindst 1 butik for at vælge opskriften/)
+    ).toBeInTheDocument();
   });
 });

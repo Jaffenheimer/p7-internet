@@ -5,7 +5,7 @@ import { renderComponent } from "../testSetupHelper/Helper.jsx";
 import StoreSelection from "../components/StoreSelection";
 import { allStoreObjects } from "../objects/Stores.js";
 
-afterEach(cleanup)
+afterEach(cleanup);
 
 test("render store selection with correct title and all shops present", () => {
   renderComponent(<StoreSelection values={allStoreObjects} options={[]} />);
@@ -33,12 +33,19 @@ test("changing store selection calls onChange function", () => {
 
 test("remove all but one store from the store selection", () => {
   setStoreValues = jest.fn();
-  renderComponent(<StoreSelection values={allStoreObjects} setValues={setStoreValues} setOptions={() => {}} options={[]} />);
-  
+  renderComponent(
+    <StoreSelection
+      values={allStoreObjects}
+      setValues={setStoreValues}
+      setOptions={() => {}}
+      options={[]}
+    />
+  );
+
   let buttons = screen.getAllByRole("button");
   expect(buttons.length).toBe(7);
 
-  for (let i = 0; i < buttons.length - 1; i++){
+  for (let i = 0; i < buttons.length - 1; i++) {
     expect(buttons[i]).toBeInTheDocument();
     fireEvent.click(buttons[i]);
   }

@@ -11,7 +11,7 @@ const RecipeTitle = ({ title }) => {
   const loggedIn = useSelector((state) => state.user.loggedIn);
   const heartedRecipes = useSelector((state) => state.user.heartedRecipes);
   const [heart, setHeart] = useState(heartHollow);
-  
+
   function handleClick(event) {
     event.preventDefault();
     if (loggedIn === false) {
