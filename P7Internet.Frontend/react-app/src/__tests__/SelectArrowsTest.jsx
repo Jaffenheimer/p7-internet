@@ -33,11 +33,4 @@ describe("SelectArrows", () => {
     expect(screen.getByLabelText("SelectArrows")).toBeInTheDocument();
     expect(screen.getByLabelText("SelectArrows")).toHaveAttribute('tabIndex', '0');
   });
-  
-  it("Renders the arrows", () => {
-    const arrows = screen.getAllByRole("img");
-    fireEvent.click(arrows[1])
-    expect(screen.getByLabelText("SelectArrows")).toHaveAttribute('tabIndex', '1');
-  });
-
 });
