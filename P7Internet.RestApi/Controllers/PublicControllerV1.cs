@@ -100,6 +100,8 @@ public class PublicControllerV1 : ControllerBase
             for (int i = 0; i < req.Amount; i++)
             {
                 var recipe = GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
+                if (recipe.Result.Success == false)
+                    return BadRequest(recipe.Result.ErrorMessage);
                 recipeList.Add(recipe.Result);
             }
 
@@ -197,6 +199,8 @@ public class PublicControllerV1 : ControllerBase
             for (int i = 0; i < req.Amount; i++)
             {
                 var recipe = GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
+                if (recipe.Result.Success == false)
+                    return BadRequest(recipe.Result.ErrorMessage);
                 recipeList.Add(recipe.Result);
                 if (req.UserId != null && req.SessionToken != null)
                     await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(),
