@@ -37,15 +37,15 @@ function FullRecipeView() {
         <Header />
       </div>
       <div className="FullRecipeView">
-        <RecipeTitle id="RecipeTitle" title={recipe.payload.recipe.title} />
+        <RecipeTitle id="RecipeTitle" title={recipe.recipe.title} />
         <ForPersons />
         <IngredientsList
           ingredients={convertIngredientsToIngredientObjects(
-            recipe.payload.recipe.ingredients
+            recipe.recipe.ingredients
           )}
           ListElement={RecipeIngredientElement}
         />
-        <MethodsList methods={recipe.payload.recipe.method} />
+        <MethodsList methods={recipe.recipe.method} />
         <div className="BottomButtons no-print">
           <div className="BottomButtonsSpacer">
             <div id="BackToFrontPageButtonRecipeView">

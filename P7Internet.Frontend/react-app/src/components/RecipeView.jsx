@@ -25,10 +25,10 @@ const RecipeView = () => {
   
   return (
     <div className="RecipeView">
-      <RecipeTitle title={recipes[tab].payload.recipe.title} />
+      <RecipeTitle title={recipes[tab].recipe.title} />
       <IngredientsList
         ingredients={convertIngredientsToIngredientObjects(
-          recipes[tab].payload.recipe.ingredients
+          recipes[tab].recipe.ingredients
         )}
         ListElement={RecipeIngredientElement}
       />
