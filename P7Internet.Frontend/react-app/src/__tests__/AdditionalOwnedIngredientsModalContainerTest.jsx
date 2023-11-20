@@ -36,7 +36,7 @@ test("renders AdditionalOwnedIngredientsModalContainer with continue button", ()
   expect(screen.getByText("Fortsæt")).toBeInTheDocument();
 });
 
-describe("checkboxes", () => {
+describe("checkboxes and continue button", () => {
   beforeEach(() => {
     const mockState = {
       user: {
@@ -68,62 +68,22 @@ describe("checkboxes", () => {
     fireEvent.click(firstIngredient);
     expect(firstIngredient).toBeChecked();
   });
-});
+  test("clicking on continue button should call onclick function", () => {
+    const onClick = jest.fn();
 
-test("clicking on continue button should call onclick function", () => {
-  const mockState = {
-    user: {
-      loggedIn: true,
-    },
-    recipe: {
-      recipes: [new Recipe("title", ["1", "2"], "method")],
-      currentRecipeIndex: 0,
-    },
-    recipeGeneration: {
-      ownedIngredients: [],
-    },
-  };
-  // configureMockStore() returns a function that can be called with the initial state
-  const mockStore = configureMockStore()(mockState);
+    const continueButton = screen.getByText("Fortsæt");
+    continueButton.onclick = onClick;
+    fireEvent.click(continueButton);
+    expect(onClick).toHaveBeenCalled();
+  });
+  test("clicking on continue button changes overflow styling of body to visible", () => {
+    //when the modal is open, the body should have overflow hidden
+    document.body.style.overflow = "hidden";
+    expect(document.body).toHaveStyle("overflow: hidden");
 
-  renderComponentWithSpecificStore(
-    <AdditionalOwnedIngredientsModalContainer />,
-    mockStore
-  );
-  const onClick = jest.fn();
+    const continueButton = screen.getByText("Fortsæt");
+    fireEvent.click(continueButton);
 
-  const continueButton = screen.getByText("Fortsæt");
-  continueButton.onclick = onClick;
-  fireEvent.click(continueButton);
-  expect(onClick).toHaveBeenCalled();
-});
-
-test("clicking on continue button changes overflow styling of body to visible", () => {
-  //when the modal is open, the body should have overflow hidden
-  document.body.style.overflow = "hidden";
-  const mockState = {
-    user: {
-      loggedIn: true,
-    },
-    recipe: {
-      recipes: [new Recipe("title", ["1", "2"], "method")],
-      currentRecipeIndex: 0,
-    },
-    recipeGeneration: {
-      ownedIngredients: [],
-    },
-  };
-  // configureMockStore() returns a function that can be called with the initial state
-  const mockStore = configureMockStore()(mockState);
-
-  renderComponentWithSpecificStore(
-    <AdditionalOwnedIngredientsModalContainer />,
-    mockStore
-  );
-  expect(document.body).toHaveStyle("overflow: hidden");
-
-  const continueButton = screen.getByText("Fortsæt");
-  fireEvent.click(continueButton);
-
-  expect(document.body).toHaveStyle("overflow: visible");
+    expect(document.body).toHaveStyle("overflow: visible");
+  });
 });

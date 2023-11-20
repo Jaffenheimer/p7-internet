@@ -18,10 +18,6 @@ const SelectRecipeButton = () => {
     (state) => state.page.additionalOwnedIngredientsModalContainerIsOpen
   );
 
-  const modalIsOpen = useSelector(
-    (state) => state.page.additionalOwnedIngredientsModalContainerIsOpen
-  );
-
   function handleModalClose() {
     dispatch(pageActions.closeAdditionalOwnedIngredientsModalContainer());
     document.body.style.overflow = "visible"; //the default value
