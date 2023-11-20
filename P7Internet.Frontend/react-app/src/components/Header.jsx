@@ -4,32 +4,14 @@ import LoginBox from "./LoginBox";
 import Modal from "react-modal";
 import { pageActions } from "../features/pageSlice";
 import { useDispatch, useSelector } from "react-redux";
-import FavoritesBox from "./FavoritesBox";
-
-//styling for the modal
-const customStyles = {
-  content: {
-    height: "450px",
-    overflow: "hidden",
-    top: "50%",
-    left: "50%",
-    right: "auto",
-    bottom: "auto",
-    transform: "translate(-50%, -50%)",
-  },
-};
+import FavoritesModalContainer from "./FavoritesModalContainer";
+import { modalStyling } from "../objects/Modal";
+import ModalContent from "./ModalContent";
 
 const Header = () => {
   const dispatch = useDispatch();
 
-  const recipes = useSelector((state) => state.recipe.recipes);
   const loggedIn = useSelector((state) => state.user.loggedIn);
-  const favoriteRecipesRedux = useSelector(
-    (state) => state.user.heartedRecipes
-  );
-
-  //if user is not logged in, favoriteRecipes is an empty list
-  const favoriteRecipes = loggedIn === undefined ? [] : favoriteRecipesRedux;
   const loginModalShown = useSelector((state) => state.page.loginModalShown);
   const favoritesModalShown = useSelector(
     (state) => state.page.favoritesModalShown
@@ -44,7 +26,7 @@ const Header = () => {
     <div className="header no-print">
       <Modal
         isOpen={loginModalShown}
-        style={customStyles}
+        style={modalStyling}
         onRequestClose={closeLoginModal}
         contentLabel="Login Modal"
         ariaHideApp={false}
@@ -53,16 +35,16 @@ const Header = () => {
       </Modal>
       <Modal
         isOpen={favoritesModalShown}
-        style={customStyles}
+        style={modalStyling}
         onRequestClose={closeFavoritesModal}
         contentLabel="Favorites Modal"
         ariaHideApp={false}
       >
-        <FavoritesBox
+        <ModalContent
+          title="Favoritter"
           closeModal={closeFavoritesModal}
-          favoriteRecipes={favoriteRecipes}
-          recipes={recipes}
-        />
+          Container={FavoritesModalContainer}
+        ></ModalContent>
       </Modal>
 
       <div className="title">Opskriftsgenerator</div>

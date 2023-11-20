@@ -8,7 +8,7 @@ import recipeBodyCreator from "../helperFunctions/recipeBodyCreator";
 import { useGenerateUserRecipeMutation } from "../services/recipeEndpoints";
 
 
-const GenerateRecipeButton = () => {
+const GenerateRecipesButton = () => {
   const dispatch = useDispatch();
   const ingredients = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
@@ -72,7 +72,11 @@ const GenerateRecipeButton = () => {
     goToPageFullRecipeSelection();
   }
 
-  return <button onClick={handleOnClick}>Generer opskrifter</button>;
+  return (
+    <button onClick={handleOnClick} data-testid="GenerateRecipesButton">
+      Generer opskrifter
+    </button>
+  );
 };
 
-export default GenerateRecipeButton;
+export default GenerateRecipesButton;

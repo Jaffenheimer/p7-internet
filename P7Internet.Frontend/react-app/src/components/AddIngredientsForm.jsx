@@ -61,12 +61,11 @@ const AddIngredientsForm = ({
 
   return (
     <form onSubmit={handleSubmit} data-testid="AddIngredientsForm">
-      <AddIngredientInput
-        ingredient={ingredient}
-        handleChange={handleChange}
-      />
-      <button type="submit" data-testid="AddButton">Tilføj</button>
-      <RemoveAllButton handleClick={removeAllHandler}/>
+      <AddIngredientInput ingredient={ingredient} handleChange={handleChange} />
+      <button type="submit" data-testid="AddButton">
+        Tilføj
+      </button>
+      <RemoveAllButton handleClick={removeAllHandler} />
     </form>
   );
 };

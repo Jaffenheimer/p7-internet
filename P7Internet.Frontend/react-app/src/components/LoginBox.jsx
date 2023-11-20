@@ -88,7 +88,6 @@ const LoginBox = ({ closeModal }) => {
     <form className="LoginForm" onSubmit={handleSubmit}>
       <div className="imgcontainer">
         <h3>
-          {" "}
           {!creatingAccount ? "Login" : "Opret Bruger"}
           <img
             src={cross}
