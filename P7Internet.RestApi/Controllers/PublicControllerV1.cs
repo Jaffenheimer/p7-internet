@@ -13,6 +13,7 @@ using P7Internet.Persistence.UserSessionRepository;
 using P7Internet.Requests;
 using P7Internet.Response;
 using P7Internet.Services;
+using P7Internet.Shared;
 
 namespace P7Internet.Controllers;
 
@@ -61,21 +62,21 @@ public class PublicControllerV1 : ControllerBase
     {
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
-        List<string?> recipesIncludingIngredients = new List<string?>();
+        List<Recipe> recipesIncludingIngredients = new List<Recipe>();
         foreach (var recipe in recipes)
         {
             if (req.DietaryRestrictions.Count == 0 && req.ExcludedIngredients.Count == 0)
             {
-                if (ContainsEveryString(req.Ingredients, recipe))
+                if (ContainsEveryString(req.Ingredients, recipe.Description))
                 {
                     recipesIncludingIngredients.Add(recipe);
                 }
             }
             else
             {
-                if (ContainsEveryString(req.Ingredients, recipe) &&
-                    !ContainsEveryString(req.ExcludedIngredients, recipe) &&
-                    !ContainsEveryString(req.DietaryRestrictions, recipe))
+                if (ContainsEveryString(req.Ingredients, recipe.Description) &&
+                    !ContainsEveryString(req.ExcludedIngredients, recipe.Description) &&
+                    !ContainsEveryString(req.DietaryRestrictions, recipe.Description))
                 {
                     recipesIncludingIngredients.Add(recipe);
                 }
@@ -89,7 +90,16 @@ public class PublicControllerV1 : ControllerBase
         }
 
         if (recipesIncludingIngredients.Any(x => x != null))
-            return Ok(recipesIncludingIngredients);
+        {
+            var returnList = new List<RecipeResponse>();
+            foreach (var recipe in recipesIncludingIngredients)
+            {
+                var validIng = await _ingredientRepository.GetAllIngredients();
+                var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
+                returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
+            }
+            return Ok(returnList);
+        }
 
         NotEnoughRecipes:
 
@@ -161,21 +171,21 @@ public class PublicControllerV1 : ControllerBase
 
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
-        List<string?> recipesIncludingIngredients = new List<string?>();
+        List<Recipe?> recipesIncludingIngredients = new List<Recipe?>();
         foreach (var recipe in recipes)
         {
             if (req.DietaryRestrictions.Count == 0 && req.ExcludedIngredients.Count == 0)
             {
-                if (ContainsEveryString(req.Ingredients, recipe))
+                if (ContainsEveryString(req.Ingredients, recipe.Description))
                 {
                     recipesIncludingIngredients.Add(recipe);
                 }
             }
             else
             {
-                if (ContainsEveryString(req.Ingredients, recipe) &&
-                    !ContainsEveryString(req.ExcludedIngredients, recipe) &&
-                    !ContainsEveryString(req.DietaryRestrictions, recipe))
+                if (ContainsEveryString(req.Ingredients, recipe.Description) &&
+                    !ContainsEveryString(req.ExcludedIngredients, recipe.Description) &&
+                    !ContainsEveryString(req.DietaryRestrictions, recipe.Description))
                 {
                     recipesIncludingIngredients.Add(recipe);
                 }
@@ -189,7 +199,16 @@ public class PublicControllerV1 : ControllerBase
         }
 
         if (recipesIncludingIngredients.Any(x => x != null))
-            return Ok(recipesIncludingIngredients);
+        {
+            var returnList = new List<RecipeResponse>();
+            foreach (var recipe in recipesIncludingIngredients)
+            {
+                var validIng = await _ingredientRepository.GetAllIngredients();
+                var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
+                returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
+            }
+            return Ok(returnList);
+        }
 
         NotEnoughRecipes:
         var recipeList = new List<RecipeResponse>();
