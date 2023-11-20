@@ -10,6 +10,7 @@ import Header from "../components/Header";
 import RecipeIngredientElement from "../components/RecipeIngredientElement";
 import FrontPageButton from "../components/FrontPageButton";
 import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientsHelper";
+import { ToastContainer } from "react-toastify";
 
 function FullRecipeView() {
   const dispatch = useDispatch();
@@ -32,6 +33,12 @@ function FullRecipeView() {
 
   return (
     <div className="AppContainer">
+      <ToastContainer
+        position="top-center"
+        newestOnTop={true}
+        closeButton={false}
+        draggablePercent
+      />
       <div className="headerContainer">
         <Header />
       </div>
