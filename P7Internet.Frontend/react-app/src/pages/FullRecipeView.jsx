@@ -45,15 +45,17 @@ function FullRecipeView() {
         />
         <MethodsList methods={recipe.method} />
         <div className="BottomButtons no-print">
-          <div id="BackToFrontPageButtonRecipeView">
-            <FrontPageButton buttonText="Tilbage til forsiden" />
+          <div className="BottomButtonsSpacer">
+            <div id="BackToFrontPageButtonRecipeView">
+              <FrontPageButton buttonText="Tilbage til forsiden" />
+            </div>
+            <button id="BackButton" onClick={goToPageRecipeSelection}>
+              Tilbage
+            </button>
+            <button id="PrintButton" onClick={PrintRecipe}>
+              Print
+            </button>
           </div>
-          <button id="BackButton" onClick={goToPageRecipeSelection}>
-            Tilbage
-          </button>
-          <button id="PrintButton" onClick={PrintRecipe}>
-            Print
-          </button>
         </div>
       </div>
     </div>

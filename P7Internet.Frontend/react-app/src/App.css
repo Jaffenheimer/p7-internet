@@ -20,6 +20,7 @@ body {
   min-height: 100vh;
   width: 100%;
   padding: 0;
+  background: #fff2d8;
 }
 
 .AppContainer {
@@ -593,6 +594,10 @@ input[type="range"] {
 .FullRecipeView {
   flex: 1;
   margin: 1cm;
+}
+
+.BottomButtonsSpacer{
+  padding-bottom: 10%;
 }
 
 .ingredientsList > ul {
