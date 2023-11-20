@@ -508,6 +508,7 @@ public class PublicControllerV1 : ControllerBase
     private static List<string> CheckListForValidIngredients(string recipe, List<string> validIngredients)
     {
         List<string> result = new List<string>();
+        Console.WriteLine("recipe: ", recipe);
         recipe = recipe.ToLower();
         foreach (var ingredient in validIngredients)
         {
@@ -517,6 +518,8 @@ public class PublicControllerV1 : ControllerBase
                 result.Add(ingredient);
         }
 
+        
+        Console.WriteLine(result);
         return result;
     }
 
@@ -529,6 +532,8 @@ public class PublicControllerV1 : ControllerBase
     private async Task<RecipeResponse> GetRecipeAsync(RecipeRequest req, List<string> validIngredients)
     {
         var res = _openAiService.GetAiResponse(req);
+        if (res == null) throw new Exception("Recipe er Null"); 
+        Console.WriteLine("res from openai: ", res.Recipes.ToString());
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
         await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);

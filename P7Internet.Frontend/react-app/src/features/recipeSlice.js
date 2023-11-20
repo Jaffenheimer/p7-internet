@@ -10,9 +10,10 @@ export const recipeSlice = createSlice({
   initialState,
   reducers: {
     addRecipes(state, action) {
-      for (let i = 0; i < action.payload.length; i++) {
-        state.recipes.push(action.payload[i]);
-      }
+      state.recipes.push(action);
+      // for (let i = 0; i < action.payload.length; i++) {
+      //   state.recipes.push(action.payload[i]);
+      // }
     },
     addRecipe(state, action) {
       state.recipes.push(action.payload);

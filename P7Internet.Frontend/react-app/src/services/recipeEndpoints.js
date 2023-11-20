@@ -10,10 +10,18 @@ const recipeEndpoints = apiSlice.injectEndpoints({
         body: body,
       }),
     }),
+    generateRecipe: builder.mutation({
+      query: (body) => ({
+        url: `/public/recipe`,
+        method: "POST",
+        body: body,
+      }),
+    }),
   }),
 });
 
 export const {
     useGenerateUserRecipeMutation,
+    useGenerateRecipeMutation,
   } = recipeEndpoints;
   

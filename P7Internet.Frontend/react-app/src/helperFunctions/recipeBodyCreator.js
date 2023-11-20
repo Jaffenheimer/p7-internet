@@ -35,7 +35,7 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
 
   //Creates the body
   const body = {
-    userId: userid,
+    userId: userid, 
     sessionToken: sessiontoken,
     ingredients: ingredients,
     amount: 3,
