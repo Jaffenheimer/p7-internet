@@ -100,6 +100,8 @@ const GenerateRecipesButton = () => {
     //Create body for request
     const body = recipeBodyCreator(loggedIn, recipeGenData);
 
+    console.log(body);
+
     test(data.data); 
 
     //await fetchRecipe(body);

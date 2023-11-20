@@ -14,13 +14,6 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     ingredients = [],
     excludedIngredients = [];
 
-  //Retrive userid and sessiontoken if login
-  if (loggedIn === true) {
-    userid = retriveCookie("userid=");
-    sessiontoken = retriveCookie("sessionToken=");
-  }
-
-
   //Combines allgeries with dietaryrestrictions
   const restrictions = [...allergens];
   if (dietaryRestrictions !== '') restrictions.push(dietaryRestrictions);
@@ -35,14 +28,31 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
 
   //Creates the body
   const body = {
-    userId: userid, 
-    sessionToken: sessiontoken,
     ingredients: ingredients,
     amount: 3,
     amountOfPeople: numPeople,
     excludedIngredients: excludedIngredients,
     dietaryRestrictions: restrictions,
   };
+
+  //Retrive userid and sessiontoken if login
+  if (loggedIn === true) {
+    userid = retriveCookie("userid=");
+    sessiontoken = retriveCookie("sessionToken=");
+
+    const userData = {
+      userId: userid, 
+      sessionToken: sessiontoken,
+    }
+
+    const combinedBody = {
+      ...userData, 
+      ...body,
+    }
+
+    return combinedBody;
+
+  }
 
   // console.log("Body to post");
   // console.log(body);
