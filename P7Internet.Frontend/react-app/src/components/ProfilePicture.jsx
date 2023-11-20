@@ -64,24 +64,28 @@ const ProfilePicture = ({ openFavoritesModal }) => {
 
   return (
     <div className="ProfilePicture" data-testid="ProfilePicture">
+      <div className="dropdown-btn">
       <img
         className="Profile"
         src={profile}
         alt="ProfilePicture"
         onClick={profileClick}
       />
+      </div>
       {open ? (
-        <ul className="menu">
+        <div className="dropdown"> 
+        <ul className="dropdown-content">
           <li className="menu-item">
-            <button onClick={handleFavorites}>Favoritter</button>
+            <button id="FavoritesButton" onClick={handleFavorites}>Favoritter</button>
           </li>
           <li className="menu-item">
-            <button onClick={handleSettings}>Indstillinger</button>
+            <button id="SettingsButton" onClick={handleSettings}>Indstillinger</button>
           </li>
           <li className="menu-item">
-            <button onClick={handleLogOut}>Log ud</button>
+            <button id="LogoutButton" onClick={handleLogOut}>Log ud</button>
           </li>
         </ul>
+        </div>
       ) : null}
     </div>
   );
