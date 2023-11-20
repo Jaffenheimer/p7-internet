@@ -575,6 +575,10 @@ input[type="range"] {
   margin: 1cm;
 }
 
+.BottomButtonsSpacer{
+  padding-bottom: 5%;
+}
+
 .ingredientsList > ul {
   padding-left: 40px;
 }
