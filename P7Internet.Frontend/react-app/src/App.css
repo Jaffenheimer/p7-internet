@@ -150,6 +150,10 @@ ul {
   width: 40%;
 }
 
+body.Modal__Content {
+  overflow-y: hidden;
+}
+
 .IngredientElement {
   margin-left: 10px;
   display: flex;
@@ -275,6 +279,22 @@ button:hover {
   float: right;
   margin-right: 15%;
 } */
+
+.IngredientCheckboxes {
+}
+
+.IngredientCheckboxesLabel {
+  cursor: pointer;
+}
+
+#acceptAdditionalIngredientsButton {
+  margin-top: 2%;
+}
+
+#IngredientsContainer {
+  height: 90%;
+  position: relative;
+}
 
 .Profile {
   width: 40px;
@@ -500,12 +520,13 @@ input[type="password"] {
   width: 96%;
 }
 
-.imgcontainer {
+.ModalHeaderContainer {
   text-align: center;
   margin: 24px 0 12px 0;
 }
 
-.favoriteRecipesContainer {
+.scrollableModalContainer,
+#AdditionalOwnedIngredientsModalContainer {
   overflow: auto;
   display: block;
   padding: 16px;

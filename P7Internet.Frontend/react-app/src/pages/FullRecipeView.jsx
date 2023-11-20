@@ -1,21 +1,20 @@
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import RecipeTitle from "../components/RecipeTitle";
 import IngredientsList from "../components/IngredientsList";
 import MethodsList from "../components/MethodsList";
 import Pages from "../objects/Pages";
-import React from "react";
 import ForPersons from "../components/ForPersons";
 import Header from "../components/Header";
 import RecipeIngredientElement from "../components/RecipeIngredientElement";
 import FrontPageButton from "../components/FrontPageButton";
-import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientsHelper";
+import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientHelper";
 
 function FullRecipeView() {
   const dispatch = useDispatch();
 
   const recipes = useSelector((state) => state.recipe.recipes);
-
   const currentRecipeIndex = useSelector(
     (state) => state.recipe.currentRecipeIndex
   );

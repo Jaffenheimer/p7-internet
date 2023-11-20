@@ -9,7 +9,7 @@ import { pageActions } from "../features/pageSlice";
 const RecipeTitle = ({ title }) => {
   const dispatch = useDispatch();
   const loggedIn = useSelector((state) => state.user.loggedIn);
-  const heartedRecipes = useSelector((state) => state.user.heartedRecipes);
+  const favoriteRecipes = useSelector((state) => state.user.favoriteRecipes);
   const [heart, setHeart] = useState(heartHollow);
 
   function handleClick(event) {
@@ -30,8 +30,8 @@ const RecipeTitle = ({ title }) => {
   function SetHeartIconOnChange() {
     //component that dynamically changes heart icon when using arrows
     useEffect(() => {
-      if (heartedRecipes !== undefined) {
-        if (heartedRecipes.includes(title)) {
+      if (favoriteRecipes !== undefined) {
+        if (favoriteRecipes.includes(title)) {
           setHeart(heartSolid);
         } else {
           setHeart(heartHollow);

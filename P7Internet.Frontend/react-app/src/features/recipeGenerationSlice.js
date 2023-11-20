@@ -12,7 +12,7 @@ export const recipeGenerationSlice = createSlice({
   name: "recipeGeneration",
   initialState,
   reducers: {
-    addOwnedIngredients(state, action) {
+    addOwnedIngredient(state, action) {
       const ownedIngredient = {
         id: nanoid(),
         text: action.payload,
