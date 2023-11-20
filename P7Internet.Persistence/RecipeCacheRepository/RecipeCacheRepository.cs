@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using P7Internet.Persistence.Connection;
+using P7Internet.Shared;
 
 namespace P7Internet.Persistence.RecipeCacheRepository;
 
@@ -36,15 +38,21 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     /// Gets all recipes from the database
     /// </summary>
     /// <returns>Returns a list of recipes as strings</returns>
-    public async Task<List<string>> GetAllRecipes()
+    public async Task<List<Recipe>> GetAllRecipes()
     {
-        var query = $@"SELECT Recipe FROM {TableName}";
+        var query = $@"SELECT Id FROM {TableName}";
 
-        var resultFromDb = await Connection.QueryMultipleAsync(query);
+        var recipeQuery = $@"SELECT Recipe FROM {TableName}";
+        var returnList = new List<Recipe>();
+        var idResultFromDb = await Connection.QueryAsync<Guid>(query);
+        var recipeResultFromDb = await Connection.QueryAsync<string>(recipeQuery);
 
-        var result = resultFromDb.Read<string>();
-
-        return result.AsList();
+        for (int i = 0; i < recipeResultFromDb.Count(); i++)
+        {
+            returnList.Add(new Recipe(idResultFromDb.ElementAt(i), recipeResultFromDb.ElementAt(i)));
+        }
+        
+        return returnList;
     }
 
     /// <summary>
