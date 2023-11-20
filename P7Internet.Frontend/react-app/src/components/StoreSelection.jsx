@@ -28,7 +28,6 @@ const StoreSelection = ({ values, setValues, options, setOptions }) => {
   const handleChange = (event, actionMeta) => {
     //action is the type of action, option is the selected option, removedValue is the removed value
     const { action, option, removedValue } = actionMeta;
-    console.log(action);
     //removing a store
     if (action === "remove-value") {
       const removedValueOption = {

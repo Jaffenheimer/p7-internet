@@ -168,7 +168,7 @@ ul {
   width: 70%;
 }
 
-.RemoveIngredientImage {
+.RemoveIngredientCross {
   float: right;
 }
 
@@ -243,14 +243,6 @@ button:hover {
 .ownedIngredientListItems {
   width: 40%;
 }
-
-/* #GenerateRecipeButton {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  margin-bottom: 3%;
-  margin-right: 3%;
-}  */
 
 .RecipeView > #RecipeTitleDiv > h1 {
   text-align: left;

@@ -8,7 +8,7 @@ const RecipeIngredientElement = ({ ingredient }) => {
 
   function isOwned(ingredient) {
     for (const ownedIngredient of ownedIngredientsList) {
-      if (ownedIngredient.text === ingredient) {
+      if (ownedIngredient.text === ingredient.text) {
         return true;
       }
     }
@@ -16,9 +16,12 @@ const RecipeIngredientElement = ({ ingredient }) => {
   }
 
   return (
-    <div className="RecipeIngredientElement">
-      <li>
-        {ingredient}
+    <div
+      className="RecipeIngredientElement"
+      data-testid="RecipeIngredientElement"
+    >
+      <li key={ingredient.id}>
+        {ingredient.text}
         {isOwned(ingredient) ? <b> Ejet </b> : ""}
       </li>
     </div>

@@ -6,8 +6,8 @@ const IngredientElement = ({ ingredient, handleRemove }) => {
     <div className="IngredientElement" data-testid="IngredientElement">
       <li key={ingredient.id}>{ingredient.text}</li>
       <img
-        className="RemoveIngredientImage"
-        data-testid="RemoveIngredientImage"
+        className="RemoveIngredientCross"
+        data-testid="RemoveIngredientCross"
         src={cross}
         alt="cross"
         onClick={(event) => handleRemove(event, ingredient)}
