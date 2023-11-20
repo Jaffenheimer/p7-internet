@@ -5,7 +5,7 @@ import IngredientsList from "./IngredientsList";
 import { useDispatch, useSelector } from "react-redux";
 import { recipeActions } from "../features/recipeSlice";
 import RecipeIngredientElement from "./RecipeIngredientElement";
-import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientsHelper";
+import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientHelper";
 
 const RecipeView = () => {
   const dispatch = useDispatch();

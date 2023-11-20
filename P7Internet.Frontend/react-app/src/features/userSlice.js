@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 //users should be on the database, st. user cannot browse all valid users.
 const initialState = {
   user: {},
-  heartedRecipes: [],
+  favoriteRecipes: [],
   loggedIn: false,
 };
 
@@ -17,14 +17,14 @@ export const userSlice = createSlice({
     },
     logoutUser(state) {
       state.user = {};
-      state.heartedRecipes = [];
+      state.favoriteRecipes = [];
       state.loggedIn = false;
     },
     addRecipe(state, action) {
-      state.heartedRecipes.push(action.payload);
+      state.favoriteRecipes.push(action.payload);
     },
     removeRecipe(state, action) {
-      state.heartedRecipes = state.heartedRecipes.filter(
+      state.favoriteRecipes = state.favoriteRecipes.filter(
         (recipe) => recipe !== action.payload
       );
     },

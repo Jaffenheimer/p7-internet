@@ -17,6 +17,9 @@ export { default as ExcludeList } from "./ExcludeList";
 export { default as RecipeIngredientElement } from "./RecipeIngredientElement";
 export { default as IngredientsList } from "./IngredientsList";
 export { default as FrontPageButton } from "./FrontPageButton";
+export { default as AdditionalOwnedIngredientsModalContainer } from "./AdditionalOwnedIngredientsModalContainer";
+export { default as ModalContent } from "./ModalContent";
+export { default as CloseModalCross } from "./CloseModalCross";
 
 //pages
 export { default as FullRecipeView } from "../pages/FullRecipeView";

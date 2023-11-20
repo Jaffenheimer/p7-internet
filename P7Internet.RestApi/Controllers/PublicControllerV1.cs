@@ -13,6 +13,7 @@ using P7Internet.Persistence.UserSessionRepository;
 using P7Internet.Requests;
 using P7Internet.Response;
 using P7Internet.Services;
+using P7Internet.Shared;
 
 namespace P7Internet.Controllers;
 
@@ -61,21 +62,21 @@ public class PublicControllerV1 : ControllerBase
     {
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
-        List<string?> recipesIncludingIngredients = new List<string?>();
+        List<Recipe> recipesIncludingIngredients = new List<Recipe>();
         foreach (var recipe in recipes)
         {
             if (req.DietaryRestrictions.Count == 0 && req.ExcludedIngredients.Count == 0)
             {
-                if (ContainsEveryString(req.Ingredients, recipe))
+                if (ContainsEveryString(req.Ingredients, recipe.Description))
                 {
                     recipesIncludingIngredients.Add(recipe);
                 }
             }
             else
             {
-                if (ContainsEveryString(req.Ingredients, recipe) &&
-                    !ContainsEveryString(req.ExcludedIngredients, recipe) &&
-                    !ContainsEveryString(req.DietaryRestrictions, recipe))
+                if (ContainsEveryString(req.Ingredients, recipe.Description) &&
+                    !ContainsEveryString(req.ExcludedIngredients, recipe.Description) &&
+                    !ContainsEveryString(req.DietaryRestrictions, recipe.Description))
                 {
                     recipesIncludingIngredients.Add(recipe);
                 }
@@ -89,7 +90,16 @@ public class PublicControllerV1 : ControllerBase
         }
 
         if (recipesIncludingIngredients.Any(x => x != null))
-            return Ok(recipesIncludingIngredients);
+        {
+            var returnList = new List<RecipeResponse>();
+            foreach (var recipe in recipesIncludingIngredients)
+            {
+                var validIng = await _ingredientRepository.GetAllIngredients();
+                var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
+                returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
+            }
+            return Ok(returnList);
+        }
 
         NotEnoughRecipes:
 
@@ -99,14 +109,16 @@ public class PublicControllerV1 : ControllerBase
             var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
             for (int i = 0; i < req.Amount; i++)
             {
-                var recipe = GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
-                recipeList.Add(recipe.Result);
+                var recipe = await GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
+                if (recipe.Success == false)
+                    return BadRequest(recipe.ErrorMessage);
+                recipeList.Add(recipe);
             }
 
             return Ok(recipeList);
         }
 
-        var res = _openAiService.GetAiResponse(req);
+        var res = await _openAiService.GetAiResponse(req);
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
@@ -159,21 +171,21 @@ public class PublicControllerV1 : ControllerBase
 
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
-        List<string?> recipesIncludingIngredients = new List<string?>();
+        List<Recipe?> recipesIncludingIngredients = new List<Recipe?>();
         foreach (var recipe in recipes)
         {
             if (req.DietaryRestrictions.Count == 0 && req.ExcludedIngredients.Count == 0)
             {
-                if (ContainsEveryString(req.Ingredients, recipe))
+                if (ContainsEveryString(req.Ingredients, recipe.Description))
                 {
                     recipesIncludingIngredients.Add(recipe);
                 }
             }
             else
             {
-                if (ContainsEveryString(req.Ingredients, recipe) &&
-                    !ContainsEveryString(req.ExcludedIngredients, recipe) &&
-                    !ContainsEveryString(req.DietaryRestrictions, recipe))
+                if (ContainsEveryString(req.Ingredients, recipe.Description) &&
+                    !ContainsEveryString(req.ExcludedIngredients, recipe.Description) &&
+                    !ContainsEveryString(req.DietaryRestrictions, recipe.Description))
                 {
                     recipesIncludingIngredients.Add(recipe);
                 }
@@ -187,7 +199,16 @@ public class PublicControllerV1 : ControllerBase
         }
 
         if (recipesIncludingIngredients.Any(x => x != null))
-            return Ok(recipesIncludingIngredients);
+        {
+            var returnList = new List<RecipeResponse>();
+            foreach (var recipe in recipesIncludingIngredients)
+            {
+                var validIng = await _ingredientRepository.GetAllIngredients();
+                var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
+                returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
+            }
+            return Ok(returnList);
+        }
 
         NotEnoughRecipes:
         var recipeList = new List<RecipeResponse>();
@@ -196,8 +217,10 @@ public class PublicControllerV1 : ControllerBase
             var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
             for (int i = 0; i < req.Amount; i++)
             {
-                var recipe = GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
-                recipeList.Add(recipe.Result);
+                var recipe = await GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
+                if (recipe.Success == false)
+                    return BadRequest(recipe.ErrorMessage);
+                recipeList.Add(recipe);
                 if (req.UserId != null && req.SessionToken != null)
                     await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(),
                         recipeList[i].RecipeId);
@@ -206,7 +229,7 @@ public class PublicControllerV1 : ControllerBase
             return Ok(recipeList);
         }
 
-        var res = _openAiService.GetAiResponse(req);
+        var res = await _openAiService.GetAiResponse(req);
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
@@ -507,6 +530,9 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>A list of ingredients in the correct format</returns>
     private static List<string> CheckListForValidIngredients(string recipe, List<string> validIngredients)
     {
+        if(string.IsNullOrEmpty(recipe))
+            return new List<string>();
+        
         List<string> result = new List<string>();
         recipe = recipe.ToLower();
         foreach (var ingredient in validIngredients)
@@ -528,7 +554,7 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>A recipe</returns>
     private async Task<RecipeResponse> GetRecipeAsync(RecipeRequest req, List<string> validIngredients)
     {
-        var res = _openAiService.GetAiResponse(req);
+        var res = await _openAiService.GetAiResponse(req);
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
         await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);

@@ -15,9 +15,6 @@ export const offersSlice = createSlice({
     setStores(state, action) {
       state.stores = action.payload;
     },
-    setStoresObjects(state, action) {
-      state.storesObjects = action.payload;
-    },
     setToggleState(state) {
       state.toggleStateIsRadius = !state.toggleStateIsRadius;
     },

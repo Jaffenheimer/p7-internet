@@ -23,7 +23,7 @@ const FrontPageContainerLeft = () => {
       <div id="IngredientsBody">
         <h2>Ingredienser jeg gerne vil bruge:</h2>
         <AddIngredientsForm
-          addIngredient={recipeGenerationActions.addOwnedIngredients}
+          addIngredient={recipeGenerationActions.addOwnedIngredient}
           ingredientsList={ownedIngredientsList}
           removeAllHandler={removeAllHandler}
         />
