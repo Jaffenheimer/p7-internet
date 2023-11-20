@@ -99,14 +99,16 @@ public class PublicControllerV1 : ControllerBase
             var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
             for (int i = 0; i < req.Amount; i++)
             {
-                var recipe = GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
-                recipeList.Add(recipe.Result);
+                var recipe = await GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
+                if (recipe.Success == false)
+                    return BadRequest(recipe.ErrorMessage);
+                recipeList.Add(recipe);
             }
 
             return Ok(recipeList);
         }
 
-        var res = _openAiService.GetAiResponse(req);
+        var res = await _openAiService.GetAiResponse(req);
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
@@ -196,8 +198,10 @@ public class PublicControllerV1 : ControllerBase
             var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
             for (int i = 0; i < req.Amount; i++)
             {
-                var recipe = GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
-                recipeList.Add(recipe.Result);
+                var recipe = await GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
+                if (recipe.Success == false)
+                    return BadRequest(recipe.ErrorMessage);
+                recipeList.Add(recipe);
                 if (req.UserId != null && req.SessionToken != null)
                     await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(),
                         recipeList[i].RecipeId);
@@ -206,7 +210,7 @@ public class PublicControllerV1 : ControllerBase
             return Ok(recipeList);
         }
 
-        var res = _openAiService.GetAiResponse(req);
+        var res = await _openAiService.GetAiResponse(req);
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
@@ -507,6 +511,9 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>A list of ingredients in the correct format</returns>
     private static List<string> CheckListForValidIngredients(string recipe, List<string> validIngredients)
     {
+        if(string.IsNullOrEmpty(recipe))
+            return new List<string>();
+        
         List<string> result = new List<string>();
         Console.WriteLine("recipe: ", recipe);
         recipe = recipe.ToLower();
@@ -531,9 +538,7 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>A recipe</returns>
     private async Task<RecipeResponse> GetRecipeAsync(RecipeRequest req, List<string> validIngredients)
     {
-        var res = _openAiService.GetAiResponse(req);
-        if (res == null) throw new Exception("Recipe er Null"); 
-        Console.WriteLine("res from openai: ", res.Recipes.ToString());
+        var res = await _openAiService.GetAiResponse(req);
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
         await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
