@@ -98,6 +98,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
             }
+
             return Ok(returnList);
         }
 
@@ -161,13 +162,10 @@ public class PublicControllerV1 : ControllerBase
     [HttpPost("user/recipe")]
     public async Task<IActionResult> GetARecipeWhenLoggedIn([FromBody] RecipeRequest req)
     {
-        if (req.UserId != null && req.SessionToken != null)
-        {
-            var checkIfUserSessionIsValid =
-                await _userSessionRepository.CheckIfTokenIsValid(req.UserId.GetValueOrDefault(), req.SessionToken);
-            if (!checkIfUserSessionIsValid)
-                return Unauthorized("User session is not valid, please login again");
-        }
+        var checkIfUserSessionIsValid =
+            await _userSessionRepository.CheckIfTokenIsValid(req.UserId.GetValueOrDefault(), req.SessionToken);
+        if (!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
 
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
@@ -207,6 +205,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
             }
+
             return Ok(returnList);
         }
 
@@ -530,9 +529,9 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>A list of ingredients in the correct format</returns>
     private static List<string> CheckListForValidIngredients(string recipe, List<string> validIngredients)
     {
-        if(string.IsNullOrEmpty(recipe))
+        if (string.IsNullOrEmpty(recipe))
             return new List<string>();
-        
+
         List<string> result = new List<string>();
         recipe = recipe.ToLower();
         foreach (var ingredient in validIngredients)
