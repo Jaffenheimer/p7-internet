@@ -271,8 +271,8 @@ public class PublicControllerV1 : ControllerBase
         {
             foreach (var product in res)
             {
-                if (_cachedOfferRepository.GetOffer(product.Name) != null) break;
-                _cachedOfferRepository.UpsertOffer(product.Name, product.Price, product.Store);
+                if (await _cachedOfferRepository.GetOffer(product.Name) != null) break;
+                await _cachedOfferRepository.UpsertOffer(product.Name, product.Price, product.Store);
             }
 
             return Ok(res);
