@@ -92,11 +92,15 @@ public class PublicControllerV1 : ControllerBase
         if (recipesIncludingIngredients.Any(x => x != null))
         {
             var returnList = new List<RecipeResponse>();
+            var counter = 0;
             foreach (var recipe in recipesIncludingIngredients)
             {
                 var validIng = await _ingredientRepository.GetAllIngredients();
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
+                counter++;
+                if(counter == req.Amount)
+                    break;
             }
 
             return Ok(returnList);
@@ -199,11 +203,15 @@ public class PublicControllerV1 : ControllerBase
         if (recipesIncludingIngredients.Any(x => x != null))
         {
             var returnList = new List<RecipeResponse>();
+            var counter = 0;
             foreach (var recipe in recipesIncludingIngredients)
             {
                 var validIng = await _ingredientRepository.GetAllIngredients();
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
+                counter++;
+                if(counter == req.Amount)
+                    break;
             }
 
             return Ok(returnList);
