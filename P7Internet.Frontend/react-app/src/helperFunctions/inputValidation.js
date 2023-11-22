@@ -8,10 +8,6 @@ function checkValidEmail(email) {
   const emailRegex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
   const emailResultArray = emailRegex.exec(email);
-  // console.log("email is valid", emailResultArray);
-  // console.log("email is null", emailResultArray === null);
-  // console.log("email is not null", emailResultArray !== null);
-  // console.log("email returns", !emailResultArray === null);
   return emailResultArray !== null;
 }
 
@@ -20,7 +16,6 @@ function checkValidEmail(email) {
 function checkValidUsername(username) {
   const usernameRegex = /^[a-zA-Z0-9]+$/;
   const usernameResultArray = usernameRegex.exec(username);
-  // console.log("username", usernameResultArray === null);
   return usernameResultArray !== null;
 }
 

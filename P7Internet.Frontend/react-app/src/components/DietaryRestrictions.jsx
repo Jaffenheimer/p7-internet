@@ -1,13 +1,10 @@
 import React from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Select from "react-select";
 
 const DietaryRestrictions = () => {
   const dispatch = useDispatch();
-  const DietaryRestrictions = useSelector(
-    (state) => state.recipeGeneration.dietaryRestrictions
-  );
 
   const options = [
     { value: "Pescetarian", label: "Pescetar" },
