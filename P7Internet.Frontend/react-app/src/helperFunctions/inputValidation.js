@@ -7,16 +7,21 @@ const MAX_INGREDIENT_LENGTH = 50;
 function checkValidEmail(email) {
   const emailRegex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  const isValidEmail = emailRegex.exec(email);
-  return !isValidEmail === null;
+  const emailResultArray = emailRegex.exec(email);
+  // console.log("email is valid", emailResultArray);
+  // console.log("email is null", emailResultArray === null);
+  // console.log("email is not null", emailResultArray !== null);
+  // console.log("email returns", !emailResultArray === null);
+  return emailResultArray !== null;
 }
 
 //THE USERNAME VALIDATION SHOULD HAPPEN IN THE BACKEND
 //username: allowed characters are integers and upper/lowercase letters
 function checkValidUsername(username) {
   const usernameRegex = /^[a-zA-Z0-9]+$/;
-  const isValidUsername = usernameRegex.exec(username);
-  return !isValidUsername === null;
+  const usernameResultArray = usernameRegex.exec(username);
+  // console.log("username", usernameResultArray === null);
+  return usernameResultArray !== null;
 }
 
 //THE PASSWORD VALIDATION SHOULD HAPPEN IN THE BACKEND
@@ -24,26 +29,29 @@ function checkValidUsername(username) {
 //and between 6 to 20 characters, excluding special characters.
 function checkValidPassword(password) {
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; //
-  const isValidPassword = passwordRegex.exec(password);
-  return !isValidPassword === null;
+  const passwordResultArray = passwordRegex.exec(password);
+  return passwordResultArray !== null;
 }
 
 export const userInputValidation = (username, password, email) => {
+  let hasError = false;
   if (!checkValidEmail(email)) {
     toast.error("Den indtastede email er ugyldig");
-    return false;
-  } else if (!checkValidUsername(username)) {
+    hasError = true;
+  }
+  if (!checkValidUsername(username)) {
     toast.error(
       "Brugernavnet er ugyldigt, da det kun må bestå af bogstaver og tal."
     );
-    return false;
-  } else if (!checkValidPassword(password)) {
+    hasError = true;
+  }
+  if (!checkValidPassword(password)) {
     toast.error(
       "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn."
     );
-    return false;
+    hasError = true;
   }
-  return true;
+  return !hasError;
 };
 
 //returns the char that is invalid or null if no invalid chars
