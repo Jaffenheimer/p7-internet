@@ -124,6 +124,10 @@ public class PublicControllerV1 : ControllerBase
         }
 
         var res = await _openAiService.GetAiResponse(req);
+        if (res.Success == false)
+        {
+            return BadRequest(res.ErrorMessage);
+        }
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
@@ -237,6 +241,10 @@ public class PublicControllerV1 : ControllerBase
         }
 
         var res = await _openAiService.GetAiResponse(req);
+        if (res.Success == false)
+        {
+            return BadRequest(res.ErrorMessage);
+        }
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
@@ -565,6 +573,8 @@ public class PublicControllerV1 : ControllerBase
     private async Task<RecipeResponse> GetRecipeAsync(RecipeRequest req, List<string> validIngredients)
     {
         var res = await _openAiService.GetAiResponse(req);
+        if(res.Success == false)
+            return RecipeResponse.Error(res.ErrorMessage, res.RecipeId);
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
         await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
