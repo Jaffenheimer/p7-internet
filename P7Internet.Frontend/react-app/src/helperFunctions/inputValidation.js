@@ -2,7 +2,6 @@ import { toast } from "react-toastify";
 
 const MAX_INGREDIENT_LENGTH = 50;
 
-//should happen in backend
 //see what this regex accepts at https://jsfiddle.net/ghvj4gy9/
 function checkValidEmail(email) {
   const emailRegex =
@@ -11,16 +10,14 @@ function checkValidEmail(email) {
   return emailResultArray !== null;
 }
 
-//THE USERNAME VALIDATION SHOULD HAPPEN IN THE BACKEND
-//username: allowed characters are integers and upper/lowercase letters
+//username: allowed characters are digits and upper/lowercase letters
 function checkValidUsername(username) {
   const usernameRegex = /^[a-zA-Z0-9]+$/;
   const usernameResultArray = usernameRegex.exec(username);
   return usernameResultArray !== null;
 }
 
-//THE PASSWORD VALIDATION SHOULD HAPPEN IN THE BACKEND
-//password: allowed characters are at least 1 numeric degit, one uppercase, one lowercase
+//password: allowed characters are at least 1 numeric digit, one uppercase letter , one lowercase letter
 //and between 6 to 20 characters, excluding special characters.
 function checkValidPassword(password) {
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; //
@@ -39,13 +36,13 @@ export const userInputValidation = (username, password, email) => {
   if (!checkValidUsername(username)) {
     toast.error(
       "Brugernavnet er ugyldigt, da det kun må bestå af bogstaver og tal."
-      );
-      hasError = true;
-    }
-    if (!checkValidEmail(email)) {
-      toast.error("Den indtastede email er ugyldig");
-      hasError = true;
-    }
+    );
+    hasError = true;
+  }
+  if (!checkValidEmail(email)) {
+    toast.error("Den indtastede email er ugyldig");
+    hasError = true;
+  }
   return !hasError;
 };
 
