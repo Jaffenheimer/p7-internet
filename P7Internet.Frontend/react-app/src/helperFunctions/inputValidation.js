@@ -30,22 +30,22 @@ function checkValidPassword(password) {
 
 export const userInputValidation = (username, password, email) => {
   let hasError = false;
-  if (!checkValidEmail(email)) {
-    toast.error("Den indtastede email er ugyldig");
-    hasError = true;
-  }
-  if (!checkValidUsername(username)) {
-    toast.error(
-      "Brugernavnet er ugyldigt, da det kun må bestå af bogstaver og tal."
-    );
-    hasError = true;
-  }
   if (!checkValidPassword(password)) {
     toast.error(
       "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn."
     );
     hasError = true;
   }
+  if (!checkValidUsername(username)) {
+    toast.error(
+      "Brugernavnet er ugyldigt, da det kun må bestå af bogstaver og tal."
+      );
+      hasError = true;
+    }
+    if (!checkValidEmail(email)) {
+      toast.error("Den indtastede email er ugyldig");
+      hasError = true;
+    }
   return !hasError;
 };
 
