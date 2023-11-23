@@ -1,63 +1,42 @@
-// import { render, screen } from "@testing-library/react";
+import { cleanup, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
-// import React from "react";
-// import userEvent from "@testing-library/user-event";
-// import Pages from "../objects/Pages"
-// import { useDispatch, useSelector } from "react-redux";
-// import ProfilePicture from "../components/ProfilePicture";
+import React from "react";
+import { renderComponent } from "../testSetupHelper/Helper.jsx";
+import ProfilePicture from "../components/ProfilePicture.jsx";
 
-test("", () => {});
-// jest.mock("react-redux");
+afterEach(cleanup);
 
-// const initialState = {
-//     page: Pages.frontPage,
-//     loginModalShown: false,
-// 		favoritesModalShown: false,
-// };
+test("Profile Picture renders properly", () => {
+  renderComponent(<ProfilePicture />);
+  expect(screen.getByRole("img")).toBeInTheDocument();
+});
 
-// describe("ProfilePicture", () => {
-//   const dispatch = jest.fn();
+test("Profile Picture image is clickable and opens up pop up", () => {
+  renderComponent(<ProfilePicture />);
+  fireEvent.click(screen.getByRole("img"));
+  expect(screen.getByText("Favoritter")).toBeInTheDocument();
+  expect(screen.getByText("Indstillinger")).toBeInTheDocument();
+  expect(screen.getByText("Log ud")).toBeInTheDocument();
+});
 
-//   beforeEach(() => {
-//     useSelector.mockImplementation(() => initialState);
-//     useDispatch.mockImplementation(() => dispatch);
-//   });
+test("Profile Picture image is clickable and favoritter is clickable", () => {
+  renderComponent(<ProfilePicture openFavoritesModal={() => {}} />);
+  fireEvent.click(screen.getByRole("img"));
+  fireEvent.click(screen.getByText("Favoritter"));
+  expect(screen.getByRole("img")).toBeInTheDocument();
+  expect(screen.queryByText("Favoritter")).not.toBeInTheDocument();
+});
 
-//   afterEach(() => {
-//     jest.clearAllMocks()
-//   });
+test("Profile Picture image is clickable and settings is clickable", () => {
+  renderComponent(<ProfilePicture openFavoritesModal={() => {}} />);
+  fireEvent.click(screen.getByRole("img"));
+  fireEvent.click(screen.getByText("Indstillinger"));
+  expect(screen.getByRole("img")).toBeInTheDocument();
+  expect(screen.queryByText("Indstillinger")).not.toBeInTheDocument();
+});
 
-//   it("Renders the image of the profile", () => {
-//     render(<ProfilePicture />);
-//     const profileImage = screen.getByRole("img");
-//     expect(profileImage).toBeInTheDocument();
-//   });
-
-//   it("Check all expected options are in the dropdown menu", () => {
-//     render(<ProfilePicture />);
-//     const profileImage = screen.getByRole("img");
-//     userEvent.click(profileImage);
-//     expect(screen.getByText("Favoritter")).toBeInTheDocument();
-//     expect(screen.getByText("Indstillinger")).toBeInTheDocument();
-//     expect(screen.getByText("Log ud")).toBeInTheDocument();
-//   });
-
-//   it("Open Login Modal and favoritter and dont expect redux dispatch", () => {
-//     render(<ProfilePicture openFavoritesModal={() => {initialState.favoritesModalShown = true}}/>);
-//     const profileImage = screen.getByRole("img");
-//     userEvent.click(profileImage);
-//     userEvent.click(screen.getByText("Favoritter"));
-//     expect(useDispatch).toHaveBeenCalled();
-//     expect(dispatch).toHaveBeenCalledTimes(0);
-//     expect(initialState.favoritesModalShown).toBe(true)
-//   });
-
-//   it("Open Login Modal and log out and expect redux dispatch", () => {
-//     render(<ProfilePicture openFavoritesModal={() => {}}/>);
-//     const profileImage = screen.getByRole("img");
-//     userEvent.click(profileImage);
-//     userEvent.click(screen.getByText("Log ud"));
-//     expect(useDispatch).toHaveBeenCalled();
-//     expect(dispatch).toHaveBeenCalledTimes(1);
-//   });
+// test("Profile Picture image is clickable and log out is clickable", () => {
+//   renderComponent(<ProfilePicture openFavoritesModal={() => {}} />);
+//   fireEvent.click(screen.getByRole("img"));
+//   fireEvent.click(screen.getByText("Log ud"));
 // });
