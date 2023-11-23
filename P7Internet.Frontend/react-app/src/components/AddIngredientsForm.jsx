@@ -4,6 +4,7 @@ import RemoveAllButton from "./RemoveAllButton";
 import AddIngredientInput from "./AddIngredientInput";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { ingredientInputValidation } from "../helperFunctions/inputValidation";
 
 const AddIngredientsForm = ({
   ingredientsList,
@@ -36,26 +37,24 @@ const AddIngredientsForm = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (ingredient !== null && typeof ingredient !== "undefined") {
-      if (ingredient === "") return;
-      if (ingredientsList.length >= 10) {
-        toast.error("Du kan ikke tilføje flere end 10 ingredienser");
-        return;
-      }
-      if (ingredientIsInIngredientsObject(ingredient, excludeList)) {
-        toast.error(
-          `"${ingredient}" er allerede tilføjet til listen af eksluderede ingredienser!`
-        );
-        return;
-      }
-      if (ingredientIsInIngredientsObject(ingredient, ownedIngredientsList)) {
-        toast.error(
-          `"${ingredient}" er allerede tilføjet til listen af ejede ingredienser!`
-        );
-        return;
-      }
-      dispatch(addIngredient(ingredient));
+    if (!ingredientInputValidation(ingredient)) return;
+    if (ingredientsList.length >= 10) {
+      toast.error("Du kan ikke tilføje flere end 10 ingredienser");
+      return;
     }
+    if (ingredientIsInIngredientsObject(ingredient, excludeList)) {
+      toast.error(
+        `"${ingredient}" er allerede tilføjet til listen af eksluderede ingredienser!`
+      );
+      return;
+    }
+    if (ingredientIsInIngredientsObject(ingredient, ownedIngredientsList)) {
+      toast.error(
+        `"${ingredient}" er allerede tilføjet til listen af ejede ingredienser!`
+      );
+      return;
+    }
+    dispatch(addIngredient(ingredient));
     setIngredient("");
   };
 
