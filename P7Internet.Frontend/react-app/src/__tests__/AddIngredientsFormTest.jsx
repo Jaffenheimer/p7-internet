@@ -49,7 +49,7 @@ test("Clicking the fjern alle button does not fire the onsubmit event, but fires
 });
 
 test("Submitting the form with the same input twice prompts toast to appear - for owned ingredients", async () => {
-  const addIngredient = recipeGenerationActions.addOwnedIngredients;
+  const addIngredient = recipeGenerationActions.addOwnedIngredient;
   renderComponent(
     <AddIngredientsForm
       addIngredient={addIngredient}
@@ -110,7 +110,7 @@ test("Submitting the form with an input when there already are 10 ingredients pr
 
 //integration tests below:
 test("Submitting the owned ingredients form with an input that is already in the excluded ingredients list prompts toast to appear", async () => {
-  const addIngredientOwned = recipeGenerationActions.addOwnedIngredients;
+  const addIngredientOwned = recipeGenerationActions.addOwnedIngredient;
   const addIngredientExcluded = recipeGenerationActions.addExcludedIngredient;
   renderComponent(
     <AddIngredientsForm
@@ -144,7 +144,7 @@ test("Submitting the owned ingredients form with an input that is already in the
 });
 
 test("Submitting the excluded ingredients form with an input that is already in the owned ingredients list prompts toast to appear", async () => {
-  const addIngredientOwned = recipeGenerationActions.addOwnedIngredients;
+  const addIngredientOwned = recipeGenerationActions.addOwnedIngredient;
   const addIngredientExcluded = recipeGenerationActions.addExcludedIngredient;
   renderComponent(
     <AddIngredientsForm

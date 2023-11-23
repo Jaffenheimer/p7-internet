@@ -1,25 +1,24 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { ingredientIsOwned } from "../helperFunctions/ingredientHelper";
 
 const RecipeIngredientElement = ({ ingredient }) => {
   const ownedIngredientsList = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
   );
 
-  function isOwned(ingredient) {
-    for (const ownedIngredient of ownedIngredientsList) {
-      if (ownedIngredient.text === ingredient) {
-        return true;
-      }
-    }
-    return false;
-  }
-
   return (
-    <div className="RecipeIngredientElement">
+    <div
+      className="RecipeIngredientElement"
+      data-testid="RecipeIngredientElement"
+    >
       <li>
-        {ingredient}
-        {isOwned(ingredient) ? <b> Ejet </b> : ""}
+        {ingredient.text}
+        {ingredientIsOwned(ingredient, ownedIngredientsList) ? (
+          <b> Ejet </b>
+        ) : (
+          ""
+        )}
       </li>
     </div>
   );

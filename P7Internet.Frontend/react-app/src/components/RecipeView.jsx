@@ -5,6 +5,7 @@ import IngredientsList from "./IngredientsList";
 import { useDispatch, useSelector } from "react-redux";
 import { recipeActions } from "../features/recipeSlice";
 import RecipeIngredientElement from "./RecipeIngredientElement";
+import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientHelper";
 
 const RecipeView = () => {
   const dispatch = useDispatch();
@@ -63,7 +64,9 @@ const RecipeView = () => {
     <div className="RecipeView">
       <RecipeTitle title={recipes[tab].title} />
       <IngredientsList
-        ingredients={recipes[tab].ingredients}
+        ingredients={convertIngredientsToIngredientObjects(
+          recipes[tab].ingredients
+        )}
         ListElement={RecipeIngredientElement}
       />
     </div>

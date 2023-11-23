@@ -5,9 +5,11 @@ import { renderComponent } from "../testSetupHelper/Helper.jsx";
 import Allergens from "../components/Allergens";
 
 afterEach(cleanup);
+beforeEach(() => {
+  renderComponent(<Allergens />);
+});
 
 test("Renders the select element with correct title, placeholder, and no values selected", () => {
-  renderComponent(<Allergens />);
   const title = screen.getByText(/Allergener/);
   const placeholder = screen.getByText(/Vælg allergener/);
   const selectElement = screen.getByRole("combobox");
@@ -18,7 +20,6 @@ test("Renders the select element with correct title, placeholder, and no values 
 });
 
 test("Choosing an option - the option gets selected", () => {
-  renderComponent(<Allergens />);
   const selectElement = screen.getByRole("combobox");
   expect(screen.getByText(/Vælg allergener/)).toBeInTheDocument(); //default text of Select is the placeholder
 
@@ -30,9 +31,6 @@ test("Choosing an option - the option gets selected", () => {
 });
 
 test("Removing an option - the option gets removed", () => {
-  renderComponent(<Allergens />);
-
-  const placeholder = screen.getByText(/Vælg allergener/);
   const selectElement = screen.getByRole("combobox");
   fireEvent.change(selectElement, {
     target: { value: "Lactosefree" },
@@ -48,12 +46,3 @@ test("Removing an option - the option gets removed", () => {
   expect(selectElement.value).toBe(""); //after deselecting the option, the value of the select is empty
   expect(screen.getByText(/Vælg allergener/)).toBeInTheDocument(); //placeholder is back after deleting the option
 });
-
-//other tests to make if i knew how to do it:
-test("Choosing both options - both options get selected", () => {});
-
-test("Removing both options - both options get removed", () => {});
-
-test("searching for 'Lak' - 'Laktosefri' shows up", () => {});
-
-//see this: https://stackoverflow.com/questions/41991077/testing-react-select-component

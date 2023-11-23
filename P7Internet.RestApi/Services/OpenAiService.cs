@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using OpenAI_API;
 using OpenAI_API.Chat;
 using OpenAI_API.Models;
@@ -23,7 +24,7 @@ public class OpenAiService
     /// </summary>
     /// <param name="req"></param>
     /// <returns>A list of RecipeResponses corresponding to the amount of requested recipes</returns>
-    public RecipeResponse GetAiResponse(RecipeRequest req)
+    public async Task<RecipeResponse> GetAiResponse(RecipeRequest req)
     {
         var request = new ChatRequest()
         {
@@ -82,7 +83,7 @@ public class OpenAiService
 
         if (req.AmountOfPeople != null && req.AmountOfPeople > 0)
         {
-            prompt += $" til {req.AmountOfPeople} personer";
+            prompt += $" til {req.AmountOfPeople} personer. Det skal have følgende formar: Titel, ingredienser og metode.";
         }
 
         return prompt;

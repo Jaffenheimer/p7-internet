@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using P7Internet.Shared;
 
 namespace P7Internet.Persistence.RecipeCacheRepository;
 
@@ -16,8 +17,8 @@ public interface IRecipeCacheRepository
     /// <summary>
     /// Gets all recipes from the database
     /// </summary>
-    /// <returns>Returns a list of recipes as strings</returns>
-    public Task<List<string>> GetAllRecipes();
+    /// <returns>Returns a list of recipes</returns>
+    public Task<List<Recipe>> GetAllRecipes();
 
     /// <summary>
     /// Inserts or updates a recipe in the database
