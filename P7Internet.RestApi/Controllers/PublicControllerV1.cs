@@ -446,12 +446,12 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="userName"></param>
     /// <returns>Returns Ok if a user is found and the email has been sent, if the user is not found it returns BadRequest</returns>
     [HttpPost("user/reset-password-request")]
-    public async Task<IActionResult> ResetPassword([EmailAddress] string email, string userName)
+    public async Task<IActionResult> ResetPassword([EmailAddress] string email)
     {
-        var user = await _userRepository.GetUser(userName);
+        var user = await _userRepository.GetUserByEmail(email);
         if (user != null)
         {
-            await _emailService.ResetPassword(email, userName);
+            await _emailService.ResetPassword(user);
             return Ok("Email sent");
         }
 
