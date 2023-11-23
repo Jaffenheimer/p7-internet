@@ -138,7 +138,6 @@ public class UserRepository : IUserRepository
     /// <summary>
     /// Resets the password of a user, must be directed to said site from an email
     /// </summary>
-    /// <param name="userName"></param>
     /// <param name="password"></param>
     /// <returns>Returns true if the process is successful, otherwise false also false if no user is found</returns>
     public async Task<bool> ResetPassword(string email, string password)

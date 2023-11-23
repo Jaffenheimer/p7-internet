@@ -443,7 +443,6 @@ public class PublicControllerV1 : ControllerBase
     /// This is done by sending an email to the users specified email 
     /// </summary>
     /// <param name="email"></param>
-    /// <param name="userName"></param>
     /// <returns>Returns Ok if a user is found and the email has been sent, if the user is not found it returns BadRequest</returns>
     [HttpPost("user/reset-password-request")]
     public async Task<IActionResult> ResetPassword([EmailAddress] string email)
