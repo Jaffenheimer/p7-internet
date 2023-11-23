@@ -47,7 +47,7 @@ public class UserRepository : IUserRepository
     /// </summary>
     /// <param name="email"></param>
     /// <returns>Returns true if the user is found in the database, otherwise null</returns>
-    private async Task<User> GetUserByEmail(string email)
+    public async Task<User> GetUserByEmail(string email)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Email = @email";
         var result = await Connection.QuerySingleOrDefaultAsync(query, new {email});

@@ -16,34 +16,73 @@ using System.Text;
 using System.Threading.Tasks;
 using Moq.Dapper;
 using System.Data.Entity.Core.Metadata.Edm;
+using P7Internet.Persistence.Connection;
+using MySql.Data.MySqlClient;
 
 namespace P7Internet.Repositories.Tests
 {
     [TestFixture()]
     public class UserRepositoryTests
     {
-        private User _mockUser;
-        private string testPwd = "testPassword";
-        private Mock<IUserRepository> _userRepositoryMock = new Mock<IUserRepository>();
-        private Mock<DbConnection> _dbConnection = new Mock<DbConnection>();
+        private TestUser _testUserStruct;
+        private User _testUser;
+
+        //This is created to mock the user class, since the QuerySingleOrDefault method cannot return class instances, but structs. No one knows why
+        public struct TestUser
+        {
+            public string Id { get; set; }
+            public string Name { get; set; }
+            public string Email { get; set; }
+            public string Password_hash { get; set; }
+            public string Password_salt { get; set; }
+            public DateTime Creation_date { get; set; }
+
+            public TestUser(string name, string emailAddress)
+            {
+                Name = name;
+                Email = emailAddress;
+            }
+        }
+        private Mock<IUserRepository> _userRepositoryMock;
+        private IUserRepository _userRepository;
+        private Mock<IDbConnection> _dbConnection = new Mock<IDbConnection>();
+        private Mock<IDbConnectionFactory> _dbConnectionFactory = new Mock<IDbConnectionFactory>();
         [SetUp] public void SetUp() {
-            _dbConnection.SetupDapperAsync(x => x.QuerySingleOrDefaultAsync<dynamic>(It.IsAny<string>(), null, null, null, null)).Returns<dynamic>(It.IsAny<dynamic>());
-            _mockUser = new User("TestUser", "test@example.com") { Id = Guid.NewGuid(), CreatedAt = DateTime.Now, PasswordHash = "hash1234hash", PasswordSalt = "salt1234salt" };
-            _userRepositoryMock.Setup(x => x.GetUser(It.IsAny<string>())).Returns(Task.FromResult(It.IsAny<User>())).Verifiable();
-            _userRepositoryMock.Setup(x => x.LogIn(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(_mockUser));
-            _userRepositoryMock.Setup(x => x.ConfirmEmail(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(true));
-            _userRepositoryMock.Setup(x => x.ResetPassword(It.IsAny<string>(), It.IsAny<string>())).Returns(Task.FromResult(true));
-            _userRepositoryMock.Setup(x => x.Upsert(It.IsAny<User>(), It.IsAny<string>())).Returns(Task.FromResult(true));
+            _testUserStruct = new TestUser("TestUser", "test@example.com") { Id = Guid.NewGuid().ToString(), Creation_date = new DateTime(2023, 11, 23), Password_hash = new string("361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB"), Password_salt = "salt1234salt", Email = "test@example.com", Name = "TestUser"};
+            _testUser = new User("TestUser", "test@example.com") { Id = Guid.NewGuid(), CreatedAt = DateTime.Now, PasswordHash = "361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB", PasswordSalt = "salt1234salt" };
+            _userRepositoryMock = new Mock<IUserRepository>();
+            _dbConnection.SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<TestUser>(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(_testUserStruct).Verifiable();
+
+            _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
+            _userRepository = new UserRepository(_dbConnectionFactory.Object);
         }
 
         [Test()]
         public void GetUserSuccess()
         {
-            //Arrange/Act
-            var user = _userRepositoryMock.Object.GetUser(It.IsAny<string>());
-            
+            //Arrange
+            _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
+
+            //Act
+            var user = _userRepository.GetUser(_testUser.Name).Result;
+
             //Assert
             Assert.NotNull(user);
+            Assert.NotNull(user.Name);
+        }
+
+        [Test()]
+        public void GetUserByEmailSuccess()
+        {
+            //Arrange
+            _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
+
+            //Act
+            var user = _userRepository.GetUserByEmail(_testUser.EmailAddress).Result;
+
+            //Assert
+            Assert.NotNull(user);
+            Assert.NotNull(user.Name);
         }
 
         [Test()]
@@ -51,50 +90,67 @@ namespace P7Internet.Repositories.Tests
         {
             //Arrange
             var testPwd = "testPassword";
+            _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
+            _dbConnection.SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<dynamic>(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(_testUserStruct);
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null)).ReturnsAsync(1);
 
             //Act
-            var response = _userRepositoryMock.Object.Upsert(_mockUser, testPwd).Result;
+            var response = _userRepository.Upsert(_testUser, testPwd);
 
             //Assert
             Assert.NotNull(response);
-            Assert.IsTrue(response);
+            Assert.IsTrue(response.Result);
+            
         }
 
         [Test()]
         public void LogInSuccess()
         {
+            //Arrange
+            var testPwd = "testPassword";
+            _dbConnection.SetupDapperAsync(c => c.QuerySingleAsync<TestUser>(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(_testUserStruct);
+
+            //Act
+            var user = _userRepository.LogIn(_testUser.Name, testPwd).Result;
+
             //Assert
-            var user = _userRepositoryMock.Object.LogIn(_mockUser.Name, testPwd).Result;
             Assert.NotNull(user);
             Assert.That(user.EmailAddress, Is.EqualTo("test@example.com"));
+            
         }
 
         [Test()]
         public async Task ConfirmEmailSuccess()
         {
-            //Arrange/Act
-            var status = await _userRepositoryMock.Object.ConfirmEmail(_mockUser.Name, testPwd);
+            //Arrange
+            var testPwd = "testPassword";
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null)).ReturnsAsync(1);
+
+            //Act
+            var status = await _userRepository.ConfirmEmail(_testUser.Name, testPwd);
             
             //Assert
-            Assert.NotNull(status);
             Assert.True(status);
         }
 
         [Test()]
-        public async Task ResetPasswordSuccess()
+        public void ResetPasswordSuccess()
         {
-            //Arrange/Act
-            var status = await _userRepositoryMock.Object.ResetPassword(_mockUser.Name, testPwd);
+            //Arrange
+            var testPwd = "testPassword";
+
+            //Act
+            var status = _userRepository.ResetPassword(_testUser.Name, testPwd).Result;
+            
             //Assert
-            Assert.NotNull(status);
             Assert.True(status);
         }
 
         [Test()]
-        public async Task ChangePasswordSuccess()
+        public void ChangePasswordSuccess()
         {
             //Arrange/Act
-            var user = await _userRepositoryMock.Object.ChangePassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>());
+            var user = _userRepository.ChangePassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>()).Result;
             //Assert
             Assert.NotNull(user);
         }

@@ -18,6 +18,10 @@ public interface IUserRepository
     /// <param name="user"></param>
     /// <param name="password"></param>
     /// <returns>Returns true if successful E.g the number of rows affected is more than 0, otherwise false</returns>
+
+    public Task<User> GetUserByEmail(string email);
+
+
     public Task<bool> Upsert(User user, string password);
 
     /// <summary>
