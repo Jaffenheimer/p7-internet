@@ -12,7 +12,7 @@ const recipeEndpoints = apiSlice.injectEndpoints({
     }),
     generateRecipe: builder.mutation({
       query: (body) => ({
-        url: `/public/recipe`,
+        url: `/public/recipes`,
         method: "POST",
         body: body,
       }),

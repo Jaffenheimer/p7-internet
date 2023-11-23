@@ -6,10 +6,10 @@ import { toast } from "react-toastify";
 import { getGeoLocation } from "../helperFunctions/getGeoLocation";
 import recipeBodyCreator from "../helperFunctions/recipeBodyCreator";
 import { recipeActions } from "../features/recipeSlice";
-import { useGenerateUserRecipeMutation } from "../services/recipeEndpoints";
+import { useGenerateUserRecipeMutation, useGenerateRecipeMutation } from "../services/recipeEndpoints";
 
 
-import data from "../testdata/recipeTest.json";
+//import data from "../testdata/testrescipes.json";
 import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 
 const GenerateRecipesButton = () => {
@@ -31,7 +31,7 @@ const GenerateRecipesButton = () => {
   const [generateUserRecipe, { isLoading: isRecipeUserLoading }] =
     useGenerateUserRecipeMutation();
   const [generateRecipe, { isLoading: isRecipeLoading }] =
-    useGenerateUserRecipeMutation();
+  useGenerateRecipeMutation();
   let response;
 
   const fetchRecipe = async (body) => {
@@ -41,7 +41,7 @@ const GenerateRecipesButton = () => {
     if (!isRecipeUserLoading || !isRecipeLoading) {
       try {
         // Waits for the response and allows to use response (unwrap, because JSON)
-        toast.loading("Laver en opskrift med det valgte");
+        toast.loading("Laver en opskrift med de valgte");
         if (loggedIn) {
           response = await generateUserRecipe(body).unwrap();
         } else {
@@ -102,9 +102,9 @@ const GenerateRecipesButton = () => {
 
     console.log(body);
 
-    test(data.data); 
+    //test(data); 
 
-    //await fetchRecipe(body);
+    await fetchRecipe(body);
 
     goToPageFullRecipeSelection();
   };

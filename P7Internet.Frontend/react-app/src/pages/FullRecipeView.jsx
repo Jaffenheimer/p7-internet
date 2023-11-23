@@ -23,6 +23,10 @@ function FullRecipeView() {
 
   const recipe = recipes[currentRecipeIndex];
 
+  console.log("id: ", recipe.recipeId);
+  console.log("title: ", recipe.recipe.title);
+  
+
   function goToPageRecipeSelection() {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
   }
@@ -37,14 +41,16 @@ function FullRecipeView() {
         <Header />
       </div>
       <div className="FullRecipeView">
-        <RecipeTitle id="RecipeTitle" title={recipe.recipe.title} />
+        <RecipeTitle id="RecipeTitle" recipeId={recipe.recipeId} recipeTitle={recipe.recipe.title} />
         <ForPersons />
+        <br/>
         <IngredientsList
           ingredients={convertIngredientsToIngredientObjects(
             recipe.recipe.ingredients
           )}
           ListElement={RecipeIngredientElement}
         />
+        <br/>
         <MethodsList methods={recipe.recipe.method} />
         <div className="BottomButtons no-print">
           <div className="BottomButtonsSpacer">
