@@ -3,8 +3,7 @@ import { ingredientIsOwned } from "../../helperFunctions/ingredientHelper";
 
 import "@testing-library/jest-dom";
 
-//convertIngredientsToIngredientObjects
-
+//testing of convertIngredientsToIngredientObjects function:
 test("ingredients can be converted to ingredient objects", () => {
   const ingredients = ["ingredient1", "ingredient2", "ingredient3"];
   const ingredientObjects = convertIngredientsToIngredientObjects(ingredients);
@@ -23,7 +22,7 @@ test("ingredients can be converted to ingredient objects", () => {
   });
 });
 
-// ingredientIsOwned
+// testing of ingredientIsOwned function:
 test("ingredientIsOwned returns true if ingredient is owned", () => {
   const ingredient = { text: "ingredient1", id: "1" };
   const ownedIngredients = [

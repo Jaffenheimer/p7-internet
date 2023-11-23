@@ -6,7 +6,7 @@ import {
 import "@testing-library/jest-dom";
 import { ToastContainer } from "react-toastify";
 
-//userInputValidation
+//testing of userInputValidation function:
 test("userInputValidation returns true if input is valid", () => {
   const email = "email@email.com";
   const username = "Username";
@@ -72,7 +72,7 @@ test("if all inputs are invalid userInputValidation returns false and toasts app
   ).toBeInTheDocument();
 });
 
-//ingredientInputValidation
+//testing of ingredientInputValidation function:
 test("ingredientInputValidation returns true if input is valid", () => {
   const ingredient = "ingredient";
   expect(ingredientInputValidation(ingredient)).toBe(true);
