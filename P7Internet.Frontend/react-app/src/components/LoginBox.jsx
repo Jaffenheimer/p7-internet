@@ -49,8 +49,8 @@ const LoginBox = ({ closeModal }) => {
         }
 
         if (response) {
-          if (!creatingAccount) toast.success("Din bruger er nu oprettet!");
-          else toast.success("Velkommen tilbage, " + response.name);
+          if (!creatingAccount) toast.success("Velkommen tilbage, " + response.name);
+          else toast.success("Din bruger er nu oprettet!");
 
           //Add data about user to cookie
           addCookies(response.name, response.id, response.sessionToken);
@@ -72,7 +72,7 @@ const LoginBox = ({ closeModal }) => {
         console.log(error);
         if (!creatingAccount)
           toast.error("Brugernavn eller Kodeord er forkert, prøv igen");
-        else toast.error("Kunne ikke oprette bruger");
+        else toast.error("Brugernavn eller Email findes allerede, prøv igen");  
       }
     }
   };
