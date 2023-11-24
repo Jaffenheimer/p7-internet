@@ -1,7 +1,3 @@
-/* body > #root {
-  height: 100vh;
-} */
-
 *,
 *::before,
 *::after {
@@ -277,18 +273,6 @@ button:hover {
   transform: scale(2);
 }
 
-/* .ProfilePicture > img {
-  vertical-align: middle;
-  margin: 0 auto;
-  transform: scale(2.5);
-  margin-top: 10%;
-  float: right;
-  margin-right: 15%;
-} */
-
-.IngredientCheckboxes {
-}
-
 .IngredientCheckboxesLabel {
   cursor: pointer;
 }
@@ -320,7 +304,6 @@ button:hover {
   display: flex;
   justify-content: center;
   margin-left: 22px;
-  /* margin-top: 10%; */
 }
 
 #NumberOfPersonsFieldToast {
@@ -370,7 +353,6 @@ button:hover {
 
 .ContainerRightColumn {
   float: left;
-  /*width: 33.33%;*/
   justify-content: center;
   margin-top: 3%;
 }
