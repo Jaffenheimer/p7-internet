@@ -51,7 +51,7 @@ namespace P7Internet.Repositories.Tests
             _testUserStruct = new TestUser("TestUser", "test@example.com") { Id = Guid.NewGuid().ToString(), Creation_date = new DateTime(2023, 11, 23), Password_hash = new string("361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB"), Password_salt = "salt1234salt", Email = "test@example.com", Name = "TestUser"};
             _testUser = new User("TestUser", "test@example.com") { Id = Guid.NewGuid(), CreatedAt = DateTime.Now, PasswordHash = "361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB", PasswordSalt = "salt1234salt" };
             _userRepositoryMock = new Mock<IUserRepository>();
-            _dbConnection.SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<TestUser>(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(_testUserStruct).Verifiable();
+            _dbConnection.SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<TestUser>(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(_testUserStruct);
 
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
             _userRepository = new UserRepository(_dbConnectionFactory.Object);
