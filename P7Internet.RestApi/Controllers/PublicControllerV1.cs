@@ -428,6 +428,7 @@ public class PublicControllerV1 : ControllerBase
             foreach (var res in result)
             {
                 recipeList.Add(new RecipeResponse(recipes[counter],CheckListForValidIngredients(recipes[counter], validIngredients) , res));
+                counter++;
             }
             
             return Ok(recipeList);
