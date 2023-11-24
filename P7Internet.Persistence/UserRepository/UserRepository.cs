@@ -47,7 +47,7 @@ public class UserRepository : IUserRepository
     /// </summary>
     /// <param name="email"></param>
     /// <returns>Returns true if the user is found in the database, otherwise null</returns>
-    private async Task<User> GetUserByEmail(string email)
+    public async Task<User> GetUserByEmail(string email)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Email = @email";
         var result = await Connection.QuerySingleOrDefaultAsync(query, new { email });
@@ -138,21 +138,21 @@ public class UserRepository : IUserRepository
     /// <summary>
     /// Resets the password of a user, must be directed to said site from an email
     /// </summary>
-    /// <param name="userName"></param>
+    /// <param name="email"></param>
     /// <param name="password"></param>
     /// <returns>Returns true if the process is successful, otherwise false also false if no user is found</returns>
-    public async Task<bool> ResetPassword(string userName, string password)
+    public async Task<bool> ResetPassword(string email, string password)
     {
-        var user = await GetUser(userName);
+        var user = await GetUserByEmail(email);
         if (user == null)
             return false;
 
         var query =
-            $@"UPDATE {TableName} SET Password_hash = @passwordHash, Password_salt = @passwordSalt, Updated = @Updated WHERE Name = @userName";
+            $@"UPDATE {TableName} SET Password_hash = @passwordHash, Password_salt = @passwordSalt, Updated = @Updated WHERE Email = @email";
         var salt = GenerateSalt();
         var passwordHash = GenerateHash(password + salt);
         var result = await Connection.ExecuteAsync(query,
-            new { Name = userName, Password_hash = passwordHash, Password_salt = salt, Updated = DateTime.UtcNow });
+            new { Email = email, Password_hash = passwordHash, Password_salt = salt, Updated = DateTime.UtcNow });
         return result > 0;
     }
 

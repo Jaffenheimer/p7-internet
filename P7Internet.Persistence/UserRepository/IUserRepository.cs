@@ -13,6 +13,13 @@ public interface IUserRepository
     public Task<User> GetUser(string name);
 
     /// <summary>
+    /// Gets a user by email
+    /// </summary>
+    /// <param name="email"></param>
+    /// <returns>Returns true if the user is found in the database, otherwise null</returns>
+    public Task<User> GetUserByEmail(string email);
+
+    /// <summary>
     /// Creates a user and store it in the database
     /// </summary>
     /// <param name="user"></param>
@@ -47,15 +54,15 @@ public interface IUserRepository
     /// <summary>
     /// Resets the password of a user, must be directed to said site from an email
     /// </summary>
-    /// <param name="userName"></param>
+    /// <param name="email"></param>
     /// <param name="password"></param>
     /// <returns>Returns true if the process is successful, otherwise false also false if no user is found</returns>
-    public Task<bool> ResetPassword(string userName, string password);
+    public Task<bool> ResetPassword(string email, string password);
 
     /// <summary>
     /// Changes the password of a user, if the old password matches the correct password stores in the database
     /// </summary>
-    /// <param name="userName"></param>
+    /// <param name="email"></param>
     /// <param name="oldPassword"></param>
     /// <param name="newPassword"></param>
     /// <returns>Returns true if the old password was correct and false if not</returns>
