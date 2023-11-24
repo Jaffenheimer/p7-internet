@@ -156,8 +156,18 @@ public class PublicControllerV1 : ControllerBase
         var result = await _favouriteRecipeRepository.GetHistory(userId);
         if (result != null)
         {
-            var res = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result);
-            return Ok(res);
+            var recipeList = new List<RecipeResponse>();
+
+            var recipes = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result.ConvertAll(x => x.ToString()));
+            int counter = 0;
+            var validIngredients = await _ingredientRepository.GetAllIngredients();
+            foreach (var res in result)
+            {
+                recipeList.Add(new RecipeResponse(recipes[counter],CheckListForValidIngredients(recipes[counter], validIngredients) , res));
+                counter++;
+            }
+            
+            return Ok(recipeList);
         }
 
         return BadRequest("No favourite recipes found");
