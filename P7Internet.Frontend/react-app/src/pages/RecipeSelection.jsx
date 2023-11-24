@@ -12,6 +12,7 @@ const RecipeSelection = () => {
         position="top-center"
         newestOnTop={true}
         closeButton={false}
+        draggablePercent
       />
       <div className="headerContainer">
         <Header />
