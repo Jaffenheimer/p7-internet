@@ -25,6 +25,13 @@ const userEndpoints = apiSlice.injectEndpoints({
         body: "",
       }),
     }),
+    userAddFavourite: builder.mutation({
+      query: ({ userId, sessionToken }) => ({
+        url: `public/user/favourite-recipes?UserId=${userId}&SessionToken=${sessionToken}`,
+        method: "POST",
+        body: "",
+      }),
+    }),
   }),
 });
 
@@ -32,4 +39,5 @@ export const {
   useUserLoginMutation,
   useUserCreateMutation,
   useUserLogOutMutation,
+  useUserAddFavouriteMutation,
 } = userEndpoints;
