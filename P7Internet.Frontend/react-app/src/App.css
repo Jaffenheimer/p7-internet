@@ -258,6 +258,11 @@ button:hover {
   outline: none;
 }
 
+#GenerateRecipesButton {
+  margin-top: 5%;
+  float: right;
+}
+
 #selectRecipeButton {
   float: right;
   align-items: right;
@@ -596,7 +601,7 @@ input[type="range"] {
   margin: 1cm;
 }
 
-.BottomButtonsSpacer{
+.BottomButtonsSpacer {
   padding-bottom: 10%;
 }
 
