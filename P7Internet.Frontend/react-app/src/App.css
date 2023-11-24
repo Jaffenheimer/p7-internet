@@ -475,14 +475,14 @@ button:hover {
 }
 
 /* Login */
-.LoginForm {
+.LoginModal {
   background-color: white;
   height: 600px;
   width: 400px;
   margin: auto;
 }
 
-.LoginForm input[type="text"],
+.LoginModal input[type="text"],
 input[type="password"] {
   width: 100%;
   padding: 12px 20px;
@@ -492,11 +492,11 @@ input[type="password"] {
   box-sizing: border-box;
 }
 
-.LoginForm select {
+.LoginModal select {
   width: 100%;
 }
 
-.LoginForm option {
+.LoginModal option {
   font-size: 18px;
   font-family: Verdana;
 }
@@ -596,7 +596,7 @@ input[type="range"] {
   margin: 1cm;
 }
 
-.BottomButtonsSpacer{
+.BottomButtonsSpacer {
   padding-bottom: 10%;
 }
 

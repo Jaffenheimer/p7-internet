@@ -3,12 +3,17 @@ import cross from "../data/cross.svg";
 import { useDispatch } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { toast } from "react-toastify";
-import { inputValidation } from "../helperFunctions/inputValidation";
+import {
+  checkValidVerificationCode,
+  inputValidation,
+} from "../helperFunctions/inputValidation";
+import { checkValidEmail } from "../helperFunctions/inputValidation";
 import { addCookies } from "../helperFunctions/cookieHandler";
 import "react-toastify/dist/ReactToastify.css";
 import {
   useUserCreateMutation,
   useUserLoginMutation,
+  useUserConfirmEmailMutation,
 } from "../services/usersEndpoints";
 
 const LoginBox = ({ closeModal }) => {
@@ -16,11 +21,18 @@ const LoginBox = ({ closeModal }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [resetCode, setResetCode] = useState("");
+
+  const [loggingIn, setLoggingIn] = useState(true);
   const [creatingAccount, setCreatingAccount] = useState(false);
+  const [verificationCode, setVerificationCode] = useState(false);
+  const [resettingPassword, setResettingPassword] = useState(false);
 
   //States used to fetch data from backend
   const [userLogin, { isLogInLoading }] = useUserLoginMutation();
   const [userCreate, { isCreateLoading }] = useUserCreateMutation();
+  const [userConfirmEmail, { isConfirmEmailLoading }] =
+    useUserConfirmEmailMutation();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -84,11 +96,55 @@ const LoginBox = ({ closeModal }) => {
     setPassword("");
   }
 
+  function setPage(page) {
+    setLoggingIn(false);
+    setCreatingAccount(false);
+    setResettingPassword(false);
+    setVerificationCode(false);
+    if (page === "loggingIn") setLoggingIn(true);
+    else if (page === "creatingAccount") setCreatingAccount(true);
+    else if (page === "resettingPassword") setResettingPassword(true);
+    else if (page === "verificationCode") setVerificationCode(true);
+  }
+
+  const sendVerificationCode = async () => {
+    if (checkValidEmail(email)) {
+      try {
+        //send email to backend
+        const encodedEmail = encodeURIComponent(email);
+        const response = await userConfirmEmail({
+          email: encodedEmail,
+        });
+        if (response) {
+          toast.success("Din verifikationskode er sendt til din email");
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Kunne ikke sende email");
+      }
+    } else {
+      toast.error("Indtast venligst en gyldig email");
+    }
+  };
+
+  function activateVerificationCode() {
+    if (checkValidVerificationCode(verificationCode)) {
+    }
+    //send verification code to backend
+    // success: setResettingPassword(false);
+    // failure: toast.error("Forkert kode");
+    setPage("verificationCode");
+  }
+
   return (
-    <form className="LoginForm" onSubmit={handleSubmit}>
+    <div className="LoginModal">
       <div className="imgcontainer">
         <h3>
-          {!creatingAccount ? "Login" : "Opret Bruger"}
+          {resettingPassword || verificationCode
+            ? "Nulstil kodeord"
+            : creatingAccount
+            ? "Opret Bruger"
+            : "Login"}
           <img
             src={cross}
             alt="Back Cross"
@@ -101,7 +157,7 @@ const LoginBox = ({ closeModal }) => {
         {!creatingAccount ? (
           ""
         ) : (
-          <>
+          <form className="LoginForm" onSubmit={handleSubmit}>
             <label>
               <b>Email</b>
             </label>
@@ -112,57 +168,131 @@ const LoginBox = ({ closeModal }) => {
               onChange={(event) => setEmail(event.target.value)}
               required
             />
-          </>
-        )}
-        <label>
-          <b>Brugernavn</b>
-        </label>
-        <input
-          type="text"
-          placeholder="Indtast brugernavn"
-          value={username}
-          onChange={(event) => setUsername(event.target.value)}
-          required
-        />
-
-        <label>
-          <b>Kodeord</b>
-        </label>
-        <input
-          type="password"
-          placeholder="Indtast kodeordet"
-          value={password}
-          onChange={(event) => setPassword(event.target.value)}
-          required
-        />
-
-        <button type="submit">
-          {!creatingAccount ? "Login" : "Tilføj Bruger"}
-        </button>
-        {!creatingAccount ? (
-          <>
-            {/* <label>
-              Husk mig: <input type="checkbox" />{" "}
-            </label> */}
+            <label>
+              <b>Brugernavn</b>
+            </label>
+            <input
+              type="text"
+              placeholder="Indtast brugernavn"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              required
+            />
+            <label>
+              <b>Kodeord</b>
+            </label>
+            <input
+              type="password"
+              placeholder="Indtast kodeordet"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+            <button type="submit"> Tilføj Bruger </button>
             <br />
             <br />
-            <a href="/#">Glemt kodeord?</a>
-            <br />
-            <p id="noUserText">Ingen bruger:</p>
-            <a href="/#" onClick={() => setCreatingAccount(true)}>
-              Opret Bruger
-            </a>
-          </>
-        ) : (
-          <>
             <p id="alreadyHasUserText">Har allerede en bruger:</p>
-            <a href="/#" onClick={() => setCreatingAccount(false)}>
+            <a href="/#" onClick={() => setPage("loggingIn")}>
               Log in
             </a>
+          </form>
+        )}
+
+        {!loggingIn ? (
+          ""
+        ) : (
+          <form className="LoginForm" onSubmit={handleSubmit}>
+            <label>
+              <b>Brugernavn</b>
+            </label>
+            <input
+              type="text"
+              placeholder="Indtast brugernavn"
+              value={username}
+              onChange={(event) => setUsername(event.target.value)}
+              required
+            />
+            <label>
+              <b>Kodeord</b>
+            </label>
+            <input
+              type="password"
+              placeholder="Indtast kodeordet"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
+            <button type="submit"> Login </button>
+            {/* <label>
+                Husk mig: <input type="checkbox" />{" "}
+              </label> */}
+            <br />
+            <br />
+            <a href="/#" onClick={() => setPage("resettingPassword")}>
+              Glemt kodeord?
+            </a>
+            <br />
+            <p id="noUserText">Ingen bruger:</p>
+            <a href="/#" onClick={() => setPage("creatingAccount")}>
+              Opret Bruger
+            </a>
+          </form>
+        )}
+
+        {!resettingPassword ? (
+          ""
+        ) : (
+          <>
+            <br></br>
+
+            <label>
+              <b>Email</b>
+            </label>
+            <input
+              type="text"
+              placeholder="Indtast din email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+            />
+            <button onClick={() => sendVerificationCode()}>Send</button>
+            <br></br>
+            <br></br>
+            <br></br>
+            <label>
+              <b>Angiv verificeringskoden</b>
+            </label>
+            <input
+              type="text"
+              placeholder="Angiv koden her"
+              value={resetCode}
+              onChange={(event) => setResetCode(event.target.value)}
+            />
+            <button onClick={() => activateVerificationCode()}>Gendan</button>
+          </>
+        )}
+
+        {!verificationCode ? (
+          ""
+        ) : (
+          <>
+            <br></br>
+
+            <label>
+              <b>Nyt kodeord</b>
+            </label>
+            <input type="text" placeholder="Angiv koden her" />
+            <br></br>
+            <br></br>
+            <br></br>
+            <label>
+              <b>Gentag kodeordet</b>
+            </label>
+            <input type="text" placeholder="Angiv koden her" />
+            <button onClick={() => {}}>Bekræft kodeord</button>
           </>
         )}
       </div>
-    </form>
+    </div>
   );
 };
 
