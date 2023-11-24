@@ -422,12 +422,12 @@ public class PublicControllerV1 : ControllerBase
         {
             var recipeList = new List<RecipeResponse>();
 
-            var recipes = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result);
+            var recipes = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result.ConvertAll(x => x.ToString()));
             int counter = 0;
             var validIngredients = await _ingredientRepository.GetAllIngredients();
             foreach (var res in result)
             {
-                recipeList.Add(new RecipeResponse(recipes[counter],CheckListForValidIngredients(recipes[counter], validIngredients) , Guid.Parse(res)));
+                recipeList.Add(new RecipeResponse(recipes[counter],CheckListForValidIngredients(recipes[counter], validIngredients) , res));
             }
             
             return Ok(recipeList);
