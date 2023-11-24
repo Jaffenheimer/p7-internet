@@ -92,12 +92,17 @@ public class PublicControllerV1 : ControllerBase
         if (recipesIncludingIngredients.Any(x => x != null))
         {
             var returnList = new List<RecipeResponse>();
+            var counter = 0;
             foreach (var recipe in recipesIncludingIngredients)
             {
                 var validIng = await _ingredientRepository.GetAllIngredients();
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
+                counter++;
+                if(counter == req.Amount)
+                    break;
             }
+
             return Ok(returnList);
         }
 
@@ -161,13 +166,10 @@ public class PublicControllerV1 : ControllerBase
     [HttpPost("user/recipe")]
     public async Task<IActionResult> GetARecipeWhenLoggedIn([FromBody] RecipeRequest req)
     {
-        if (req.UserId != null && req.SessionToken != null)
-        {
-            var checkIfUserSessionIsValid =
-                await _userSessionRepository.CheckIfTokenIsValid(req.UserId.GetValueOrDefault(), req.SessionToken);
-            if (!checkIfUserSessionIsValid)
-                return Unauthorized("User session is not valid, please login again");
-        }
+        var checkIfUserSessionIsValid =
+            await _userSessionRepository.CheckIfTokenIsValid(req.UserId.GetValueOrDefault(), req.SessionToken);
+        if (!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
 
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
@@ -201,12 +203,17 @@ public class PublicControllerV1 : ControllerBase
         if (recipesIncludingIngredients.Any(x => x != null))
         {
             var returnList = new List<RecipeResponse>();
+            var counter = 0;
             foreach (var recipe in recipesIncludingIngredients)
             {
                 var validIng = await _ingredientRepository.GetAllIngredients();
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
+                counter++;
+                if(counter == req.Amount)
+                    break;
             }
+
             return Ok(returnList);
         }
 
@@ -271,8 +278,8 @@ public class PublicControllerV1 : ControllerBase
         {
             foreach (var product in res)
             {
-                if (_cachedOfferRepository.GetOffer(product.Name) != null) break;
-                _cachedOfferRepository.UpsertOffer(product.Name, product.Price, product.Store);
+                if (await _cachedOfferRepository.GetOffer(product.Name) != null) break;
+                await _cachedOfferRepository.UpsertOffer(product.Name, product.Price, product.Store);
             }
 
             return Ok(res);
@@ -530,9 +537,9 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>A list of ingredients in the correct format</returns>
     private static List<string> CheckListForValidIngredients(string recipe, List<string> validIngredients)
     {
-        if(string.IsNullOrEmpty(recipe))
+        if (string.IsNullOrEmpty(recipe))
             return new List<string>();
-        
+
         List<string> result = new List<string>();
         recipe = recipe.ToLower();
         foreach (var ingredient in validIngredients)
