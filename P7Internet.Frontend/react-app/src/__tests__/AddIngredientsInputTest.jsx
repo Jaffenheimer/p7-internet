@@ -7,7 +7,7 @@ import AddIngredientInput from "../components/AddIngredientInput.jsx";
 afterEach(cleanup);
 
 test("Renders the input field with correct placehold", () => {
-  renderComponent(<AddIngredientInput placeholder="Tilføj en ingrediens..." />);
+  renderComponent(<AddIngredientInput />);
   const inputField = screen.getByTestId("AddIngredientInput");
   expect(inputField).toBeInTheDocument();
   expect(inputField.placeholder).toBe("Tilføj en ingrediens...");

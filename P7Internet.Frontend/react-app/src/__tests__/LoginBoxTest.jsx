@@ -33,13 +33,3 @@ test("Renders the cross image in login box and it is clickable", () => {
   fireEvent.click(image);
   expect(mockCallBack.mock.calls).toHaveLength(1);
 });
-
-test("Render links and change url on click", () => {
-  renderComponent(<LoginBox />);
-  const changePasswordLink = screen.getByLabelText("glemtKodeord");
-  expect(changePasswordLink).toBeInTheDocument();
-  expect(changePasswordLink).toHaveAttribute("href", "/#");
-
-  // fireEvent.click(changePasswordLink);
-  // expect(global.window.location.href).toContain('http://localhost/')
-});

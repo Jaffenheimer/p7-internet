@@ -34,9 +34,3 @@ test("Profile Picture image is clickable and settings is clickable", () => {
   expect(screen.getByRole("img")).toBeInTheDocument();
   expect(screen.queryByText("Indstillinger")).not.toBeInTheDocument();
 });
-
-// test("Profile Picture image is clickable and log out is clickable", () => {
-//   renderComponent(<ProfilePicture openFavoritesModal={() => {}} />);
-//   fireEvent.click(screen.getByRole("img"));
-//   fireEvent.click(screen.getByText("Log ud"));
-// });

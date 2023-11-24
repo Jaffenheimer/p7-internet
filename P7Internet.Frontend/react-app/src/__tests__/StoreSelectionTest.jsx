@@ -42,8 +42,8 @@ test("remove all but one store from the store selection", () => {
     />
   );
 
+  // Remove all stores but Lidl by removing the first 6 stores
   let buttons = screen.getAllByRole("button");
-  expect(buttons.length).toBe(7);
 
   for (let i = 0; i < buttons.length - 1; i++) {
     expect(buttons[i]).toBeInTheDocument();

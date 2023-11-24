@@ -29,10 +29,7 @@ describe("SelectArrows", () => {
     const arrows = screen.getAllByRole("img");
     expect(arrows[0]).toBeInTheDocument();
     expect(arrows[1]).toBeInTheDocument();
-    expect(screen.getByLabelText("SelectArrows")).toBeInTheDocument();
-    expect(screen.getByLabelText("SelectArrows")).toHaveAttribute(
-      "tabIndex",
-      "0"
-    );
+    expect(screen.getByTestId("SelectArrows")).toBeInTheDocument();
+    expect(screen.getByTestId("SelectArrows")).toHaveAttribute("tabIndex", "0");
   });
 });

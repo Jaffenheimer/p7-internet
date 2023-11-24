@@ -146,7 +146,7 @@ const LoginBox = ({ closeModal }) => {
             </label> */}
             <br />
             <br />
-            <a href="/#" aria-label="glemtKodeord">
+            <a href="/#" data-testid="forgotPassword">
               Glemt kodeord?
             </a>
             <br />
