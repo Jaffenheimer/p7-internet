@@ -1,44 +1,46 @@
 [
     {
-        "recipes": "Titel: Vindruesalat med quinoa og avocado  Ingredienser: - 1 kop kogt quinoa - 1 håndfuld vindruer (røde eller grønne), halveret - 1/2 avocado, skåret i tern - 1/4 rødløg, fint hakket - 1 spiseskefuld frisk persille, hakket - Saften fra 1/2 citron - 1 spiseskefuld olivenolie - Salt og peber efter smag  Metode: 1. I en stor skål kombineres quinoa, vindruer, avocado, rødløg og persille. 2. I en separat skål, piskes citronsaft, olivenolie, salt og peber sammen for at lave dressingen. 3. Dressingen hældes over salaten og blandes godt sammen, så alle ingredienserne er dækket. 4. Smag til med ekstra salt og peber, hvis det er nødvendigt. 5. Server salaten straks som en let frokost eller som en side til aftensmaden.  Velbekomme!",
-        "recipeId": "e5383e8b-9004-4125-a28e-f6ccbd530bff",
+        "recipes": "Titel: Oksekød med peberfrugt og tomat  Ingredienser: - 300 g oksekød (f.eks. hakket oksekød eller strimlet oksekød) - 1 rød peberfrugt - 2 tomater - Salt og peber efter smag - Olivenolie til stegning  Metode: 1. Skær peberfrugten i strimler og tomaterne i tern. 2. Varm en pande op med lidt olivenolie. 3. Steg oksekødet på panden, indtil det er gennemstegt og brunt. 4. Tilsæt peberfrugt og tomater til panden og steg det med i et par minutter, indtil grøntsagerne er blevet bløde. 5. Krydr med salt og peber efter smag. 6. Server oksekødet med peberfrugt og tomater sammen med f.eks. ris eller kartofler.  Tip: Du kan tilføje ekstra smag til retten ved at tilsætte krydderier som hvidløg, løg eller paprika.",
+        "recipeId": "f58a1f13-a3ae-474c-af56-f82767ef323b",
         "ingredients": [
+            "Løg",
             "Olivenolie",
             "Salt",
-            "Quinoa",
-            "Avocado",
-            "Citron",
-            "Peber"
+            "Tomater",
+            "Oksekød",
+            "Ris",
+            "Peberfrugt",
+            "Peber",
+            "Tomat"
         ],
         "success": true,
         "errorMessage": null
     },
     {
-        "recipes": "Titel: Vindrue- og quinoasalat  Ingredienser: - 1 kop kogt quinoa - 1 kop vindruer, halveret - 1/4 kop hakket frisk persille - 1/4 kop hakket frisk mynte - 1/4 kop hakkede valnødder - 1 spiseskefuld olivenolie - Saften af 1 citron - Salt og peber efter smag  Metode: 1. Start med at koge quinoaen efter anvisningerne på pakken. Lad den køle af. 2. I en stor skål kombineres quinoa, vindruer, persille, mynte og valnødder. 3. I en lille skål blandes olivenolie, citronsaft, salt og peber. 4. Hæld dressingen over salaten og bland godt, indtil alle ingredienserne er jævnt fordelt. 5. Smag til med mere salt og peber, hvis nødvendigt. 6. Server salaten straks som en let frokost eller som tilbehør til aftensmaden.  Bemærk: Vær opmærksom på, at nogle vinproducenter bruger dyreprodukter som gelatine eller fiskeblærer til at filtrere vinen. Så sørg for at vælge en vegansk vin, hvis du ønsker at opretholde det veganske aspekt af opskriften.",
-        "recipeId": "2d1f891f-ec31-4741-81eb-551557ac0433",
+        "recipes": "Titel: Oksekød med peberfrugt og tomat  Ingredienser: - 300 g oksekød (f.eks. hakket oksekød eller strimler af oksekød) - 1 rød peberfrugt - 2 tomater - Salt og peber efter smag  Metode: 1. Skær peberfrugten i strimler og tomaterne i små tern. 2. Varm en stegepande op på middel varme og tilsæt oksekødet. Steg det, indtil det er brunet og gennemstegt. 3. Tilsæt peberfrugt og tomater til panden og steg det i ca. 5 minutter, indtil grøntsagerne er blevet bløde. 4. Krydr med salt og peber efter smag. 5. Server oksekødet med peberfrugt og tomat sammen med ris, kartofler eller pasta efter ønske.  Velbekomme!",
+        "recipeId": "f8b91009-431b-41b9-826e-bfa6af73e21a",
         "ingredients": [
-            "Olivenolie",
             "Salt",
-            "Persille",
-            "Quinoa",
-            "Valnødder",
-            "Mynte",
-            "Citron",
-            "Peber"
+            "Tomater",
+            "Oksekød",
+            "Kartofler",
+            "Peberfrugt",
+            "Peber",
+            "Tomat"
         ],
         "success": true,
         "errorMessage": null
     },
     {
-        "recipes": "Titel: Vindrue Salat med Avocado og Quinoa  Ingredienser: - 1 kop kogt quinoa - 1 kop vindruer, halveret - 1 avocado, skåret i tern - 1 håndfuld frisk basilikum, hakket - 1 spiseskefuld olivenolie - Saft af 1 citron - Salt og peber efter smag  Metode: 1. Start med at koge quinoaen efter anvisningerne på pakken. Lad den køle af. 2. I en stor skål kombineres quinoa, vindruer, avocado og basilikum. 3. I en separat skål blandes olivenolie, citronsaft, salt og peber. Pisk det godt sammen. 4. Hæld dressingen over salaten og bland godt, så alle ingredienserne er dækket. 5. Smag til med ekstra salt og peber, hvis nødvendigt. 6. Server salaten straks og nyd den som en lækker og sund vegansk frokost eller let aftensmad.",
-        "recipeId": "d273e60b-97a8-4d3f-b730-e0c563d88bdc",
+        "recipes": "Titel: Oksekød med peberfrugt og tomat  Ingredienser: - 300g oksekød (f.eks. hakket oksekød eller skært oksekød i strimler) - 1 rød peberfrugt - 2 tomater - Salt og peber efter smag - Olie til stegning  Metode: 1. Skær peberfrugten i strimler og tomaterne i tern. 2. Varm olien op i en pande ved middel varme. 3. Tilsæt oksekødet og steg det, indtil det er brunet og gennemstegt. 4. Tilsæt peberfrugt og steg i yderligere 2-3 minutter, indtil peberfrugten er let blød. 5. Tilsæt tomaterne og steg i yderligere 2-3 minutter, indtil de er bløde. 6. Smag til med salt og peber efter behov. 7. Server oksekødet med peberfrugt og tomat varmt som en hovedret til 2 personer.  God appetit!",
+        "recipeId": "0ea27118-8566-4831-be93-ccf319115b10",
         "ingredients": [
-            "Olivenolie",
             "Salt",
-            "Quinoa",
-            "Avocado",
-            "Citron",
-            "Peber"
+            "Tomater",
+            "Oksekød",
+            "Peberfrugt",
+            "Peber",
+            "Tomat"
         ],
         "success": true,
         "errorMessage": null

@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { nanoid } from "@reduxjs/toolkit";
 
-const FavoritesModalContainer = ({ closeModal }) => {
+const FavoritesModalContainer = () => {
   const recipes = useSelector((state) => state.recipe.recipes);
   const loggedIn = useSelector((state) => state.user.loggedIn);
   const favoriteRecipesRedux = useSelector(
@@ -49,7 +49,7 @@ const FavoritesModalContainer = ({ closeModal }) => {
         recipeActions.setCurrentRecipeIndex(recipeTitles.indexOf(recipeTitle.recipeId))
       );
       dispatch(pageActions.goToPage(Pages.fullRecipeView));
-      closeModal();
+//      closeModal();
     }      
   }
 

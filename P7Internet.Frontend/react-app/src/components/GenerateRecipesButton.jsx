@@ -30,7 +30,7 @@ const GenerateRecipesButton = () => {
 
   const [generateUserRecipe, { isLoading: isRecipeUserLoading }] =
     useGenerateUserRecipeMutation();
-  const [generateRecipe, { isLoading: isRecipeLoading }] =
+  const [generateRecipe, { isLoading: isRecipeLoading, error: generateError }] =
   useGenerateRecipeMutation();
   let response;
 
@@ -67,7 +67,9 @@ const GenerateRecipesButton = () => {
           toast.success("Opskrifter oprettet");
         }
       } catch (error) {
+        console.log("Fejl fra request");
         console.log(error);
+        console.log(generateError); 
         toast.error("Kunne ikke lave en opskrift");
       }
     }
