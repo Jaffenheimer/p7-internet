@@ -3,7 +3,7 @@ import cross from "../data/cross.svg";
 import { useDispatch } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { toast } from "react-toastify";
-import { inputValidation } from "../helperFunctions/inputValidation";
+import { userInputValidation } from "../helperFunctions/inputValidation";
 import { addCookies } from "../helperFunctions/cookieHandler";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -39,7 +39,7 @@ const LoginBox = ({ closeModal }) => {
             username: encodedUsername,
             password: encodedPassword,
           }).unwrap();
-        } else if (inputValidation(username, password, email) === true) {
+        } else if (userInputValidation(username, password, email) === true) {
           const encodedEmail = encodeURIComponent(email);
           response = await userCreate({
             username: encodedUsername,

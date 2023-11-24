@@ -38,6 +38,7 @@ const Allergens = () => {
         name="AllergenOptions"
         inputId="AllergenOptions"
         value={allergensValues}
+        noOptionsMessage={() => "Ingen allergener"}
       />
     </div>
   );

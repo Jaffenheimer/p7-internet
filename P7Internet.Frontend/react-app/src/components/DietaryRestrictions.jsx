@@ -23,7 +23,7 @@ const DietaryRestrictions = () => {
       <Select
         id="DietaryRestrictionsSelect"
         options={options}
-        defaultValue={{ value: "", label: "Ingen" }}
+        placeholder="Vælg kostbegrænsning"
         onChange={handleChecked}
       />
     </div>
