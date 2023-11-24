@@ -99,7 +99,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 
@@ -128,6 +128,7 @@ public class PublicControllerV1 : ControllerBase
         {
             return BadRequest(res.ErrorMessage);
         }
+
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
@@ -214,7 +215,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 
@@ -245,6 +246,7 @@ public class PublicControllerV1 : ControllerBase
         {
             return BadRequest(res.ErrorMessage);
         }
+
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
@@ -418,7 +420,17 @@ public class PublicControllerV1 : ControllerBase
         var result = await _favouriteRecipeRepository.Get(req.UserId);
         if (result != null)
         {
-            return Ok(result);
+            var recipeList = new List<RecipeResponse>();
+
+            var recipes = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result);
+            int counter = 0;
+            var validIngredients = await _ingredientRepository.GetAllIngredients();
+            foreach (var res in result)
+            {
+                recipeList.Add(new RecipeResponse(recipes[counter],CheckListForValidIngredients(recipes[counter], validIngredients) , Guid.Parse(res)));
+            }
+            
+            return Ok(recipeList);
         }
 
         return BadRequest("No favourite recipes found");
@@ -559,7 +571,7 @@ public class PublicControllerV1 : ControllerBase
                 result.Add(ingredient);
         }
 
-        
+
         Console.WriteLine(result);
         return result;
     }
@@ -573,7 +585,7 @@ public class PublicControllerV1 : ControllerBase
     private async Task<RecipeResponse> GetRecipeAsync(RecipeRequest req, List<string> validIngredients)
     {
         var res = await _openAiService.GetAiResponse(req);
-        if(res.Success == false)
+        if (res.Success == false)
             return RecipeResponse.Error(res.ErrorMessage, res.RecipeId);
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
