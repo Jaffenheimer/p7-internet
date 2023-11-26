@@ -6,14 +6,16 @@ import { toast } from "react-toastify";
 import {
   checkValidVerificationCode,
   inputValidation,
+  checkValidPassword,
 } from "../helperFunctions/inputValidation";
 import { checkValidEmail } from "../helperFunctions/inputValidation";
-import { addCookies } from "../helperFunctions/cookieHandler";
+import { addCookies, getCookies } from "../helperFunctions/cookieHandler";
 import "react-toastify/dist/ReactToastify.css";
 import {
   useUserCreateMutation,
   useUserLoginMutation,
-  useUserConfirmEmailMutation,
+  useUserResetPasswordRequestMutation,
+  useUserChangePasswordMutation,
 } from "../services/usersEndpoints";
 
 const LoginBox = ({ closeModal }) => {
@@ -21,20 +23,24 @@ const LoginBox = ({ closeModal }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [resetCode, setResetCode] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [resetPassword, setResetPassword] = useState("");
+  const [repeatedResetPassword, setRepeatedResetPassword] = useState("");
 
   const [loggingIn, setLoggingIn] = useState(true);
   const [creatingAccount, setCreatingAccount] = useState(false);
-  const [verificationCode, setVerificationCode] = useState(false);
+  const [verifyingAccount, setVerifyingAccount] = useState(false);
   const [resettingPassword, setResettingPassword] = useState(false);
 
   //States used to fetch data from backend
   const [userLogin, { isLogInLoading }] = useUserLoginMutation();
   const [userCreate, { isCreateLoading }] = useUserCreateMutation();
-  const [userConfirmEmail, { isConfirmEmailLoading }] =
-    useUserConfirmEmailMutation();
+  const [userResetPasswordRequest, { isResetPasswordRequestLoading }] =
+    useUserResetPasswordRequestMutation();
+  const [userChangePassword, { isChangePassword }] =
+    useUserChangePasswordMutation();
 
-  const handleSubmit = async (event) => {
+  async function handleSubmit(event) {
     event.preventDefault();
 
     if (!isLogInLoading || isCreateLoading) {
@@ -83,11 +89,11 @@ const LoginBox = ({ closeModal }) => {
       } catch (error) {
         console.log(error);
         if (!creatingAccount)
-          toast.error("Brugernavn eller Kodeord er forkert, prøv igen");
+          toast.error("Brugernavnet eller kodeordet er forkert, prøv igen");
         else toast.error("Kunne ikke oprette bruger");
       }
     }
-  };
+  }
 
   function clearandclose() {
     closeModal();
@@ -96,51 +102,115 @@ const LoginBox = ({ closeModal }) => {
     setPassword("");
   }
 
-  function setPage(page) {
+  function setModalPage(page) {
     setLoggingIn(false);
     setCreatingAccount(false);
     setResettingPassword(false);
-    setVerificationCode(false);
+    setVerifyingAccount(false);
     if (page === "loggingIn") setLoggingIn(true);
     else if (page === "creatingAccount") setCreatingAccount(true);
+    else if (page === "verifyingAccount") setVerifyingAccount(true);
     else if (page === "resettingPassword") setResettingPassword(true);
-    else if (page === "verificationCode") setVerificationCode(true);
   }
 
-  const sendVerificationCode = async () => {
+  async function sendVerificationCode() {
     if (checkValidEmail(email)) {
       try {
         //send email to backend
         const encodedEmail = encodeURIComponent(email);
-        const response = await userConfirmEmail({
+
+        let response = await userResetPasswordRequest({
           email: encodedEmail,
         });
+
         if (response) {
-          toast.success("Din verifikationskode er sendt til din email");
+          if (response.error.originalStatus === 200) {
+            toast.success("Din verifikationskode er sendt til din email");
+            setEmail("");
+          } else if (
+            response.error.originalStatus === 400 &&
+            response.error.data === "User does not exist"
+          ) {
+            toast.error("Emailen findes ikke i databasen");
+          }
         }
       } catch (error) {
         console.log(error);
-        toast.error("Kunne ikke sende email");
+        toast.error("Kunne ikke sende emailen");
       }
     } else {
       toast.error("Indtast venligst en gyldig email");
     }
-  };
+  }
 
   function activateVerificationCode() {
     if (checkValidVerificationCode(verificationCode)) {
+      // TODO: need to check if verification code is valid on database
+      setModalPage("resettingPassword");
+      toast.success("Du indtastede en gyldig verifikationskode!");
+      setVerificationCode("");
+    } else {
+      toast.error("Den indtastede kode er ugyldig. Prøv igen");
     }
-    //send verification code to backend
-    // success: setResettingPassword(false);
-    // failure: toast.error("Forkert kode");
-    setPage("verificationCode");
+  }
+
+  async function tryResetPassword() {
+    if (!(resetPassword === repeatedResetPassword))
+      toast.error("De to kodeord er ikke ens. Prøv igen");
+    else if (
+      !checkValidPassword(resetPassword) ||
+      !checkValidPassword(repeatedResetPassword)
+    ) {
+      toast.error(
+        "Kodeordet skal være mindst 8 tegn langt og indeholde mindst et stort bogstav, et lille bogstav og et tal"
+      );
+    } else {
+      // if valid password, requests password reset if cookies are present
+      const cookies = document.cookie.split(";");
+
+      if (cookies.length === 0)
+        toast.error("Noget gik galt. Prøv at genindlæs siden og prøv igen");
+      else {
+        try {
+          let { username, userid, sessionToken } = getCookies(cookies);
+          const oldPassword = "Hammer123"; //TODO: get OldPassword from database
+
+          const encodedUserId = encodeURIComponent(userid);
+          const encodedSessionToken = encodeURIComponent(sessionToken);
+          const encodedUsername = encodeURIComponent(username);
+          const encodedOldPassword = encodeURIComponent(oldPassword); //TODO: get OldPassword from database
+          const encodedPassword = encodeURIComponent(resetPassword);
+
+          let response = await userChangePassword({
+            userId: encodedUserId,
+            sessionToken: encodedSessionToken, //maybe not include session token unless server gives new unique from reset-password-request
+            username: encodedUsername,
+            oldPassword: encodedOldPassword,
+            newPassword: encodedPassword,
+          }).unwrap();
+
+          if (response) {
+            console.log(response.error); // remember to remove
+            if (response.error.originalStatus === 200) {
+              setModalPage("loggingIn");
+              toast.success("Dit kodeord er nu nulstillet");
+              setResetPassword("");
+              setRepeatedResetPassword("");
+            } //needs handle on error response codes
+          }
+        } catch (error) {
+          console.log(error);
+          toast.error("Kunne ikke nulstille kodeordet");
+        }
+      }
+    }
   }
 
   return (
     <div className="LoginModal">
       <div className="imgcontainer">
         <h3>
-          {resettingPassword || verificationCode
+          {resettingPassword || verifyingAccount
             ? "Nulstil kodeord"
             : creatingAccount
             ? "Opret Bruger"
@@ -192,7 +262,7 @@ const LoginBox = ({ closeModal }) => {
             <br />
             <br />
             <p id="alreadyHasUserText">Har allerede en bruger:</p>
-            <a href="/#" onClick={() => setPage("loggingIn")}>
+            <a href="/#" onClick={() => setModalPage("loggingIn")}>
               Log in
             </a>
           </form>
@@ -228,18 +298,18 @@ const LoginBox = ({ closeModal }) => {
               </label> */}
             <br />
             <br />
-            <a href="/#" onClick={() => setPage("resettingPassword")}>
+            <a href="/#" onClick={() => setModalPage("verifyingAccount")}>
               Glemt kodeord?
             </a>
             <br />
             <p id="noUserText">Ingen bruger:</p>
-            <a href="/#" onClick={() => setPage("creatingAccount")}>
+            <a href="/#" onClick={() => setModalPage("creatingAccount")}>
               Opret Bruger
             </a>
           </form>
         )}
 
-        {!resettingPassword ? (
+        {!verifyingAccount ? (
           ""
         ) : (
           <>
@@ -264,31 +334,41 @@ const LoginBox = ({ closeModal }) => {
             <input
               type="text"
               placeholder="Angiv koden her"
-              value={resetCode}
-              onChange={(event) => setResetCode(event.target.value)}
+              value={verificationCode}
+              onChange={(event) => setVerificationCode(event.target.value)}
             />
             <button onClick={() => activateVerificationCode()}>Gendan</button>
           </>
         )}
 
-        {!verificationCode ? (
+        {!resettingPassword ? (
           ""
         ) : (
           <>
             <br></br>
 
             <label>
-              <b>Nyt kodeord</b>
+              <b>Indtast dit nye kodeord</b>
             </label>
-            <input type="text" placeholder="Angiv koden her" />
+            <input
+              type="password"
+              placeholder="Indtast kodeordet"
+              value={resetPassword}
+              onChange={(event) => setResetPassword(event.target.value)}
+            />
             <br></br>
             <br></br>
             <br></br>
             <label>
-              <b>Gentag kodeordet</b>
+              <b>Gentag det nye kodeord</b>
             </label>
-            <input type="text" placeholder="Angiv koden her" />
-            <button onClick={() => {}}>Bekræft kodeord</button>
+            <input
+              type="password"
+              placeholder="Indtast kodeordet"
+              value={repeatedResetPassword}
+              onChange={(event) => setRepeatedResetPassword(event.target.value)}
+            />
+            <button onClick={() => tryResetPassword()}>Bekræft kodeord</button>
           </>
         )}
       </div>

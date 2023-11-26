@@ -29,7 +29,7 @@ function checkValidUsername(username) {
 //THE PASSWORD VALIDATION SHOULD HAPPEN IN THE BACKEND
 //password: allowed characters are at least 1 numeric degit, one uppercase, one lowercase
 //and between 6 to 20 characters, excluding special characters.
-function checkValidPassword(password) {
+export function checkValidPassword(password) {
   const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; //
   const isValidPassword = passwordRegex.exec(password);
   if (isValidPassword === null) return false;

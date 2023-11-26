@@ -25,16 +25,22 @@ const userEndpoints = apiSlice.injectEndpoints({
         body: "",
       }),
     }),
-    userConfirmEmail: builder.mutation({
-      query: ({ EmailAddress }) => ({
-        url: `public/user/confirm-email?EmailAddress=${EmailAddress}`,
+    userResetPasswordRequest: builder.mutation({
+      query: ({ email }) => ({
+        url: `/public/user/reset-password-request?email=${email}`,
         method: "POST",
         body: "",
       }),
     }),
     userChangePassword: builder.mutation({
-      query: ({ EmailAddress }) => ({
-        url: `public/user/confirm-email?EmailAddress=${EmailAddress}`,
+      query: ({
+        userId,
+        sessionToken,
+        username,
+        oldPassword,
+        newPassword,
+      }) => ({
+        url: `public/user/change-password?UserId=${userId}&SessionToken=${sessionToken}&UserName=${username}&OldPassword=${oldPassword}&NewPassword=${newPassword}`,
         method: "POST",
         body: "",
       }),
@@ -48,5 +54,6 @@ export const {
   useUserLoginMutation,
   useUserCreateMutation,
   useUserLogOutMutation,
-  useUserConfirmEmailMutation,
+  useUserResetPasswordRequestMutation,
+  useUserChangePasswordMutation,
 } = userEndpoints;

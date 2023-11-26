@@ -27,6 +27,20 @@ export const deleteCookies = () => {
   document.cookie = `sessionToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };
 
+export const getCookies = (cookies) => {
+  let username, userid, sessionToken;
+  for (let cookie in cookies) {
+    if (cookies[cookie].includes("username")) {
+      username = cookies[cookie].split("=")[1];
+    } else if (cookies[cookie].includes("userid")) {
+      userid = cookies[cookie].split("=")[1];
+    } else if (cookies[cookie].includes("sessionToken")) {
+      sessionToken = cookies[cookie].split("=")[1];
+    }
+  }
+  return { username, userid, sessionToken };
+};
+
 function getTime() {
   var now = new Date();
   var time = now.getTime();
