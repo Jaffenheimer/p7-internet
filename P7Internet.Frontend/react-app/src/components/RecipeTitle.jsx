@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import heartHollow from "../data/heart-hollow.svg";
 import heartSolid from "../data/heart-solid.svg";
-import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 
 const RecipeTitle = ({ title }) => {

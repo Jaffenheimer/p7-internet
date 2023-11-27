@@ -146,7 +146,9 @@ const LoginBox = ({ closeModal }) => {
             </label> */}
             <br />
             <br />
-            <a href="/#">Glemt kodeord?</a>
+            <a href="/#" data-testid="forgotPassword">
+              Glemt kodeord?
+            </a>
             <br />
             <p id="noUserText">Ingen bruger:</p>
             <a href="/#" onClick={() => setCreatingAccount(true)}>
