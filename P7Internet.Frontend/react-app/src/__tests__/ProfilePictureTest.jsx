@@ -19,17 +19,19 @@ test("Profile Picture image is clickable and opens up pop up", () => {
   expect(screen.getByText("Log ud")).toBeInTheDocument();
 });
 
-test("Profile Picture image is clickable and favoritter is clickable", () => {
+test("Profile Picture image is clickable and favoritter is clickable, then ensure that the dropdown menu is hidden afterwards", () => {
   renderComponent(<ProfilePicture openFavoritesModal={() => {}} />);
   fireEvent.click(screen.getByRole("img"));
+  expect(screen.getByText("Favoritter")).toBeInTheDocument();
   fireEvent.click(screen.getByText("Favoritter"));
   expect(screen.getByRole("img")).toBeInTheDocument();
   expect(screen.queryByText("Favoritter")).not.toBeInTheDocument();
 });
 
-test("Profile Picture image is clickable and settings is clickable", () => {
+test("Profile Picture image is clickable and settings is clickable, then ensure that the dropdown menu is hidden afterwards", () => {
   renderComponent(<ProfilePicture openFavoritesModal={() => {}} />);
   fireEvent.click(screen.getByRole("img"));
+  expect(screen.getByText("Indstillinger")).toBeInTheDocument();
   fireEvent.click(screen.getByText("Indstillinger"));
   expect(screen.getByRole("img")).toBeInTheDocument();
   expect(screen.queryByText("Indstillinger")).not.toBeInTheDocument();

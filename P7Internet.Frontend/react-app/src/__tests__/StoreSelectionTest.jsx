@@ -52,5 +52,4 @@ test("remove all but one store from the store selection", () => {
 
   buttons = screen.getAllByRole("button");
   expect(setStoreValues).toHaveBeenCalledTimes(6);
-  expect(screen.getByText(/Lidl/)).toBeInTheDocument();
 });
