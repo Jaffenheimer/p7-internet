@@ -475,6 +475,9 @@ public class PublicControllerV1 : ControllerBase
         var user = await _userRepository.GetUserFromId(userId.GetValueOrDefault());
         if (user != null)
         {
+            if(!user.IsEmailConfirmed)
+                return BadRequest("Email is not confirmed, please confirm your email before resetting your password");
+            
             var result = await _userRepository.ResetPassword(user.EmailAddress, password);
             if (result)
             {
