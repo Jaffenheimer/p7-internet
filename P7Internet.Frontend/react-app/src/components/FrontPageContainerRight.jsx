@@ -12,12 +12,10 @@ const FrontPageContainerRight = () => {
     >
       <div className="ContainerRightTop">
         <h3>Personer</h3>
-        <div className="NumberOfPersonsFieldContainer"></div>
         <div className="ContainerRightColumn">
           <NumberOfPersonsField />
         </div>
       </div>
-
       <div className="ContainerRightMiddle">
         <DietaryRestrictions />
         <Allergens />
