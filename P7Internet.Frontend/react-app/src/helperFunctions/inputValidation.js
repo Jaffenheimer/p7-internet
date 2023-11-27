@@ -17,10 +17,11 @@ function checkValidUsername(username) {
   return usernameResultArray !== null;
 }
 
-//password: allowed characters are at least 1 numeric digit, one uppercase letter , one lowercase letter
-//and between 6 to 20 characters, excluding special characters.
+//password: at least 1 numeric digit, one uppercase letter, 
+//one lowercase letter, one special character, and min 6 characters
 function checkValidPassword(password) {
-  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; //
+  const passwordRegex =
+    /^(?=.*\d)(?=.*[a-zæøå])(?=.*[A-ZÆØÅ])(?=.*?[#?!@$ %^&*-]).{6,}$/; //
   const passwordResultArray = passwordRegex.exec(password);
   return passwordResultArray !== null;
 }
@@ -29,7 +30,7 @@ export const userInputValidation = (username, password, email) => {
   let hasError = false;
   if (!checkValidPassword(password)) {
     toast.error(
-      "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn."
+      "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav, et specialtegn og være mindst 6 tegn langt."
     );
     hasError = true;
   }

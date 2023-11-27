@@ -10,11 +10,11 @@ import { ToastContainer } from "react-toastify";
 test("userInputValidation returns true if input is valid", () => {
   const email = "email@email.com";
   const username = "Username";
-  const password = "Password123";
+  const password = "Password123#";
   expect(userInputValidation(username, password, email)).toBe(true);
 });
 
-test("if email is invalid userInputValidation returns false and toast appears ", async () => {
+test("if email is invalid userInputValidation returns false and toast appears", async () => {
   render(<ToastContainer position="top-center" />);
   const email = "email";
   const username = "username";
@@ -25,7 +25,7 @@ test("if email is invalid userInputValidation returns false and toast appears ",
   ).toBeInTheDocument();
 });
 
-test("if username is invalid userInputValidation returns false and toast appears ", async () => {
+test("if username is invalid userInputValidation returns false and toast appears", async () => {
   render(<ToastContainer position="top-center" />);
   const email = "email@email.com";
   const username = "username!"; //username cant have special characters
@@ -38,20 +38,20 @@ test("if username is invalid userInputValidation returns false and toast appears
   ).toBeInTheDocument();
 });
 
-test("if password is invalid userInputValidation returns false and toast appears ", async () => {
+test("if password is invalid userInputValidation returns false and toast appears", async () => {
   render(<ToastContainer position="top-center" />);
   const email = "email@email.com";
   const username = "username";
-  const password = "password"; //password must contain at least one uppercase, one lowercase and one number
+  const password = "password"; //password: at least 1 numeric digit, one uppercase letter, one lowercase letter, one special character, and min 6 characters
   expect(userInputValidation(username, password, email)).toBe(false);
   expect(
     await screen.findByText(
-      /Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn./
+      /Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav, et specialtegn og være mindst 6 tegn langt./
     )
   ).toBeInTheDocument();
 });
 
-test("if all inputs are invalid userInputValidation returns false and toasts appears ", async () => {
+test("if all inputs are invalid userInputValidation returns false and toasts appears", async () => {
   render(<ToastContainer position="top-center" />);
   const email = "email";
   const username = "username!";
@@ -67,7 +67,7 @@ test("if all inputs are invalid userInputValidation returns false and toasts app
   ).toBeInTheDocument();
   expect(
     await screen.findByText(
-      /Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn./
+      /Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav, et specialtegn og være mindst 6 tegn langt./
     )
   ).toBeInTheDocument();
 });

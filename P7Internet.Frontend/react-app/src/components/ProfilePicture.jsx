@@ -5,11 +5,11 @@ import { userActions } from "../features/userSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { pageActions } from "../features/pageSlice";
 import { useUserLogOutMutation } from "../services/usersEndpoints";
 import { deleteCookies, retriveCookie } from "../helperFunctions/cookieHandler";
 
-const ProfilePicture = ({ openFavoritesModal }) => {
+const ProfilePicture = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -18,8 +18,8 @@ const ProfilePicture = ({ openFavoritesModal }) => {
   }
 
   const handleFavorites = () => {
-    openFavoritesModal();
     setOpen(false);
+    dispatch(pageActions.openFavoritesModal());
   };
 
   const handleSettings = () => {
@@ -64,24 +64,28 @@ const ProfilePicture = ({ openFavoritesModal }) => {
 
   return (
     <div className="ProfilePicture" data-testid="ProfilePicture">
+      <div className="dropdown-button">
       <img
         className="Profile"
         src={profile}
         alt="ProfilePicture"
         onClick={profileClick}
       />
+      </div>
       {open ? (
-        <ul className="menu">
+        <div className="dropdown"> 
+        <ul className="dropdown-content">
           <li className="menu-item">
-            <button onClick={handleFavorites}>Favoritter</button>
+            <button id="FavoritesButton" onClick={handleFavorites}>Favoritter</button>
           </li>
           <li className="menu-item">
-            <button onClick={handleSettings}>Indstillinger</button>
+            <button id="SettingsButton" onClick={handleSettings}>Indstillinger</button>
           </li>
           <li className="menu-item">
-            <button onClick={handleLogOut}>Log ud</button>
+            <button id="LogoutButton" onClick={handleLogOut}>Log ud</button>
           </li>
         </ul>
+        </div>
       ) : null}
     </div>
   );
