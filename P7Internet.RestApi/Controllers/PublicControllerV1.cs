@@ -439,13 +439,12 @@ public class PublicControllerV1 : ControllerBase
     }
 
     /// <summary>
-    /// Endpoint to reset the password of a user if requested.
-    /// This is done by sending an email to the users specified email 
+    /// Endpoint to request a verification code and send it by email if the user cannot remember their password and wish to reset it.
     /// </summary>
     /// <param name="email"></param>
     /// <returns>Returns Ok if a user is found and the email has been sent, if the user is not found it returns BadRequest</returns>
-    [HttpPost("user/reset-password-request")]
-    public async Task<IActionResult> ResetPassword([EmailAddress] string email)
+    [HttpPost("user/reset-password-email-request")]
+    public async Task<IActionResult> ResetPasswordRequest([EmailAddress] string email)
     {
         var user = await _userRepository.GetUserByEmail(email);
         if (user != null)
@@ -458,28 +457,32 @@ public class PublicControllerV1 : ControllerBase
         return BadRequest("User does not exist");
     }
 
-    [HttpGet("user/get-user-from-verification-code")]
-    public async Task<IActionResult> GetUserFromVerificationCode(string verificationCode)
+    /// <summary>
+    /// Resets the password of a user
+    /// </summary>
+    /// <param name="password"></param>
+    /// <param name="verificationCode"></param>
+    /// <returns>Ok if the user is found and the verification code is valid, returns bad request if not</returns>
+    [HttpGet("user/reset-password")]
+    public async Task<IActionResult> ResetPassword(string password, string verificationCode)
     {
-        var userId = await _userSessionRepository.GetUserFromVerificationCode(verificationCode);
-        var user = await _userRepository.GetUserFromId(userId);
+        var userId = await _userSessionRepository.GetUserIdFromVerificationCode(verificationCode);
+        if (userId == null)
+        {
+            return BadRequest("No user found on the verification code");
+        }
+        var user = await _userRepository.GetUserFromId(userId.GetValueOrDefault());
         if (user != null)
         {
-            return Ok(user);
+            var result = await _userRepository.ResetPassword(user.EmailAddress, password);
+            if (result)
+            {
+                return Ok("Password was reset and has been changed, u can now login with your new password");
+            }
         }
-        return BadRequest("No user found on the verification code");
+        return BadRequest("Verification code was invalid, please check that the inserted value is correct");
     }
-
-    [HttpPost("user/reset-password")]
-    public async Task<IActionResult> ResetPassword(string email, string password)
-    {
-        var result = await _userRepository.ResetPassword(email, password);
-        if(result)
-        {
-            return Ok("Password reset. You can now login using the new password");
-        }
-        return BadRequest("The password was not reset");
-    }
+    
 
     /// <summary>
     /// Endpoint to change the password of a user if requested.

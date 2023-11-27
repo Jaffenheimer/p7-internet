@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using P7Internet.Persistence.IngredientRepository;
@@ -21,7 +22,7 @@ public class AdminController : ControllerBase
     public async Task<IActionResult> UpsertIngredients()
     {
         var result = await _ingredientRepository.UpsertIngredients();
-
+        
         return result ? Ok("Det virkede :D") : BadRequest("Det virkede ikke :///");
     }
 }

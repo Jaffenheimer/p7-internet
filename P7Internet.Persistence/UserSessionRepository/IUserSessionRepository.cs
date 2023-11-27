@@ -27,10 +27,27 @@ public interface IUserSessionRepository
     /// <param name="sessionToken"></param>
     /// <returns>Returns true if successful E.g if the number of rows affected is more than 0 otherwise it returns false</returns>
     public Task<bool> DeleteSessionToken(Guid userId, string sessionToken);
-
-    public Task<Guid> GetUserFromVerificationCode(string verificationCode);
+    
+    /// <summary>
+    /// Gets a userId from a verification code given that the code is valid and deletes the verification token from the database
+    /// </summary>
+    /// <param name="verificationCode"></param>
+    /// <returns>A user if found null if not</returns>
+    public Task<Guid?> GetUserIdFromVerificationCode(string verificationCode);
+    
+    /// <summary>
+    /// Generates a verification code for the user and inserts it into the database
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns>returns the generated token</returns>
     public Task<string> GenerateVerificationCode(Guid userId);
-    public Task<bool> CheckIfVerificationTokenIsValid(Guid userId, string token);
+    
+    /// <summary>
+    /// Deletes a verification token from the database
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="verificationCode"></param>
+    /// <returns>True if it went well false if not</returns>
     public Task<bool> DeleteVerificationToken(Guid userId, string verificationCode);
 
 }

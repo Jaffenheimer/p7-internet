@@ -6,6 +6,11 @@ namespace P7Internet.Persistence.UserRepository;
 
 public interface IUserRepository
 {
+    /// <summary>
+    /// Gets a user from a user id
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns>Returns a user of type user</returns>
     public Task<User> GetUserFromId(Guid userId);
     /// <summary>
     /// Gets a user by username

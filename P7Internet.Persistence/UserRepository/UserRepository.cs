@@ -20,6 +20,11 @@ public class UserRepository : IUserRepository
         _connectionFactory = connectionFactory;
     }
 
+    /// <summary>
+    /// Gets a user from a user id
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns>Returns a user of type user</returns>
     public async Task<User> GetUserFromId(Guid userId)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Id = @Id";
