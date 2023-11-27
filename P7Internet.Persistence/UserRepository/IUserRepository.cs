@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using P7Internet.Shared;
 
@@ -5,6 +6,7 @@ namespace P7Internet.Persistence.UserRepository;
 
 public interface IUserRepository
 {
+    public Task<User> GetUserFromId(Guid userId);
     /// <summary>
     /// Gets a user by username
     /// </summary>

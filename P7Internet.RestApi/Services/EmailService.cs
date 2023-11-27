@@ -37,7 +37,7 @@ public class EmailService
     /// There is no return value to this function
     /// </summary>
     /// <param name="user"></param>
-    public async Task ResetPassword(User user)
+    public async Task ResetPassword(User user, string token)
     {
         var from = new EmailAddress($"jonathanwisborgfog@gmail.com", "P7Internet");
         var subject = "Reset Password has been requested";

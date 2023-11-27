@@ -27,4 +27,10 @@ public interface IUserSessionRepository
     /// <param name="sessionToken"></param>
     /// <returns>Returns true if successful E.g if the number of rows affected is more than 0 otherwise it returns false</returns>
     public Task<bool> DeleteSessionToken(Guid userId, string sessionToken);
+
+    public Task<Guid> GetUserFromVerificationCode(string verificationCode);
+    public Task<string> GenerateVerificationCode(Guid userId);
+    public Task<bool> CheckIfVerificationTokenIsValid(Guid userId, string token);
+    public Task<bool> DeleteVerificationToken(Guid userId, string verificationCode);
+
 }

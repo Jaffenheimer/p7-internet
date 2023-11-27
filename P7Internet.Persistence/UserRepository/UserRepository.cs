@@ -20,6 +20,13 @@ public class UserRepository : IUserRepository
         _connectionFactory = connectionFactory;
     }
 
+    public async Task<User> GetUserFromId(Guid userId)
+    {
+        var query = $@"SELECT * FROM {TableName} WHERE Id = @Id";
+        var user = await Connection.QueryFirstOrDefaultAsync<User>(query, new { Id = userId });
+        return user;
+    }
+
     /// <summary>
     /// Gets a user by username
     /// </summary>

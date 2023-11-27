@@ -9,6 +9,7 @@ namespace P7Internet.Persistence.UserSessionRepository;
 public class UserSessionRepository : IUserSessionRepository
 {
     private static readonly string TableName = "UserSessionTable";
+    private static readonly string VerificationTable = "PasswordVerificationTable";
     private readonly IDbConnectionFactory _connectionFactory;
     private IDbConnection Connection => _connectionFactory.Connection;
 
@@ -34,8 +35,8 @@ public class UserSessionRepository : IUserSessionRepository
         var parameters = new
         {
             UserId = userId,
-            SessionToken = token,
-            ExpiresAt = DateTime.UtcNow.AddHours(2),
+            SessionToken = token, 
+            ExpiresAt = DateTime.UtcNow.AddHours(2), // two hours was added, as Utc is one hour behind our timezone
         };
         await Connection.ExecuteAsync(query, parameters);
         return token;
@@ -72,6 +73,51 @@ public class UserSessionRepository : IUserSessionRepository
         return await Connection.ExecuteAsync(query, new { UserId = userId, SessionToken = sessionToken }) > 0;
     }
 
+    public async Task<Guid> GetUserFromVerificationCode(string verificationCode)
+    {
+        var query = $@"SELECT UserId FROM {VerificationTable} WHERE VerificationCode = @VerificationCode";
+        var result = await Connection.QueryFirstOrDefaultAsync<Guid>(query, new {VerificationCode = verificationCode});
+        return result;
+    }
+
+    public async Task<string> GenerateVerificationCode(Guid userId)
+    {
+        var query = $@"INSERT INTO {VerificationTable} (UserId, VerificationCode, ExpiresAt)
+                            VALUES (@UserId, @VerificationCode, @ExpiresAt)";
+
+        var deleteDeprecatedTokes = $@"DELETE FROM {VerificationTable} WHERE ExpiresAt < (TIME(NOW()))";
+        await Connection.ExecuteAsync(deleteDeprecatedTokes);
+
+        var token = GenerateToken();
+        var parameters = new
+        {
+            UserId = userId,
+            VerificationCode = token,
+            ExpiresAt = DateTime.UtcNow.AddHours(2), // two hours was added, as Utc is one hour behind our timezone
+        };
+        await Connection.ExecuteAsync(query, parameters);
+        return token;
+    }
+
+    public async Task<bool> CheckIfVerificationTokenIsValid(Guid userId, string token)
+    {
+        var query = $@"SELECT * FROM {VerificationTable} WHERE UserId = @userId AND VerificationCode = @token";
+        var result = await Connection.QuerySingleOrDefaultAsync(query, new { userId, token });
+        if (result != null && result.ExpiresAt > DateTime.UtcNow)
+        {
+            return true;
+        }
+
+        await DeleteSessionToken(userId, token);
+        return false;
+    }
+
+    public async Task<bool> DeleteVerificationToken(Guid userId, string verificationCode)
+    {
+        var query = $@"DELETE FROM {VerificationTable} WHERE UserId = @UserId AND VerificationCode = @SessionToken";
+        return await Connection.ExecuteAsync(query, new { UserId = userId, VerificationCode = verificationCode }) > 0;
+    }
+
     /// <summary>
     /// Generates a token from a Guid
     /// </summary>
@@ -83,3 +129,4 @@ public class UserSessionRepository : IUserSessionRepository
         return token;
     }
 }
+

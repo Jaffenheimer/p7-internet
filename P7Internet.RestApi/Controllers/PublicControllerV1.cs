@@ -450,11 +450,35 @@ public class PublicControllerV1 : ControllerBase
         var user = await _userRepository.GetUserByEmail(email);
         if (user != null)
         {
-            await _emailService.ResetPassword(user);
+            var token = await _userSessionRepository.GenerateVerificationCode(user.Id);
+            await _emailService.ResetPassword(user, token);
             return Ok("Email sent");
         }
 
         return BadRequest("User does not exist");
+    }
+
+    [HttpGet("user/get-user-from-verification-code")]
+    public async Task<IActionResult> GetUserFromVerificationCode(string verificationCode)
+    {
+        var userId = await _userSessionRepository.GetUserFromVerificationCode(verificationCode);
+        var user = await _userRepository.GetUserFromId(userId);
+        if (user != null)
+        {
+            return Ok(user);
+        }
+        return BadRequest("No user found on the verification code");
+    }
+
+    [HttpPost("user/reset-password")]
+    public async Task<IActionResult> ResetPassword(string email, string password)
+    {
+        var result = await _userRepository.ResetPassword(email, password);
+        if(result)
+        {
+            return Ok("Password reset. You can now login using the new password");
+        }
+        return BadRequest("The password was not reset");
     }
 
     /// <summary>
