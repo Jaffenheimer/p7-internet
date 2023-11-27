@@ -26,7 +26,7 @@ const GenerateRecipesButton = () => {
   }
 
   return (
-    <button onClick={handleOnClick} data-testid="GenerateRecipesButton">
+    <button onClick={handleOnClick} id="GenerateRecipesButton" data-testid="GenerateRecipesButton">
       Generer opskrifter
     </button>
   );
