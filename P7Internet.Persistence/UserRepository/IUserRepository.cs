@@ -12,6 +12,7 @@ public interface IUserRepository
     /// <param name="userId"></param>
     /// <returns>Returns a user of type user</returns>
     public Task<User> GetUserFromId(Guid userId);
+
     /// <summary>
     /// Gets a user by username
     /// </summary>

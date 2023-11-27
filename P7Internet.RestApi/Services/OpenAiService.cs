@@ -83,7 +83,8 @@ public class OpenAiService
 
         if (req.AmountOfPeople != null && req.AmountOfPeople > 0)
         {
-            prompt += $" til {req.AmountOfPeople} personer. Det skal have følgende formar: Titel, ingredienser og metode.";
+            prompt +=
+                $" til {req.AmountOfPeople} personer. Det skal have følgende formar: Titel, ingredienser og metode.";
         }
 
         return prompt;

@@ -99,7 +99,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 
@@ -210,7 +210,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 
@@ -471,6 +471,7 @@ public class PublicControllerV1 : ControllerBase
         {
             return BadRequest("No user found on the verification code");
         }
+
         var user = await _userRepository.GetUserFromId(userId.GetValueOrDefault());
         if (user != null)
         {
@@ -480,9 +481,9 @@ public class PublicControllerV1 : ControllerBase
                 return Ok("Password was reset and has been changed, u can now login with your new password");
             }
         }
+
         return BadRequest("Verification code was invalid, please check that the inserted value is correct");
     }
-    
 
     /// <summary>
     /// Endpoint to change the password of a user if requested.
