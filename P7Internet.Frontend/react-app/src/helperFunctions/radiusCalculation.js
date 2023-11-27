@@ -13,10 +13,6 @@ function getPositionByLogarithmScaling(position) {
   return Math.exp(minValue + scale * (position - minPosition));
 }
 
-export function updateRadiusBasedOnSliderValue(sliderValue) {
-  return filterSliderValue(getPositionByLogarithmScaling(sliderValue));
-}
-
 // used in filterSliderValue to round the number to the closest step,
 // e.g. step=50 means round() rounds to the nearest 50.
 function round(value, step) {
@@ -31,4 +27,8 @@ function filterSliderValue(value) {
   else if (value >= 10000) return `${round(value / 1000, 5)} km`;
   else if (value >= 1000) return `${round(value / 1000, 0.5)} km`;
   else if (value > 1) return `${round(value, 100)} m`;
+}
+
+export function getRadiusValueBasedOnSliderValue(sliderValue) {
+  return filterSliderValue(getPositionByLogarithmScaling(sliderValue));
 }

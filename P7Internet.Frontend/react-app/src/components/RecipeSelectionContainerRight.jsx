@@ -7,7 +7,7 @@ import { toast } from "react-toastify";
 import { useSelector, useDispatch } from "react-redux";
 import { offersActions } from "../features/offersSlice.js";
 import { allStoreObjects } from "../objects/Stores.js";
-import { updateRadiusBasedOnSliderValue } from "../helperFunctions/radiusCalculation.js";
+import { getRadiusValueBasedOnSliderValue } from "../helperFunctions/radiusCalculation.js";
 
 const RecipeSelectionContainerRight = () => {
   const toggleStateIsRadius = useSelector(
@@ -22,11 +22,11 @@ const RecipeSelectionContainerRight = () => {
   function sliderOnChange(event) {
     event.preventDefault();
     setRadiusSliderValue(event.target.value);
-    setShownRadius(updateRadiusBasedOnSliderValue(event.target.value));
+    setShownRadius(getRadiusValueBasedOnSliderValue(event.target.value));
     // we calculate it twice, as the calculation is delayed sometimes and needs time to process
     dispatch(
       offersActions.setRadius(
-        updateRadiusBasedOnSliderValue(event.target.value)
+        getRadiusValueBasedOnSliderValue(event.target.value)
       )
     );
   }

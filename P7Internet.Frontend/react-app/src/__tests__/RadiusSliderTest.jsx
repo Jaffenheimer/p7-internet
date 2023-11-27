@@ -3,7 +3,7 @@ import "@testing-library/jest-dom";
 import React from "react";
 import { renderComponent } from "../testSetupHelper/Helper.jsx";
 import RadiusSlider from "../components/RadiusSlider";
-import { updateRadiusBasedOnSliderValue } from "../helperFunctions/radiusCalculation.js";
+import { getRadiusValueBasedOnSliderValue } from "../helperFunctions/radiusCalculation.js";
 
 afterEach(cleanup);
 
@@ -13,7 +13,7 @@ test("render radius slider with correct title and value", () => {
   renderComponent(
     <RadiusSlider
       sliderValue={sliderValue}
-      shownRadius={updateRadiusBasedOnSliderValue(sliderValue)}
+      shownRadius={getRadiusValueBasedOnSliderValue(sliderValue)}
     />
   );
   const slider = screen.getByTestId("radiusSlider");
