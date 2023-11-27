@@ -59,7 +59,7 @@ namespace P7Internet.Repositories.Tests
         public void GetAllRecipesSuccess()
         {
             //Arrange
-            //_dbConnection.SetupDapperAsync(c => c.QueryMultipleAsync(It.IsAny<string>(), null, null, null, null)).Callback<SqlMapper.GridReader>(c => c.Read(true));
+            //_dbConnection.SetupDapperAsync(c => c.QueryMultipleAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(true);
 
             //Act
             var recipes = _recipeCacheRepository.GetAllRecipes().Result;
@@ -86,22 +86,30 @@ namespace P7Internet.Repositories.Tests
         public void GetListOfRecipesSuccess()
         {
             //Arrange
+            List<Guid> guids = new List<Guid>();
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(value: null);
 
             //Act
+            var res = _recipeCacheRepository.GetListOfRecipes(guids).Result;
 
             //Assert
-            Assert.Fail();
+            Assert.NotNull(res);
         }
 
         [Test()]
         public void GetListOfRecipesFromListOfStringsSuccess()
         {
             //Arrange
+            List<string> listOfStrings = new List<string>();
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(value: null);
 
             //Act
+            var res = _recipeCacheRepository.GetListOfRecipesFromListOfStrings(listOfStrings).Result;
 
             //Assert
-            Assert.Fail();
+            Assert.NotNull(res);
         }
     }
 }

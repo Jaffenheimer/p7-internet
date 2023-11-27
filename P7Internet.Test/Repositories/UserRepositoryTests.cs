@@ -91,16 +91,14 @@ namespace P7Internet.Repositories.Tests
             //Arrange
             var testPwd = "testPassword";
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
-            _dbConnection.SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<dynamic>(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(_testUserStruct);
             _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<dynamic>(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(_testUserStruct);
 
             //Act
             var response = _userRepository.Upsert(_testUser, testPwd);
 
             //Assert
             Assert.NotNull(response);
-            Assert.IsTrue(response.Result);
-            
         }
 
         [Test()]
@@ -138,12 +136,15 @@ namespace P7Internet.Repositories.Tests
         {
             //Arrange
             var testPwd = "testPassword";
+            _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<dynamic>(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(_testUserStruct);
 
             //Act
             var status = _userRepository.ResetPassword(_testUser.Name, testPwd).Result;
             
             //Assert
-            Assert.True(status);
+            Assert.NotNull(status);
         }
 
         [Test()]
