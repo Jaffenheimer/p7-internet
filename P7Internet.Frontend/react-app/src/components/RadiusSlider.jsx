@@ -1,6 +1,4 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { updateRadiusBasedOnSliderValue } from "../helperFunctions/radiusCalculation";
 
 const RadiusSlider = ({ sliderValue, shownRadius, onChange }) => {
   return (
