@@ -408,13 +408,13 @@ button:hover {
   width: 155px;
   border-radius: 0em;
 }
-.dropdown-btn {
+.dropdown-button {
   display: flex;
   justify-content: space-between;
   cursor: pointer;
   border-radius: 0px;
 }
-.dropdown-btn:focus + .dropdown-content li {
+.dropdown-button:focus + .dropdown-content li {
   right: 0;
 }
 #FavoritesButton{

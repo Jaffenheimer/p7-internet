@@ -64,7 +64,7 @@ const ProfilePicture = () => {
 
   return (
     <div className="ProfilePicture" data-testid="ProfilePicture">
-      <div className="dropdown-btn">
+      <div className="dropdown-button">
       <img
         className="Profile"
         src={profile}
