@@ -59,6 +59,7 @@ public class ETilbudsAvisService
                 offerArray[i]["unit_size"]["to"].Value<float>());
             offer.Created = offerArray[i]["validity"]["from"].Value<DateTime>();
             offer.Ending = offerArray[i]["validity"]["to"].Value<DateTime>();
+            offer.Image = offerArray[i]["business"]["positive_logotypes"].Last["url"].Value<string>();
             offers.Add(offer);
         }
 
