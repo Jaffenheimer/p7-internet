@@ -19,7 +19,6 @@ const Header = () => {
 
   const openLoginModal = () => dispatch(pageActions.openLoginModal());
   const closeLoginModal = () => dispatch(pageActions.closeLoginModal());
-  const openFavoritesModal = () => dispatch(pageActions.openFavoritesModal());
   const closeFavoritesModal = () => dispatch(pageActions.closeFavoritesModal());
 
   return (
@@ -29,8 +28,7 @@ const Header = () => {
         style={modalStyling}
         onRequestClose={closeLoginModal}
         contentLabel="Login Modal"
-        ariaHideApp={false}
-      >
+        ariaHideApp={false}>
         <LoginBox closeModal={closeLoginModal} />
       </Modal>
       <Modal
@@ -38,19 +36,17 @@ const Header = () => {
         style={modalStyling}
         onRequestClose={closeFavoritesModal}
         contentLabel="Favorites Modal"
-        ariaHideApp={false}
-      >
+        ariaHideApp={false}>
         <ModalContent
           title="Favoritter"
           closeModal={closeFavoritesModal}
-          Container={FavoritesModalContainer}
-        ></ModalContent>
+          Container={FavoritesModalContainer}></ModalContent>
       </Modal>
 
       <div className="title">Opskriftsgenerator</div>
       {/* <SetLoggedInOnChange /> Dynamically check if user is logged in */}
       {loggedIn ? (
-        <ProfilePicture openFavoritesModal={openFavoritesModal} />
+        <ProfilePicture />
       ) : (
         <button onClick={openLoginModal}>Log Ind</button>
       )}

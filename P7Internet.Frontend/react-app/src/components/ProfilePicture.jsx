@@ -5,11 +5,11 @@ import { userActions } from "../features/userSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { pageActions } from "../features/pageSlice";
 import { useUserLogOutMutation } from "../services/usersEndpoints";
 import { deleteCookies, retriveCookie } from "../helperFunctions/cookieHandler";
 
-const ProfilePicture = ({ openFavoritesModal }) => {
+const ProfilePicture = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -18,8 +18,8 @@ const ProfilePicture = ({ openFavoritesModal }) => {
   }
 
   const handleFavorites = () => {
-    openFavoritesModal();
     setOpen(false);
+    dispatch(pageActions.openFavoritesModal());
   };
 
   const handleSettings = () => {
