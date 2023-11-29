@@ -6,11 +6,13 @@ import { useState, useEffect } from "react";
 
 const Allergens = () => {
   //Takes the Redux state and puts it in a local state
-  const reduxAllergens = useSelector(state => state.recipeGeneration.allergens);
+  const reduxAllergens = useSelector(
+    (state) => state.recipeGeneration.allergens
+  );
   //The value to put in the Selects value property
   const [allergensValues, setAllergensValues] = useState(reduxAllergens);
   const dispatch = useDispatch();
-  
+
   //Updates the local state allergensValues with the latest value of reduxAllergens
   useEffect(() => {
     setAllergensValues(reduxAllergens);
