@@ -408,19 +408,6 @@ button:hover {
   animation: slideInFromRight 0.5s forwards;
 }
 
-.dropdown-content li.close {
-  animation: slideOutToRight 0.5s forwards;
-}
-
-@keyframes slideOutToRight {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(150%);
-  }
-}
-
 @keyframes slideInFromRight {
   0% {
     transform: translateX(100%);
