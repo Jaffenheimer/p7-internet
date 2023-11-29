@@ -1,11 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import { renderComponent } from "../testSetupHelper/Helper.jsx";
 import Header from "../components/Header";
 import "@testing-library/jest-dom";
 import { fireEvent } from "@testing-library/react";
-import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 import { renderComponentWithSpecificStore } from "../testSetupHelper/Helper.jsx";
 

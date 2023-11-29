@@ -2,9 +2,7 @@ import { cleanup, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import OwnedIngredientsList from "../components/OwnedIngredientsList";
-import configureMockStore from "redux-mock-store";
 import {
-  renderComponentWithSpecificStore,
   renderComponentWithDispatchActions,
 } from "../testSetupHelper/Helper";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";

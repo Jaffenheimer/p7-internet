@@ -1,8 +1,7 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import { ExcludeList, OwnedIngredientsList } from "../components";
-import { Provider } from "react-redux";
+import { ExcludeList } from "../components";
 import configureMockStore from "redux-mock-store";
 import {
   renderComponentWithSpecificStore,

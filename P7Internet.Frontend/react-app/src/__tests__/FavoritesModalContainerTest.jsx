@@ -7,7 +7,6 @@ import {
   renderComponentWithSpecificStore,
 } from "../testSetupHelper/Helper.jsx";
 import FavoritesModalContainer from "../components/FavoritesModalContainer";
-import { pageActions } from "../features/pageSlice";
 import { ToastContainer } from "react-toastify";
 import configureMockStore from "redux-mock-store";
 

@@ -1,7 +1,6 @@
 import React from "react";
 
 const IngredientsList = ({ ingredients, ListElement, handleRemove }) => {
-  console.log(ingredients);
   return (
     <div className="ingredientsList" data-testid="IngredientsList">
       <ul>

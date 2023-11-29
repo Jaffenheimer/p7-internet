@@ -1,14 +1,12 @@
 import {
   cleanup,
   screen,
-  render,
   fireEvent,
   act,
 } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import { FrontPageContainerLeft } from "../components";
-import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 import userEvent from "@testing-library/user-event";
 import { renderComponentWithSpecificStore } from "../testSetupHelper/Helper";
