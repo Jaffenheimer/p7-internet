@@ -226,6 +226,10 @@ button {
 
 button:hover {
   background: #e7e7e7;
+  transition: all 0.1s;
+}
+button:active {
+  transform: scale(0.95);
 }
 /* 
 .FormStyle{
@@ -391,7 +395,9 @@ button:hover {
 
 .dropdown-content li {
   position: relative;
-  transform: translateX(150%); /* Initially move the dropdown content off-screen */
+  transform: translateX(
+    150%
+  ); /* Initially move the dropdown content off-screen */
   width: 155px;
   border-radius: 0em;
   animation: slideInFromRight 0.5s forwards;
@@ -425,14 +431,13 @@ button:hover {
   animation-delay: 0.4s;
 }
 
-
-#FavoritesButton{
+#FavoritesButton {
   border-radius: 0px;
 }
-#SettingsButton{
+#SettingsButton {
   border-radius: 0px;
 }
-#LogoutButton{
+#LogoutButton {
   border-radius: 0px;
 }
 
