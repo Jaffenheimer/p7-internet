@@ -13,6 +13,7 @@ const ExcludeList = () => {
   const excludeList = useSelector(
     (state) => state.recipeGeneration.excludeList
   );
+  console.log(excludeList);
 
   //Function for handling the remove feature
   const handleRemove = (event, ingredient) => {
@@ -32,6 +33,7 @@ const ExcludeList = () => {
         addIngredient={recipeGenerationActions.addExcludedIngredient}
         ingredientsList={excludeList}
         removeAllHandler={removeAllHandler}
+        testId="ExcludedIngredientsAddIngredientsForm"
       />
       <div id="ExcludedIngredientsList">
         <IngredientsList

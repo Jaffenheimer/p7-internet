@@ -1,17 +1,15 @@
-import {
-  cleanup,
-  render,
-  screen,
-  fireEvent,
-  getByText,
-} from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { cleanup, render, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import { ExcludeList } from "../components";
+import { ExcludeList, OwnedIngredientsList } from "../components";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
-import { ToastContainer } from "react-toastify";
+import {
+  renderComponentWithSpecificStore,
+  renderComponentWithDispatchActions,
+} from "../testSetupHelper/Helper";
+import { recipeGenerationActions } from "../features/recipeGenerationSlice";
+import userEvent from "@testing-library/user-event";
 
 afterEach(cleanup);
 
@@ -37,13 +35,7 @@ describe("ExcludeList", () => {
     };
     // configureMockStore() returns a function that can be called with the initial state
     mockStore = configureMockStore()(mockState);
-
-    render(
-      // Wrapping the component in the Provider so it can connect to the store
-      <Provider store={mockStore}>
-        <ExcludeList />
-      </Provider>
-    );
+    renderComponentWithSpecificStore(<ExcludeList />, mockStore);
   });
   it("checks if ExcludeList is rendered", () => {
     expect(screen.getByTestId("ExcludeList")).toBeInTheDocument();
@@ -52,7 +44,9 @@ describe("ExcludeList", () => {
     expect(screen.getByText(/Ekskluder ingredienser:/)).toBeInTheDocument();
   });
   it("checks if the add ingredient form is rendered", () => {
-    expect(screen.getByTestId("AddIngredientsForm")).toBeInTheDocument();
+    expect(
+      screen.getByTestId("ExcludedIngredientsAddIngredientsForm")
+    ).toBeInTheDocument();
   });
   it("checks if the ingredients list is rendered", () => {
     expect(screen.getByTestId("IngredientsList")).toBeInTheDocument();
@@ -73,7 +67,7 @@ describe("ExcludeList", () => {
   });
 });
 
-test("checks if the ingredientlist is empty", () => {
+test("checks if the ingredientlist is empty if no elements are in exclude list", () => {
   let mockStore;
   const mockState = {
     recipeGeneration: {
@@ -81,12 +75,18 @@ test("checks if the ingredientlist is empty", () => {
     },
   };
   mockStore = configureMockStore()(mockState);
-
-  render(
-    <Provider store={mockStore}>
-      <ExcludeList />
-    </Provider>
-  );
+  renderComponentWithSpecificStore(<ExcludeList />, mockStore);
   const list = screen.queryByTestId("IngredientElement");
   expect(list).not.toBeInTheDocument();
+});
+
+test("when cross is clicked ingredient is removed", () => {
+  renderComponentWithDispatchActions(<ExcludeList />, [
+    recipeGenerationActions.addExcludedIngredient("Ingredient 1"),
+    recipeGenerationActions.addExcludedIngredient("Ingredient 2"),
+  ]);
+  const crosses = screen.getAllByTestId("RemoveIngredientCross");
+  expect(screen.queryByText("Ingredient 1")).toBeInTheDocument();
+  userEvent.click(crosses[0]);
+  expect(screen.queryByText("Ingredient 1")).not.toBeInTheDocument();
 });

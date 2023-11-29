@@ -7,6 +7,7 @@ import "@testing-library/jest-dom";
 import { fireEvent } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
+import { renderComponentWithSpecificStore } from "../testSetupHelper/Helper.jsx";
 
 describe("Header component", () => {
   beforeEach(() => {
@@ -38,10 +39,6 @@ test("checks if profile picture is there when logged in", () => {
     },
   };
   mockStore = configureMockStore()(mockState);
-  render(
-    <Provider store={mockStore}>
-      <Header />
-    </Provider>
-  );
+  renderComponentWithSpecificStore(<Header />, mockStore);
   expect(screen.getByTestId("ProfilePicture")).toBeInTheDocument();
 });

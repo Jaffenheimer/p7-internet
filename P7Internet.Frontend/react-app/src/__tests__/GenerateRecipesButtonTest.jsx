@@ -9,10 +9,11 @@ import "@testing-library/jest-dom";
 import React from "react";
 import {
   renderComponent,
-  renderComponentWithChangeToStore,
+  renderComponentWithDispatchActions,
 } from "../testSetupHelper/Helper.jsx";
 import GenerateRecipesButton from "../components/GenerateRecipesButton.jsx";
 import { ToastContainer } from "react-toastify";
+import { recipeGenerationActions } from "../features/recipeGenerationSlice.js";
 
 afterEach(cleanup);
 
@@ -34,12 +35,11 @@ test("toast appears when GenerateRecipesButton is clicked if no ingredients are 
   ).toBeInTheDocument();
 });
 
+//see if works if i just render component
 test("toast does not appear when GenerateRecipesButton is clicked if ingredients have been added", async () => {
-  renderComponentWithChangeToStore(
-    <GenerateRecipesButton />,
-    "recipeGeneration/addOwnedIngredients",
-    "ingredient1"
-  );
+  renderComponentWithDispatchActions(<GenerateRecipesButton />, [
+    recipeGenerationActions.addOwnedIngredient("ingredient1"),
+  ]);
   const button = screen.getByTestId("GenerateRecipesButton");
   await act(() => fireEvent.click(button));
   await expect(() =>

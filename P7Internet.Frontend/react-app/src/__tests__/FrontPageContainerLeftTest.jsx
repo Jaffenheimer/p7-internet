@@ -11,6 +11,7 @@ import { FrontPageContainerLeft } from "../components";
 import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 import userEvent from "@testing-library/user-event";
+import { renderComponentWithSpecificStore } from "../testSetupHelper/Helper";
 
 afterEach(cleanup);
 
@@ -29,13 +30,7 @@ describe("FrontPageContainerLeft", () => {
     };
     // configureMockStore() returns a function that can be called with the initial state
     mockStore = configureMockStore()(mockState);
-
-    render(
-      // Wrapping the component in the Provider so it can connect to the store
-      <Provider store={mockStore}>
-        <FrontPageContainerLeft />
-      </Provider>
-    );
+    renderComponentWithSpecificStore(<FrontPageContainerLeft />, mockStore);
   });
 
   it("checks if FrontPageContainerLeft is rendered", () => {
@@ -47,7 +42,9 @@ describe("FrontPageContainerLeft", () => {
     expect(screen.getByText(/Generer opskrifter/)).toBeInTheDocument();
   });
   it("checks if the add ingredient form is rendered", () => {
-    expect(screen.getByTestId("AddIngredientsForm")).toBeInTheDocument();
+    expect(
+      screen.getByTestId("OwnedIngredientsAddIngredientsForm")
+    ).toBeInTheDocument();
   });
   it("checks if the add button is rendered", () => {
     expect(screen.getByText(/Tilføj/)).toBeInTheDocument();
@@ -75,11 +72,7 @@ test("checks if a user has added an ingredient no toast appears when clicking ge
   };
   mockStore = configureMockStore()(mockState);
 
-  render(
-    <Provider store={mockStore}>
-      <FrontPageContainerLeft />
-    </Provider>
-  );
+  renderComponentWithSpecificStore(<FrontPageContainerLeft />, mockStore);
   const input = screen.getByTestId("AddIngredientInput");
   const addButton = screen.getByTestId("AddButton");
   userEvent.type(input, "test");

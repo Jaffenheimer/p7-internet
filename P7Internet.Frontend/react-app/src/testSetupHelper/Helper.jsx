@@ -2,11 +2,14 @@ import React from "react";
 import { Provider } from "react-redux";
 import { render } from "@testing-library/react";
 import { recipeGenerationReducer } from "../features/recipeGenerationSlice";
-import { recipeReducer } from "../features/recipeSlice";
+import { recipeActions, recipeReducer } from "../features/recipeSlice";
 import { pageReducer } from "../features/pageSlice";
 import { userReducer } from "../features/userSlice";
 import { offersReducer } from "../features/offersSlice";
 import { configureStore } from "@reduxjs/toolkit";
+import { useDispatch } from "react-redux";
+import { defaultRecipes } from "../objects/DefaultRecipes.js";
+import RecipeSelectionContainerLeft from "../components/RecipeSelectionContainerLeft.jsx";
 
 function configureDefaultStore() {
   return configureStore({
@@ -30,13 +33,6 @@ function renderComponent(component) {
   render(<Provider store={store}>{component}</Provider>);
 }
 
-function renderComponentWithChangeToStore(component, type, payload) {
-  //this resets the store for each test
-  const store = configureDefaultStore();
-  store.dispatch({ type: type }, { payload: payload });
-  render(<Provider store={store}>{component}</Provider>);
-}
-
 function renderComponentWithSpecificStore(component, store) {
   render(<Provider store={store}>{component}</Provider>);
 }
@@ -46,15 +42,24 @@ function renderMultipleComponents(componentsList) {
   if (componentsList.length === 2)
     render(
       <Provider store={store}>
+        {/* {componentsList.map((component) => component)}  */}
         {componentsList[0]} {componentsList[1]}
       </Provider>
     );
   //make new ones if necessary
 }
 
+function renderComponentWithDispatchActions(component, dispatchActions) {
+  const store = configureDefaultStore();
+  dispatchActions.forEach((dispatchAction) => {
+    store.dispatch(dispatchAction);
+  });
+  render(<Provider store={store}>{component}</Provider>);
+}
+
 export {
   renderComponent,
-  renderComponentWithChangeToStore,
   renderComponentWithSpecificStore,
   renderMultipleComponents,
+  renderComponentWithDispatchActions,
 };

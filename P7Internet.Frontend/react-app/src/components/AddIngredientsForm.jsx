@@ -10,6 +10,7 @@ const AddIngredientsForm = ({
   ingredientsList,
   addIngredient,
   removeAllHandler,
+  testId,
 }) => {
   const dispatch = useDispatch();
   const [ingredient, setIngredient] = useState("");
@@ -44,7 +45,7 @@ const AddIngredientsForm = ({
     }
     if (ingredientIsInIngredientsObject(ingredient, excludeList)) {
       toast.error(
-        `"${ingredient}" er allerede tilføjet til listen af eksluderede ingredienser!`
+        `"${ingredient}" er allerede tilføjet til listen af ekskluderede ingredienser!`
       );
       return;
     }
@@ -59,7 +60,7 @@ const AddIngredientsForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} data-testid="AddIngredientsForm">
+    <form onSubmit={handleSubmit} data-testid={testId}>
       <AddIngredientInput ingredient={ingredient} handleChange={handleChange} />
       <button type="submit" data-testid="AddButton">
         Tilføj

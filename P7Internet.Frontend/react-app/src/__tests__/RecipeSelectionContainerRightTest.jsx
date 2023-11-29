@@ -3,9 +3,12 @@ import "@testing-library/jest-dom";
 import React from "react";
 import {
   renderComponent,
-  renderComponentWithChangeToStore,
+  renderComponentWithDispatchActions,
 } from "../testSetupHelper/Helper.jsx";
 import RecipeSelectionContainerRight from "../components/RecipeSelectionContainerRight.jsx";
+import { offersActions } from "../features/offersSlice.js";
+
+afterEach(cleanup);
 
 test("elements in RecipeSelectionContainerRight renders properly when geolocation is disabled", () => {
   renderComponent(<RecipeSelectionContainerRight />);
@@ -27,11 +30,9 @@ test("elements in RecipeSelectionContainerRight renders properly when geolocatio
 
 test("elements in RecipeSelectionContainerRight renders properly when geolocation is enabled", () => {
   //forces the toggle state to be radius, which would be the case if geolocation is enabled (geolocation cannot be enabled before rendering the component)
-  renderComponentWithChangeToStore(
-    <RecipeSelectionContainerRight />,
-    "offers/setToggleState",
-    true
-  );
+  renderComponentWithDispatchActions(<RecipeSelectionContainerRight />, [
+    offersActions.setToggleState(true),
+  ]);
   //toggle button
   const radiusToggleButton = screen.getAllByText(/Radius/)[0]; //there are 2 elements, both the toggle and the one for the radius slider
   const stores = screen.getByText(/Vælg Butikker/);
@@ -73,11 +74,9 @@ describe("slider value changes properly in radius slider component", () => {
       const sliderValue = 1;
       const sliderActualValue = 100;
       //forces the toggle state to be radius, which would be the case if geolocation is enabled (geolocation cannot be enabled before rendering the component)
-      renderComponentWithChangeToStore(
-        <RecipeSelectionContainerRight />,
-        "offers/setToggleState",
-        true
-      );
+      renderComponentWithDispatchActions(<RecipeSelectionContainerRight />, [
+        offersActions.setToggleState(true),
+      ]);
       const slider = screen.getByTestId("radiusSlider");
       expect(slider).toHaveValue(sliderValue.toString());
       expect(screen.getByText(/Radius:/)).toBeInTheDocument(); //h3 element

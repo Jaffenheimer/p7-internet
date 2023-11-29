@@ -57,7 +57,6 @@ test("Renders the favoritesModalContainer with correct text when no favorite rec
 
   renderComponentWithSpecificStore(<FavoritesModalContainer />, mockStore);
 
-  //   renderComponentWithSpecificStore(<FavoritesModalContainer />);
   const buttons = screen.queryAllByRole("button");
   expect(buttons.length).toBe(0);
   expect(
