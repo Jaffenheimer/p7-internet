@@ -1,13 +1,27 @@
 import React from "react";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const Allergens = () => {
-  //the value to put in the Selects value property
-  const [allergensValues, setallergensValues] = useState([]);
+  //Takes the Redux state and puts it in a local state
+  const reduxAllergens = useSelector(
+    (state) => state.recipeGeneration.allergens
+  );
+  //The value to put in the Selects value property
+  const [allergensValues, setAllergensValues] = useState(reduxAllergens);
   const dispatch = useDispatch();
+
+  //Updates the local state allergensValues with the latest value of reduxAllergens
+  useEffect(() => {
+    setAllergensValues(reduxAllergens);
+  }, [reduxAllergens]);
+
+  //Updates the redux state with the latest value of allergensValues
+  useEffect(() => {
+    dispatch(recipeGenerationActions.setAllergens(allergensValues));
+  }, [allergensValues, dispatch]);
 
   const options = [
     { value: "Lactosefree", label: "Laktosefri" },
@@ -20,7 +34,7 @@ const Allergens = () => {
       const value = element.value.toLowerCase();
       allergens.push(value);
     }
-    setallergensValues(event);
+    setAllergensValues(event);
     dispatch(recipeGenerationActions.setAllergens(allergens));
   };
 
