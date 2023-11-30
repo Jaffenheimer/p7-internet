@@ -10,7 +10,6 @@ const AddIngredientsForm = ({
   ingredientsList,
   addIngredient,
   removeAllHandler,
-  testId,
 }) => {
   const dispatch = useDispatch();
   const [ingredient, setIngredient] = useState("");
@@ -60,7 +59,7 @@ const AddIngredientsForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} data-testid={testId}>
+    <form onSubmit={handleSubmit} data-testid="AddIngredientsForm">
       <AddIngredientInput ingredient={ingredient} handleChange={handleChange} />
       <button type="submit" data-testid="AddButton">
         Tilføj

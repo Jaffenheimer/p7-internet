@@ -14,7 +14,7 @@ import configureMockStore from "redux-mock-store";
 afterEach(cleanup);
 
 test("Renders the Form correctly", () => {
-  renderComponent(<AddIngredientsForm testId="AddIngredientsForm" />);
+  renderComponent(<AddIngredientsForm />);
   const form = screen.getByTestId("AddIngredientsForm");
   const addButton = screen.getByTestId("AddButton");
   const removeAllButton = screen.getByTestId("RemoveAllButton");
@@ -25,7 +25,7 @@ test("Renders the Form correctly", () => {
 
 test("Submitting the form calls onSubmit", () => {
   const onSubmit = jest.fn();
-  renderComponent(<AddIngredientsForm testId="AddIngredientsForm" />);
+  renderComponent(<AddIngredientsForm />);
   const form = screen.getByTestId("AddIngredientsForm");
   form.onsubmit = onSubmit;
   fireEvent.submit(form);
@@ -34,7 +34,7 @@ test("Submitting the form calls onSubmit", () => {
 
 test("Clicking the tilføj button fires the onsubmit event", () => {
   const onSubmit = jest.fn();
-  renderComponent(<AddIngredientsForm testId="AddIngredientsForm" />);
+  renderComponent(<AddIngredientsForm />);
   const form = screen.getByTestId("AddIngredientsForm");
   form.onsubmit = onSubmit;
   fireEvent.click(screen.getByText(/Tilføj/));
@@ -44,12 +44,7 @@ test("Clicking the tilføj button fires the onsubmit event", () => {
 test("Clicking the fjern alle button does not fire the onsubmit event, but fires the onclick event of the button", () => {
   const onSubmit = jest.fn();
   const onRemoveAllClick = jest.fn();
-  renderComponent(
-    <AddIngredientsForm
-      removeAllHandler={onRemoveAllClick}
-      testId="AddIngredientsForm"
-    />
-  );
+  renderComponent(<AddIngredientsForm removeAllHandler={onRemoveAllClick} />);
   const form = screen.getByTestId("AddIngredientsForm");
   form.onsubmit = onSubmit;
   fireEvent.click(screen.getByText(/Fjern alle/));
@@ -63,7 +58,6 @@ test("Submitting the form with the same input twice prompts toast to appear - fo
     <AddIngredientsForm
       addIngredient={addIngredient}
       ingredientsList={["hello"]}
-      testId="AddIngredientsForm"
     />
   );
   render(<ToastContainer position="top-center" />);
@@ -86,7 +80,6 @@ test("Submitting the form with the same input twice prompts toast to appear - fo
     <AddIngredientsForm
       addIngredient={addIngredient}
       ingredientsList={["hello"]}
-      testId="AddIngredientsForm"
     />
   );
   render(<ToastContainer position="top-center" />);
@@ -107,7 +100,6 @@ test("Submitting the form with an input when there already are 10 ingredients pr
   renderComponent(
     <AddIngredientsForm
       ingredientsList={["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]}
-      testId="AddIngredientsForm"
     />
   );
   render(<ToastContainer position="top-center" />);
@@ -134,15 +126,12 @@ test("Submitting the owned ingredients form with an input that is already in the
     <AddIngredientsForm
       addIngredient={addIngredientOwned}
       ingredientsList={[]}
-      testId="OwnedIngredientsAddIngredientsForm"
     />,
     mockStore
   );
   render(<ToastContainer position="top-center" />);
   const addIngredientInputOwned = screen.getByTestId("AddIngredientInput");
-  const addIngredientFormOwned = screen.getByTestId(
-    "OwnedIngredientsAddIngredientsForm"
-  );
+  const addIngredientFormOwned = screen.getByTestId("AddIngredientsForm");
   userEvent.type(addIngredientInputOwned, "hello");
   fireEvent.submit(addIngredientFormOwned); //adding element to owned ingredients
 
@@ -168,15 +157,12 @@ test("Submitting the owned ingredients form with an input that is already in the
     <AddIngredientsForm
       addIngredient={addIngredientExcluded}
       ingredientsList={[]}
-      testId="OwnedIngredientsAddIngredientsForm"
     />,
     mockStore
   );
   render(<ToastContainer position="top-center" />);
   const addIngredientInputOwned = screen.getByTestId("AddIngredientInput");
-  const addIngredientFormOwned = screen.getByTestId(
-    "OwnedIngredientsAddIngredientsForm"
-  );
+  const addIngredientFormOwned = screen.getByTestId("AddIngredientsForm");
   userEvent.type(addIngredientInputOwned, "hello");
   fireEvent.submit(addIngredientFormOwned); //adding element to owned ingredients
 
@@ -202,15 +188,12 @@ test("Submitting the excluded ingredients form with an input that is already in 
     <AddIngredientsForm
       addIngredient={addIngredientExcluded}
       ingredientsList={[]}
-      testId="ExcludedIngredientsAddIngredientsForm"
     />,
     mockStore
   );
   render(<ToastContainer position="top-center" />);
   const addIngredientInputExcluded = screen.getByTestId("AddIngredientInput");
-  const addIngredientFormExcluded = screen.getByTestId(
-    "ExcludedIngredientsAddIngredientsForm"
-  );
+  const addIngredientFormExcluded = screen.getByTestId("AddIngredientsForm");
   userEvent.type(addIngredientInputExcluded, "hello");
   fireEvent.submit(addIngredientFormExcluded); //adding element to excluded ingredients
 

@@ -32,7 +32,6 @@ const ExcludeList = () => {
         addIngredient={recipeGenerationActions.addExcludedIngredient}
         ingredientsList={excludeList}
         removeAllHandler={removeAllHandler}
-        testId="ExcludedIngredientsAddIngredientsForm"
       />
       <div id="ExcludedIngredientsList">
         <IngredientsList

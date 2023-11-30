@@ -26,7 +26,6 @@ const FrontPageContainerLeft = () => {
           addIngredient={recipeGenerationActions.addOwnedIngredient}
           ingredientsList={ownedIngredientsList}
           removeAllHandler={removeAllHandler}
-          testId="OwnedIngredientsAddIngredientsForm"
         />
         <OwnedIngredientsList />
       </div>

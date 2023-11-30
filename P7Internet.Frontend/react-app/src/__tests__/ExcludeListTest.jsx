@@ -44,7 +44,7 @@ describe("ExcludeList", () => {
   });
   it("checks if the add ingredient form is rendered", () => {
     expect(
-      screen.getByTestId("ExcludedIngredientsAddIngredientsForm")
+      screen.getByTestId("AddIngredientsForm")
     ).toBeInTheDocument();
   });
   it("checks if the ingredients list is rendered", () => {

@@ -1,9 +1,4 @@
-import {
-  cleanup,
-  screen,
-  fireEvent,
-  act,
-} from "@testing-library/react";
+import { cleanup, screen, fireEvent, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import { FrontPageContainerLeft } from "../components";
@@ -40,9 +35,7 @@ describe("FrontPageContainerLeft", () => {
     expect(screen.getByText(/Generer opskrifter/)).toBeInTheDocument();
   });
   it("checks if the add ingredient form is rendered", () => {
-    expect(
-      screen.getByTestId("OwnedIngredientsAddIngredientsForm")
-    ).toBeInTheDocument();
+    expect(screen.getByTestId("AddIngredientsForm")).toBeInTheDocument();
   });
   it("checks if the add button is rendered", () => {
     expect(screen.getByText(/Tilføj/)).toBeInTheDocument();
