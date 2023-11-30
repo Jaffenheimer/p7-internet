@@ -1,5 +1,4 @@
 import React from "react";
-import Recipe from "../objects/Recipe";
 import RecipeTitle from "./RecipeTitle";
 import IngredientsList from "./IngredientsList";
 import { useSelector } from "react-redux";

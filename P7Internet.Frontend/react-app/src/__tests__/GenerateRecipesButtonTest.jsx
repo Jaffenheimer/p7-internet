@@ -35,7 +35,6 @@ test("toast appears when GenerateRecipesButton is clicked if no ingredients are 
   ).toBeInTheDocument();
 });
 
-//see if works if i just render component
 test("toast does not appear when GenerateRecipesButton is clicked if ingredients have been added", async () => {
   renderComponentWithDispatchActions(<GenerateRecipesButton />, [
     recipeGenerationActions.addOwnedIngredient("ingredient1"),

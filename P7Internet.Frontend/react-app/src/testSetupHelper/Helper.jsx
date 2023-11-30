@@ -2,14 +2,11 @@ import React from "react";
 import { Provider } from "react-redux";
 import { render } from "@testing-library/react";
 import { recipeGenerationReducer } from "../features/recipeGenerationSlice";
-import { recipeActions, recipeReducer } from "../features/recipeSlice";
+import { recipeReducer } from "../features/recipeSlice";
 import { pageReducer } from "../features/pageSlice";
 import { userReducer } from "../features/userSlice";
 import { offersReducer } from "../features/offersSlice";
 import { configureStore } from "@reduxjs/toolkit";
-import { useDispatch } from "react-redux";
-import { defaultRecipes } from "../objects/DefaultRecipes.js";
-import RecipeSelectionContainerLeft from "../components/RecipeSelectionContainerLeft.jsx";
 
 function configureDefaultStore() {
   return configureStore({
@@ -42,7 +39,6 @@ function renderMultipleComponents(componentsList) {
   if (componentsList.length === 2)
     render(
       <Provider store={store}>
-        {/* {componentsList.map((component) => component)}  */}
         {componentsList[0]} {componentsList[1]}
       </Provider>
     );

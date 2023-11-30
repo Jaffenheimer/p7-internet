@@ -142,37 +142,6 @@ test("Submitting the owned ingredients form with an input that is already in the
   ).toBeInTheDocument();
 });
 
-test("Submitting the owned ingredients form with an input that is already in the excluded ingredients list prompts toast to appear", async () => {
-  const ingredient = { text: "hello", id: 1 };
-  const mockState = {
-    recipeGeneration: {
-      excludeList: [ingredient],
-      ownedIngredients: [],
-    },
-  };
-  // configureMockStore() returns a function that can be called with the initial state
-  const mockStore = configureMockStore()(mockState);
-  const addIngredientExcluded = recipeGenerationActions.addExcludedIngredient;
-  renderComponentWithSpecificStore(
-    <AddIngredientsForm
-      addIngredient={addIngredientExcluded}
-      ingredientsList={[]}
-    />,
-    mockStore
-  );
-  render(<ToastContainer position="top-center" />);
-  const addIngredientInputOwned = screen.getByTestId("AddIngredientInput");
-  const addIngredientFormOwned = screen.getByTestId("AddIngredientsForm");
-  userEvent.type(addIngredientInputOwned, "hello");
-  fireEvent.submit(addIngredientFormOwned); //adding element to owned ingredients
-
-  expect(
-    await screen.findByText(
-      /"hello" er allerede tilføjet til listen af ekskluderede ingredienser!/
-    )
-  ).toBeInTheDocument();
-});
-
 test("Submitting the excluded ingredients form with an input that is already in the owned ingredients list prompts toast to appear", async () => {
   const ingredient = { text: "hello", id: 1 };
   const mockState = {

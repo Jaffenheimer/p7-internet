@@ -3,7 +3,6 @@ import RecipeView from "./RecipeView";
 import SelectArrows from "./SelectArrows";
 import SelectRecipeButton from "./SelectRecipeButton";
 import FrontPageButton from "./FrontPageButton";
-import { useSelector } from "react-redux";
 
 const RecipeSelectionContainerLeft = () => {
   function enableArrowKeyPress() {

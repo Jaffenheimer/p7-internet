@@ -64,7 +64,6 @@ test("if additionalOwnedIngredientsModalContainerIsOpen is true the AdditionalOw
     recipeActions.addRecipes(recipes),
     pageActions.openAdditionalOwnedIngredientsModalContainer(),
   ]);
-  // renderComponentWithSpecificStore(<SelectRecipeButton />, mockStore);
 
   const modal = await screen.findByText("Andre ingredienser du har?");
   expect(modal).toBeInTheDocument();
