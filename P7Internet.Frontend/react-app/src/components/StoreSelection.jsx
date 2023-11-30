@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { offersActions } from "../features/offersSlice";
 import Select from "react-select";
 import { allStoreObjects } from "../objects/Stores.js";
+import { toast } from "react-toastify";
 
 const StoreSelection = ({ values, setValues, options, setOptions }) => {
   const dispatch = useDispatch();
@@ -30,6 +31,11 @@ const StoreSelection = ({ values, setValues, options, setOptions }) => {
     const { action, option, removedValue } = actionMeta;
     //removing a store
     if (action === "remove-value") {
+        //if the removed value is "Bilka", we show a toast that explains why it is not possible to remove it
+        if (removedValue.value === "Bilka") {
+          toast.error("Priser bliver vist for Bilka når hvis der ikke er tilbud i andre butikker eller det er billigst i Bilka")
+          return;
+        }
       const removedValueOption = {
         value: removedValue.value,
         label: removedValue.value,
