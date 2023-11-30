@@ -44,7 +44,7 @@ const AddIngredientsForm = ({
     }
     if (ingredientIsInIngredientsObject(ingredient, excludeList)) {
       toast.error(
-        `"${ingredient}" er allerede tilføjet til listen af eksluderede ingredienser!`
+        `"${ingredient}" er allerede tilføjet til listen af ekskluderede ingredienser!`
       );
       return;
     }

@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
 import { toast } from "react-toastify";
+import { recipeActions } from "../features/recipeSlice";
+import { defaultRecipes } from "../objects/DefaultRecipes";
 
 const GenerateRecipesButton = () => {
   const dispatch = useDispatch();
@@ -22,11 +24,17 @@ const GenerateRecipesButton = () => {
       );
       return;
     }
+    //for testing purposes to ensure we have recipes on next page:
+    dispatch(recipeActions.addRecipes(defaultRecipes));
     goToPageFullRecipeSelection();
   }
 
   return (
-    <button onClick={handleOnClick} id="GenerateRecipesButton" data-testid="GenerateRecipesButton">
+    <button
+      onClick={handleOnClick}
+      id="GenerateRecipesButton"
+      data-testid="GenerateRecipesButton"
+    >
       Generer opskrifter
     </button>
   );

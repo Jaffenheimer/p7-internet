@@ -2,10 +2,14 @@ import { cleanup, fireEvent, screen, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import React from "react";
-import { renderComponent } from "../testSetupHelper/Helper.jsx";
+import {
+  renderComponent,
+  renderComponentWithSpecificStore,
+} from "../testSetupHelper/Helper.jsx";
 import AddIngredientsForm from "../components/AddIngredientsForm.jsx";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { ToastContainer } from "react-toastify";
+import configureMockStore from "redux-mock-store";
 
 afterEach(cleanup);
 
@@ -87,7 +91,7 @@ test("Submitting the form with the same input twice prompts toast to appear - fo
   fireEvent.submit(form);
   expect(
     await screen.findByText(
-      /"test" er allerede tilføjet til listen af eksluderede ingredienser!/
+      /"test" er allerede tilføjet til listen af ekskluderede ingredienser!/
     )
   ).toBeInTheDocument();
 });
@@ -108,71 +112,63 @@ test("Submitting the form with an input when there already are 10 ingredients pr
   ).toBeInTheDocument();
 });
 
-//integration tests below:
 test("Submitting the owned ingredients form with an input that is already in the excluded ingredients list prompts toast to appear", async () => {
+  const ingredient = { text: "hello", id: 1 };
+  const mockState = {
+    recipeGeneration: {
+      excludeList: [ingredient],
+    },
+  };
+  // configureMockStore() returns a function that can be called with the initial state
+  const mockStore = configureMockStore()(mockState);
   const addIngredientOwned = recipeGenerationActions.addOwnedIngredient;
-  const addIngredientExcluded = recipeGenerationActions.addExcludedIngredient;
-  renderComponent(
+  renderComponentWithSpecificStore(
     <AddIngredientsForm
       addIngredient={addIngredientOwned}
       ingredientsList={[]}
-    />
-  );
-  const addIngredientInputExcluded = screen.getByTestId("AddIngredientInput");
-  const addIngredientFormExcluded = screen.getByTestId("AddIngredientsForm");
-
-  userEvent.type(addIngredientInputExcluded, "hello");
-  fireEvent.submit(addIngredientFormExcluded); //adding element to excluded ingredients
-  renderComponent(
-    <AddIngredientsForm
-      addIngredient={addIngredientExcluded}
-      ingredientsList={[]}
-    />
+    />,
+    mockStore
   );
   render(<ToastContainer position="top-center" />);
-  const addIngredientInputOwned =
-    screen.getAllByTestId("AddIngredientInput")[0];
-  const addIngredientFormOwned = screen.getAllByTestId("AddIngredientsForm")[0];
+  const addIngredientInputOwned = screen.getByTestId("AddIngredientInput");
+  const addIngredientFormOwned = screen.getByTestId("AddIngredientsForm");
   userEvent.type(addIngredientInputOwned, "hello");
-  fireEvent.submit(addIngredientFormOwned); //attempting to add element to owned ingredients
+  fireEvent.submit(addIngredientFormOwned); //adding element to owned ingredients
 
   expect(
     await screen.findByText(
-      /"hello" er allerede tilføjet til listen af ejede ingredienser!/
+      /"hello" er allerede tilføjet til listen af ekskluderede ingredienser!/
     )
   ).toBeInTheDocument();
 });
 
 test("Submitting the excluded ingredients form with an input that is already in the owned ingredients list prompts toast to appear", async () => {
-  const addIngredientOwned = recipeGenerationActions.addOwnedIngredient;
+  const ingredient = { text: "hello", id: 1 };
+  const mockState = {
+    recipeGeneration: {
+      ownedIngredients: [ingredient],
+      excludeList: [],
+    },
+  };
+  // configureMockStore() returns a function that can be called with the initial state
+  const mockStore = configureMockStore()(mockState);
   const addIngredientExcluded = recipeGenerationActions.addExcludedIngredient;
-  renderComponent(
+  renderComponentWithSpecificStore(
     <AddIngredientsForm
       addIngredient={addIngredientExcluded}
       ingredientsList={[]}
-    />
-  );
-  const addIngredientInputExcluded = screen.getByTestId("AddIngredientInput");
-  const addIngredientFormExcluded = screen.getByTestId("AddIngredientsForm");
-
-  userEvent.type(addIngredientInputExcluded, "hello");
-  fireEvent.submit(addIngredientFormExcluded); //adding element to excluded ingredients
-  renderComponent(
-    <AddIngredientsForm
-      addIngredient={addIngredientOwned}
-      ingredientsList={[]}
-    />
+    />,
+    mockStore
   );
   render(<ToastContainer position="top-center" />);
-  const addIngredientInputOwned =
-    screen.getAllByTestId("AddIngredientInput")[0];
-  const addIngredientFormOwned = screen.getAllByTestId("AddIngredientsForm")[0];
-  userEvent.type(addIngredientInputOwned, "hello");
-  fireEvent.submit(addIngredientFormOwned); //attempting to add element to owned ingredients
+  const addIngredientInputExcluded = screen.getByTestId("AddIngredientInput");
+  const addIngredientFormExcluded = screen.getByTestId("AddIngredientsForm");
+  userEvent.type(addIngredientInputExcluded, "hello");
+  fireEvent.submit(addIngredientFormExcluded); //adding element to excluded ingredients
 
   expect(
     await screen.findByText(
-      /"hello" er allerede tilføjet til listen af eksluderede ingredienser!/
+      /"hello" er allerede tilføjet til listen af ejede ingredienser!/
     )
   ).toBeInTheDocument();
 });

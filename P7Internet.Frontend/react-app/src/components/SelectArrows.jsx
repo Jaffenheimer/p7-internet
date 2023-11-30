@@ -36,8 +36,18 @@ const SelectArrows = () => {
       onKeyDown={handleKeyPress}
       tabIndex="0"
     >
-      <img src={leftArrow} alt="Left Arrow" onClick={clickLeft} />
-      <img src={rightArrow} alt="right Arrow" onClick={clickRight} />
+      <img
+        src={leftArrow}
+        alt="Left Arrow"
+        onClick={clickLeft}
+        data-testid="selectArrowLeft"
+      />
+      <img
+        src={rightArrow}
+        alt="right Arrow"
+        onClick={clickRight}
+        data-testid="selectArrowRight"
+      />
     </div>
   );
 };

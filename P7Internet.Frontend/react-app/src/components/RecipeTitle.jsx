@@ -45,6 +45,7 @@ const RecipeTitle = ({ title }) => {
       <h1 id="RecipeTitle">
         {title}
         <img
+          data-testid="heartImage"
           src={heart}
           alt="heart"
           className="no-print"
