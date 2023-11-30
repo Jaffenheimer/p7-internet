@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import StoreSelection from "./StoreSelection.jsx";
 import RadiusSlider from "./RadiusSlider.jsx";
 import { useState } from "react";
