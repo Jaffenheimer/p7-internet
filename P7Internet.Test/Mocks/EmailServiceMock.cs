@@ -2,7 +2,7 @@
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
-namespace P7Internet.Services;
+namespace P7Internet.Test.Mocks;
 
 public class EmailServiceMock
 {
@@ -18,7 +18,7 @@ public class EmailServiceMock
     /// </summary>
     /// <param name="email"></param>
     /// <param name="userName"></param>
-    public async Task<SendGridMessage> ConfirmEmail(string email, string userName)
+    public virtual async Task<SendGridMessage> ConfirmEmail(string email, string userName)
     {
         var from = new EmailAddress($"jonathanwisborgfog@gmail.com", "P7Internet");
         var subject = "Please confirm your email";
@@ -36,7 +36,7 @@ public class EmailServiceMock
     /// </summary>
     /// <param name="email"></param>
     /// <param name="userName"></param>
-    public async Task<SendGridMessage> ResetPassword(string email, string userName)
+    public virtual async Task<SendGridMessage> ResetPassword(string email, string userName)
     {
         var from = new EmailAddress($"jonathanwisborgfog@gmail.com", "P7Internet");
         var subject = "Reset Password has been requested";

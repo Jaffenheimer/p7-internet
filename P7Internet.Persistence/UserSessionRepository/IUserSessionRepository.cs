@@ -43,13 +43,13 @@ public interface IUserSessionRepository
     /// <returns>true if the verification is of expected type, else false </returns>
     public Task<bool> VerificationCodeTypeMatchesAction(string verificationCode, string type);
 
-        /// <summary>
+    /// <summary>
     /// Gets a userId from a verification code given that the code is valid and deletes the verification token from the database
     /// </summary>
     /// <param name="verificationCode"></param>
     /// <returns>A user if found null if not</returns>
     public Task<Guid?> GetUserIdFromVerificationCode(string verificationCode);
-    
+
     /// <summary>
     /// Deletes a verification token from the database
     /// </summary>

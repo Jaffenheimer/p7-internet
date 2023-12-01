@@ -9,6 +9,10 @@ public class EmailService
 {
     private readonly SendGridClient _client;
 
+    public EmailService()
+    {
+    }
+
     public EmailService(string? apiKey)
     {
         _client = new SendGridClient(apiKey);
@@ -21,7 +25,7 @@ public class EmailService
     /// <param name="user"></param>
     /// <param name="token"></param>
     /// <param name="requestTitle"></param>
-    public async Task ConfirmEmail(User user, string token)
+    public virtual async Task ConfirmEmail(User user, string token)
     {
         var from = new EmailAddress($"jonathanwisborgfog@gmail.com", "P7Internet");
         var subject = "Please confirm your email";
@@ -32,7 +36,8 @@ public class EmailService
         var htmlContentEnd =
             " </td>\r\n                      </tr>\r\n                    </table>\r\n                  </td>\r\n                </tr>\r\n              </table>\r\n            </td>\r\n          </tr>\r\n          <!-- end button -->\r\n\r\n          <!-- start copy -->\r\n          <tr>\r\n            <td align=\"left\" bgcolor=\"#ffffff\" style=\"padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px;\">\r\n          \r\n            </td>\r\n          </tr>\r\n          <!-- end copy -->\r\n\r\n          <!-- start copy -->\r\n          <tr>\r\n            <td align=\"left\" bgcolor=\"#ffffff\" style=\"padding: 24px; font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; border-bottom: 3px solid #d4dadf\">\r\n              <p style=\"margin: 0;\">Cheers,\r\n              <br> P7-Internet</p>\r\n            </td>\r\n          </tr>\r\n          <!-- end copy -->\r\n\r\n        </table>\r\n        <!--[if (gte mso 9)|(IE)]>\r\n        </td>\r\n        </tr>\r\n        </table>\r\n        <![endif]-->\r\n      </td>\r\n    </tr>\r\n    <!-- end copy block -->\r\n\r\n    <!-- start footer -->\r\n    <tr>\r\n      <td align=\"center\" bgcolor=\"#e9ecef\" style=\"padding: 24px;\">\r\n        <!--[if (gte mso 9)|(IE)]>\r\n        <table align=\"center\" border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"600\">\r\n        <tr>\r\n        <td align=\"center\" valign=\"top\" width=\"600\">\r\n        <![endif]-->\r\n        <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"100%\" style=\"max-width: 600px;\">\r\n\r\n          <!-- start permission -->\r\n          <tr>\r\n          </tr>\r\n          <!-- end permission -->\r\n\r\n          <!-- start unsubscribe -->\r\n          <tr>\r\n          </tr>\r\n          <!-- end unsubscribe -->\r\n\r\n        </table>\r\n        <!--[if (gte mso 9)|(IE)]>\r\n        </td>\r\n        </tr>\r\n        </table>\r\n        <![endif]-->\r\n      </td>\r\n    </tr>\r\n    <!-- end footer -->\r\n\r\n  </table>\r\n  <!-- end body -->\r\n\r\n</body>\r\n</html>";
         var code = $@"<p style=""padding: 0px 5px 0px 5px; color: white"">{token}</p>";
-        htmlContent = htmlContent + code + htmlContentEnd;var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+        htmlContent = htmlContent + code + htmlContentEnd;
+        var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
         var response = await _client.SendEmailAsync(msg);
     }
 
@@ -42,7 +47,7 @@ public class EmailService
     /// </summary>
     /// <param name="user"></param>
     /// <param name="token"></param>
-    public async Task ResetPassword(User user, string token)
+    public virtual async Task ResetPassword(User user, string token)
     {
         var from = new EmailAddress($"jonathanwisborgfog@gmail.com", "P7Internet");
         var subject = $"Password reset has been requested";
