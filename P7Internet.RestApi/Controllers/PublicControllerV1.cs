@@ -466,7 +466,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="password"></param>
     /// <param name="verificationCode"></param>
     /// <returns>Ok if the user is found and the verification code is valid, returns bad request if not</returns>
-    [HttpGet("user/reset-password")]
+    [HttpPost("user/reset-password")]
     public async Task<IActionResult> ResetPassword(string password, string verificationCode)
     {
         var isValidAction = await _userSessionRepository.VerificationCodeTypeMatchesAction(verificationCode, type: "resetPassword");
@@ -501,7 +501,7 @@ public class PublicControllerV1 : ControllerBase
     /// </summary>
     /// <param name="req"></param>
     /// <returns>Unauthorized if the session token is invalid, returns ok if it is successful
-    /// and Badrequest if the username or password is incorrect</returns>
+    /// and Badrequest if the password is incorrect or user session is not valid</returns>
     [HttpPost("user/change-password")]
     public async Task<IActionResult> ChangePassword([FromQuery] ChangePasswordRequest req)
     {
@@ -514,8 +514,7 @@ public class PublicControllerV1 : ControllerBase
         {
             return Ok("Password changed");
         }
-
-        return BadRequest("Username or password is incorrect please try again");
+        return BadRequest("Password is incorrect please try again");
     }
 
     /// <summary>
@@ -552,13 +551,13 @@ public class PublicControllerV1 : ControllerBase
     {
         var user = await _userRepository.GetUserFromId(userId);
 
-        if (user != null && !user.IsEmailConfirmed) {
+        if (user != null) {
+            if (user.IsEmailConfirmed)
+                return BadRequest("The email is already confirmed");
 
             var isValidAction = await _userSessionRepository.VerificationCodeTypeMatchesAction(verificationCode, type: "confirmEmail");
             if (!isValidAction)
-            {
                 return BadRequest("The verification code is not for confirming an email");
-            }
 
             var result = await _userRepository.ConfirmEmail(user.Name, user.EmailAddress);
 
@@ -568,7 +567,7 @@ public class PublicControllerV1 : ControllerBase
                 return Ok("Email confirmed");
             }
         }
-        return BadRequest("This should never happen");
+        return BadRequest("The user was not found");
     }
 
     #endregion

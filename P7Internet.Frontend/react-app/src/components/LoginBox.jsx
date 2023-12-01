@@ -7,6 +7,7 @@ import {
   checkValidVerificationCode,
   inputValidation,
   checkValidTwoPasswords,
+  checkValidPassword,
 } from "../helperFunctions/inputValidation";
 import { checkValidEmail } from "../helperFunctions/inputValidation";
 import { addCookies, getCookies } from "../helperFunctions/cookieHandler";
@@ -26,13 +27,10 @@ const LoginBox = ({ closeModal }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
-  const [resetPassword, setResetPassword] = useState("");
-  const [repeatedResetPassword, setRepeatedResetPassword] = useState("");
 
   const [loggingIn, setLoggingIn] = useState(true);
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [verifyingAccount, setVerifyingAccount] = useState(false);
-  const [resettingPassword, setResettingPassword] = useState(false);
 
   //States used to fetch data from backend
   const [userLogin, { isLogInLoading }] = useUserLoginMutation();
@@ -77,8 +75,13 @@ const LoginBox = ({ closeModal }) => {
         }
 
         if (response) {
-          if (!creatingAccount) toast.success("Din bruger er nu oprettet!");
-          else toast.success("Velkommen tilbage, " + response.name);
+          if (loggingIn) {
+            toast.success("Velkommen tilbage, " + response.name);
+          }
+          if (creatingAccount) {
+            toast.success("Verifikationskoden er sendt til din email");
+            toast.success("Din bruger er nu oprettet!");
+          }
 
           //Add data about user to cookie
           addCookies(response.name, response.id, response.sessionToken);
@@ -123,12 +126,10 @@ const LoginBox = ({ closeModal }) => {
   function setModalPage(page) {
     setLoggingIn(false);
     setCreatingAccount(false);
-    setResettingPassword(false);
     setVerifyingAccount(false);
     if (page === "loggingIn") setLoggingIn(true);
     else if (page === "creatingAccount") setCreatingAccount(true);
     else if (page === "verifyingAccount") setVerifyingAccount(true);
-    else if (page === "resettingPassword") setResettingPassword(true);
   }
 
   async function sendVerificationCode() {
@@ -142,77 +143,74 @@ const LoginBox = ({ closeModal }) => {
         }).unwrap();
 
         if (response) {
-          if (response.error.originalStatus === 200) {
-            toast.success("Din verifikationskode er sendt til din email");
-            setEmail("");
-          } else if (
-            response.error.originalStatus === 400 &&
-            response.error.data === "User does not exist"
-          ) {
-            toast.error("Emailen findes ikke i databasen");
-          } else if (
-            response.error.originalStatus === 400 &&
-            response.error.data ===
-              "Email is not confirmed, please confirm your email before resetting your password"
-          ) {
-            toast.error("Emailen er ikke bekræftet. Bekræft venligst emailen");
-          }
+          setEmail("");
         }
       } catch (error) {
         console.log(error);
-        toast.error("En fejl opstod med at sende mailen. Prøv igen senere");
+        if (error.originalStatus === 200) {
+          toast.success("Din verifikationskode er sendt til din email");
+        } else if (
+          error.originalStatus === 400 &&
+          error.data === "User does not exist"
+        ) {
+          toast.error("Emailen findes ikke i databasen");
+        } else if (
+          error.originalStatus === 400 &&
+          error.data ===
+            "Email is not confirmed, please confirm your email before resetting your password"
+        ) {
+          toast.error("Emailen er ikke bekræftet. Bekræft venligst emailen");
+        }
       }
     } else {
       toast.error("Indtast venligst en gyldig email");
     }
   }
 
-  function activateVerificationCode() {
+  async function resetPassword() {
     if (checkValidVerificationCode(verificationCode)) {
-      setModalPage("resettingPassword");
-
-      toast.success("Du indtastede en gyldig verifikationskode!");
-
-      //TODO: MANGLER ENDPOINT TIL AT CHECKE OM VERIFICATION KODEN ER RIGTIG
-    } else {
-      toast.error("Den indtastede kode er ugyldig. Prøv igen");
-    }
-  }
-
-  async function tryResetPassword() {
-    let isValid = checkValidTwoPasswords(resetPassword, repeatedResetPassword);
-    if (isValid) {
-      // if valid password, requests password reset if cookies are present
-      const cookies = document.cookie.split(";");
-
-      if (cookies.length === 0)
-        toast.error("Noget gik galt. Prøv at genindlæs siden og prøv igen");
-      else {
+      if (checkValidPassword(password)) {
         try {
-          console.log(verificationCode);
-          const encodedPassword = encodeURIComponent(resetPassword);
-          const encodedVerificationCode = encodeURIComponent(verificationCode);
-
-          //CHANGE, DEPRICATED USE
-          let response = await userResetPassword({
-            password: encodedPassword,
-            verificationCode: encodedVerificationCode,
+          await userResetPassword({
+            password: encodeURIComponent(password),
+            verificationCode: encodeURIComponent(verificationCode),
           }).unwrap();
-
-          if (response) {
-            console.log(response.error);
-            if (response.error.originalStatus === 200) {
-              setModalPage("loggingIn");
-              toast.success("Dit kodeord er nu nulstillet");
-              setResetPassword("");
-              setRepeatedResetPassword("");
-            } //needs handle on error response codes
-          }
         } catch (error) {
           console.log(error);
-          toast.error("Kunne ikke nulstille kodeordet");
+          if (error.originalStatus === 200) {
+            toast.success("Dit kodeord er nu nulstillet");
+            clearandclose();
+          }
+          if (
+            error.originalStatus === 400 &&
+            error.data ===
+              "The verification code is not for resetting the password"
+          ) {
+            toast.error(
+              "Denne verifikationskode er ikke til at nulstille kodeord"
+            );
+          } else if (
+            error.originalStatus === 400 &&
+            error.data === "No user found on the verification code"
+          ) {
+            toast.error("Din bruger er ikke fundet på denne verifikationskode");
+          } else if (
+            error.originalStatus === 400 &&
+            error.data ===
+              "Verification code was invalid, please check that the inserted value is correct"
+          ) {
+            toast.error(
+              "Verfikationskoden er invalid, tjek venligst at den indtastede værdi er korrekt"
+            );
+          } else {
+            toast.error("En fejl opstod med at sende verifikationsmailen");
+          }
         }
+      } else {
+        toast.error("Du indtastede ikke et gyldigt kodeord");
       }
+    } else {
+      toast.error("Den indtastede kode er ugyldig. Prøv igen");
     }
   }
 
@@ -220,7 +218,7 @@ const LoginBox = ({ closeModal }) => {
     <div className="LoginModal">
       <div className="imgcontainer">
         <h3>
-          {resettingPassword || verifyingAccount
+          {verifyingAccount
             ? "Nulstil kodeord"
             : creatingAccount
             ? "Opret Bruger"
@@ -337,7 +335,16 @@ const LoginBox = ({ closeModal }) => {
             <button onClick={() => sendVerificationCode()}>Send</button>
             <br></br>
             <br></br>
-            <br></br>
+            <label>
+              <b>Angiv dit nye kodeord</b>
+            </label>
+            <input
+              type="password"
+              placeholder="Indtast kodeordet"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              required
+            />
             <label>
               <b>Angiv verificeringskoden</b>
             </label>
@@ -347,38 +354,7 @@ const LoginBox = ({ closeModal }) => {
               value={verificationCode}
               onChange={(event) => setVerificationCode(event.target.value)}
             />
-            <button onClick={() => activateVerificationCode()}>Gendan</button>
-          </>
-        )}
-
-        {!resettingPassword ? (
-          ""
-        ) : (
-          <>
-            <br></br>
-
-            <label>
-              <b>Indtast dit nye kodeord</b>
-            </label>
-            <input
-              type="password"
-              placeholder="Indtast kodeordet"
-              value={resetPassword}
-              onChange={(event) => setResetPassword(event.target.value)}
-            />
-            <br></br>
-            <br></br>
-            <br></br>
-            <label>
-              <b>Gentag det nye kodeord</b>
-            </label>
-            <input
-              type="password"
-              placeholder="Indtast kodeordet"
-              value={repeatedResetPassword}
-              onChange={(event) => setRepeatedResetPassword(event.target.value)}
-            />
-            <button onClick={() => tryResetPassword()}>Bekræft kodeord</button>
+            <button onClick={() => resetPassword()}>Gendan</button>
           </>
         )}
       </div>

@@ -33,7 +33,7 @@ public class UserSessionRepository : IUserSessionRepository
         var query = $@"INSERT INTO {TableName} (UserId, SessionToken, ExpiresAt)
                             VALUES (@UserId, @SessionToken, @ExpiresAt)";
 
-        var deleteDeprecatedTokes = $@"DELETE FROM {TableName} WHERE ExpiresAt < (TIME(NOW()))";
+        var deleteDeprecatedTokes = $@"DELETE FROM {TableName} WHERE ExpiresAt < (TIME(NOW()+INTERVAL 1 HOUR))";
         await Connection.ExecuteAsync(deleteDeprecatedTokes);
 
         var token = GenerateToken();

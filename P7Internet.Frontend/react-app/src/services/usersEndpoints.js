@@ -43,11 +43,11 @@ const userEndpoints = apiSlice.injectEndpoints({
       query: ({
         userId,
         sessionToken,
-        username,
+        userName,
         oldPassword,
         newPassword,
       }) => ({
-        url: `public/user/change-password?UserId=${userId}&SessionToken=${sessionToken}&UserName=${username}&OldPassword=${oldPassword}&NewPassword=${newPassword}`,
+        url: `public/user/change-password?UserId=${userId}&SessionToken=${sessionToken}&UserName=${userName}&OldPassword=${oldPassword}&NewPassword=${newPassword}`,
         method: "POST",
         body: "",
       }),
@@ -55,6 +55,13 @@ const userEndpoints = apiSlice.injectEndpoints({
     userConfirmEmailRequest: builder.mutation({
       query: ({ UserId }) => ({
         url: `/public/user/confirm-email-request?UserId=${UserId}`,
+        method: "POST",
+        body: "",
+      }),
+    }),
+    userConfirmEmail: builder.mutation({
+      query: ({ UserId, VerificationCode }) => ({
+        url: `/public/user/confirm-email?userId=${UserId}&verificationCode=${VerificationCode}`,
         method: "POST",
         body: "",
       }),
@@ -72,4 +79,5 @@ export const {
   useUserResetPasswordMutation,
   useUserChangePasswordMutation,
   useUserConfirmEmailRequestMutation,
+  useUserConfirmEmailMutation,
 } = userEndpoints;

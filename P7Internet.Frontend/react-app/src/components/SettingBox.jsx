@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import {
   useUserConfirmEmailRequestMutation,
   useUserChangePasswordMutation,
+  useUserConfirmEmailMutation,
 } from "../services/usersEndpoints";
 import { getCookieUserId } from "../helperFunctions/cookieHandler";
 import { checkValidTwoPasswords } from "../helperFunctions/inputValidation";
@@ -14,8 +15,11 @@ const SettingBox = ({ closeModal }) => {
     useUserConfirmEmailRequestMutation();
   const [userChangePassword, { isChangePasswordLoading }] =
     useUserChangePasswordMutation();
+  const [userConfirmEmail, { isConfirmEmailLoading }] =
+    useUserConfirmEmailMutation();
 
   const [modalPage, setModalPage] = useState("settingPage");
+  const [verificationCode, setVerificationCode] = useState("");
   const [password, setPassword] = useState("");
   const [repeatedPassword, setRepeatedPassword] = useState("");
   const [oldPassword, setOldPassword] = useState("");
@@ -35,6 +39,7 @@ const SettingBox = ({ closeModal }) => {
     } else if (isValid) {
       // send a request to API for changing the user's password
       try {
+        console.log(sessionToken);
         let response = await userChangePassword({
           userId: encodeURIComponent(userId),
           sessionToken: encodeURIComponent(sessionToken),
@@ -42,10 +47,9 @@ const SettingBox = ({ closeModal }) => {
           oldPassword: encodeURIComponent(oldPassword),
           newPassword: encodeURIComponent(repeatedPassword),
         });
+        console.log(response.error.data);
         if (response.error.originalStatus === 200) {
           toast.success("Verifikationskoden er sendt til din email");
-        } else {
-          toast.error("En fejl opstod med at sende verifikationsmailen");
         }
       } catch (error) {
         console.log(error);
@@ -60,16 +64,43 @@ const SettingBox = ({ closeModal }) => {
       const encodedUserId = encodeURIComponent(userId);
       console.log(encodedUserId);
       // send a request to API for confirming the user's email
-      let response = await userConfirmEmailRequest({
+      await userConfirmEmailRequest({
         UserId: encodedUserId,
-      });
-      if (response.error.originalStatus === 200) {
+      }).unwrap();
+    } catch (error) {
+      if (error.originalStatus === 200) {
         toast.success("Verifikationskoden er sendt til din email");
+      } else if (
+        error.originalStatus === 400 &&
+        error.data === "The email is already confirmed"
+      ) {
+        toast.warning("Emailen er allerede bekræftet");
       } else {
         toast.error("En fejl opstod med at sende verifikationsmailen");
       }
+    }
+  }
+
+  async function verifyEmail() {
+    try {
+      let userId = getCookieUserId();
+      // send a request to API for confirming the user's email
+      await userConfirmEmail({
+        UserId: encodeURIComponent(userId),
+        VerificationCode: encodeURIComponent(verificationCode),
+      }).unwrap();
     } catch (error) {
       console.log(error);
+      if (error.originalStatus === 200) {
+        toast.success("Din email er nu bekræftet");
+      } else if (
+        error.originalStatus === 400 &&
+        error.data === "The email is already confirmed"
+      ) {
+        toast.warning("Emailen er allerede bekræftet");
+      } else {
+        toast.error("En fejl opstod med at sende verifikationsmailen");
+      }
     }
   }
 
@@ -89,8 +120,16 @@ const SettingBox = ({ closeModal }) => {
               Send kode
             </button>
           </div>
-          <input type="text" placeholder="Indtast din kode" />
-          <button className="VerifyEmailButton"> Verificer </button>
+          <input
+            type="text"
+            placeholder="Indtast din kode"
+            value={verificationCode}
+            onChange={(event) => setVerificationCode(event.target.value)}
+          />
+          <button className="VerifyEmailButton" onClick={verifyEmail}>
+            {" "}
+            Verificer{" "}
+          </button>
           <p id="alreadyHasUserText">Skift kodeord:</p>
           <a href="/#" onClick={() => setModalPage("ChangePasswordPage")}>
             Her

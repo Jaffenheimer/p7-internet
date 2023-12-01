@@ -45,7 +45,7 @@ export const getCookies = () => {
     } else if (cookies[cookie].includes("userid")) {
       userid = cookies[cookie].split("=")[1];
     } else if (cookies[cookie].includes("sessionToken")) {
-      sessionToken = cookies[cookie].split("=")[1];
+      sessionToken = cookies[cookie].split("sessionToken=")[1];
     }
   }
   return { username, userid, sessionToken };
