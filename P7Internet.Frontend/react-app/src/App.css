@@ -102,6 +102,10 @@ body {
   font-size: 40px;
   font-family: Verdana;
   display: flex;
+  cursor: pointer;
+}
+.titleLogo{
+  height: 1.3em;
 }
 
 .RecipeSelectionContainerLeft {
@@ -225,7 +229,11 @@ button {
 }
 
 button:hover {
-  background: #e7e7e7;
+  background: #979191;
+  transition: all 0.1s;
+}
+button:active {
+  transform: scale(0.95);
 }
 /* 
 .FormStyle{
@@ -286,7 +294,7 @@ button:hover {
   position: relative;
 }
 
-.Profile {
+.Profile 
   width: 40px;
   height: 40px;
   flex: 1;
@@ -379,15 +387,18 @@ button:hover {
   list-style: none;
   position: absolute;
   top: -1em;
-  right: 5em;
+  right: 7.5em;
   width: 100%;
 }
 
 .dropdown-content li {
   position: relative;
-  right: 100%;
+  transform: translateX(
+    150%
+  ); /* Initially move the dropdown content off-screen */
   width: 155px;
   border-radius: 0em;
+  animation: slideInFromRight 0.5s forwards;
 }
 .dropdown-buttons {
   display: flex;
@@ -395,8 +406,36 @@ button:hover {
   cursor: pointer;
   border-radius: 0px;
 }
-.dropdown-buttons:focus + .dropdown-content li {
-  right: 0;
+
+.dropdown-content li.open {
+  animation: slideInFromRight 0.5s forwards;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.menu-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.menu-item:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+#FavoritesButton {
+  border-radius: 0px;
+}
+#SettingsButton {
+  border-radius: 0px;
+}
+#LogoutButton {
+  border-radius: 0px;
 }
 
 .menuItemButton {

@@ -13,7 +13,7 @@ describe("Header component", () => {
     renderComponent(<Header />);
   });
   it("Checks if the title is rendered", () => {
-    expect(screen.getByText(/Opskriftsgenerator/)).toBeInTheDocument();
+    expect(screen.getByText(/OpskriftsOraklet/)).toBeInTheDocument();
   });
 
   it("Checks if clicking the login button opens the login modal", () => {
