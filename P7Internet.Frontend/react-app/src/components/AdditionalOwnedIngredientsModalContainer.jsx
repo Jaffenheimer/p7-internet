@@ -19,7 +19,7 @@ const AdditionalOwnedIngredientsModalContainer = () => {
   const currentRecipeIndex = useSelector(
     (state) => state.recipe.currentRecipeIndex
   );
-  const currentRecipe = recipes[currentRecipeIndex];
+  const currentRecipe = recipes[currentRecipeIndex].recipe;
   const currentRecipeUnownedIngredients = convertIngredientsToIngredientObjects(
     currentRecipe.ingredients
   ).filter(

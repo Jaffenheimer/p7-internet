@@ -54,8 +54,8 @@ const ProfilePicture = ({ openFavoritesModal }) => {
           deleteCookies();
         }
       } catch (error) {
-        console.log(error);
-        toast.error("Kunne ikke logge ud");
+        console.log(error)
+        toast.error("Kunne ikke logge ud", error);
       }
     }
 

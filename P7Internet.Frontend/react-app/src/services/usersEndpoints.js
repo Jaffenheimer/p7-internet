@@ -25,13 +25,19 @@ const userEndpoints = apiSlice.injectEndpoints({
         body: "",
       }),
     }),
+    userAddFavourite: builder.mutation({
+      query: ({ userId, sessionToken }) => ({
+        url: `public/user/favourite-recipes?UserId=${userId}&SessionToken=${sessionToken}`,
+        method: "POST",
+        body: "",
+      }),
+    }),
   }),
-  //Is a flag that tells redux that is does not override existing endpoints
-  overrideExisting: false,
 });
 
 export const {
   useUserLoginMutation,
   useUserCreateMutation,
   useUserLogOutMutation,
+  useUserAddFavouriteMutation,
 } = userEndpoints;

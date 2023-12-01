@@ -26,6 +26,9 @@ describe("FrontPageContainerLeft", () => {
           { id: 2, name: "Ingredient 2" },
         ],
       },
+      user: {
+        loggedIn: false,
+      }
     };
     // configureMockStore() returns a function that can be called with the initial state
     mockStore = configureMockStore()(mockState);
@@ -72,6 +75,9 @@ test("checks if a user has added an ingredient no toast appears when clicking ge
       excludeList: [],
       ownedIngredients: [],
     },
+    user: {
+      loggedIn: false,
+    }
   };
   mockStore = configureMockStore()(mockState);
 

@@ -6,7 +6,7 @@ import { userActions } from "../features/userSlice";
 import { useEffect } from "react";
 import { pageActions } from "../features/pageSlice";
 
-const RecipeTitle = ({ title }) => {
+const RecipeTitle = ({ recipeId, recipeTitle }) => {
   const dispatch = useDispatch();
   const loggedIn = useSelector((state) => state.user.loggedIn);
   const favoriteRecipes = useSelector((state) => state.user.favoriteRecipes);
@@ -19,10 +19,10 @@ const RecipeTitle = ({ title }) => {
     } else {
       if (heart === heartSolid) {
         setHeart(heartHollow);
-        dispatch(userActions.removeRecipe(title));
+        dispatch(userActions.removeRecipe(recipeId));
       } else {
         setHeart(heartSolid);
-        dispatch(userActions.addRecipe(title));
+        dispatch(userActions.addRecipe(recipeId));
       }
     }
   }
@@ -31,7 +31,7 @@ const RecipeTitle = ({ title }) => {
     //component that dynamically changes heart icon when using arrows
     useEffect(() => {
       if (favoriteRecipes !== undefined) {
-        if (favoriteRecipes.includes(title)) {
+        if (favoriteRecipes.includes(recipeId)) {
           setHeart(heartSolid);
         } else {
           setHeart(heartHollow);
@@ -43,7 +43,7 @@ const RecipeTitle = ({ title }) => {
   return (
     <div id="RecipeTitleDiv">
       <h1 id="RecipeTitle">
-        {title}
+        {recipeTitle}
         <img
           src={heart}
           alt="heart"

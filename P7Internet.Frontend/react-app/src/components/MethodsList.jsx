@@ -1,6 +1,9 @@
 import React from "react";
 
 const MethodsList = ({ methods }) => {
+
+  console.log("Methods: ", methods);
+  
   return (
     <div className="methods">
       <h2>Metode:</h2>

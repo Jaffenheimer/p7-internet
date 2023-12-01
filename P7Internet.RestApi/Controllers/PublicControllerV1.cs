@@ -99,7 +99,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 
@@ -124,6 +124,11 @@ public class PublicControllerV1 : ControllerBase
         }
 
         var res = await _openAiService.GetAiResponse(req);
+        if (res.Success == false)
+        {
+            return BadRequest(res.ErrorMessage);
+        }
+
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
@@ -151,8 +156,18 @@ public class PublicControllerV1 : ControllerBase
         var result = await _favouriteRecipeRepository.GetHistory(userId);
         if (result != null)
         {
-            var res = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result);
-            return Ok(res);
+            var recipeList = new List<RecipeResponse>();
+
+            var recipes = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result.ConvertAll(x => x.ToString()));
+            int counter = 0;
+            var validIngredients = await _ingredientRepository.GetAllIngredients();
+            foreach (var res in result)
+            {
+                recipeList.Add(new RecipeResponse(recipes[counter],CheckListForValidIngredients(recipes[counter], validIngredients) , res));
+                counter++;
+            }
+            
+            return Ok(recipeList);
         }
 
         return BadRequest("No favourite recipes found");
@@ -210,7 +225,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 
@@ -237,6 +252,11 @@ public class PublicControllerV1 : ControllerBase
         }
 
         var res = await _openAiService.GetAiResponse(req);
+        if (res.Success == false)
+        {
+            return BadRequest(res.ErrorMessage);
+        }
+
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
@@ -410,7 +430,18 @@ public class PublicControllerV1 : ControllerBase
         var result = await _favouriteRecipeRepository.Get(req.UserId);
         if (result != null)
         {
-            return Ok(result);
+            var recipeList = new List<RecipeResponse>();
+
+            var recipes = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result.ConvertAll(x => x.ToString()));
+            int counter = 0;
+            var validIngredients = await _ingredientRepository.GetAllIngredients();
+            foreach (var res in result)
+            {
+                recipeList.Add(new RecipeResponse(recipes[counter],CheckListForValidIngredients(recipes[counter], validIngredients) , res));
+                counter++;
+            }
+            
+            return Ok(recipeList);
         }
 
         return BadRequest("No favourite recipes found");
@@ -541,6 +572,7 @@ public class PublicControllerV1 : ControllerBase
             return new List<string>();
 
         List<string> result = new List<string>();
+        Console.WriteLine("recipe: ", recipe);
         recipe = recipe.ToLower();
         foreach (var ingredient in validIngredients)
         {
@@ -550,6 +582,8 @@ public class PublicControllerV1 : ControllerBase
                 result.Add(ingredient);
         }
 
+
+        Console.WriteLine(result);
         return result;
     }
 
@@ -562,6 +596,8 @@ public class PublicControllerV1 : ControllerBase
     private async Task<RecipeResponse> GetRecipeAsync(RecipeRequest req, List<string> validIngredients)
     {
         var res = await _openAiService.GetAiResponse(req);
+        if (res.Success == false)
+            return RecipeResponse.Error(res.ErrorMessage, res.RecipeId);
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
         await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);

@@ -30,7 +30,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     /// </summary>
     /// <param name="userId"></param>
     /// <returns>Returns a list of all recipes favourited by the user. Returns 0 if none is present</returns>
-    public async Task<List<string>> Get(Guid userId)
+    public async Task<List<Guid>> Get(Guid userId)
     {
         var query = $@"SELECT RecipeId FROM {TableName} WHERE UserId = @UserId";
 
@@ -38,10 +38,8 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 
         var guids = gridReader.Read<Guid>();
 
-        var result = await _cachedRecipeRepository.GetListOfRecipes(guids.ToList());
-
-        if (result != null)
-            return result;
+        if (guids != null)
+            return guids.ToList();
         return null;
     }
 
@@ -103,7 +101,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     /// </summary>
     /// <param name="userId"></param>
     /// <returns>Returns a list of strings of the Ids of said recipes if any found otherwise returns null</returns>
-    public async Task<List<string>> GetHistory(Guid userId)
+    public async Task<List<Guid>> GetHistory(Guid userId)
     {
         var query = $@"SELECT RecipeId FROM {HistoryTableName} WHERE UserId = @UserId";
 
@@ -111,10 +109,8 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 
         var guids = gridReader.Read<Guid>();
 
-        var result = await _cachedRecipeRepository.GetListOfRecipes(guids.ToList());
-
-        if (result != null)
-            return result;
+        if (guids != null)
+            return guids.ToList();
         return null;
     }
 

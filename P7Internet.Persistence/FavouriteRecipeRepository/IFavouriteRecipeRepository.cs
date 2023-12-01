@@ -11,7 +11,7 @@ public interface IFavouriteRecipeRepository
     /// </summary>
     /// <param name="userId"></param>
     /// <returns>Returns a list of all recipes favourited by the user. Returns 0 if none is present</returns>
-    public Task<List<string>> Get(Guid userId);
+    public Task<List<Guid>> Get(Guid userId);
 
     /// <summary>
     /// Inserts a favourite recipe in the database
@@ -35,7 +35,7 @@ public interface IFavouriteRecipeRepository
     /// </summary>
     /// <param name="userId"></param>
     /// <returns>Returns a list of strings of the Ids of said recipes if any found otherwise returns null</returns>
-    public Task<List<string>> GetHistory(Guid userId);
+    public Task<List<Guid>> GetHistory(Guid userId);
 
     /// <summary>
     /// Upserts a list of recipes to the history table
