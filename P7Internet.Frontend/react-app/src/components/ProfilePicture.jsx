@@ -9,7 +9,7 @@ import { pageActions } from "../features/pageSlice";
 import { useUserLogOutMutation } from "../services/usersEndpoints";
 import { deleteCookies, retriveCookie } from "../helperFunctions/cookieHandler";
 
-const ProfilePicture = () => {
+const ProfilePicture = ({ openFavoritesModal }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -18,6 +18,7 @@ const ProfilePicture = () => {
   }
 
   const handleFavorites = () => {
+    openFavoritesModal();
     setOpen(false);
     dispatch(pageActions.openFavoritesModal());
   };

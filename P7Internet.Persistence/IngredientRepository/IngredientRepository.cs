@@ -48,7 +48,7 @@ public class IngredientRepository : IIngredientRepository
     {
         var query = $@"SELECT Ingredient FROM {TableName} WHERE Name = @Name";
 
-        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new { Name = ingredient });
+        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new {Name = ingredient});
 
         return resultFromDb != null;
     }

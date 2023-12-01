@@ -24,5 +24,4 @@ public class User
         IsEmailConfirmed = false;
         CreatedAt = DateTime.UtcNow;
     }
-    
 }
