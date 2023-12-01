@@ -99,7 +99,12 @@ public class UserSessionRepository : IUserSessionRepository
         return null;
     }
 
-    //MANGLER SUMMARY
+    /// <summary>
+    /// Determines if the verification code is of the expected type, types=["resetPassword", "confirmEmail"]
+    /// </summary>
+    /// <param name="verificationCode"></param>
+    /// <param name="type"></param>
+    /// <returns>true if the verification is of expected type, else false </returns>
     public async Task<bool> VerificationCodeTypeMatchesAction(string verificationCode, string type)
     {
         var query =
