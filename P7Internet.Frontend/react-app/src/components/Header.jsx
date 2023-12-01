@@ -49,7 +49,6 @@ const Header = () => {
         OpskriftsOraklet
         <img src={icon} alt="logo" className="titleLogo" />
         </div>
-      {/* <SetLoggedInOnChange /> Dynamically check if user is logged in */}
       {loggedIn ? (
         <ProfilePicture />
       ) : (
