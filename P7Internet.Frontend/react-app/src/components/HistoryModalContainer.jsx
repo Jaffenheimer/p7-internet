@@ -1,16 +1,13 @@
 import React from "react";
-import cross from "../data/cross.svg";
 import { useDispatch } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import { recipeActions } from "../features/recipeSlice";
-import { userActions } from "../features/userSlice";
 import { useSelector } from "react-redux";
 import Pages from "../objects/Pages";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { nanoid } from "@reduxjs/toolkit";
 
-const HistoryModalContainer = ({ closeModal }) => {
+const HistoryModalContainer = () => {
   const dispatch = useDispatch();
   const recipesInHistory = useSelector((state) => state.user.recipesInHistory);
   const recipes = useSelector((state) => state.recipe.recipes);

@@ -8,14 +8,6 @@ import RecipeSelection from "./pages/RecipeSelection";
 
 export default function App() {
   const page = useSelector((state) => state.page.page);
-  
-  const recipes = useSelector((state) => state.recipe.recipes);
-  const currentRecipeIndex = useSelector(
-    (state) => state.recipe.currentRecipeIndex
-  );
-
-  const recipe = recipes[currentRecipeIndex];
-
 
   if (page === Pages.frontPage) {
     return <FrontPage />;
