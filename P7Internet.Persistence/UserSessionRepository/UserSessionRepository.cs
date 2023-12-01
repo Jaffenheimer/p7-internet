@@ -26,10 +26,10 @@ public class UserSessionRepository : IUserSessionRepository
     {
         var query = $@"INSERT INTO {TableName} (UserId, SessionToken, ExpiresAt)
                             VALUES (@UserId, @SessionToken, @ExpiresAt)";
-        
-        var deleteDeprecatedTokes = $@"DELETE FROM {TableName} WHERE ExpiresAt < TIME(NOW()))";
+
+        var deleteDeprecatedTokes = $@"DELETE FROM {TableName} WHERE ExpiresAt < (TIME(NOW()))";
         await Connection.ExecuteAsync(deleteDeprecatedTokes);
-        
+
         var token = GenerateToken();
         var parameters = new
         {
@@ -50,7 +50,7 @@ public class UserSessionRepository : IUserSessionRepository
     public async Task<bool> CheckIfTokenIsValid(Guid userId, string token)
     {
         var query = $@"SELECT * FROM {TableName} WHERE UserId = @userId AND SessionToken = @token";
-        var result = await Connection.QuerySingleOrDefaultAsync(query, new {userId, token});
+        var result = await Connection.QuerySingleOrDefaultAsync(query, new { userId, token });
         if (result != null && result.ExpiresAt > DateTime.UtcNow)
         {
             return true;
@@ -69,7 +69,7 @@ public class UserSessionRepository : IUserSessionRepository
     public async Task<bool> DeleteSessionToken(Guid userId, string sessionToken)
     {
         var query = $@"DELETE FROM {TableName} WHERE UserId = @UserId AND SessionToken = @SessionToken";
-        return await Connection.ExecuteAsync(query, new {UserId = userId, SessionToken = sessionToken}) > 0;
+        return await Connection.ExecuteAsync(query, new { UserId = userId, SessionToken = sessionToken }) > 0;
     }
 
     /// <summary>

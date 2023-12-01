@@ -5,8 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using P7Internet.Persistence.CachedIngredientPricesRepository;
-using P7Internet.Persistence.CachedOfferRepository;
 using P7Internet.Persistence.FavouriteRecipeRepository;
+using P7Internet.Persistence.IngredientRepository;
 using P7Internet.Persistence.RecipeCacheRepository;
 using P7Internet.Persistence.UserRepository;
 using P7Internet.Persistence.UserSessionRepository;
@@ -30,10 +30,13 @@ public class PublicControllerV1 : ControllerBase
     private readonly EmailService _emailService;
     private readonly SallingService _sallingService;
     private readonly IUserSessionRepository _userSessionRepository;
+    private readonly IIngredientRepository _ingredientRepository;
 
     public PublicControllerV1(IUserRepository userRepository, OpenAiService openAiService,
         IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository,
-        ICachedOfferRepository cachedOfferRepository, EmailService emailService, IUserSessionRepository userSessionRepository, SallingService sallingService, ETilbudsAvisService eTilbudsAvisService)
+        ICachedOfferRepository cachedOfferRepository, EmailService emailService,
+        IUserSessionRepository userSessionRepository, IIngredientRepository ingredientRepository,
+        SallingService sallingService)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
@@ -42,7 +45,8 @@ public class PublicControllerV1 : ControllerBase
         _cachedOfferRepository = cachedOfferRepository;
         _emailService = emailService;
         _userSessionRepository = userSessionRepository;
-        _eTilbudsAvisService = eTilbudsAvisService;
+        _ingredientRepository = ingredientRepository;
+        _eTilbudsAvisService = new ETilbudsAvisService();
         _sallingService = sallingService;
     }
 
@@ -58,26 +62,76 @@ public class PublicControllerV1 : ControllerBase
     {
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
-        List<string?> recipesIncludingIngredients = new List<string?>();
+        List<Recipe> recipesIncludingIngredients = new List<Recipe>();
         foreach (var recipe in recipes)
         {
-            if (ContainsEveryString(req.Ingredients, recipe) && !ContainsEveryString(req.ExcludedIngredients, recipe) &&
-                ContainsEveryString(req.DietaryRestrictions, recipe))
+            if (req.DietaryRestrictions.Count == 0 && req.ExcludedIngredients.Count == 0)
             {
-                recipesIncludingIngredients.Add(recipe);
+                if (ContainsEveryString(req.Ingredients, recipe.Description))
+                {
+                    recipesIncludingIngredients.Add(recipe);
+                }
+            }
+            else
+            {
+                if (ContainsEveryString(req.Ingredients, recipe.Description) &&
+                    !ContainsEveryString(req.ExcludedIngredients, recipe.Description) &&
+                    !ContainsEveryString(req.DietaryRestrictions, recipe.Description))
+                {
+                    recipesIncludingIngredients.Add(recipe);
+                }
             }
         }
-        if (recipesIncludingIngredients.Count < req.Amount){ 
-            var res = _openAiService.GetAiResponse(req);
-            await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
-            return Ok(res);
+
+        if (req.Amount != null)
+        {
+            if (recipesIncludingIngredients.Count < req.Amount)
+                goto NotEnoughRecipes;
         }
 
-        if (recipesIncludingIngredients.Any(x => x != null) )
-            return Ok(recipesIncludingIngredients);
+        if (recipesIncludingIngredients.Any(x => x != null))
+        {
+            var returnList = new List<RecipeResponse>();
+            var counter = 0;
+            foreach (var recipe in recipesIncludingIngredients)
+            {
+                var validIng = await _ingredientRepository.GetAllIngredients();
+                var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
+                returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
+                counter++;
+                if(counter == req.Amount)
+                    break;
+            }
 
-        return BadRequest("No recipe generated");
-        
+            return Ok(returnList);
+        }
+
+        NotEnoughRecipes:
+
+        var recipeList = new List<RecipeResponse>();
+        if (req.Amount > 1)
+        {
+            var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
+            for (int i = 0; i < req.Amount; i++)
+            {
+                var recipe = await GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
+                if (recipe.Success == false)
+                    return BadRequest(recipe.ErrorMessage);
+                recipeList.Add(recipe);
+            }
+
+            return Ok(recipeList);
+        }
+
+        var res = await _openAiService.GetAiResponse(req);
+        var validIngredients = await _ingredientRepository.GetAllIngredients();
+        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
+        res.Ingredients = ingredientsToPassToFrontend;
+
+
+        await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+
+        return Ok(res);
     }
 
     /// <summary>
@@ -93,7 +147,7 @@ public class PublicControllerV1 : ControllerBase
             await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
         if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
-        
+
         var result = await _favouriteRecipeRepository.GetHistory(userId);
         if (result != null)
         {
@@ -103,7 +157,7 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("No favourite recipes found");
     }
-    
+
     /// <summary>
     /// Gets a recipe either from the cache or from the OpenAI API
     /// </summary>
@@ -112,24 +166,31 @@ public class PublicControllerV1 : ControllerBase
     [HttpPost("user/recipe")]
     public async Task<IActionResult> GetARecipeWhenLoggedIn([FromBody] RecipeRequest req)
     {
-        if (req.UserId != null && req.SessionToken != null)
-        {
-
-            var checkIfUserSessionIsValid =
-                await _userSessionRepository.CheckIfTokenIsValid(req.UserId.GetValueOrDefault(), req.SessionToken);
-            if (!checkIfUserSessionIsValid)
-                return Unauthorized("User session is not valid, please login again");
-        }
+        var checkIfUserSessionIsValid =
+            await _userSessionRepository.CheckIfTokenIsValid(req.UserId.GetValueOrDefault(), req.SessionToken);
+        if (!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
 
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
-        List<string?> recipesIncludingIngredients = new List<string?>();
+        List<Recipe?> recipesIncludingIngredients = new List<Recipe?>();
         foreach (var recipe in recipes)
         {
-            if (ContainsEveryString(req.Ingredients, recipe) && !ContainsEveryString(req.ExcludedIngredients, recipe) &&
-                ContainsEveryString(req.DietaryRestrictions, recipe))
+            if (req.DietaryRestrictions.Count == 0 && req.ExcludedIngredients.Count == 0)
             {
-                recipesIncludingIngredients.Add(recipe);
+                if (ContainsEveryString(req.Ingredients, recipe.Description))
+                {
+                    recipesIncludingIngredients.Add(recipe);
+                }
+            }
+            else
+            {
+                if (ContainsEveryString(req.Ingredients, recipe.Description) &&
+                    !ContainsEveryString(req.ExcludedIngredients, recipe.Description) &&
+                    !ContainsEveryString(req.DietaryRestrictions, recipe.Description))
+                {
+                    recipesIncludingIngredients.Add(recipe);
+                }
             }
         }
 
@@ -140,12 +201,45 @@ public class PublicControllerV1 : ControllerBase
         }
 
         if (recipesIncludingIngredients.Any(x => x != null))
-            return Ok(recipesIncludingIngredients);
+        {
+            var returnList = new List<RecipeResponse>();
+            var counter = 0;
+            foreach (var recipe in recipesIncludingIngredients)
+            {
+                var validIng = await _ingredientRepository.GetAllIngredients();
+                var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
+                returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
+                counter++;
+                if(counter == req.Amount)
+                    break;
+            }
+
+            return Ok(returnList);
+        }
 
         NotEnoughRecipes:
-        
-        var res = _openAiService.GetAiResponse(req);
-        
+        var recipeList = new List<RecipeResponse>();
+        if (req.Amount > 1)
+        {
+            var validIngredientsIfAmountIsMoreThanOne = await _ingredientRepository.GetAllIngredients();
+            for (int i = 0; i < req.Amount; i++)
+            {
+                var recipe = await GetRecipeAsync(req, validIngredientsIfAmountIsMoreThanOne);
+                if (recipe.Success == false)
+                    return BadRequest(recipe.ErrorMessage);
+                recipeList.Add(recipe);
+                if (req.UserId != null && req.SessionToken != null)
+                    await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(),
+                        recipeList[i].RecipeId);
+            }
+
+            return Ok(recipeList);
+        }
+
+        var res = await _openAiService.GetAiResponse(req);
+        var validIngredients = await _ingredientRepository.GetAllIngredients();
+        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
+        res.Ingredients = ingredientsToPassToFrontend;
         await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
         if (req.UserId != null && req.SessionToken != null)
             await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(), res.RecipeId);
@@ -179,16 +273,18 @@ public class PublicControllerV1 : ControllerBase
         }
 
         res = await _sallingService.GetRelevantProducts(req.SearchTerm);
-        
+
         if (res != null)
         {
             foreach (var product in res)
             {
-                if (_cachedOfferRepository.GetOffer(product.Name) != null) break;
-                _cachedOfferRepository.UpsertOffer(product.Name, product.Price, product.Store);
+                if (await _cachedOfferRepository.GetOffer(product.Name) != null) break;
+                await _cachedOfferRepository.UpsertOffer(product.Name, product.Price, product.Store);
             }
+
             return Ok(res);
         }
+
         return BadRequest("No offer found");
     }
 
@@ -225,7 +321,8 @@ public class PublicControllerV1 : ControllerBase
         var user = _userRepository.CreateUser(req.Name, req.EmailAddress);
         var res = await _userRepository.Upsert(user, req.Password);
         if (!res)
-            return BadRequest("User with the specified Username already exists, please choose another Username");
+            return BadRequest(
+                "User with the specified Username or Email already exists, please choose another Username or Email");
         // ONLY COMMENT THIS IN WHEN WE NEED TO SHOW THIS FEATURE
         //await _emailService.ConfirmEmail(user.EmailAddress, user.Name);
         var token = await _userSessionRepository.GenerateSessionToken(user.Id);
@@ -346,15 +443,14 @@ public class PublicControllerV1 : ControllerBase
     /// This is done by sending an email to the users specified email 
     /// </summary>
     /// <param name="email"></param>
-    /// <param name="userName"></param>
     /// <returns>Returns Ok if a user is found and the email has been sent, if the user is not found it returns BadRequest</returns>
     [HttpPost("user/reset-password-request")]
-    public async Task<IActionResult> ResetPassword([EmailAddress] string email, string userName)
+    public async Task<IActionResult> ResetPassword([EmailAddress] string email)
     {
-        var user = await _userRepository.GetUser(userName);
+        var user = await _userRepository.GetUserByEmail(email);
         if (user != null)
         {
-            await _emailService.ResetPassword(email, userName);
+            await _emailService.ResetPassword(user);
             return Ok("Email sent");
         }
 
@@ -414,15 +510,61 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>Returns true if so otherwise false</returns>
     private static bool ContainsEveryString(List<string> stringList, string targetString)
     {
+        for (int i = 0; i < stringList.Count; i++)
+        {
+            stringList[i] = stringList[i].ToLower();
+        }
+
         foreach (string str in stringList)
         {
-            if (!targetString.ToLower().Contains(str.ToLower()))
+            if (!targetString.Contains(str.ToLower()))
             {
                 return false;
             }
         }
 
         return true;
+    }
+
+    /// <summary>
+    /// Helper function to retrieve valid ingredients from a list of ingredients.
+    /// They are valid in the sense of being stripped of all other characters than letters e.g. numbers etc
+    /// </summary>
+    /// <param name="ingredients"></param>
+    /// <param name="recipe"></param>
+    /// <param name="validIngredients"></param>
+    /// <returns>A list of ingredients in the correct format</returns>
+    private static List<string> CheckListForValidIngredients(string recipe, List<string> validIngredients)
+    {
+        if (string.IsNullOrEmpty(recipe))
+            return new List<string>();
+
+        List<string> result = new List<string>();
+        recipe = recipe.ToLower();
+        foreach (var ingredient in validIngredients)
+        {
+            if (result.Contains(ingredient))
+                continue;
+            if (recipe.Contains(" " + ingredient.ToLower() + " "))
+                result.Add(ingredient);
+        }
+
+        return result;
+    }
+
+    /// <summary>
+    /// Helper function to speed up response times from openAI API
+    /// </summary>
+    /// <param name="req"></param>
+    /// <param name="validIngredients"></param>
+    /// <returns>A recipe</returns>
+    private async Task<RecipeResponse> GetRecipeAsync(RecipeRequest req, List<string> validIngredients)
+    {
+        var res = await _openAiService.GetAiResponse(req);
+        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
+        res.Ingredients = ingredientsToPassToFrontend;
+        await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+        return res;
     }
 
     #endregion

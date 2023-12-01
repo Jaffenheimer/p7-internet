@@ -1,7 +1,3 @@
-/* body > #root {
-  height: 100vh;
-} */
-
 *,
 *::before,
 *::after {
@@ -20,6 +16,7 @@ body {
   min-height: 100vh;
   width: 100%;
   padding: 0;
+  background: #fff2d8;
 }
 
 .AppContainer {
@@ -107,13 +104,6 @@ body {
   display: flex;
 }
 
-/* .App > .AppLeft > .ContainerUpper {
-  width: 100%;
-.App > .AppLeft > .ContainerLeft {
-  height: 100%;
-  position: relative;
-}  */
-
 .RecipeSelectionContainerLeft {
   padding: 10px;
   height: 60%;
@@ -157,6 +147,10 @@ ul {
   width: 40%;
 }
 
+body.Modal__Content {
+  overflow-y: hidden;
+}
+
 .IngredientElement {
   margin-left: 10px;
   display: flex;
@@ -167,7 +161,7 @@ ul {
 #OwnedIngredientsList > div > ul > .IngredientElement {
   width: 30%;
 }
-#OwnedIngredientsList{
+#OwnedIngredientsList {
   margin-right: 10%;
 }
 
@@ -175,7 +169,7 @@ ul {
   width: 70%;
 }
 
-.RemoveIngredientImage {
+.RemoveIngredientCross {
   float: right;
 }
 
@@ -251,14 +245,6 @@ button:hover {
   width: 40%;
 }
 
-/* #GenerateRecipeButton {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  margin-bottom: 3%;
-  margin-right: 3%;
-}  */
-
 .RecipeView > #RecipeTitleDiv > h1 {
   text-align: left;
 }
@@ -266,6 +252,11 @@ button:hover {
 #SelectArrows {
   margin-left: 45%;
   outline: none;
+}
+
+#GenerateRecipesButton {
+  margin-top: 5%;
+  float: right;
 }
 
 #selectRecipeButton {
@@ -282,14 +273,18 @@ button:hover {
   transform: scale(2);
 }
 
-/* .ProfilePicture > img {
-  vertical-align: middle;
-  margin: 0 auto;
-  transform: scale(2.5);
-  margin-top: 10%;
-  float: right;
-  margin-right: 15%;
-} */
+.IngredientCheckboxesLabel {
+  cursor: pointer;
+}
+
+#acceptAdditionalIngredientsButton {
+  margin-top: 2%;
+}
+
+#IngredientsContainer {
+  height: 90%;
+  position: relative;
+}
 
 .Profile {
   width: 40px;
@@ -298,18 +293,11 @@ button:hover {
   text-align: center;
 }
 
-.NumberOfPersonsFieldContainer {
-  position: absolute;
-  height: 35px;
-  width: 30%;
-}
-
 .NumberOfPersonsField {
   transform: scale(1.5);
   display: flex;
   justify-content: center;
   margin-left: 22px;
-  /* margin-top: 10%; */
 }
 
 #NumberOfPersonsFieldToast {
@@ -336,7 +324,7 @@ button:hover {
   margin: 0;
 }
 
-.ContainerRight
+.FrontPageContainerRight
   > .ContainerRightTop
   > .ContainerRightColumn
   > .NumberOfPersonsField
@@ -359,7 +347,6 @@ button:hover {
 
 .ContainerRightColumn {
   float: left;
-  /*width: 33.33%;*/
   justify-content: center;
   margin-top: 3%;
 }
@@ -383,41 +370,42 @@ button:hover {
 
 .dropdown {
   position: relative;
-}
-
-.menu {
-  position: absolute;
-  list-style-type: none;
   margin: 5px 0;
   padding: 0;
-  border: 1px solid grey;
-  width: 150px;
-  transform: translateY(-5px);
-  transform: translateX(-105px);
   z-index: 1000;
 }
 
-.menu > li {
-  margin: 0;
-  background-color: white;
-}
-
-.menu > li:hover {
-  background-color: lightgray;
-}
-
-.menu > li > button {
+.dropdown-content {
+  list-style: none;
+  position: absolute;
+  top: -1em;
+  right: 5em;
   width: 100%;
-  height: 100%;
-  text-align: left;
+}
 
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 5px;
-  margin: 0;
-  font: inherit;
+.dropdown-content li {
+  position: relative;
+  right: 100%;
+  width: 155px;
+  border-radius: 0em;
+}
+.dropdown-button {
+  display: flex;
+  justify-content: space-between;
   cursor: pointer;
+  border-radius: 0px;
+}
+.dropdown-button:focus + .dropdown-content li {
+  right: 0;
+}
+#FavoritesButton{
+  border-radius: 0px;
+}
+#SettingsButton{
+  border-radius: 0px;
+}
+#LogoutButton{
+  border-radius: 0px;
 }
 
 #ExcludeList {
@@ -438,7 +426,7 @@ button:hover {
   border-radius: 5px;
 }
 
-.RemoveAllExcludeIngredientsButton {
+.RemoveAllButton {
   margin-top: 5%;
   margin-left: 1%;
 }
@@ -515,12 +503,13 @@ input[type="password"] {
   width: 96%;
 }
 
-.imgcontainer {
+.ModalHeaderContainer {
   text-align: center;
   margin: 24px 0 12px 0;
 }
 
-.favoriteRecipesContainer {
+.scrollableModalContainer,
+#AdditionalOwnedIngredientsModalContainer {
   overflow: auto;
   display: block;
   padding: 16px;
@@ -555,8 +544,8 @@ input:checked + .slider:before {
   transform: translate(-50%, -50%);
 }
 
-input[type="range"]{
-  width:100%;
+input[type="range"] {
+  width: 100%;
 }
 
 /* Apply style only when printing */
@@ -589,16 +578,20 @@ input[type="range"]{
   margin: 1cm;
 }
 
+.BottomButtonsSpacer {
+  padding-bottom: 10%;
+}
+
 .ingredientsList > ul {
   padding-left: 40px;
 }
 
 .toggleButtonLeft {
-	border-Radius: '5px 0px 0px 5px';
+  border-radius: "5px 0px 0px 5px";
 }
 
 .toggleButtonRight {
-	border-Radius: '0px 5px 5px 0px';
+  border-radius: "0px 5px 5px 0px";
 }
 
 .toggleButton {
@@ -612,13 +605,13 @@ input[type="range"]{
   border-color: #113946;
 }
 
-.toggleButton button{
+.toggleButton button {
   background-color: white;
   color: black;
   border: 0;
-  text-transform:none;
-  width:40%;
-  margin:8px;
+  text-transform: none;
+  width: 40%;
+  margin: 8px;
   text-align: center;
   font-size: 14px;
   font-weight: 550;
@@ -627,7 +620,8 @@ input[type="range"]{
   text-transform: uppercase;
 }
 
-.slidecontainer h3,p {
+.SliderContainer h3,
+p {
   display: inline;
 }
 

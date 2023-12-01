@@ -12,7 +12,7 @@ public class RecipeHistoryRequest
     public Guid UserId { get; set; }
     public string SessionToken { get; set; }
 
-    
+
     public RecipeHistoryRequest(Guid userId, string sessionToken)
     {
         UserId = userId;

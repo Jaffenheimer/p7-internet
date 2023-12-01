@@ -4,11 +4,11 @@
 export { default as OwnedIngredientsList } from "./OwnedIngredientsList";
 export { default as RecipeTitle } from "./RecipeTitle";
 export { default as AddIngredientsForm } from "./AddIngredientsForm";
-export { default as SearchBar } from "./SearchBar";
-export { default as ContainerLeft } from "./ContainerLeft";
+export { default as FrontPageContainerLeft } from "./FrontPageContainerLeft";
 export { default as RecipeSelectionContainerLeft } from "./RecipeSelectionContainerLeft";
-export { default as ContainerRight } from "./ContainerRight";
-export { default as GenerateRecipeButton } from "./GenerateRecipeButton";
+export { default as FrontPageContainerRight } from "./FrontPageContainerRight";
+export { default as RecipeSelectionContainerRight } from "./RecipeSelectionContainerRight";
+export { default as GenerateRecipesButton } from "./GenerateRecipesButton";
 export { default as ProfilePicture } from "./ProfilePicture";
 export { default as NumberOfPersonsField } from "./NumberOfPersonsField";
 export { default as RecipeView } from "./RecipeView";
@@ -17,6 +17,9 @@ export { default as ExcludeList } from "./ExcludeList";
 export { default as RecipeIngredientElement } from "./RecipeIngredientElement";
 export { default as IngredientsList } from "./IngredientsList";
 export { default as FrontPageButton } from "./FrontPageButton";
+export { default as AdditionalOwnedIngredientsModalContainer } from "./AdditionalOwnedIngredientsModalContainer";
+export { default as ModalContent } from "./ModalContent";
+export { default as CloseModalCross } from "./CloseModalCross";
 
 //pages
 export { default as FullRecipeView } from "../pages/FullRecipeView";
@@ -26,3 +29,4 @@ export { default as RecipeSelection } from "../pages/RecipeSelection";
 //objects
 export { default as Recipe } from "../objects/Recipe";
 export { default as Pages } from "../objects/Pages";
+// export { default as Stores } from "../objects/Stores";

@@ -14,8 +14,6 @@ const ExcludeList = () => {
     (state) => state.recipeGeneration.excludeList
   );
 
-  //Gets the length from the array from store
-
   //Function for handling the remove feature
   const handleRemove = (event, ingredient) => {
     event.preventDefault();
@@ -28,7 +26,7 @@ const ExcludeList = () => {
   }
 
   return (
-    <div id="ExcludeList">
+    <div id="ExcludeList" data-testid="ExcludeList">
       <h3 id="ExcludeListText">Ekskluder ingredienser:</h3>
       <AddIngredientsForm
         addIngredient={recipeGenerationActions.addExcludedIngredient}

@@ -8,15 +8,15 @@ const OwnedIngredientsList = () => {
   const ownedIngredientsList = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
   );
-  const dispath = useDispatch();
+  const dispatch = useDispatch();
 
   const handleRemove = (event, ingredient) => {
     event.preventDefault();
-    dispath(recipeGenerationActions.removeOwnedIngredients(ingredient.id));
+    dispatch(recipeGenerationActions.removeOwnedIngredients(ingredient.id));
   };
 
   return (
-    <div id="OwnedIngredientsList">
+    <div id="OwnedIngredientsList" data-testid="OwnedIngredientsList">
       <IngredientsList
         ingredients={ownedIngredientsList}
         ListElement={IngredientElement}

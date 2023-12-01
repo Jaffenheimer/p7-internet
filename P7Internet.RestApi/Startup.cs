@@ -63,7 +63,7 @@ namespace P7Internet
                 });
 
                 program.UseRouting();
-                program.UseCors();
+                program.UseCors(x => x.AllowAnyHeader().AllowAnyMethod().WithOrigins("http://localhost:3000"));
                 program.UseEndpoints(endpoints => { endpoints.MapControllers(); });
             }
         }

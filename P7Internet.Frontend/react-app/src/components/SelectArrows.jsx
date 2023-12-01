@@ -30,9 +30,24 @@ const SelectArrows = () => {
   }
 
   return (
-    <div id="SelectArrows" onKeyDown={handleKeyPress} tabIndex="0">
-      <img src={leftArrow} alt="Left Arrow" onClick={clickLeft} />
-      <img src={rightArrow} alt="right Arrow" onClick={clickRight} />
+    <div
+      id="SelectArrows"
+      data-testid="SelectArrows"
+      onKeyDown={handleKeyPress}
+      tabIndex="0"
+    >
+      <img
+        src={leftArrow}
+        alt="Left Arrow"
+        onClick={clickLeft}
+        data-testid="selectArrowLeft"
+      />
+      <img
+        src={rightArrow}
+        alt="right Arrow"
+        onClick={clickRight}
+        data-testid="selectArrowRight"
+      />
     </div>
   );
 };

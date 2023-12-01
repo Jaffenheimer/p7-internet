@@ -1,20 +1,20 @@
 import React, { useState } from "react";
 import heartHollow from "../data/heart-hollow.svg";
 import heartSolid from "../data/heart-solid.svg";
-import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../features/userSlice";
 import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 
 const RecipeTitle = ({ title }) => {
   const dispatch = useDispatch();
-  const loggedInUser = useSelector((state) => state.user.loggedInUser);
+  const loggedIn = useSelector((state) => state.user.loggedIn);
+  const favoriteRecipes = useSelector((state) => state.user.favoriteRecipes);
   const [heart, setHeart] = useState(heartHollow);
 
   function handleClick(event) {
     event.preventDefault();
-    if (loggedInUser.length !== 1) {
-      //if not logged in
+    if (loggedIn === false) {
       dispatch(pageActions.openLoginModal());
     } else {
       if (heart === heartSolid) {
@@ -30,12 +30,12 @@ const RecipeTitle = ({ title }) => {
   function SetHeartIconOnChange() {
     //component that dynamically changes heart icon when using arrows
     useEffect(() => {
-      if (loggedInUser.length !== 1) {
-        setHeart(heartHollow);
-      } else if (loggedInUser[0]["heartedRecipes"].includes(title)) {
-        setHeart(heartSolid);
-      } else {
-        setHeart(heartHollow);
+      if (favoriteRecipes !== undefined) {
+        if (favoriteRecipes.includes(title)) {
+          setHeart(heartSolid);
+        } else {
+          setHeart(heartHollow);
+        }
       }
     });
   }
@@ -45,6 +45,7 @@ const RecipeTitle = ({ title }) => {
       <h1 id="RecipeTitle">
         {title}
         <img
+          data-testid="heartImage"
           src={heart}
           alt="heart"
           className="no-print"

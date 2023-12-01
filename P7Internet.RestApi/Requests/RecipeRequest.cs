@@ -19,8 +19,9 @@ public class RecipeRequest
     public int? AmountOfPeople { get; set; }
     public List<string> ExcludedIngredients { get; set; }
     public List<string> DietaryRestrictions { get; set; }
-    
-    public RecipeRequest(Guid? userId, string? sessionToken,List<string> ingredients, int? amount, List<string> excludedIngredients, List<string> dietaryRestrictions, int? amountOfPeople)
+
+    public RecipeRequest(Guid? userId, string? sessionToken, List<string> ingredients, int? amount,
+        List<string> excludedIngredients, List<string> dietaryRestrictions, int? amountOfPeople)
     {
         UserId = userId;
         SessionToken = sessionToken;
