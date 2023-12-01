@@ -26,12 +26,12 @@ namespace P7Internet.Services
         }
         public SallingService(string? apiKey, HttpClient httpClient)
         {
+            _httpClient = httpClient;
             _apiKey = apiKey;
-            _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://api.sallinggroup.com/");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
         }
-        public async Task<List<Offer>> GetRelevantProducts(string query)
+        public virtual async Task<List<Offer>> GetRelevantProducts(string query)
         {
             var url = new Uri(QueryHelpers.AddQueryString(Path.Combine(_httpClient.BaseAddress.ToString(), "v1-beta/product-suggestions/relevant-products"), "query", query));
             var request = new HttpRequestMessage(HttpMethod.Get, url);

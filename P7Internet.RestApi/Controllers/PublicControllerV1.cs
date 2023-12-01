@@ -36,7 +36,7 @@ public class PublicControllerV1 : ControllerBase
         IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository,
         ICachedOfferRepository cachedOfferRepository, EmailService emailService,
         IUserSessionRepository userSessionRepository, IIngredientRepository ingredientRepository,
-        SallingService sallingService)
+        SallingService sallingService, ETilbudsAvisService eTilbudsAvisService)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
@@ -46,8 +46,8 @@ public class PublicControllerV1 : ControllerBase
         _emailService = emailService;
         _userSessionRepository = userSessionRepository;
         _ingredientRepository = ingredientRepository;
-        _eTilbudsAvisService = new ETilbudsAvisService();
         _sallingService = sallingService;
+        _eTilbudsAvisService = eTilbudsAvisService;
     }
 
     #region Recipe Endpoints

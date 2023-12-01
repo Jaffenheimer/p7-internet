@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using OpenAI_API;
 using OpenAI_API.Chat;
 using OpenAI_API.Models;
@@ -26,7 +27,7 @@ public class OpenAiService
     /// </summary>
     /// <param name="req"></param>
     /// <returns>A list of RecipeResponses corresponding to the amount of requested recipes</returns>
-    public virtual RecipeResponse GetAiResponse(RecipeRequest req)
+    public virtual async Task<RecipeResponse> GetAiResponse(RecipeRequest req)
     {
         var request = new ChatRequest()
         {
@@ -46,10 +47,10 @@ public class OpenAiService
         var recipeId = Guid.NewGuid();
         try
         {
-            var completionResult = _openAi.Chat.CreateChatCompletionAsync(request);
-            var result = completionResult.Result;
+            var completionResult = await _openAi.Chat.CreateChatCompletionAsync(request);
+            var result = completionResult;
             if (result.Choices.Count == 0) return null;
-            return new RecipeResponse(result.Choices[0].Message.Content, recipeId);
+            return new RecipeResponse(result.Choices[0].Message.Content, null, recipeId);
         }
         catch (Exception e)
         {

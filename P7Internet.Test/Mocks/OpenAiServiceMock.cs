@@ -14,10 +14,10 @@ public class OpenAiServiceMock
 {
     public Mock<OpenAiService> openAiServiceMock = new Mock<OpenAiService>();
     public RecipeRequest recipeRequest = new RecipeRequest(Guid.NewGuid(), It.IsAny<string>(), It.IsAny<List<string>>(), It.IsAny<int>(), It.IsAny<List<string>>(), It.IsAny<List<string>>(), It.IsAny<int>());
-    private readonly RecipeResponse recipeResponse = new RecipeResponse("testRecipe", Guid.NewGuid());
+    private readonly RecipeResponse recipeResponse = new RecipeResponse("testRecipe", null,Guid.NewGuid());
     public OpenAiServiceMock()
     {
-        openAiServiceMock.Setup(x => x.GetAiResponse(recipeRequest)).Returns(new RecipeResponse("test", Guid.NewGuid()));
+        openAiServiceMock.Setup(x => x.GetAiResponse(recipeRequest)).ReturnsAsync(new RecipeResponse("test", null,Guid.NewGuid()));
     }
     
     public string ComposePromptFromRecipeRequest(RecipeRequest req)

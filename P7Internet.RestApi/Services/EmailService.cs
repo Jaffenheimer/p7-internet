@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using P7Internet.Shared;
 using SendGrid;
 using SendGrid.Helpers.Mail;
 
@@ -40,7 +41,7 @@ public class EmailService
     /// There is no return value to this function
     /// </summary>
     /// <param name="user"></param>
-    public async Task ResetPassword(User user)
+    public virtual async Task ResetPassword(User user)
     {
         var from = new EmailAddress($"jonathanwisborgfog@gmail.com", "P7Internet");
         var subject = "Reset Password has been requested";

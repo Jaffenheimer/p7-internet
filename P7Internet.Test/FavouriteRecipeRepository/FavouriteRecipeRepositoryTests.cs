@@ -30,7 +30,7 @@ namespace P7Internet.Repositories.Tests
         [SetUp]
         public void SetUp()
         {
-            _testRecipe = new Recipe(new Guid("d3d01e66-2943-463c-ab22-4abd09f1bd7f"), "TestRecipe", "TestDesc", new List<string>());
+            _testRecipe = new Recipe(new Guid("d3d01e66-2943-463c-ab22-4abd09f1bd7f"),"TestDesc");
             _testUser = new User("TestUser", "test@example.com") { Id = Guid.NewGuid(), CreatedAt = DateTime.Now, PasswordHash = "361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB", PasswordSalt = "salt1234salt" };
             _recipeCacheRepositoryMock = new Mock<IRecipeCacheRepository>();
 
