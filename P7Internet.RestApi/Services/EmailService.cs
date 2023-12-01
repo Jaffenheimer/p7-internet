@@ -11,8 +11,8 @@ public class EmailService
 
     public EmailService()
     {
-        
     }
+
     public EmailService(string? apiKey)
     {
         _client = new SendGridClient(apiKey);

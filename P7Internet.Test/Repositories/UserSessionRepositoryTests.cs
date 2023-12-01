@@ -1,20 +1,12 @@
-﻿using Dapper;
+﻿using System;
+using System.Data;
+using Dapper;
 using Moq;
 using Moq.Dapper;
 using NUnit.Framework;
-using P7Internet.Persistence.CachedIngredientPricesRepository;
-using P7Internet.Persistence.CachedOfferRepository;
 using P7Internet.Persistence.Connection;
-using P7Internet.Persistence.UserRepository;
 using P7Internet.Persistence.UserSessionRepository;
 using P7Internet.Shared;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static P7Internet.Repositories.Tests.CachedOfferRepositoryTests;
 
 namespace P7Internet.Repositories.Tests
 {
@@ -27,6 +19,7 @@ namespace P7Internet.Repositories.Tests
         private Mock<IDbConnection> _dbConnection = new Mock<IDbConnection>();
         private Mock<IDbConnectionFactory> _dbConnectionFactory = new Mock<IDbConnectionFactory>();
         private IUserSessionRepository _userSessionRepository;
+
         public struct TestUser
         {
             public string Id { get; set; }
@@ -54,10 +47,27 @@ namespace P7Internet.Repositories.Tests
         [SetUp]
         public void SetUp()
         {
-            _testUserStruct = new TestUser("TestUser", "test@example.com") { Id = Guid.NewGuid().ToString(), Creation_date = new DateTime(2023, 11, 23), Password_hash = new string("361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB"), Password_salt = "salt1234salt", Email = "test@example.com", Name = "TestUser" };
-            _testUser = new User("TestUser", "test@example.com") { Id = Guid.NewGuid(), CreatedAt = DateTime.Now, PasswordHash = "361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB", PasswordSalt = "salt1234salt" };
-            _testTokenStruct = new TestToken() {UserId = _testUser.Id.ToString(), SessionToken = "fw6ISluwyE609VkFFcZ4ug==", ExpiresAt = new DateTime(2023, 12, 24, 15, 0, 0) };
-            _dbConnection.SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<TestUser>(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(_testUserStruct);
+            _testUserStruct = new TestUser("TestUser", "test@example.com")
+            {
+                Id = Guid.NewGuid().ToString(), Creation_date = new DateTime(2023, 11, 23),
+                Password_hash = new string("361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB"),
+                Password_salt = "salt1234salt", Email = "test@example.com", Name = "TestUser"
+            };
+            _testUser = new User("TestUser", "test@example.com")
+            {
+                Id = Guid.NewGuid(), CreatedAt = DateTime.Now,
+                PasswordHash = "361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB",
+                PasswordSalt = "salt1234salt"
+            };
+            _testTokenStruct = new TestToken()
+            {
+                UserId = _testUser.Id.ToString(), SessionToken = "fw6ISluwyE609VkFFcZ4ug==",
+                ExpiresAt = new DateTime(2023, 12, 24, 15, 0, 0)
+            };
+            _dbConnection
+                .SetupDapperAsync(
+                    c => c.QuerySingleOrDefaultAsync<TestUser>(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(_testUserStruct);
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
             _userSessionRepository = new UserSessionRepository(_dbConnectionFactory.Object);
         }
@@ -67,7 +77,8 @@ namespace P7Internet.Repositories.Tests
         {
             //Arrange
             var testToken = "fw6ISluwyE609VkFFcZ4ug==";
-            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(1);
 
             //Act
             var token = _userSessionRepository.GenerateSessionToken(_testUser.Id).Result;
@@ -82,7 +93,10 @@ namespace P7Internet.Repositories.Tests
         {
             //Arrange
             var testToken = "fw6ISluwyE609VkFFcZ4ug==";
-            _dbConnection.SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<TestToken>(_testUser.Id.ToString(), new {_testUser.Id, testToken}, null, null, null)).ReturnsAsync(_testTokenStruct);
+            _dbConnection
+                .SetupDapperAsync(c =>
+                    c.QuerySingleOrDefaultAsync<TestToken>(_testUser.Id.ToString(), new {_testUser.Id, testToken}, null,
+                        null, null)).ReturnsAsync(_testTokenStruct);
 
             //Act
             var status = _userSessionRepository.CheckIfTokenIsValid(_testUser.Id, testToken).Result;
@@ -90,13 +104,17 @@ namespace P7Internet.Repositories.Tests
             //Assert
             Assert.IsTrue(status);
         }
+
         [Test()]
         public void CheckIfTokenIsValidFail()
         {
             //Arrange
             var testToken = "fw6ISluwyE609VkFFcZ4ug==";
             _testTokenStruct.ExpiresAt = new DateTime(2023, 11, 23, 15, 0, 0);
-            _dbConnection.SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<TestToken>(_testUser.Id.ToString(), new { _testUser.Id, testToken }, null, null, null)).ReturnsAsync(_testTokenStruct);
+            _dbConnection
+                .SetupDapperAsync(c =>
+                    c.QuerySingleOrDefaultAsync<TestToken>(_testUser.Id.ToString(), new {_testUser.Id, testToken}, null,
+                        null, null)).ReturnsAsync(_testTokenStruct);
 
             //Act
             var status = _userSessionRepository.CheckIfTokenIsValid(_testUser.Id, testToken).Result;
@@ -109,7 +127,8 @@ namespace P7Internet.Repositories.Tests
         public void DeleteSessionTokenSuccess()
         {
             //Arrange
-            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(1);
 
             //Act
             var status = _userSessionRepository.DeleteSessionToken(_testUser.Id, _testTokenStruct.SessionToken).Result;

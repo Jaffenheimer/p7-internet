@@ -50,7 +50,7 @@ public class UserSessionRepository : IUserSessionRepository
     public async Task<bool> CheckIfTokenIsValid(Guid userId, string token)
     {
         var query = $@"SELECT * FROM {TableName} WHERE UserId = @userId AND SessionToken = @token";
-        var result = await Connection.QuerySingleOrDefaultAsync(query, new { userId, token });
+        var result = await Connection.QuerySingleOrDefaultAsync(query, new {userId, token});
         if (result != null && result.ExpiresAt > DateTime.UtcNow)
         {
             return true;
@@ -69,7 +69,7 @@ public class UserSessionRepository : IUserSessionRepository
     public async Task<bool> DeleteSessionToken(Guid userId, string sessionToken)
     {
         var query = $@"DELETE FROM {TableName} WHERE UserId = @UserId AND SessionToken = @SessionToken";
-        return await Connection.ExecuteAsync(query, new { UserId = userId, SessionToken = sessionToken }) > 0;
+        return await Connection.ExecuteAsync(query, new {UserId = userId, SessionToken = sessionToken}) > 0;
     }
 
     /// <summary>

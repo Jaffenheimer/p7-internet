@@ -1,19 +1,14 @@
-﻿using Dapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using Dapper;
 using Moq;
 using Moq.Dapper;
-using Newtonsoft.Json;
 using NUnit.Framework;
 using P7Internet.Persistence.CachedIngredientPricesRepository;
 using P7Internet.Persistence.CachedOfferRepository;
 using P7Internet.Persistence.Connection;
-using P7Internet.Persistence.UserRepository;
 using P7Internet.Shared;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace P7Internet.Repositories.Tests
 {
@@ -25,6 +20,7 @@ namespace P7Internet.Repositories.Tests
         private Mock<IDbConnection> _dbConnection = new Mock<IDbConnection>();
         private Mock<IDbConnectionFactory> _dbConnectionFactory = new Mock<IDbConnectionFactory>();
         private ICachedOfferRepository _cachedOfferRepository;
+
         public struct TestOffer
         {
             public string Id { get; set; }
@@ -42,8 +38,16 @@ namespace P7Internet.Repositories.Tests
         [SetUp]
         public void SetUp()
         {
-            _testOfferStruct = new TestOffer() {Id = "TestId", Name = "TestOffer", Description = "TestDesc", Price = 15.95m, Currency = "DKK", Size = new KeyValuePair<float, float>(1,5), Store = "Føtex", Created = new DateTime(2023, 12, 24), Ending = new DateTime(2023, 12, 31)};
-            _dbConnection.SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<TestOffer>(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(_testOfferStruct);
+            _testOfferStruct = new TestOffer()
+            {
+                Id = "TestId", Name = "TestOffer", Description = "TestDesc", Price = 15.95m, Currency = "DKK",
+                Size = new KeyValuePair<float, float>(1, 5), Store = "Føtex", Created = new DateTime(2023, 12, 24),
+                Ending = new DateTime(2023, 12, 31)
+            };
+            _dbConnection
+                .SetupDapperAsync(c =>
+                    c.QuerySingleOrDefaultAsync<TestOffer>(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(_testOfferStruct);
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
             _cachedOfferRepository = new CachedOfferRepository(_dbConnectionFactory.Object);
         }
@@ -52,7 +56,10 @@ namespace P7Internet.Repositories.Tests
         public void GetOfferSuccess()
         {
             //Arrange
-            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync<TestOffer>(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(_testOfferStruct);
+            _dbConnection
+                .SetupDapperAsync(
+                    c => c.QueryFirstOrDefaultAsync<TestOffer>(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(_testOfferStruct);
 
             //Act
             var offer = _cachedOfferRepository.GetOffer(It.IsAny<string>()).Result;
@@ -65,7 +72,10 @@ namespace P7Internet.Repositories.Tests
         public void GetOfferByStoreSuccess()
         {
             //Arrange
-            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync<TestOffer>(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(_testOfferStruct);
+            _dbConnection
+                .SetupDapperAsync(
+                    c => c.QueryFirstOrDefaultAsync<TestOffer>(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(_testOfferStruct);
 
             //Act
             var offer = _cachedOfferRepository.GetOfferByStore(It.IsAny<string>(), It.IsAny<string>()).Result;
@@ -78,10 +88,12 @@ namespace P7Internet.Repositories.Tests
         public void UpsertOfferSuccess()
         {
             //Arrange
-            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(1);
 
             //Act
-            var status = _cachedOfferRepository.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>()).Result;
+            var status = _cachedOfferRepository.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>())
+                .Result;
 
 
             //Assert

@@ -1,4 +1,7 @@
-﻿using Dapper;
+﻿using System;
+using System.Collections.Generic;
+using System.Data;
+using Dapper;
 using Moq;
 using Moq.Dapper;
 using NUnit.Framework;
@@ -6,15 +9,8 @@ using P7Internet.Persistence.Connection;
 using P7Internet.Persistence.FavouriteRecipeRepository;
 using P7Internet.Persistence.RecipeCacheRepository;
 using P7Internet.Shared;
-using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static P7Internet.Repositories.Tests.RecipeCacheRepositoryTests;
 
-namespace P7Internet.Repositories.Tests
+namespace P7Internet.Test.FavouriteRecipeRepository
 {
     [TestFixture()]
     public class FavouriteRecipeRepositoryTests
@@ -30,19 +26,28 @@ namespace P7Internet.Repositories.Tests
         [SetUp]
         public void SetUp()
         {
-            _testRecipe = new Recipe(new Guid("d3d01e66-2943-463c-ab22-4abd09f1bd7f"),"TestDesc");
-            _testUser = new User("TestUser", "test@example.com") { Id = Guid.NewGuid(), CreatedAt = DateTime.Now, PasswordHash = "361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB", PasswordSalt = "salt1234salt" };
+            _testRecipe = new Recipe(new Guid("d3d01e66-2943-463c-ab22-4abd09f1bd7f"), "TestDesc");
+            _testUser = new User("TestUser", "test@example.com")
+            {
+                Id = Guid.NewGuid(), CreatedAt = DateTime.Now,
+                PasswordHash = "361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB",
+                PasswordSalt = "salt1234salt"
+            };
             _recipeCacheRepositoryMock = new Mock<IRecipeCacheRepository>();
 
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
-            _favRecipeCacheRepository = new FavouriteRecipeRepository(_dbConnectionFactory.Object, _recipeCacheRepositoryMock.Object);
+            _favRecipeCacheRepository =
+                new Persistence.FavouriteRecipeRepository.FavouriteRecipeRepository(_dbConnectionFactory.Object,
+                    _recipeCacheRepositoryMock.Object);
         }
 
         [Test()]
         public void GetSuccess()
         {
             //Arrange
-            _dbConnection.SetupDapperAsync(c => c.QueryAsync(It.IsAny<string>(), new { UserId = _testUser.Id }, null, null, null)).ReturnsAsync(value: null);
+            _dbConnection
+                .SetupDapperAsync(c => c.QueryAsync(It.IsAny<string>(), new {UserId = _testUser.Id}, null, null, null))
+                .ReturnsAsync(value: null);
 
             //Act
             var status = _favRecipeCacheRepository.Get(_testUser.Id).Result;
@@ -55,10 +60,12 @@ namespace P7Internet.Repositories.Tests
         public void UpsertSuccess()
         {
             //Arrange
-            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), new { UserId = _testUser.Id, RecipeId = _testRecipe.Id }, null, null, null)).ReturnsAsync(1);
-            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(value: null);
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(),
+                new {UserId = _testUser.Id, RecipeId = _testRecipe.Id}, null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(value: null);
             _recipeCacheRepositoryMock.Setup(x => x.CheckIfRecipeExist(It.IsAny<Guid>())).ReturnsAsync(true);
-            
+
             //Act
             var status = _favRecipeCacheRepository.Upsert(_testUser.Id, _testRecipe.Id).Result;
 
@@ -71,7 +78,8 @@ namespace P7Internet.Repositories.Tests
         public void DeleteSuccess()
         {
             //Arrange
-            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), new { UserId = _testUser.Id, RecipeId = _testRecipe.Id }, null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(),
+                new {UserId = _testUser.Id, RecipeId = _testRecipe.Id}, null, null, null)).ReturnsAsync(1);
 
             //Act
             var status = _favRecipeCacheRepository.Delete(_testUser.Id, _testRecipe.Id).Result;
@@ -86,8 +94,10 @@ namespace P7Internet.Repositories.Tests
         {
             //Arrange
             List<Guid> guids = new List<Guid>();
-            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), new { UserId = _testUser.Id, RecipeId = _testRecipe.Id }, null, null, null)).ReturnsAsync(1);
-            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(value: null);
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(),
+                new {UserId = _testUser.Id, RecipeId = _testRecipe.Id}, null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(value: null);
 
             //Act
             var status = _favRecipeCacheRepository.GetHistory(_testUser.Id).Result;
@@ -101,7 +111,8 @@ namespace P7Internet.Repositories.Tests
         {
             //Arrange
             _recipeCacheRepositoryMock.Setup(x => x.CheckIfRecipeExist(It.IsAny<Guid>())).ReturnsAsync(true);
-            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(1);
 
             //Act
             var status = _favRecipeCacheRepository.UpsertRecipesToHistory(_testUser.Id, It.IsAny<Guid>()).Result;

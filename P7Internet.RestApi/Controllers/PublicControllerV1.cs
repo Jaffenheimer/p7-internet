@@ -99,7 +99,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 
@@ -210,7 +210,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 

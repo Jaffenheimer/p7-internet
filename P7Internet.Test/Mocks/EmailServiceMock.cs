@@ -10,7 +10,6 @@ public class EmailServiceMock
 
     public EmailServiceMock()
     {
-        
     }
 
     /// <summary>

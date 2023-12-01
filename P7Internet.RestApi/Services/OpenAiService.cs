@@ -12,15 +12,16 @@ namespace P7Internet.Services;
 public class OpenAiService
 {
     private readonly OpenAIAPI _openAi;
+
     public OpenAiService()
     {
-            
     }
+
     public OpenAiService(string? apiKey)
     {
         _openAi = new OpenAIAPI(apiKey);
     }
-    
+
     /// <summary>
     /// Makes a request to the OpenAI API to generate a recipe response, this is done from a list of ingredients,
     /// excluded ingredients, dietary restrictions and amount
@@ -57,7 +58,7 @@ public class OpenAiService
             return RecipeResponse.Error(e.Message, recipeId);
         }
     }
-    
+
     /// <summary>
     /// Composes a promt from a RecipeRequest
     /// </summary>
@@ -77,7 +78,6 @@ public class OpenAiService
 
         if (req.Ingredients != null)
         {
-            
             prompt += $" med disse ingredienser {string.Join(", ", req.Ingredients)}";
         }
 
@@ -90,12 +90,12 @@ public class OpenAiService
         {
             prompt += $" der er {string.Join(",", req.DietaryRestrictions)}";
         }
-        if(req.AmountOfPeople != null)
+
+        if (req.AmountOfPeople != null)
         {
             prompt += $" til {req.AmountOfPeople} personer";
         }
 
         return prompt;
     }
-    
 }

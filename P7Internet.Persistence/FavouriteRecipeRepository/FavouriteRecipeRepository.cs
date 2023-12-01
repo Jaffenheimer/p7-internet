@@ -61,7 +61,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
         var query = $@"INSERT INTO {TableName} (UserId, RecipeId)
                        VALUES (@UserId, @RecipeId)";
 
-        return await Connection.ExecuteAsync(query, new { UserId = userId, RecipeId = recipeId }) > 0;
+        return await Connection.ExecuteAsync(query, new {UserId = userId, RecipeId = recipeId}) > 0;
     }
 
     /// <summary>
@@ -102,7 +102,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     {
         var query = $@"SELECT RecipeId FROM {HistoryTableName} WHERE UserId = @UserId";
 
-        var gridReader = await Connection.QueryMultipleAsync(query, new { UserId = userId });
+        var gridReader = await Connection.QueryMultipleAsync(query, new {UserId = userId});
 
         var guids = gridReader.Read<Guid>();
 
@@ -130,7 +130,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
         var query = $@"INSERT INTO {HistoryTableName} (UserId, RecipeId)
                        VALUES (@UserId, @RecipeId)";
 
-        var result = await Connection.ExecuteAsync(query, new { UserId = userId, RecipeId = recipeId });
+        var result = await Connection.ExecuteAsync(query, new {UserId = userId, RecipeId = recipeId});
 
         return result > 0;
     }

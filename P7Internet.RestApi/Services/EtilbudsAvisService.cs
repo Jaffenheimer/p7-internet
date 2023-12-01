@@ -20,7 +20,6 @@ public class ETilbudsAvisService
 
     public ETilbudsAvisService()
     {
-        
     }
 
     public ETilbudsAvisService(string? apiKey, HttpClient httpClient)
