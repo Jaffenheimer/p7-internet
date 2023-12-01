@@ -9,7 +9,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useUserLogOutMutation } from "../services/usersEndpoints";
 import { deleteCookies, retriveCookie } from "../helperFunctions/cookieHandler";
 
-const ProfilePicture = ({ openFavoritesModal }) => {
+const ProfilePicture = ({ openFavoritesModal, openSettingModal }) => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -23,6 +23,7 @@ const ProfilePicture = ({ openFavoritesModal }) => {
   };
 
   const handleSettings = () => {
+    openSettingModal();
     setOpen(false);
   };
 

@@ -11,7 +11,8 @@ export function checkValidEmail(email) {
 }
 
 export function checkValidVerificationCode(verificationCode) {
-  const verificationCodeRegex = /^[A-Z0-9]+$/;
+  // TODO: CHANGE THE REGEX TO ACTUAL REGEX FOR GUID
+  const verificationCodeRegex = /./;
   const isValidVerificationCode = verificationCodeRegex.exec(verificationCode);
   if (isValidVerificationCode === null) return false;
   else return true;
@@ -35,6 +36,19 @@ export function checkValidPassword(password) {
   if (isValidPassword === null) return false;
   else return true;
 }
+
+export const checkValidTwoPasswords = (password1, password2) => {
+  if (!(password1 === password2)) {
+    toast.error("De to kodeord er ikke ens. Prøv igen");
+  } else if (!checkValidPassword(password1) || !checkValidPassword(password2)) {
+    toast.error(
+      "Kodeordet skal være mindst 8 tegn langt og indeholde mindst et stort bogstav, et lille bogstav og et tal"
+    );
+  } else {
+    return true;
+  }
+  return false;
+};
 
 export const inputValidation = (username, password, email) => {
   if (checkValidEmail(email) === false) {

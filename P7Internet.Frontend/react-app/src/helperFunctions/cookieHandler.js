@@ -27,8 +27,18 @@ export const deleteCookies = () => {
   document.cookie = `sessionToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };
 
-export const getCookies = (cookies) => {
+export const getCookieUserId = () => {
+  let cookies = document.cookie.split(";");
+  for (let cookie in cookies) {
+    if (cookies[cookie].includes("userid")) {
+      return cookies[cookie].split("=")[1];
+    }
+  }
+};
+
+export const getCookies = () => {
   let username, userid, sessionToken;
+  let cookies = document.cookie.split(";");
   for (let cookie in cookies) {
     if (cookies[cookie].includes("username")) {
       username = cookies[cookie].split("=")[1];

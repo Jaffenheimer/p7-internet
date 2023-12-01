@@ -5,6 +5,7 @@ const initialState = {
   page: Pages.frontPage,
   loginModalShown: false,
   favoritesModalShown: false,
+  settingModalShown: false,
   additionalOwnedIngredientsModalContainerIsOpen: false,
 };
 
@@ -26,6 +27,12 @@ export const pageSlice = createSlice({
     },
     closeFavoritesModal(state) {
       state.favoritesModalShown = false;
+    },
+    openSettingModal(state) {
+      state.settingModalShown = true;
+    },
+    closeSettingModal(state) {
+      state.settingModalShown = false;
     },
     openAdditionalOwnedIngredientsModalContainer(state) {
       state.additionalOwnedIngredientsModalContainerIsOpen = true;

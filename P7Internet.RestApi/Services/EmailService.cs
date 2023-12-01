@@ -38,10 +38,10 @@ public class EmailService
     /// </summary>
     /// <param name="user"></param>
     /// <param name="token"></param>
-    public async Task ResetPassword(User user, string token)
+    public async Task SendVerificationCode(User user, string token, string requestTitle)
     {
         var from = new EmailAddress($"jonathanwisborgfog@gmail.com", "P7Internet");
-        var subject = "Reset Password has been requested";
+        var subject = $"${requestTitle} has been requested";
         var to = new EmailAddress($"{user.EmailAddress}", $"{user.Name}");
         var plainTextContent = "";
         var htmlContent =

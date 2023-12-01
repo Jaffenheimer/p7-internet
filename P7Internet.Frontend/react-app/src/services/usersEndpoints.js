@@ -25,9 +25,16 @@ const userEndpoints = apiSlice.injectEndpoints({
         body: "",
       }),
     }),
-    userResetPasswordRequest: builder.mutation({
+    userResetPasswordEmailRequest: builder.mutation({
       query: ({ email }) => ({
-        url: `/public/user/reset-password-request?email=${email}`,
+        url: `/public/user/reset-password-email-request?email=${email}`,
+        method: "POST",
+        body: "",
+      }),
+    }),
+    userResetPassword: builder.mutation({
+      query: ({ password, verificationCode }) => ({
+        url: `/public/user/reset-password?password=${password}&verificationCode=${verificationCode}`,
         method: "POST",
         body: "",
       }),
@@ -45,6 +52,13 @@ const userEndpoints = apiSlice.injectEndpoints({
         body: "",
       }),
     }),
+    userConfirmEmailRequest: builder.mutation({
+      query: ({ UserId }) => ({
+        url: `/public/user/confirm-email-request?UserId=${UserId}`,
+        method: "POST",
+        body: "",
+      }),
+    }),
   }),
   //Is a flag that tells redux that is does not override existing endpoints
   overrideExisting: false,
@@ -54,6 +68,8 @@ export const {
   useUserLoginMutation,
   useUserCreateMutation,
   useUserLogOutMutation,
-  useUserResetPasswordRequestMutation,
+  useUserResetPasswordEmailRequestMutation,
+  useUserResetPasswordMutation,
   useUserChangePasswordMutation,
+  useUserConfirmEmailRequestMutation,
 } = userEndpoints;

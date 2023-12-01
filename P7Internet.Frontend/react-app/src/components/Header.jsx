@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FavoritesModalContainer from "./FavoritesModalContainer";
 import { modalStyling } from "../objects/Modal";
 import ModalContent from "./ModalContent";
+import SettingBox from "./SettingBox";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -16,11 +17,16 @@ const Header = () => {
   const favoritesModalShown = useSelector(
     (state) => state.page.favoritesModalShown
   );
+  const settingModalShown = useSelector(
+    (state) => state.page.settingModalShown
+  );
 
   const openLoginModal = () => dispatch(pageActions.openLoginModal());
   const closeLoginModal = () => dispatch(pageActions.closeLoginModal());
   const openFavoritesModal = () => dispatch(pageActions.openFavoritesModal());
   const closeFavoritesModal = () => dispatch(pageActions.closeFavoritesModal());
+  const openSettingModal = () => dispatch(pageActions.openSettingModal());
+  const closeSettingModal = () => dispatch(pageActions.closeSettingModal());
 
   return (
     <div className="header no-print">
@@ -33,6 +39,17 @@ const Header = () => {
       >
         <LoginBox closeModal={closeLoginModal} />
       </Modal>
+
+      <Modal
+        isOpen={settingModalShown}
+        style={modalStyling}
+        onRequestClose={closeSettingModal}
+        contentLabel="Setting Modal"
+        ariaHideApp={false}
+      >
+        <SettingBox closeModal={closeSettingModal} />
+      </Modal>
+
       <Modal
         isOpen={favoritesModalShown}
         style={modalStyling}
@@ -48,9 +65,11 @@ const Header = () => {
       </Modal>
 
       <div className="title">Opskriftsgenerator</div>
-      {/* <SetLoggedInOnChange /> Dynamically check if user is logged in */}
       {loggedIn ? (
-        <ProfilePicture openFavoritesModal={openFavoritesModal} />
+        <ProfilePicture
+          openFavoritesModal={openFavoritesModal}
+          openSettingModal={openSettingModal}
+        />
       ) : (
         <button onClick={openLoginModal}>Log Ind</button>
       )}

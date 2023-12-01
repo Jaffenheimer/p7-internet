@@ -33,15 +33,10 @@ public interface IUserSessionRepository
     /// </summary>
     /// <param name="verificationCode"></param>
     /// <returns>A user if found null if not</returns>
+    public Task<string> GenerateVerificationCode(Guid userId, string codeType);
+
+    public Task<bool> VerificationCodeTypeMatchesAction(string verificationCode, string type);
     public Task<Guid?> GetUserIdFromVerificationCode(string verificationCode);
-
-    /// <summary>
-    /// Generates a verification code for the user and inserts it into the database
-    /// </summary>
-    /// <param name="userId"></param>
-    /// <returns>returns the generated token</returns>
-    public Task<string> GenerateVerificationCode(Guid userId);
-
     /// <summary>
     /// Deletes a verification token from the database
     /// </summary>

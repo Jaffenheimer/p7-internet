@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import {
   checkValidVerificationCode,
   inputValidation,
-  checkValidPassword,
+  checkValidTwoPasswords,
 } from "../helperFunctions/inputValidation";
 import { checkValidEmail } from "../helperFunctions/inputValidation";
 import { addCookies, getCookies } from "../helperFunctions/cookieHandler";
@@ -14,8 +14,10 @@ import "react-toastify/dist/ReactToastify.css";
 import {
   useUserCreateMutation,
   useUserLoginMutation,
-  useUserResetPasswordRequestMutation,
+  useUserResetPasswordEmailRequestMutation,
+  useUserResetPasswordMutation,
   useUserChangePasswordMutation,
+  useUserConfirmEmailRequestMutation,
 } from "../services/usersEndpoints";
 
 const LoginBox = ({ closeModal }) => {
@@ -35,18 +37,25 @@ const LoginBox = ({ closeModal }) => {
   //States used to fetch data from backend
   const [userLogin, { isLogInLoading }] = useUserLoginMutation();
   const [userCreate, { isCreateLoading }] = useUserCreateMutation();
-  const [userResetPasswordRequest, { isResetPasswordRequestLoading }] =
-    useUserResetPasswordRequestMutation();
-  const [userChangePassword, { isChangePassword }] =
+  const [
+    userResetPasswordEmailRequest,
+    { isResetPasswordEmailRequestLoading },
+  ] = useUserResetPasswordEmailRequestMutation();
+  const [userChangePasswordRequest, { isChangePassword }] =
     useUserChangePasswordMutation();
+  const [userConfirmEmailRequest, { isConfirmEmailRequestLoading }] =
+    useUserConfirmEmailRequestMutation();
+  const [userResetPassword, { isResetPasswordLoading }] =
+    useUserResetPasswordMutation();
 
-  async function handleSubmit(event) {
+  async function handleSubmitForm(event) {
     event.preventDefault();
 
     if (!isLogInLoading || isCreateLoading) {
       /*
       Will try to createAcount or logIn to api Endpoint
       */
+
       try {
         const encodedUsername = encodeURIComponent(username);
         const encodedPassword = encodeURIComponent(password);
@@ -58,6 +67,7 @@ const LoginBox = ({ closeModal }) => {
             password: encodedPassword,
           }).unwrap();
         } else if (inputValidation(username, password, email) === true) {
+          // send a request to API for creating the user
           const encodedEmail = encodeURIComponent(email);
           response = await userCreate({
             username: encodedUsername,
@@ -88,9 +98,17 @@ const LoginBox = ({ closeModal }) => {
         }
       } catch (error) {
         console.log(error);
-        if (!creatingAccount)
+        if (
+          error.originalStatus === 400 &&
+          error.data ===
+            "User with the specified Username or Email already exists, please choose another Username or Email"
+        ) {
+          toast.error(
+            "Brugernavnet eller emailen eksisterer allerede, vælg venligst et andet brugernavn eller email"
+          );
+        }
+        if (loggingIn)
           toast.error("Brugernavnet eller kodeordet er forkert, prøv igen");
-        else toast.error("Kunne ikke oprette bruger");
       }
     }
   }
@@ -119,9 +137,9 @@ const LoginBox = ({ closeModal }) => {
         //send email to backend
         const encodedEmail = encodeURIComponent(email);
 
-        let response = await userResetPasswordRequest({
+        let response = await userResetPasswordEmailRequest({
           email: encodedEmail,
-        });
+        }).unwrap();
 
         if (response) {
           if (response.error.originalStatus === 200) {
@@ -132,11 +150,17 @@ const LoginBox = ({ closeModal }) => {
             response.error.data === "User does not exist"
           ) {
             toast.error("Emailen findes ikke i databasen");
+          } else if (
+            response.error.originalStatus === 400 &&
+            response.error.data ===
+              "Email is not confirmed, please confirm your email before resetting your password"
+          ) {
+            toast.error("Emailen er ikke bekræftet. Bekræft venligst emailen");
           }
         }
       } catch (error) {
         console.log(error);
-        toast.error("Kunne ikke sende emailen");
+        toast.error("En fejl opstod med at sende mailen. Prøv igen senere");
       }
     } else {
       toast.error("Indtast venligst en gyldig email");
@@ -145,26 +169,19 @@ const LoginBox = ({ closeModal }) => {
 
   function activateVerificationCode() {
     if (checkValidVerificationCode(verificationCode)) {
-      // TODO: need to check if verification code is valid on database
       setModalPage("resettingPassword");
+
       toast.success("Du indtastede en gyldig verifikationskode!");
-      setVerificationCode("");
+
+      //TODO: MANGLER ENDPOINT TIL AT CHECKE OM VERIFICATION KODEN ER RIGTIG
     } else {
       toast.error("Den indtastede kode er ugyldig. Prøv igen");
     }
   }
 
   async function tryResetPassword() {
-    if (!(resetPassword === repeatedResetPassword))
-      toast.error("De to kodeord er ikke ens. Prøv igen");
-    else if (
-      !checkValidPassword(resetPassword) ||
-      !checkValidPassword(repeatedResetPassword)
-    ) {
-      toast.error(
-        "Kodeordet skal være mindst 8 tegn langt og indeholde mindst et stort bogstav, et lille bogstav og et tal"
-      );
-    } else {
+    let isValid = checkValidTwoPasswords(resetPassword, repeatedResetPassword);
+    if (isValid) {
       // if valid password, requests password reset if cookies are present
       const cookies = document.cookie.split(";");
 
@@ -172,25 +189,18 @@ const LoginBox = ({ closeModal }) => {
         toast.error("Noget gik galt. Prøv at genindlæs siden og prøv igen");
       else {
         try {
-          let { username, userid, sessionToken } = getCookies(cookies);
-          const oldPassword = "Hammer123"; //TODO: get OldPassword from database
-
-          const encodedUserId = encodeURIComponent(userid);
-          const encodedSessionToken = encodeURIComponent(sessionToken);
-          const encodedUsername = encodeURIComponent(username);
-          const encodedOldPassword = encodeURIComponent(oldPassword); //TODO: get OldPassword from database
+          console.log(verificationCode);
           const encodedPassword = encodeURIComponent(resetPassword);
+          const encodedVerificationCode = encodeURIComponent(verificationCode);
 
-          let response = await userChangePassword({
-            userId: encodedUserId,
-            sessionToken: encodedSessionToken, //maybe not include session token unless server gives new unique from reset-password-request
-            username: encodedUsername,
-            oldPassword: encodedOldPassword,
-            newPassword: encodedPassword,
+          //CHANGE, DEPRICATED USE
+          let response = await userResetPassword({
+            password: encodedPassword,
+            verificationCode: encodedVerificationCode,
           }).unwrap();
 
           if (response) {
-            console.log(response.error); // remember to remove
+            console.log(response.error);
             if (response.error.originalStatus === 200) {
               setModalPage("loggingIn");
               toast.success("Dit kodeord er nu nulstillet");
@@ -223,11 +233,11 @@ const LoginBox = ({ closeModal }) => {
           />
         </h3>
       </div>
-      <div className="container">
+      <div>
         {!creatingAccount ? (
           ""
         ) : (
-          <form className="LoginForm" onSubmit={handleSubmit}>
+          <form className="LoginForm" onSubmit={handleSubmitForm}>
             <label>
               <b>Email</b>
             </label>
@@ -271,7 +281,7 @@ const LoginBox = ({ closeModal }) => {
         {!loggingIn ? (
           ""
         ) : (
-          <form className="LoginForm" onSubmit={handleSubmit}>
+          <form className="LoginForm" onSubmit={handleSubmitForm}>
             <label>
               <b>Brugernavn</b>
             </label>
