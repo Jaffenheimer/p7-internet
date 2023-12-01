@@ -18,5 +18,4 @@ public class User
         EmailAddress = emailAddress;
         CreatedAt = DateTime.UtcNow;
     }
-    
 }

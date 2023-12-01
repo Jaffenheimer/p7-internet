@@ -36,7 +36,7 @@ public class PublicControllerV1 : ControllerBase
         IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository,
         ICachedOfferRepository cachedOfferRepository, EmailService emailService,
         IUserSessionRepository userSessionRepository, IIngredientRepository ingredientRepository,
-        SallingService sallingService)
+        SallingService sallingService, ETilbudsAvisService eTilbudsAvisService)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
@@ -46,8 +46,8 @@ public class PublicControllerV1 : ControllerBase
         _emailService = emailService;
         _userSessionRepository = userSessionRepository;
         _ingredientRepository = ingredientRepository;
-        _eTilbudsAvisService = new ETilbudsAvisService();
         _sallingService = sallingService;
+        _eTilbudsAvisService = eTilbudsAvisService;
     }
 
     #region Recipe Endpoints
@@ -99,7 +99,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 
@@ -210,7 +210,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 

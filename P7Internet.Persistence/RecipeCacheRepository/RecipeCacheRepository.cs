@@ -29,7 +29,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     {
         var query = $@"SELECT Id FROM {TableName} WHERE Id = @Id";
 
-        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new { Id = recipeId });
+        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new {Id = recipeId});
 
         return resultFromDb != null;
     }
@@ -51,7 +51,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
         {
             returnList.Add(new Recipe(idResultFromDb.ElementAt(i), recipeResultFromDb.ElementAt(i)));
         }
-        
+
         return returnList;
     }
 
@@ -85,7 +85,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     {
         var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
 
-        var gridReader = await Connection.QueryMultipleAsync(query, new { Ids = ids });
+        var gridReader = await Connection.QueryMultipleAsync(query, new {Ids = ids});
 
         var result = gridReader.Read<string>();
 
@@ -108,7 +108,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     {
         var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
 
-        var gridReader = await Connection.QueryMultipleAsync(query, new { Ids = ids });
+        var gridReader = await Connection.QueryMultipleAsync(query, new {Ids = ids});
 
         var result = gridReader.Read<string>();
 
