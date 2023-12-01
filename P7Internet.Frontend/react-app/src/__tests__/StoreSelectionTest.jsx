@@ -23,7 +23,7 @@ test("render store selection with correct title and all shops present", () => {
 });
 
 test("changing store selection calls onChange function", () => {
-  onChange = jest.fn();
+  const onChange = jest.fn();
   renderComponent(<StoreSelection values={allStoreObjects} options={[]} />);
   const select = screen.getByRole("combobox");
   select.onchange = onChange;
@@ -31,8 +31,8 @@ test("changing store selection calls onChange function", () => {
   expect(onChange).toHaveBeenCalledTimes(1);
 });
 
-test("remove all but one store from the store selection", () => {
-  setStoreValues = jest.fn();
+test("remove all but two store from the store selection", () => {
+  const setStoreValues = jest.fn();
   renderComponent(
     <StoreSelection
       values={allStoreObjects}
@@ -51,5 +51,5 @@ test("remove all but one store from the store selection", () => {
   }
 
   buttons = screen.getAllByRole("button");
-  expect(setStoreValues).toHaveBeenCalledTimes(6);
+  expect(setStoreValues).toHaveBeenCalledTimes(5);
 });
