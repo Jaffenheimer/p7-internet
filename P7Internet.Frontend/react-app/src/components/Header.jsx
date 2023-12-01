@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import FavoritesModalContainer from "./FavoritesModalContainer";
 import { modalStyling } from "../objects/Modal";
 import ModalContent from "./ModalContent";
+import icon from "../data/recipe_oracle_icon.png";
+import Pages from "../objects/Pages";
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -43,8 +45,10 @@ const Header = () => {
           Container={FavoritesModalContainer}></ModalContent>
       </Modal>
 
-      <div className="title">Opskriftsgenerator</div>
-      {/* <SetLoggedInOnChange /> Dynamically check if user is logged in */}
+      <div className="title" onClick={ () => dispatch(pageActions.goToPage(Pages.frontPage))}>
+        OpskriftsOraklet
+        <img src={icon} alt="logo" className="titleLogo" />
+        </div>
       {loggedIn ? (
         <ProfilePicture />
       ) : (
