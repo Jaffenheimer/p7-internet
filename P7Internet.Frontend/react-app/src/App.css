@@ -229,7 +229,7 @@ button {
 }
 
 button:hover {
-  background: #e7e7e7;
+  background: #979191;
   transition: all 0.1s;
 }
 button:active {
