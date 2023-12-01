@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import cross from "../data/cross.svg";
 import { toast } from "react-toastify";
 import {
   useUserConfirmEmailRequestMutation,
@@ -47,7 +46,6 @@ const SettingBox = ({ closeModal }) => {
           oldPassword: encodeURIComponent(oldPassword),
           newPassword: encodeURIComponent(repeatedPassword),
         });
-        console.log(response.error.data);
         if (response.error.originalStatus === 200) {
           toast.success("Verifikationskoden er sendt til din email");
         }
@@ -130,6 +128,8 @@ const SettingBox = ({ closeModal }) => {
             {" "}
             Verificer{" "}
           </button>
+          <br />
+
           <p id="alreadyHasUserText">Skift kodeord:</p>
           <a href="/#" onClick={() => setModalPage("ChangePasswordPage")}>
             Her

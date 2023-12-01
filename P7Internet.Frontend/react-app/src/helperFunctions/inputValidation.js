@@ -28,12 +28,25 @@ function checkValidUsername(username) {
 
 //password: at least 1 numeric digit, one uppercase letter,
 //one lowercase letter, one special character, and min 6 characters
-function checkValidPassword(password) {
+export function checkValidPassword(password) {
   const passwordRegex =
     /^(?=.*\d)(?=.*[a-zæøå])(?=.*[A-ZÆØÅ])(?=.*?[#?!@$ %^&*-]).{6,}$/; //
   const passwordResultArray = passwordRegex.exec(password);
   return passwordResultArray !== null;
 }
+
+export const checkValidTwoPasswords = (password1, password2) => {
+  if (!(password1 === password2)) {
+    toast.error("De to kodeord er ikke ens. Prøv igen");
+  } else if (!checkValidPassword(password1) || !checkValidPassword(password2)) {
+    toast.error(
+      "Kodeordet skal være mindst 8 tegn langt og indeholde mindst et stort bogstav, et lille bogstav og et tal"
+    );
+  } else {
+    return true;
+  }
+  return false;
+};
 
 export const userInputValidation = (username, password, email) => {
   let hasError = false;
