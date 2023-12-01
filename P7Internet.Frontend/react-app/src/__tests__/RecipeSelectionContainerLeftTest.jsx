@@ -1,116 +1,95 @@
-import { cleanup, fireEvent, screen, render } from "@testing-library/react";
+import { cleanup, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
-import { Provider } from "react-redux";
-import { renderComponent } from "../testSetupHelper/Helper.jsx";
+import { renderComponentWithDispatchActions } from "../testSetupHelper/Helper.jsx";
 import RecipeSelectionContainerLeft from "../components/RecipeSelectionContainerLeft.jsx";
 import userEvent from "@testing-library/user-event";
 import heartHollow from "../data/heart-hollow.svg";
 import heartSolid from "../data/heart-solid.svg";
-import Pages from "../objects/Pages";
-import configureMockStore from "redux-mock-store";
-import { stores } from "../objects/Stores";
+import leftArrow from "../data/leftArrow.svg";
+import rightArrow from "../data/rightArrow.svg";
+import { recipeActions } from "../features/recipeSlice";
+import { userActions } from "../features/userSlice.js";
+import Recipe from "../objects/Recipe.js";
 
 afterEach(cleanup);
 
-test("Render RecipeSelectionContainerLeft with expected recipe", () => {
-  renderComponent(<RecipeSelectionContainerLeft />);
-  expect(screen.getByText(/Spaghetti Aglio e Olio/)).toBeInTheDocument();
-  expect(screen.getByText(/400g spaghetti/)).toBeInTheDocument();
-  expect(screen.getByText(/4 cloves garlic, minced/)).toBeInTheDocument();
-  expect(screen.getByText(/1\/4 cup olive oil/)).toBeInTheDocument();
-  expect(
-    screen.getByText(/1\/2 teaspoon red pepper flake/)
-  ).toBeInTheDocument();
-  expect(screen.getByText(/Salt and pepper to taste/)).toBeInTheDocument();
-  expect(screen.getByText(/Grated Parmesan cheese/)).toBeInTheDocument();
+test("Content of left container is rendered correctly ", () => {
+  const recipes = [
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
+  ];
+  renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
+    recipeActions.addRecipes(recipes),
+  ]);
+  const heart = screen.getByTestId("heartImage");
+  expect(screen.getByText(/Recipe 1/)).toBeInTheDocument();
+  expect(screen.getByText(/ingredient 1/)).toBeInTheDocument();
+  expect(screen.getByText(/ingredient 2/)).toBeInTheDocument();
+  expect(heart).toBeInTheDocument();
+  expect(heart).toHaveAttribute("src", heartHollow);
+  expect(screen.getByTestId("selectArrowLeft")).toHaveAttribute(
+    "src",
+    leftArrow
+  );
+  expect(screen.getByTestId("selectArrowRight")).toHaveAttribute(
+    "src",
+    rightArrow
+  );
 });
 
-test("Check heart in RecipeTitle and SelectArrows renders properly ", () => {
-  renderComponent(<RecipeSelectionContainerLeft />);
-  const images = screen.getAllByRole("img");
+test("Recipe changes after pressing arrow right", async () => {
+  const recipes = [
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
+  ];
+  renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
+    recipeActions.addRecipes(recipes),
+  ]);
+  const rightArrow = screen.getByTestId("selectArrowRight");
 
-  expect(images[0]).toHaveAttribute("src", "heart-hollow.svg");
-  expect(images[1]).toHaveAttribute("src", "leftArrow.svg");
-  expect(images[2]).toHaveAttribute("src", "rightArrow.svg");
-});
-
-test("Check recipe changes after pressing arrow right", () => {
-  renderComponent(<RecipeSelectionContainerLeft />);
-  const rightArrow = screen.getAllByRole("img")[2];
-
-  expect(screen.getByText(/Spaghetti Aglio e Olio/)).toBeInTheDocument(); //recipe title
+  expect(screen.getByText(/Recipe 1/)).toBeInTheDocument(); //recipe title
   fireEvent.click(rightArrow);
-  expect(screen.getByText(/Chicken Stir-Fry/)).toBeInTheDocument(); //recipe title
+  expect(await screen.getByText(/Recipe 2/)).toBeInTheDocument(); //recipe title
 });
 
-test("Check recipe changes after pressing arrow left", () => {
-  renderComponent(<RecipeSelectionContainerLeft />);
-  const leftArrow = screen.getAllByRole("img")[1];
+test("Recipe changes after pressing arrow left", async () => {
+  const recipes = [
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
+    new Recipe("Recipe 3", ["ingredient 5", "ingredient 6"]),
+  ];
+  renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
+    recipeActions.addRecipes(recipes),
+  ]);
+  const leftArrow = screen.getByTestId("selectArrowLeft");
 
-  expect(screen.getByText(/Spaghetti Aglio e Olio/)).toBeInTheDocument(); //recipe title
+  expect(screen.getByText(/Recipe 1/)).toBeInTheDocument(); //recipe title
   fireEvent.click(leftArrow);
-  expect(screen.getByText(/Caprese Salad/)).toBeInTheDocument(); //recipe title
+  expect(await screen.getByText(/Recipe 3/)).toBeInTheDocument(); //recipe title
 });
 
-describe("integration tests for RecipeSelectionContainerLeft", () => {
-  let mockStore;
-  beforeEach(() => {
-    const mockState = {
-      recipeGeneration: {
-        ownedIngredients: [],
-      },
-      offers: {
-        stores: stores,
-        toggleRadius: true,
-        radius: "100 m",
-      },
-      page: {
-        page: Pages.RecipeSelection,
-      },
-      recipe: {
-        recipes: [
-          {
-            title: "Spaghetti",
-            ingredients: ["400g spaghetti", "4 cloves"],
-            method: ["cook spaghetti", "etc."],
-          },
-          {
-            title: "Chicken Stir-Fry",
-            ingredients: ["1 onion", "2 bell peppers"],
-            method: ["heat", "etc."],
-          },
-        ],
-        currentRecipeIndex: 0,
-      },
-      user: {
-        loggedIn: true,
-      },
-    };
-    mockStore = configureMockStore()(mockState);
+test("Marking one recipe as favorite, changes state of the heart icon for that recipe, but remaining recipes are not marked as favorite", async () => {
+  const recipes = [
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
+    new Recipe("Recipe 3", ["ingredient 5", "ingredient 6"]),
+  ];
+  renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
+    recipeActions.addRecipes(recipes),
+    userActions.addRecipe("Recipe 1"),
+  ]);
 
-    render(
-      <Provider store={mockStore}>
-        <RecipeSelectionContainerLeft />
-      </Provider>
-    );
-  });
-
-  it("Click the Heart button", () => {
-    const heart = screen.getAllByRole("img")[0];
-    expect(heart).toHaveAttribute("src", heartHollow);
-    userEvent.click(heart);
-    expect(heart).toHaveAttribute("src", heartSolid);
-  });
-
-  it("Click the Heart button, press arrow right expect heart hollow", async () => {
-    const rightArrow = screen.getAllByRole("img")[2];
-    const heart = screen.getAllByRole("img")[0];
-    userEvent.click(heart);
-    expect(heart).toHaveAttribute("src", heartSolid);
-    userEvent.click(rightArrow);
-    setTimeout(() => {
-      expect(heart).toHaveAttribute("src", heartHollow);
-    }, 100);
-  });
+  const rightArrow = screen.getByTestId("selectArrowRight");
+  const heartFirstRecipe = screen.getByTestId("heartImage");
+  expect(screen.getByText(/Recipe 1/)).toBeInTheDocument(); //first recipe title
+  expect(heartFirstRecipe).toHaveAttribute("src", heartSolid); //marked as favorite
+  //move to second recipe
+  userEvent.click(rightArrow);
+  expect(screen.getByText(/Recipe 2/)).toBeInTheDocument(); //second recipe title
+  expect(heartFirstRecipe).toHaveAttribute("src", heartHollow); //not marked as favorite
+  //move to third recipe
+  userEvent.click(rightArrow);
+  expect(screen.getByText(/Recipe 3/)).toBeInTheDocument(); //third recipe title
+  expect(heartFirstRecipe).toHaveAttribute("src", heartHollow); //not marked as favorite
 });

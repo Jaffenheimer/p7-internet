@@ -23,9 +23,7 @@ const Header = () => {
 
   const openLoginModal = () => dispatch(pageActions.openLoginModal());
   const closeLoginModal = () => dispatch(pageActions.closeLoginModal());
-  const openFavoritesModal = () => dispatch(pageActions.openFavoritesModal());
   const closeFavoritesModal = () => dispatch(pageActions.closeFavoritesModal());
-  const openSettingModal = () => dispatch(pageActions.openSettingModal());
   const closeSettingModal = () => dispatch(pageActions.closeSettingModal());
 
   return (
@@ -70,10 +68,7 @@ const Header = () => {
 
       <div className="title">Opskriftsgenerator</div>
       {loggedIn ? (
-        <ProfilePicture
-          openFavoritesModal={openFavoritesModal}
-          openSettingModal={openSettingModal}
-        />
+        <ProfilePicture />
       ) : (
         <button onClick={openLoginModal}>Log Ind</button>
       )}

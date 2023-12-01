@@ -5,10 +5,13 @@ import SelectRecipeButton from "../components/SelectRecipeButton";
 import { ToastContainer } from "react-toastify";
 import {
   renderComponent,
+  renderComponentWithDispatchActions,
   renderComponentWithSpecificStore,
 } from "../testSetupHelper/Helper.jsx";
 import Recipe from "../objects/Recipe";
 import configureMockStore from "redux-mock-store";
+import { recipeActions } from "../features/recipeSlice.js";
+import { pageActions } from "../features/pageSlice.js";
 
 afterEach(cleanup);
 
@@ -56,26 +59,11 @@ describe("clicking the select recipe button:", () => {
 });
 
 test("if additionalOwnedIngredientsModalContainerIsOpen is true the AdditionalOwnedIngredients modal is shown", async () => {
-  const mockState = {
-    recipe: {
-      recipes: [new Recipe("title", ["ingredients"], "method")],
-      currentRecipeIndex: 0,
-    },
-    offers: {
-      stores: [],
-      toggleStateIsRadius: true,
-    },
-    page: {
-      additionalOwnedIngredientsModalContainerIsOpen: true,
-    },
-    recipeGeneration: {
-      ownedIngredients: [],
-    },
-  };
-  // configureMockStore() returns a function that can be called with the initial state
-  const mockStore = configureMockStore()(mockState);
-  renderComponentWithSpecificStore(<SelectRecipeButton />, mockStore);
-  //await screen.findByText("Andre ingredienser du har?");
+  const recipes = [new Recipe("title", ["ingredients"], "method")];
+  renderComponentWithDispatchActions(<SelectRecipeButton />, [
+    recipeActions.addRecipes(recipes),
+    pageActions.openAdditionalOwnedIngredientsModalContainer(),
+  ]);
 
   const modal = await screen.findByText("Andre ingredienser du har?");
   expect(modal).toBeInTheDocument();

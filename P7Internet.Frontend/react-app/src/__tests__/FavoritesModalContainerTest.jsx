@@ -7,7 +7,6 @@ import {
   renderComponentWithSpecificStore,
 } from "../testSetupHelper/Helper.jsx";
 import FavoritesModalContainer from "../components/FavoritesModalContainer";
-import { pageActions } from "../features/pageSlice";
 import { ToastContainer } from "react-toastify";
 import configureMockStore from "redux-mock-store";
 
@@ -57,7 +56,6 @@ test("Renders the favoritesModalContainer with correct text when no favorite rec
 
   renderComponentWithSpecificStore(<FavoritesModalContainer />, mockStore);
 
-  //   renderComponentWithSpecificStore(<FavoritesModalContainer />);
   const buttons = screen.queryAllByRole("button");
   expect(buttons.length).toBe(0);
   expect(

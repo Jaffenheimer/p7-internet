@@ -1,6 +1,9 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { ingredientIsOwned } from "../helperFunctions/ingredientHelper";
+import {
+  convertIngredientsToIngredientObjects,
+  ingredientIsOwned,
+} from "../helperFunctions/ingredientHelper";
 import { nanoid } from "@reduxjs/toolkit";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { pageActions } from "../features/pageSlice";
@@ -17,7 +20,9 @@ const AdditionalOwnedIngredientsModalContainer = () => {
     (state) => state.recipe.currentRecipeIndex
   );
   const currentRecipe = recipes[currentRecipeIndex];
-  const currentRecipeUnownedIngredients = currentRecipe.ingredients.filter(
+  const currentRecipeUnownedIngredients = convertIngredientsToIngredientObjects(
+    currentRecipe.ingredients
+  ).filter(
     (ingredient) => !ingredientIsOwned(ingredient, ownedIngredientsList)
   );
   const [ingredientsChecked, setIngredientsChecked] = useState(
@@ -50,7 +55,7 @@ const AdditionalOwnedIngredientsModalContainer = () => {
       if (ingredientsChecked[i]) {
         dispatch(
           recipeGenerationActions.addOwnedIngredient(
-            currentRecipeUnownedIngredients[i]
+            currentRecipeUnownedIngredients[i].text
           )
         );
       }
@@ -82,7 +87,7 @@ const AdditionalOwnedIngredientsModalContainer = () => {
               id={index}
               className="IngredientCheckboxesLabel"
             >
-              {ingredient}
+              {ingredient.text}
             </label>
             <br></br>
           </div>

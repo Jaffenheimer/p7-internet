@@ -1,7 +1,3 @@
-/* body > #root {
-  height: 100vh;
-} */
-
 *,
 *::before,
 *::after {
@@ -258,6 +254,11 @@ button:hover {
   outline: none;
 }
 
+#GenerateRecipesButton {
+  margin-top: 5%;
+  float: right;
+}
+
 #selectRecipeButton {
   float: right;
   align-items: right;
@@ -270,18 +271,6 @@ button:hover {
 #SelectArrows > img {
   margin: 5%;
   transform: scale(2);
-}
-
-/* .ProfilePicture > img {
-  vertical-align: middle;
-  margin: 0 auto;
-  transform: scale(2.5);
-  margin-top: 10%;
-  float: right;
-  margin-right: 15%;
-} */
-
-.IngredientCheckboxes {
 }
 
 .IngredientCheckboxesLabel {
@@ -304,18 +293,11 @@ button:hover {
   text-align: center;
 }
 
-.NumberOfPersonsFieldContainer {
-  position: absolute;
-  height: 35px;
-  width: 30%;
-}
-
 .NumberOfPersonsField {
   transform: scale(1.5);
   display: flex;
   justify-content: center;
   margin-left: 22px;
-  /* margin-top: 10%; */
 }
 
 #NumberOfPersonsFieldToast {
@@ -365,7 +347,6 @@ button:hover {
 
 .ContainerRightColumn {
   float: left;
-  /*width: 33.33%;*/
   justify-content: center;
   margin-top: 3%;
 }
@@ -389,41 +370,42 @@ button:hover {
 
 .dropdown {
   position: relative;
-}
-
-.menu {
-  position: absolute;
-  list-style-type: none;
   margin: 5px 0;
   padding: 0;
-  border: 1px solid grey;
-  width: 150px;
-  transform: translateY(-5px);
-  transform: translateX(-105px);
   z-index: 1000;
 }
 
-.menu > li {
-  margin: 0;
-  background-color: white;
-}
-
-.menu > li:hover {
-  background-color: lightgray;
-}
-
-.menu > li > button {
+.dropdown-content {
+  list-style: none;
+  position: absolute;
+  top: -1em;
+  right: 5em;
   width: 100%;
-  height: 100%;
-  text-align: left;
+}
 
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 5px;
-  margin: 0;
-  font: inherit;
+.dropdown-content li {
+  position: relative;
+  right: 100%;
+  width: 155px;
+  border-radius: 0em;
+}
+.dropdown-button {
+  display: flex;
+  justify-content: space-between;
   cursor: pointer;
+  border-radius: 0px;
+}
+.dropdown-button:focus + .dropdown-content li {
+  right: 0;
+}
+#FavoritesButton{
+  border-radius: 0px;
+}
+#SettingsButton{
+  border-radius: 0px;
+}
+#LogoutButton{
+  border-radius: 0px;
 }
 
 #ExcludeList {

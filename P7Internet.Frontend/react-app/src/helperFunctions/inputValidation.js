@@ -1,13 +1,13 @@
 import { toast } from "react-toastify";
 
-//should happen in backend
+const MAX_INGREDIENT_LENGTH = 50;
+
 //see what this regex accepts at https://jsfiddle.net/ghvj4gy9/
 export function checkValidEmail(email) {
   const emailRegex =
     /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  const isValidEmail = emailRegex.exec(email);
-  if (isValidEmail === null) return false;
-  else return true;
+  const emailResultArray = emailRegex.exec(email);
+  return emailResultArray !== null;
 }
 
 export function checkValidVerificationCode(verificationCode) {
@@ -22,48 +22,62 @@ export function checkValidVerificationCode(verificationCode) {
 //username: allowed characters are integers and upper/lowercase letters
 function checkValidUsername(username) {
   const usernameRegex = /^[a-zA-Z0-9]+$/;
-  const isValidUsername = usernameRegex.exec(username);
-  if (isValidUsername === null) return false;
-  else return true;
+  const usernameResultArray = usernameRegex.exec(username);
+  return usernameResultArray !== null;
 }
 
-//THE PASSWORD VALIDATION SHOULD HAPPEN IN THE BACKEND
-//password: allowed characters are at least 1 numeric degit, one uppercase, one lowercase
-//and between 6 to 20 characters, excluding special characters.
-export function checkValidPassword(password) {
-  const passwordRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/; //
-  const isValidPassword = passwordRegex.exec(password);
-  if (isValidPassword === null) return false;
-  else return true;
+//password: at least 1 numeric digit, one uppercase letter,
+//one lowercase letter, one special character, and min 6 characters
+function checkValidPassword(password) {
+  const passwordRegex =
+    /^(?=.*\d)(?=.*[a-zæøå])(?=.*[A-ZÆØÅ])(?=.*?[#?!@$ %^&*-]).{6,}$/; //
+  const passwordResultArray = passwordRegex.exec(password);
+  return passwordResultArray !== null;
 }
 
-export const checkValidTwoPasswords = (password1, password2) => {
-  if (!(password1 === password2)) {
-    toast.error("De to kodeord er ikke ens. Prøv igen");
-  } else if (!checkValidPassword(password1) || !checkValidPassword(password2)) {
+export const userInputValidation = (username, password, email) => {
+  let hasError = false;
+  if (!checkValidPassword(password)) {
     toast.error(
-      "Kodeordet skal være mindst 8 tegn langt og indeholde mindst et stort bogstav, et lille bogstav og et tal"
+      "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav, et specialtegn og være mindst 6 tegn langt."
     );
-  } else {
-    return true;
+    hasError = true;
   }
-  return false;
-};
-
-export const inputValidation = (username, password, email) => {
-  if (checkValidEmail(email) === false) {
-    toast.error("Den indtastede email er ugyldig");
-    return false;
-  } else if (checkValidUsername(username) === false) {
+  if (!checkValidUsername(username)) {
     toast.error(
       "Brugernavnet er ugyldigt, da det kun må bestå af bogstaver og tal."
     );
-    return false;
-  } else if (checkValidPassword(password) === false) {
+    hasError = true;
+  }
+  if (!checkValidEmail(email)) {
+    toast.error("Den indtastede email er ugyldig");
+    hasError = true;
+  }
+  return !hasError;
+};
+
+//returns the char that is invalid or null if no invalid chars
+function invalidCharInIngredient(ingredient) {
+  const validChars =
+    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789æøåÆØÅ-%(),. ";
+  for (const char of ingredient) {
+    if (!validChars.includes(char)) return char;
+  }
+  return null;
+}
+
+export function ingredientInputValidation(ingredient) {
+  if (ingredient.trim().length === 0) return false; //if it only contains whitespace
+  if (ingredient.length > MAX_INGREDIENT_LENGTH) {
     toast.error(
-      "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav og være mellem 6 og 20 tegn langt uden brug af specielle tegn."
+      `Ingrediensen må højst være ${MAX_INGREDIENT_LENGTH} tegn lang, ikke ${ingredient.length} tegn.`
     );
     return false;
   }
+  if (invalidCharInIngredient(ingredient) !== null) {
+    const invalidChar = invalidCharInIngredient(ingredient);
+    toast.error(`${invalidChar} er et ugyldigt tegn for en ingrediens.`);
+    return false;
+  }
   return true;
-};
+}

@@ -1,16 +1,10 @@
-import {
-  cleanup,
-  screen,
-  render,
-  fireEvent,
-  act,
-} from "@testing-library/react";
+import { cleanup, screen, fireEvent, act } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import { FrontPageContainerLeft } from "../components";
-import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
 import userEvent from "@testing-library/user-event";
+import { renderComponentWithSpecificStore } from "../testSetupHelper/Helper";
 
 afterEach(cleanup);
 
@@ -29,13 +23,7 @@ describe("FrontPageContainerLeft", () => {
     };
     // configureMockStore() returns a function that can be called with the initial state
     mockStore = configureMockStore()(mockState);
-
-    render(
-      // Wrapping the component in the Provider so it can connect to the store
-      <Provider store={mockStore}>
-        <FrontPageContainerLeft />
-      </Provider>
-    );
+    renderComponentWithSpecificStore(<FrontPageContainerLeft />, mockStore);
   });
 
   it("checks if FrontPageContainerLeft is rendered", () => {
@@ -75,11 +63,7 @@ test("checks if a user has added an ingredient no toast appears when clicking ge
   };
   mockStore = configureMockStore()(mockState);
 
-  render(
-    <Provider store={mockStore}>
-      <FrontPageContainerLeft />
-    </Provider>
-  );
+  renderComponentWithSpecificStore(<FrontPageContainerLeft />, mockStore);
   const input = screen.getByTestId("AddIngredientInput");
   const addButton = screen.getByTestId("AddButton");
   userEvent.type(input, "test");

@@ -34,7 +34,7 @@ const FavoritesModalContainer = ({ closeModal }) => {
         recipeActions.setCurrentRecipeIndex(recipeTitles.indexOf(recipeTitle))
       );
       dispatch(pageActions.goToPage(Pages.fullRecipeView));
-      closeModal();
+      dispatch(pageActions.closeFavoritesModal());
     }
   }
 
@@ -60,8 +60,7 @@ const FavoritesModalContainer = ({ closeModal }) => {
                   className="FavoriteRecipeButton"
                   value={recipeTitle}
                   key={nanoid()}
-                  onClick={(event) => selectRecipe(event, recipeTitle)}
-                >
+                  onClick={(event) => selectRecipe(event, recipeTitle)}>
                   {recipeTitle}
                 </button>
                 <img

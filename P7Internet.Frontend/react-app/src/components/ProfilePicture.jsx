@@ -5,11 +5,11 @@ import { userActions } from "../features/userSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { pageActions } from "../features/pageSlice";
 import { useUserLogOutMutation } from "../services/usersEndpoints";
 import { deleteCookies, retriveCookie } from "../helperFunctions/cookieHandler";
 
-const ProfilePicture = ({ openFavoritesModal, openSettingModal }) => {
+const ProfilePicture = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -18,12 +18,12 @@ const ProfilePicture = ({ openFavoritesModal, openSettingModal }) => {
   }
 
   const handleFavorites = () => {
-    openFavoritesModal();
     setOpen(false);
+    dispatch(pageActions.openFavoritesModal());
   };
 
   const handleSettings = () => {
-    openSettingModal();
+    dispatch(pageActions.openSettingModal());
     setOpen(false);
   };
 
@@ -65,24 +65,34 @@ const ProfilePicture = ({ openFavoritesModal, openSettingModal }) => {
 
   return (
     <div className="ProfilePicture" data-testid="ProfilePicture">
-      <img
-        className="Profile"
-        src={profile}
-        alt="ProfilePicture"
-        onClick={profileClick}
-      />
+      <div className="dropdown-button">
+        <img
+          className="Profile"
+          src={profile}
+          alt="ProfilePicture"
+          onClick={profileClick}
+        />
+      </div>
       {open ? (
-        <ul className="menu">
-          <li className="menu-item">
-            <button onClick={handleFavorites}>Favoritter</button>
-          </li>
-          <li className="menu-item">
-            <button onClick={handleSettings}>Indstillinger</button>
-          </li>
-          <li className="menu-item">
-            <button onClick={handleLogOut}>Log ud</button>
-          </li>
-        </ul>
+        <div className="dropdown">
+          <ul className="dropdown-content">
+            <li className="menu-item">
+              <button id="FavoritesButton" onClick={handleFavorites}>
+                Favoritter
+              </button>
+            </li>
+            <li className="menu-item">
+              <button id="SettingsButton" onClick={handleSettings}>
+                Indstillinger
+              </button>
+            </li>
+            <li className="menu-item">
+              <button id="LogoutButton" onClick={handleLogOut}>
+                Log ud
+              </button>
+            </li>
+          </ul>
+        </div>
       ) : null}
     </div>
   );

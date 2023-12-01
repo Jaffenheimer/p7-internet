@@ -5,12 +5,11 @@ import { userActions } from "../features/userSlice";
 import { toast } from "react-toastify";
 import {
   checkValidVerificationCode,
-  inputValidation,
-  checkValidTwoPasswords,
   checkValidPassword,
+  userInputValidation,
 } from "../helperFunctions/inputValidation";
 import { checkValidEmail } from "../helperFunctions/inputValidation";
-import { addCookies, getCookies } from "../helperFunctions/cookieHandler";
+import { addCookies } from "../helperFunctions/cookieHandler";
 import "react-toastify/dist/ReactToastify.css";
 import {
   useUserCreateMutation,
@@ -64,8 +63,7 @@ const LoginBox = ({ closeModal }) => {
             username: encodedUsername,
             password: encodedPassword,
           }).unwrap();
-        } else if (inputValidation(username, password, email) === true) {
-          // send a request to API for creating the user
+        } else if (userInputValidation(username, password, email) === true) {
           const encodedEmail = encodeURIComponent(email);
           response = await userCreate({
             username: encodedUsername,

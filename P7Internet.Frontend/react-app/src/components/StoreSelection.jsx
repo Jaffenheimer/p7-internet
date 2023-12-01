@@ -86,6 +86,7 @@ const StoreSelection = ({ values, setValues, options, setOptions }) => {
         options={options}
         onChange={handleChange}
         value={values}
+        noOptionsMessage={() => "Ingen butikker"}
       />
     </div>
   );
