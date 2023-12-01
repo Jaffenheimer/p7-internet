@@ -56,7 +56,7 @@ public class UserSessionRepository : IUserSessionRepository
     public async Task<bool> CheckIfTokenIsValid(Guid userId, string token)
     {
         var query =
-            $@"SELECT * FROM {TableName} WHERE UserId = @userId AND SessionToken = @token AND ExpiresAt <= (TIME(NOW()))";
+            $@"SELECT * FROM {TableName} WHERE UserId = @userId AND SessionToken = @token AND ExpiresAt >= (TIME(NOW()))";
         var result = await Connection.QuerySingleOrDefaultAsync(query, new { userId, token });
         if (result != null && result.ExpiresAt > DateTime.UtcNow)
         {

@@ -482,11 +482,13 @@ public class PublicControllerV1 : ControllerBase
         }
 
         var user = await _userRepository.GetUserFromId(userId.GetValueOrDefault());
+
         if (user != null)
         {
             var result = await _userRepository.ResetPassword(user.EmailAddress, password);
             if (result)
             {
+                await _userSessionRepository.DeleteVerificationToken(userId.GetValueOrDefault(), verificationCode);
                 return Ok("Password was reset and has been changed, you can now login with your new password");
             }
         }
@@ -562,6 +564,7 @@ public class PublicControllerV1 : ControllerBase
 
             if (result)
             {
+                await _userSessionRepository.DeleteVerificationToken(userId, verificationCode);
                 return Ok("Email confirmed");
             }
         }
