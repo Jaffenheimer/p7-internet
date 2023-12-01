@@ -1,31 +1,33 @@
-import { cleanup, screen, render } from "@testing-library/react";
+import { cleanup, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import OwnedIngredientsList from "../components/OwnedIngredientsList";
-import { Provider } from "react-redux";
-import configureMockStore from "redux-mock-store";
+import {
+  renderComponentWithDispatchActions,
+} from "../testSetupHelper/Helper";
+import { recipeGenerationActions } from "../features/recipeGenerationSlice";
+import userEvent from "@testing-library/user-event";
 
 afterEach(cleanup);
 
-test("RemoveAllButton should run function on click", () => {
-  const mockState = {
-    recipeGeneration: {
-      ownedIngredients: [
-        { id: 1, text: "Ingredient 1" },
-        { id: 2, text: "Ingredient 2" },
-      ],
-    },
-  };
-  let mockStore = configureMockStore()(mockState);
+beforeEach(() => {
+  renderComponentWithDispatchActions(<OwnedIngredientsList />, [
+    recipeGenerationActions.addOwnedIngredient("Ingredient 1"),
+    recipeGenerationActions.addOwnedIngredient("Ingredient 2"),
+  ]);
+});
 
-  render(
-    <Provider store={mockStore}>
-      <OwnedIngredientsList />
-    </Provider>
-  );
-  const images = screen.getAllByRole("img");
-  expect(images[0]).toBeInTheDocument(); // cross image to remove element from list
-  expect(images[1]).toBeInTheDocument(); // cross image
+test("renders ingredients with their respective cross to remove them", () => {
+  const crosses = screen.getAllByTestId("RemoveIngredientCross");
+  expect(crosses[0]).toBeInTheDocument();
+  expect(crosses[1]).toBeInTheDocument();
   expect(screen.getByText("Ingredient 1")).toBeInTheDocument();
   expect(screen.getByText("Ingredient 2")).toBeInTheDocument();
+});
+
+test("when cross is clicked ingredient is removed", () => {
+  const crosses = screen.getAllByTestId("RemoveIngredientCross");
+  expect(screen.queryByText("Ingredient 1")).toBeInTheDocument();
+  userEvent.click(crosses[0]);
+  expect(screen.queryByText("Ingredient 1")).not.toBeInTheDocument();
 });

@@ -30,13 +30,6 @@ function renderComponent(component) {
   render(<Provider store={store}>{component}</Provider>);
 }
 
-function renderComponentWithChangeToStore(component, type, payload) {
-  //this resets the store for each test
-  const store = configureDefaultStore();
-  store.dispatch({ type: type }, { payload: payload });
-  render(<Provider store={store}>{component}</Provider>);
-}
-
 function renderComponentWithSpecificStore(component, store) {
   render(<Provider store={store}>{component}</Provider>);
 }
@@ -52,9 +45,17 @@ function renderMultipleComponents(componentsList) {
   //make new ones if necessary
 }
 
+function renderComponentWithDispatchActions(component, dispatchActions) {
+  const store = configureDefaultStore();
+  dispatchActions.forEach((dispatchAction) => {
+    store.dispatch(dispatchAction);
+  });
+  render(<Provider store={store}>{component}</Provider>);
+}
+
 export {
   renderComponent,
-  renderComponentWithChangeToStore,
   renderComponentWithSpecificStore,
   renderMultipleComponents,
+  renderComponentWithDispatchActions,
 };

@@ -301,12 +301,6 @@ button:active {
   text-align: center;
 }
 
-.NumberOfPersonsFieldContainer {
-  position: absolute;
-  height: 35px;
-  width: 30%;
-}
-
 .NumberOfPersonsField {
   transform: scale(1.5);
   display: flex;
