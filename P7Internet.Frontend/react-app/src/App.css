@@ -389,27 +389,18 @@ button:hover {
   width: 155px;
   border-radius: 0em;
 }
-.dropdown-button {
+.dropdown-buttons {
   display: flex;
   justify-content: space-between;
   cursor: pointer;
   border-radius: 0px;
 }
-.dropdown-button:focus + .dropdown-content li {
+.dropdown-buttons:focus + .dropdown-content li {
   right: 0;
 }
-#FavoritesButton{
-  border-radius: 0px;
-}
-#SettingsButton{
-  border-radius: 0px;
-}
-#LogoutButton{
-  border-radius: 0px;
-}
 
-#ExcludeList {
-  text-align: center;
+.menuItemButton {
+  border-radius: 0px;
 }
 
 #InputFieldExclude {
@@ -640,7 +631,8 @@ p {
   width: 100%;
 }
 
-.FavoriteRecipeButton {
+.FavoriteRecipeButton,
+.HistoryRecipeButton {
   width: 90%;
   height: 5%;
   float: left;

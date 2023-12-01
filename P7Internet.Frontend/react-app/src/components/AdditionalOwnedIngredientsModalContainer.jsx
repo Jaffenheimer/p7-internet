@@ -7,8 +7,10 @@ import {
 import { nanoid } from "@reduxjs/toolkit";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { pageActions } from "../features/pageSlice";
+import { userActions } from "../features/userSlice";
 import Pages from "../objects/Pages";
 import { useState } from "react";
+import { recipeActions } from "../features/recipeSlice";
 
 const AdditionalOwnedIngredientsModalContainer = () => {
   const dispatch = useDispatch();
@@ -47,6 +49,9 @@ const AdditionalOwnedIngredientsModalContainer = () => {
   function closeModalAndGoToFullRecipeView() {
     document.body.style.overflow = "visible";
     dispatch(pageActions.closeAdditionalOwnedIngredientsModalContainer());
+
+    const recipe = recipes[currentRecipeIndex];
+    dispatch(recipeActions.setRecipeToShow(recipe));
     dispatch(pageActions.goToPage(Pages.fullRecipeView));
   }
 
@@ -60,6 +65,7 @@ const AdditionalOwnedIngredientsModalContainer = () => {
         );
       }
     }
+    dispatch(userActions.addRecipeToHistory(currentRecipe));
     closeModalAndGoToFullRecipeView();
   }
 

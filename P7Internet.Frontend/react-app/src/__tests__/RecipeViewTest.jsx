@@ -52,6 +52,10 @@ test("Renders expected default recipe not marked as favorite by default when cur
 });
 
 test("When clicking heart, the dispatch method for adding it to favorites is called", async () => {
+  const recipe1 = {
+    title: "Recipe 1",
+    ingredients: ["ingredient 1", "ingredient 2"],
+  };
   const mockState = {
     recipeGeneration: {
       ownedIngredients: [],
@@ -60,10 +64,7 @@ test("When clicking heart, the dispatch method for adding it to favorites is cal
     page: {},
     recipe: {
       recipes: [
-        {
-          title: "Recipe 1",
-          ingredients: ["ingredient 1", "ingredient 2"],
-        },
+        recipe1,
         {
           title: "Recipe 2",
           ingredients: ["ingredient 3", "ingredient 4"],
@@ -82,14 +83,14 @@ test("When clicking heart, the dispatch method for adding it to favorites is cal
   userEvent.click(heart);
 
   expect(spy).toHaveBeenCalled();
-  expect(spy).toHaveBeenCalledWith(userActions.addRecipe("Recipe 1"));
+  expect(spy).toHaveBeenCalledWith(userActions.addFavoriteRecipe(recipe1));
 });
 
 test("heart is solid when recipe is marked as favorite", () => {
   const recipes = [new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"])];
   renderComponentWithDispatchActions(<RecipeView />, [
     recipeActions.addRecipes(recipes),
-    userActions.addRecipe("Recipe 1"),
+    userActions.addFavoriteRecipe(recipes[0]),
   ]);
 
   expect(screen.getByText(/Recipe 1/)).toBeInTheDocument();

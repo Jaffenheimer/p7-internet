@@ -22,6 +22,11 @@ const ProfilePicture = () => {
     dispatch(pageActions.openFavoritesModal());
   };
 
+  const handleHistory = () => {
+    setOpen(false);
+    dispatch(pageActions.openHistoryModal());
+  };
+
   const handleSettings = () => {
     setOpen(false);
   };
@@ -64,27 +69,54 @@ const ProfilePicture = () => {
 
   return (
     <div className="ProfilePicture" data-testid="ProfilePicture">
-      <div className="dropdown-button">
-      <img
-        className="Profile"
-        src={profile}
-        alt="ProfilePicture"
-        onClick={profileClick}
-      />
+      <div className="dropdown-buttons">
+        <img
+          className="Profile"
+          src={profile}
+          alt="ProfilePicture"
+          onClick={profileClick}
+        />
       </div>
       {open ? (
-        <div className="dropdown"> 
-        <ul className="dropdown-content">
-          <li className="menu-item">
-            <button id="FavoritesButton" onClick={handleFavorites}>Favoritter</button>
-          </li>
-          <li className="menu-item">
-            <button id="SettingsButton" onClick={handleSettings}>Indstillinger</button>
-          </li>
-          <li className="menu-item">
-            <button id="LogoutButton" onClick={handleLogOut}>Log ud</button>
-          </li>
-        </ul>
+        <div className="dropdown">
+          <ul className="dropdown-content">
+            <li>
+              <button
+                id="FavoritesButton"
+                className="menuItemButton"
+                onClick={handleFavorites}
+              >
+                Favoritter
+              </button>
+            </li>
+            <li>
+              <button
+                id="HistoryButton"
+                className="menuItemButton"
+                onClick={handleHistory}
+              >
+                Historik
+              </button>
+            </li>
+            <li>
+              <button
+                id="SettingsButton"
+                className="menuItemButton"
+                onClick={handleSettings}
+              >
+                Indstillinger
+              </button>
+            </li>
+            <li>
+              <button
+                id="LogoutButton"
+                className="menuItemButton"
+                onClick={handleLogOut}
+              >
+                Log ud
+              </button>
+            </li>
+          </ul>
         </div>
       ) : null}
     </div>
