@@ -47,7 +47,11 @@ const Header = () => {
         contentLabel="Setting Modal"
         ariaHideApp={false}
       >
-        <SettingBox closeModal={closeSettingModal} />
+        <ModalContent
+          title="Indstillinger"
+          closeModal={closeSettingModal}
+          Container={SettingBox}
+        />
       </Modal>
 
       <Modal

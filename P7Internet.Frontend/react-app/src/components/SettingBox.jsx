@@ -75,16 +75,6 @@ const SettingBox = ({ closeModal }) => {
 
   return (
     <div className="SettingModal">
-      <h3>
-        Indstillinger
-        <img
-          src={cross}
-          alt="Back Cross"
-          id="loginCross"
-          onClick={closeModal}
-        />
-      </h3>
-
       {modalPage === "settingPage" ? (
         <>
           <div>
