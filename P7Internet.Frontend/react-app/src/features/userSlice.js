@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: {},
   favoriteRecipes: [],
-  loggedIn: false,
+  loggedIn: true, //remember to change this to false
   recipesInHistory: [],
 };
 
@@ -23,6 +23,7 @@ export const userSlice = createSlice({
     },
     addFavoriteRecipe(state, action) {
       state.favoriteRecipes.push(action.payload);
+      console.log(action.payload);
     },
     removeFavoriteRecipe(state, action) {
       state.favoriteRecipes = state.favoriteRecipes.filter(
@@ -30,6 +31,11 @@ export const userSlice = createSlice({
       );
     },
     addRecipeToHistory(state, action) {
+      for (const recipe of state.recipesInHistory) {
+        if (recipe.title === action.payload.title) {
+          return; //dont add recipe to history if it already exists
+        }
+      }
       state.recipesInHistory.push(action.payload);
     },
   },
