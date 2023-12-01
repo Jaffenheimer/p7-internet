@@ -102,6 +102,10 @@ body {
   font-size: 40px;
   font-family: Verdana;
   display: flex;
+  cursor: pointer;
+}
+.titleLogo{
+  height: 1.3em;
 }
 
 .RecipeSelectionContainerLeft {
