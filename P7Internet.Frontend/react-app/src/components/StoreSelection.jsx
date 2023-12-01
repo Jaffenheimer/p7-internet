@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { offersActions } from "../features/offersSlice";
 import Select from "react-select";
 import { allStoreObjects } from "../objects/Stores.js";
+import { toast } from "react-toastify";
 
 const StoreSelection = ({ values, setValues, options, setOptions }) => {
   const dispatch = useDispatch();
@@ -11,6 +12,9 @@ const StoreSelection = ({ values, setValues, options, setOptions }) => {
   //make a new list of options with the selected stores as well as the option to select all stores
   const selectAllOption = { value: "All stores", label: "Vælg alle" };
   const allOptions = [selectAllOption, ...allStoreObjects];
+  const allOptionsExceptBilka = allOptions.filter(
+    (option) => option.value !== "Bilka"
+  );
 
   //whenever we update the store hook, we update the redux
   useEffect(() => {
@@ -30,6 +34,13 @@ const StoreSelection = ({ values, setValues, options, setOptions }) => {
     const { action, option, removedValue } = actionMeta;
     //removing a store
     if (action === "remove-value") {
+      //if the removed value is "Bilka", we show a toast that explains why it is not possible to remove it
+      if (removedValue.value === "Bilka") {
+        toast.info(
+          "Kan ikke fjernes fordi priser bliver vist for Bilka hvis der ikke er tilbud i andre butikker"
+        );
+        return;
+      }
       const removedValueOption = {
         value: removedValue.value,
         label: removedValue.value,
@@ -70,8 +81,11 @@ const StoreSelection = ({ values, setValues, options, setOptions }) => {
 
     //clearing all selections: we reset the values and enable all options
     else if (action === "clear") {
-      setValues([]);
-      setOptions(allOptions);
+      setValues([{ value: "Bilka", label: "Bilka" }]);
+      setOptions(allOptionsExceptBilka);
+      toast.info(
+        "Bilka kan ikke fjernes fordi priser bliver vist for Bilka hvis der ikke er tilbud i andre butikker"
+      );
     }
   };
 

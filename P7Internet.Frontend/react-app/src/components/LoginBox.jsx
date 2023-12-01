@@ -30,6 +30,7 @@ const LoginBox = ({ closeModal }) => {
   const [loggingIn, setLoggingIn] = useState(true);
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [verifyingAccount, setVerifyingAccount] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
   //States used to fetch data from backend
   const [userLogin, { isLogInLoading }] = useUserLoginMutation();
@@ -299,6 +300,7 @@ const LoginBox = ({ closeModal }) => {
               required
             />
             <button type="submit"> Login </button>
+
             {/* <label>
                 Husk mig: <input type="checkbox" />{" "}
               </label> */}
