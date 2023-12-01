@@ -105,9 +105,9 @@ public class UserSessionRepository : IUserSessionRepository
         var query =
             $@"SELECT UserId FROM {VerificationTable} WHERE VerificationCode = @VerificationCode AND ExpiresAt >= TIME(NOW()) AND CodeType = @CodeType";
         var result =
-            await Connection.QueryFirstOrDefaultAsync(query, new { VerificationCode = verificationCode, CodeType = type });
+            await Connection.QueryFirstOrDefaultAsync<Guid>(query, new { VerificationCode = verificationCode, CodeType = type });
 
-        if (Guid.TryParse(result, out Guid result1))
+        if (result != Guid.Empty)
         {
             return true;
         }
