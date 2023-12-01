@@ -17,6 +17,7 @@ const LoginBox = ({ closeModal }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [creatingAccount, setCreatingAccount] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
 
   //States used to fetch data from backend
   const [userLogin, { isLogInLoading }] = useUserLoginMutation();
@@ -136,7 +137,7 @@ const LoginBox = ({ closeModal }) => {
           required
         />
 
-        <button type="submit">
+        <button type="submit" onClick={() => setIsClicked(true)} disabled={isClicked}>
           {!creatingAccount ? "Login" : "Tilføj Bruger"}
         </button>
         {!creatingAccount ? (
