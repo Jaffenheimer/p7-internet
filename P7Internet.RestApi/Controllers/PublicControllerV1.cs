@@ -453,7 +453,7 @@ public class PublicControllerV1 : ControllerBase
                 return BadRequest("Email is not confirmed, please confirm your email before resetting your password");
             
             var token = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "resetPassword");
-            await _emailService.SendVerificationCode(user, token, "Reset password");
+            await _emailService.ResetPassword(user, token);
             return Ok("Email sent");
         }
 
@@ -533,7 +533,7 @@ public class PublicControllerV1 : ControllerBase
                 return BadRequest("The email is already confirmed");
 
             var token = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "confirmEmail");
-            await _emailService.SendVerificationCode(user, token, "Confirming the email");
+            await _emailService.ConfirmEmail(user, token);
             return Ok("Email sent");
         }
 
