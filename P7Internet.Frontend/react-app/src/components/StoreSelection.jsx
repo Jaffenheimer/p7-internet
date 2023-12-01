@@ -33,7 +33,7 @@ const StoreSelection = ({ values, setValues, options, setOptions }) => {
     if (action === "remove-value") {
         //if the removed value is "Bilka", we show a toast that explains why it is not possible to remove it
         if (removedValue.value === "Bilka") {
-          toast.error("Priser bliver vist for Bilka når hvis der ikke er tilbud i andre butikker eller det er billigst i Bilka")
+          toast.error("Bilka kan ikke fjernes fordi priser bliver vist for Bilka hvis der ikke er tilbud i andre butikker eller det er billigst i Bilka")
           return;
         }
       const removedValueOption = {
