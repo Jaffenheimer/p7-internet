@@ -324,7 +324,8 @@ public class PublicControllerV1 : ControllerBase
             return BadRequest(
                 "User with the specified Username or Email already exists, please choose another Username or Email");
         // ONLY COMMENT THIS IN WHEN WE NEED TO SHOW THIS FEATURE
-        //await _emailService.ConfirmEmail(user.EmailAddress, user.Name);
+        //var confirmEmailToken = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "confirmEmail");
+        //await _emailService.ConfirmEmail(user, confirmEmailToken);
         var token = await _userSessionRepository.GenerateSessionToken(user.Id);
         var response = new LogInResponse(user.Id, token, user.Name, user.EmailAddress);
 
@@ -453,7 +454,7 @@ public class PublicControllerV1 : ControllerBase
                 return BadRequest("Email is not confirmed, please confirm your email before resetting your password");
             
             var token = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "resetPassword");
-            await _emailService.SendVerificationCode(user, token, "Reset password");
+            await _emailService.ResetPassword(user, token);
             return Ok("Email sent");
         }
 
@@ -515,28 +516,6 @@ public class PublicControllerV1 : ControllerBase
             return Ok("Password changed");
         }
         return BadRequest("Password is incorrect please try again");
-    }
-
-    /// <summary>
-    /// Endpoint to request a verification code to confirm the user's email.
-    /// </summary>
-    /// <param name="email"></param>
-    /// <returns>Returns Ok if a user is found and the email has been sent, if the user is not found it returns BadRequest</returns>
-    [HttpPost("user/confirm-email-request")]
-    public async Task<IActionResult> ConfirmEmailRequest(Guid UserId)
-    {
-        var user = await _userRepository.GetUserFromId(UserId);
-        if (user != null)
-        {
-            if (user.IsEmailConfirmed)
-                return BadRequest("The email is already confirmed");
-
-            var token = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "confirmEmail");
-            await _emailService.SendVerificationCode(user, token, "Confirming the email");
-            return Ok("Email sent");
-        }
-
-        return BadRequest("User does not exist");
     }
 
     //NOTE: IKKE BRUG DET HER ENDPOINT TIL TESTING DER ER KUN 100 GRATIS EMAILS OM DAGEN
