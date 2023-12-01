@@ -416,30 +416,38 @@ namespace P7Internet.Test.Controllers
         public void ResetPasswordSuccess()
         {
             //Arrange
-            _userRepositoryMock.Setup(x => x.GetUserByEmail(It.IsAny<string>())).ReturnsAsync(_testUser);
-
+            _userSessionRepositoryMock.Setup(x => x.VerificationCodeTypeMatchesAction(_seshToken, It.IsAny<string>()))
+                .ReturnsAsync(true);
+            _userSessionRepositoryMock.Setup(x => x.GetUserIdFromVerificationCode(_seshToken))
+                .ReturnsAsync(_testUser.Id);
+            _userRepositoryMock.Setup(x => x.GetUserFromId(_testUser.Id)).ReturnsAsync(_testUser);
+            _userRepositoryMock.Setup(x => x.ResetPassword(_testUser.EmailAddress, It.IsAny<string>()))
+                .ReturnsAsync(true);
+            _userSessionRepositoryMock.Setup(x => x.DeleteVerificationToken(_testUser.Id, _seshToken))
+                .ReturnsAsync(true);
             //Act
-            IActionResult actionResult = controller.ResetPassword(_testUser.EmailAddress).Result;
+            IActionResult actionResult = controller.ResetPassword("test", _seshToken).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
-            _emailServiceMock.Verify(x => x.ResetPassword(_testUser), Times.Once);
         }
 
         [Test()]
         public void ResetPasswordFailUserNotExist()
         {
             //Arrange
-            _userRepositoryMock.Setup(x => x.GetUser(It.IsAny<string>())).ReturnsAsync(value: null);
+            _userSessionRepositoryMock.Setup(x => x.VerificationCodeTypeMatchesAction(_seshToken, It.IsAny<string>()))
+                .ReturnsAsync(true);
+            _userSessionRepositoryMock.Setup(x => x.GetUserIdFromVerificationCode(It.IsAny<string>()))
+                .ReturnsAsync(value: null);
 
             //Act
-            IActionResult actionResult = controller.ResetPassword(_testUser.EmailAddress).Result;
+            IActionResult actionResult = controller.ResetPassword(It.IsAny<string>(), _seshToken).Result;
             var contentResult = actionResult as BadRequestObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
-            _emailServiceMock.Verify(x => x.ResetPassword(_testUser), Times.Never);
         }
 
         [Test()]
@@ -469,10 +477,15 @@ namespace P7Internet.Test.Controllers
         {
             //Arrange
             var confirmEmailReq = new ConfirmEmailRequest(_testUser.Name, _testUser.EmailAddress);
-            _userRepositoryMock.Setup(x => x.ConfirmEmail(_testUser.Name, It.IsAny<string>())).ReturnsAsync(true);
+            _userRepositoryMock.Setup(x => x.GetUserFromId(_testUser.Id)).ReturnsAsync(_testUser);
+            _userSessionRepositoryMock.Setup(x => x.VerificationCodeTypeMatchesAction(_seshToken, It.IsAny<string>()))
+                .ReturnsAsync(true);
+            _userRepositoryMock.Setup(x => x.ConfirmEmail(_testUser.Name, _testUser.EmailAddress)).ReturnsAsync(true);
+            _userSessionRepositoryMock.Setup(x => x.DeleteVerificationToken(_testUser.Id, _seshToken))
+                .ReturnsAsync(true);
 
             //Act
-            IActionResult actionResult = controller.ConfirmEmail(confirmEmailReq).Result;
+            IActionResult actionResult = controller.ConfirmEmail(_testUser.Id, _seshToken).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert

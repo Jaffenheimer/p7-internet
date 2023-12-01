@@ -21,6 +21,29 @@ public class UserRepository : IUserRepository
     }
 
     /// <summary>
+    /// Gets a user from a user id
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns>Returns a user of type user</returns>
+    public async Task<User> GetUserFromId(Guid userId)
+    {
+        var query = $@"SELECT * FROM {TableName} WHERE Id = @Id";
+        var result = await Connection.QuerySingleOrDefaultAsync(query, new {Id = userId});
+        if (result != null)
+        {
+            var user = new User(result.Name, result.Email);
+            user.Id = Guid.Parse(result.Id);
+            user.PasswordHash = result.Password_hash;
+            user.PasswordSalt = result.Password_salt;
+            user.CreatedAt = result.Creation_date;
+            user.IsEmailConfirmed = result.EmailConfirmed;
+            return user;
+        }
+
+        return null;
+    }
+
+    /// <summary>
     /// Gets a user by username
     /// </summary>
     /// <param name="name"></param>
@@ -36,6 +59,7 @@ public class UserRepository : IUserRepository
             user.PasswordHash = result.Password_hash;
             user.PasswordSalt = result.Password_salt;
             user.CreatedAt = result.Creation_date;
+            user.IsEmailConfirmed = result.IsEmailConfirmed;
             return user;
         }
 
@@ -58,6 +82,7 @@ public class UserRepository : IUserRepository
             user.PasswordHash = result.Password_hash;
             user.PasswordSalt = result.Password_salt;
             user.CreatedAt = result.Creation_date;
+            user.IsEmailConfirmed = result.IsEmailConfirmed;
             return user;
         }
 
@@ -152,7 +177,7 @@ public class UserRepository : IUserRepository
         var salt = GenerateSalt();
         var passwordHash = GenerateHash(password + salt);
         var result = await Connection.ExecuteAsync(query,
-            new {Email = email, Password_hash = passwordHash, Password_salt = salt, Updated = DateTime.UtcNow});
+            new {Email = email, PasswordHash = passwordHash, PasswordSalt = salt, Updated = DateTime.UtcNow});
         return result > 0;
     }
 

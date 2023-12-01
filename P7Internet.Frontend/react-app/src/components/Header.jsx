@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import FavoritesModalContainer from "./FavoritesModalContainer";
 import { modalStyling } from "../objects/Modal";
 import ModalContent from "./ModalContent";
+import SettingBox from "./SettingBox";
 import icon from "../data/recipe_oracle_icon.png";
 import Pages from "../objects/Pages";
 
@@ -18,10 +19,14 @@ const Header = () => {
   const favoritesModalShown = useSelector(
     (state) => state.page.favoritesModalShown
   );
+  const settingModalShown = useSelector(
+    (state) => state.page.settingModalShown
+  );
 
   const openLoginModal = () => dispatch(pageActions.openLoginModal());
   const closeLoginModal = () => dispatch(pageActions.closeLoginModal());
   const closeFavoritesModal = () => dispatch(pageActions.closeFavoritesModal());
+  const closeSettingModal = () => dispatch(pageActions.closeSettingModal());
 
   return (
     <div className="header no-print">
@@ -30,25 +35,44 @@ const Header = () => {
         style={modalStyling}
         onRequestClose={closeLoginModal}
         contentLabel="Login Modal"
-        ariaHideApp={false}>
+        ariaHideApp={false}
+      >
         <LoginBox closeModal={closeLoginModal} />
       </Modal>
+
+      <Modal
+        isOpen={settingModalShown}
+        style={modalStyling}
+        onRequestClose={closeSettingModal}
+        contentLabel="Setting Modal"
+        ariaHideApp={false}
+      >
+        <ModalContent
+          title="Indstillinger"
+          closeModal={closeSettingModal}
+          Container={SettingBox}
+        />
+      </Modal>
+
       <Modal
         isOpen={favoritesModalShown}
         style={modalStyling}
         onRequestClose={closeFavoritesModal}
         contentLabel="Favorites Modal"
-        ariaHideApp={false}>
+        ariaHideApp={false}
+      >
         <ModalContent
           title="Favoritter"
           closeModal={closeFavoritesModal}
-          Container={FavoritesModalContainer}></ModalContent>
+          Container={FavoritesModalContainer}
+        ></ModalContent>
       </Modal>
 
       <div className="title" onClick={ () => dispatch(pageActions.goToPage(Pages.frontPage))}>
         OpskriftsOraklet
         <img src={icon} alt="logo" className="titleLogo" />
         </div>
+
       {loggedIn ? (
         <ProfilePicture />
       ) : (

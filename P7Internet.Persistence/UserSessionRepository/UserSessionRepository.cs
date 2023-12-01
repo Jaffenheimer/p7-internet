@@ -9,6 +9,9 @@ namespace P7Internet.Persistence.UserSessionRepository;
 public class UserSessionRepository : IUserSessionRepository
 {
     private static readonly string TableName = "UserSessionTable";
+    private static readonly string VerificationTable = "VerificationCodeTable";
+
+    private readonly DateTimeOffset _date = new DateTimeOffset(DateTime.Now);
     private readonly IDbConnectionFactory _connectionFactory;
     private IDbConnection Connection => _connectionFactory.Connection;
 
@@ -27,7 +30,7 @@ public class UserSessionRepository : IUserSessionRepository
         var query = $@"INSERT INTO {TableName} (UserId, SessionToken, ExpiresAt)
                             VALUES (@UserId, @SessionToken, @ExpiresAt)";
 
-        var deleteDeprecatedTokes = $@"DELETE FROM {TableName} WHERE ExpiresAt < (TIME(NOW()))";
+        var deleteDeprecatedTokes = $@"DELETE FROM {TableName} WHERE ExpiresAt < (TIME(NOW()+INTERVAL 1 HOUR))";
         await Connection.ExecuteAsync(deleteDeprecatedTokes);
 
         var token = GenerateToken();
@@ -35,7 +38,7 @@ public class UserSessionRepository : IUserSessionRepository
         {
             UserId = userId,
             SessionToken = token,
-            ExpiresAt = DateTime.UtcNow.AddHours(2),
+            ExpiresAt = DateTime.UtcNow.AddHours(_date.Offset.Hours + 1),
         };
         await Connection.ExecuteAsync(query, parameters);
         return token;
@@ -49,7 +52,8 @@ public class UserSessionRepository : IUserSessionRepository
     /// <returns>Returns true if the sessiontoken is valid and present, otherwise 0</returns>
     public async Task<bool> CheckIfTokenIsValid(Guid userId, string token)
     {
-        var query = $@"SELECT * FROM {TableName} WHERE UserId = @userId AND SessionToken = @token";
+        var query =
+            $@"SELECT * FROM {TableName} WHERE UserId = @userId AND SessionToken = @token AND ExpiresAt >= (TIME(NOW()))";
         var result = await Connection.QuerySingleOrDefaultAsync(query, new {userId, token});
         if (result != null && result.ExpiresAt > DateTime.UtcNow)
         {
@@ -70,6 +74,85 @@ public class UserSessionRepository : IUserSessionRepository
     {
         var query = $@"DELETE FROM {TableName} WHERE UserId = @UserId AND SessionToken = @SessionToken";
         return await Connection.ExecuteAsync(query, new {UserId = userId, SessionToken = sessionToken}) > 0;
+    }
+
+    /// <summary>
+    /// Gets a userId from a verification code given that the code is valid and deletes the verification token from the database
+    /// </summary>
+    /// <param name="verificationCode"></param>
+    /// <returns>A user if found null if not</returns>
+    public async Task<Guid?> GetUserIdFromVerificationCode(string verificationCode)
+    {
+        var query =
+            $@"SELECT UserId FROM {VerificationTable} WHERE VerificationCode = @VerificationCode AND ExpiresAt >= (TIME(NOW()))";
+        var result =
+            await Connection.QueryFirstOrDefaultAsync<Guid>(query, new {VerificationCode = verificationCode});
+        if (result != Guid.Empty)
+        {
+            await DeleteVerificationToken(result, verificationCode);
+            return result;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Determines if the verification code is of the expected type, types=["resetPassword", "confirmEmail"]
+    /// </summary>
+    /// <param name="verificationCode"></param>
+    /// <param name="type"></param>
+    /// <returns>true if the verification is of expected type, else false </returns>
+    public async Task<bool> VerificationCodeTypeMatchesAction(string verificationCode, string type)
+    {
+        var query =
+            $@"SELECT UserId FROM {VerificationTable} WHERE VerificationCode = @VerificationCode AND ExpiresAt >= TIME(NOW()) AND CodeType = @CodeType";
+        var result =
+            await Connection.QueryFirstOrDefaultAsync<Guid>(query,
+                new {VerificationCode = verificationCode, CodeType = type});
+
+        if (result != Guid.Empty)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Generates a verification code for the user and inserts it into the database
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns>returns the generated token</returns>
+    public async Task<string> GenerateVerificationCode(Guid userId, string codeType)
+    {
+        var query = $@"INSERT INTO {VerificationTable} (UserId, VerificationCode, ExpiresAt, CodeType)
+                            VALUES (@UserId, @VerificationCode, @ExpiresAt, @CodeType)";
+
+        var deleteDeprecatedTokes = $@"DELETE FROM {VerificationTable} WHERE ExpiresAt <= (TIME(NOW()))";
+        await Connection.ExecuteAsync(deleteDeprecatedTokes);
+
+        var token = GenerateToken();
+        var parameters = new
+        {
+            UserId = userId,
+            VerificationCode = token,
+            ExpiresAt = DateTime.UtcNow.AddHours(_date.Offset.Hours + 1),
+            CodeType = codeType,
+        };
+        await Connection.ExecuteAsync(query, parameters);
+        return token;
+    }
+
+    /// <summary>
+    /// Deletes a verification token from the database
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="verificationCode"></param>
+    /// <returns>True if it went well false if not</returns>
+    public async Task<bool> DeleteVerificationToken(Guid userId, string verificationCode)
+    {
+        var query = $@"DELETE FROM {VerificationTable} WHERE UserId = @UserId AND VerificationCode = @VerificationCode";
+        return await Connection.ExecuteAsync(query, new {UserId = userId, VerificationCode = verificationCode}) > 0;
     }
 
     /// <summary>

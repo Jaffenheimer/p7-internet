@@ -9,7 +9,7 @@ using P7Internet.Persistence.Connection;
 using P7Internet.Persistence.UserRepository;
 using P7Internet.Shared;
 
-namespace P7Internet.Repositories.Tests
+namespace P7Internet.Test.Repositories
 {
     [TestFixture()]
     public class UserRepositoryTests
@@ -26,6 +26,7 @@ namespace P7Internet.Repositories.Tests
             public string Password_hash { get; set; }
             public string Password_salt { get; set; }
             public DateTime Creation_date { get; set; }
+            public bool IsEmailConfirmed { get; set; }
 
             public TestUser(string name, string emailAddress)
             {
@@ -46,13 +47,14 @@ namespace P7Internet.Repositories.Tests
             {
                 Id = Guid.NewGuid().ToString(), Creation_date = new DateTime(2023, 11, 23),
                 Password_hash = new string("361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB"),
-                Password_salt = "salt1234salt", Email = "test@example.com", Name = "TestUser"
+                Password_salt = "salt1234salt", Email = "test@example.com", Name = "TestUser", IsEmailConfirmed = false
             };
             _testUser = new User("TestUser", "test@example.com")
             {
                 Id = Guid.NewGuid(), CreatedAt = DateTime.Now,
                 PasswordHash = "361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB",
-                PasswordSalt = "salt1234salt"
+                PasswordSalt = "salt1234salt",
+                IsEmailConfirmed = false
             };
             _userRepositoryMock = new Mock<IUserRepository>();
             _dbConnection

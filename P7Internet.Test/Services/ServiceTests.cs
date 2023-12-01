@@ -93,15 +93,5 @@ namespace P7Internet.Services.Tests
         }
 
         #endregion
-
-        [Test()]
-        public void ExampleTest()
-        {
-            //Arrange
-
-            //Act
-
-            //Assert
-        }
     }
 }

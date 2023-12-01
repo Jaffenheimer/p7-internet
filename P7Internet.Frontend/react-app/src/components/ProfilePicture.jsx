@@ -24,6 +24,7 @@ const ProfilePicture = ({ openFavoritesModal }) => {
   };
 
   const handleSettings = () => {
+    dispatch(pageActions.openSettingModal());
     setOpen(false);
   };
 
@@ -66,26 +67,32 @@ const ProfilePicture = ({ openFavoritesModal }) => {
   return (
     <div className="ProfilePicture" data-testid="ProfilePicture">
       <div className="dropdown-button">
-      <img
-        className="Profile"
-        src={profile}
-        alt="ProfilePicture"
-        onClick={profileClick}
-      />
+        <img
+          className="Profile"
+          src={profile}
+          alt="ProfilePicture"
+          onClick={profileClick}
+        />
       </div>
       {open ? (
-        <div className="dropdown"> 
-        <ul className="dropdown-content">
-          <li className="menu-item">
-            <button id="FavoritesButton" onClick={handleFavorites}>Favoritter</button>
-          </li>
-          <li className="menu-item">
-            <button id="SettingsButton" onClick={handleSettings}>Indstillinger</button>
-          </li>
-          <li className="menu-item">
-            <button id="LogoutButton" onClick={handleLogOut}>Log ud</button>
-          </li>
-        </ul>
+        <div className="dropdown">
+          <ul className="dropdown-content">
+            <li className="menu-item">
+              <button id="FavoritesButton" onClick={handleFavorites}>
+                Favoritter
+              </button>
+            </li>
+            <li className="menu-item">
+              <button id="SettingsButton" onClick={handleSettings}>
+                Indstillinger
+              </button>
+            </li>
+            <li className="menu-item">
+              <button id="LogoutButton" onClick={handleLogOut}>
+                Log ud
+              </button>
+            </li>
+          </ul>
         </div>
       ) : null}
     </div>

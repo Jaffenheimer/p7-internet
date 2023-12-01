@@ -9,6 +9,7 @@ namespace P7Internet.Requests;
 /// <param name="emailAddress"></param>
 public class ConfirmEmailRequest
 {
+    public string UserId { get; set; }
     public string UserName { get; set; }
     [EmailAddress] public string EmailAddress { get; set; }
 

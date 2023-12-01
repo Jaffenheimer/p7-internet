@@ -488,14 +488,35 @@ button:active {
 }
 
 /* Login */
-.LoginForm {
+.LoginModal {
   background-color: white;
   height: 600px;
   width: 400px;
   margin: auto;
 }
 
-.LoginForm input[type="text"],
+.SettingModal input[type="text"],
+input[type="password"] {
+  width: 90%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.SettingModal h3 {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+.SettingModal .SendVerificationEmailButton {
+  width: 25%;
+  margin-right: 10%;
+  float: right;
+}
+
+.LoginModal input[type="text"],
 input[type="password"] {
   width: 100%;
   padding: 12px 20px;
@@ -505,11 +526,11 @@ input[type="password"] {
   box-sizing: border-box;
 }
 
-.LoginForm select {
+.LoginModal select {
   width: 100%;
 }
 
-.LoginForm option {
+.LoginModal option {
   font-size: 18px;
   font-family: Verdana;
 }
