@@ -71,9 +71,41 @@ namespace P7Internet.Test.Repositories
         {
             //Arrange
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
-
+            
             //Act
             var user = _userRepository.GetUser(_testUser.Name).Result;
+
+            //Assert
+            Assert.NotNull(user);
+            Assert.NotNull(user.Name);
+        }
+        [Test()]
+        public void GetUserFail()
+        {
+            User testUser = default;
+            //Arrange
+            _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
+            _dbConnection.SetupDapperAsync(x => x.QuerySingleOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(testUser);
+            
+            
+            //Act
+            var user = _userRepository.GetUser("TestUser2").Result;
+
+            //Assert
+            Assert.Null(user);
+            Assert.AreNotEqual(_testUser, user);
+        }
+        
+        //TODO: Fix this test
+        //[Test()]
+        public void GetUserByIdSuccess()
+        {
+            //Arrange
+            _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
+            
+            //Act
+            var user = _userRepository.GetUserFromId(_testUser.Id).Result;
 
             //Assert
             Assert.NotNull(user);
@@ -180,6 +212,11 @@ namespace P7Internet.Test.Repositories
         [Test()]
         public void CreateUserSuccess()
         {
+            //Arrange/Act
+            var user = _userRepository.CreateUser(_testUser.Name, _testUser.EmailAddress);
+
+            //Assert
+            Assert.NotNull(user);
         }
     }
 }

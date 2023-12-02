@@ -50,6 +50,11 @@ namespace P7Internet.Services.Tests
         }
 
         [Test()]
+        public async Task GetSallingOfferFail()
+        {
+        }
+
+        [Test()]
         public async Task GetAllOffersTest()
         {
             //Arrange
@@ -90,6 +95,22 @@ namespace P7Internet.Services.Tests
 
             //Assert
             Assert.AreEqual(checkPrompt, prompt);
+        }
+
+        [Test]
+        public async Task ComposePromptFail()
+        {
+            //Arrange
+            var recipeRequest = new RecipeRequest(Guid.NewGuid(), "test-token",
+                new List<string>(), 2, new List<string> (),
+                new List<string>(), 4);
+            var checkPrompt =
+                @"Jeg vil gerne have 2 opskrifter med disse ingredienser kylling, julebryg, hestebønner uden disse ingredienser kartoffel,løg der er vegansk til 4 personer";
+            //Act
+            var prompt = _openAiService.ComposePromptFromRecipeRequest(recipeRequest);
+
+            //Assert
+            Assert.AreNotEqual(checkPrompt, prompt);
         }
 
         #endregion

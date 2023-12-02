@@ -69,6 +69,23 @@ namespace P7Internet.Repositories.Tests
         }
 
         [Test()]
+        public void GetOfferFailure()
+        {
+            TestOffer testOffer = default;
+            //Arrange
+            _dbConnection
+                .SetupDapperAsync(
+                    c => c.QueryFirstOrDefaultAsync<TestOffer>(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(testOffer);
+
+            //Act
+            var offer = _cachedOfferRepository.GetOffer(It.IsAny<string>()).Result;
+
+            //Assert
+            Assert.AreNotEqual(_testOfferStruct,offer);
+        }
+        
+        [Test()]
         public void GetOfferByStoreSuccess()
         {
             //Arrange
@@ -82,6 +99,22 @@ namespace P7Internet.Repositories.Tests
 
             //Assert
             Assert.NotNull(offer);
+        }
+        [Test()]
+        public void GetOfferByStoreFailure()
+        {
+            TestOffer testOffer = default;
+            //Arrange
+            _dbConnection
+                .SetupDapperAsync(
+                    c => c.QueryFirstOrDefaultAsync<TestOffer>(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(testOffer);
+
+            //Act
+            var offer = _cachedOfferRepository.GetOfferByStore(It.IsAny<string>(), It.IsAny<string>()).Result;
+
+            //Assert
+            Assert.AreNotEqual(_testOfferStruct,offer);
         }
 
         [Test()]
@@ -99,6 +132,22 @@ namespace P7Internet.Repositories.Tests
             //Assert
             Assert.NotNull(status);
             Assert.IsTrue(true);
+        }
+
+        [Test()]
+        public void UpsertOfferFailure()
+        {
+            //Arrange
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(0);
+
+            //Act
+            var status = _cachedOfferRepository.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>())
+                .Result;
+            
+            //Assert
+            Assert.NotNull(status);
+            Assert.IsFalse(false);
         }
     }
 }

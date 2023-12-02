@@ -149,13 +149,13 @@ public class PublicControllerV1 : ControllerBase
             return Unauthorized("User session is not valid, please login again");
 
         var result = await _favouriteRecipeRepository.GetHistory(userId);
-        if (result != null)
+        if (result != null && result.Count != 0)
         {
             var res = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result);
             return Ok(res);
         }
 
-        return BadRequest("No favourite recipes found");
+        return NotFound("No history found");
     }
 
     /// <summary>
@@ -409,12 +409,11 @@ public class PublicControllerV1 : ControllerBase
             return Unauthorized("User session is not valid, please login again");
 
         var result = await _favouriteRecipeRepository.Get(req.UserId);
-        if (result != null)
+        if (result != null && result.Count != 0)
         {
             return Ok(result);
         }
-
-        return BadRequest("No favourite recipes found");
+        return NotFound("No favourite recipes found");
     }
 
     /// <summary>

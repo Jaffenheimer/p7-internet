@@ -87,6 +87,21 @@ namespace P7Internet.Repositories.Tests
             Assert.NotNull(token);
             Assert.AreEqual(testToken.Length, testToken.Length);
         }
+        //[Test()]
+        public void GenerateSessionTokenFail()
+        {
+            //Arrange
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(0);
+            
+            
+            
+            //Act
+            var token = _userSessionRepository.GenerateSessionToken(_testUser.Id).Result;
+
+            //Assert
+            Assert.IsNull(token);
+        }
 
         [Test()]
         public void CheckIfTokenIsValidSuccess()
@@ -135,6 +150,19 @@ namespace P7Internet.Repositories.Tests
 
             //Assert
             Assert.IsTrue(status);
+        }
+        [Test()]
+        public void DeleteSessionTokenFail()
+        {
+            //Arrange
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(0);
+
+            //Act
+            var status = _userSessionRepository.DeleteSessionToken(_testUser.Id, _testTokenStruct.SessionToken).Result;
+
+            //Assert
+            Assert.IsFalse(status);
         }
     }
 }

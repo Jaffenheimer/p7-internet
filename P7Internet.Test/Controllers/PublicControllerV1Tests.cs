@@ -119,6 +119,8 @@ namespace P7Internet.Test.Controllers
 
             //Assert
             Assert.NotNull(contentResult);
+            _recipeCacheRepositoryMock.Verify(x => x.GetAllRecipes(), Times.Once);
+            _openAiServiceMock.Verify(x => x.GetAiResponse(recipeRequest), Times.Never);
         }
 
         [Test()]
@@ -139,6 +141,47 @@ namespace P7Internet.Test.Controllers
 
             //Assert
             Assert.NotNull(contentResult);
+        }
+        [Test()]
+        public void GetRecipeHistoryFailUserNotAuthorized()
+        {
+            //Arrange
+            var favouriteRecipes = new List<string>() {"Recipe1", "Recipe2"};
+            _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(false));
+            _favouriteRecipeRepositoryMock.Setup(x => x.GetHistory(It.IsAny<Guid>()))
+                .Returns(Task.FromResult(new List<string>() {"FavRecipe1", "FavRecipe2"}));
+            _recipeCacheRepositoryMock.Setup(x => x.GetListOfRecipesFromListOfStrings(It.IsAny<List<string>>()))
+                .ReturnsAsync(() => new List<string> {"Recipe1", "Recipe2"});
+
+            //Act
+            IActionResult actionResult = controller.GetRecipeHistory(Guid.NewGuid(), "TestToken").Result;
+            var contentResult = actionResult as UnauthorizedObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("User session is not valid, please login again", contentResult.Value);
+        }
+        [Test()]
+        public void GetRecipeHistoryFailNoHistoryFound()
+        {
+            //Arrange
+            var favouriteRecipes = new List<string>() {"Recipe1", "Recipe2"};
+            _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
+                .Returns(Task.FromResult(true));
+            _favouriteRecipeRepositoryMock.Setup(x => x.GetHistory(It.IsAny<Guid>()))
+                .Returns(Task.FromResult(new List<string>()));
+
+            //Act
+            IActionResult actionResult = controller.GetRecipeHistory(Guid.NewGuid(), "TestToken").Result;
+            var contentResult = actionResult as NotFoundObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("No history found", contentResult.Value);
+            _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()),
+                Times.Once);
+            _favouriteRecipeRepositoryMock.Verify(x => x.GetHistory(It.IsAny<Guid>()), Times.Once);
         }
 
         [Test()]
@@ -214,6 +257,21 @@ namespace P7Internet.Test.Controllers
             //Assert
             Assert.NotNull(contentResult);
         }
+        
+        [Test()]
+        public void GetOfferFromCacheFail()
+        {
+            //Arrange
+            _cachedOfferRepositoryMock.Setup(x => x.GetOffer(It.IsAny<string>())).ReturnsAsync(value: null);
+
+            //Act
+            IActionResult actionResult = controller.GetOffer(new OfferRequest(1, "Kylling", 5000, "true")).Result;
+            var contentResult = actionResult as OkObjectResult;
+
+            //Assert
+            Assert.Null(contentResult);
+            _cachedOfferRepositoryMock.Verify(x => x.GetOffer(It.IsAny<string>()), Times.Once);
+        }
 
         [Test()]
         public void GetOfferFromEtilbudsavisSuccess()
@@ -233,8 +291,31 @@ namespace P7Internet.Test.Controllers
 
             //Assert
             Assert.NotNull(contentResult);
+            _cachedOfferRepositoryMock.Verify(x => x.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>()), Times.AtLeastOnce);
+            _cachedOfferRepositoryMock.Verify(x => x.GetOffer(It.IsAny<string>()), Times.Once);
+            _etilbudsAvisServiceMock.Verify(x => x.GetAllOffers(offerRequest), Times.Once);
         }
+        
+        [Test()]
+        public void GetOfferFromEtilbudsavisFail()
+        {
+            //Arrange
+            var offerRequest = new OfferRequest(1, "Kylling", 5000, "true");
+            _cachedOfferRepositoryMock.Setup(x => x.GetOffer(It.IsAny<string>())).ReturnsAsync(value: null);
+            _etilbudsAvisServiceMock.Setup(x => x.GetAllOffers(offerRequest)).ReturnsAsync(value: null);
 
+            //Act
+            IActionResult actionResult = controller.GetOffer(offerRequest).Result;
+            var contentResult = actionResult as BadRequestObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("No offer found",contentResult.Value);
+            _cachedOfferRepositoryMock.Verify(x => x.GetOffer(It.IsAny<string>()), Times.Once);
+            _etilbudsAvisServiceMock.Verify(x => x.GetAllOffers(offerRequest), Times.Once);
+        }
+        
+        
         [Test()]
         public void GetOfferFromSallingSuccessIfNotFoundInCacheOrEtilbudsavisSuccess()
         {
@@ -244,8 +325,6 @@ namespace P7Internet.Test.Controllers
             _cachedOfferRepositoryMock
                 .Setup(x => x.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>()))
                 .ReturnsAsync(true);
-            _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()
-                {"Æble, Kartoffel, Julebryg, Fløde, Vegansk"}));
             _etilbudsAvisServiceMock.Setup(x => x.GetAllOffers(offerRequest)).ReturnsAsync(value: null);
             _sallingServiceMock.Setup(x => x.GetRelevantProducts(It.IsAny<string>()))
                 .ReturnsAsync(new List<Offer>() {new Offer(), new Offer()});
@@ -256,6 +335,34 @@ namespace P7Internet.Test.Controllers
 
             //Assert
             Assert.NotNull(contentResult);
+            _cachedOfferRepositoryMock.Verify(x => x.GetOffer(It.IsAny<string>()), Times.AtLeastOnce);
+            _etilbudsAvisServiceMock.Verify(x => x.GetAllOffers(offerRequest), Times.Once);
+            _sallingServiceMock.Verify(x => x.GetRelevantProducts(It.IsAny<string>()), Times.Once);
+            _cachedOfferRepositoryMock.Verify(x => x.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>()), Times.AtLeastOnce);
+        }
+        
+        [Test()]
+        public void GetOfferFromSallingSuccessIfNotFoundInCacheOrEtilbudsavisFail()
+        {
+            //Arrange
+            var offerRequest = new OfferRequest(1, "Kylling", 5000, "true");
+            _cachedOfferRepositoryMock.Setup(x => x.GetOffer(It.IsAny<string>())).ReturnsAsync(value: null);
+            _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()
+                {"Æble, Kartoffel, Julebryg, Fløde, Vegansk"}));
+            _etilbudsAvisServiceMock.Setup(x => x.GetAllOffers(offerRequest)).ReturnsAsync(value: null);
+            _sallingServiceMock.Setup(x => x.GetRelevantProducts(It.IsAny<string>()))
+                .ReturnsAsync(value: null);
+
+            //Act
+            IActionResult actionResult = controller.GetOffer(offerRequest).Result;
+            var contentResult = actionResult as BadRequestObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("No offer found",contentResult.Value);
+            _cachedOfferRepositoryMock.Verify(x => x.GetOffer(It.IsAny<string>()), Times.Once);
+            _etilbudsAvisServiceMock.Verify(x => x.GetAllOffers(offerRequest), Times.Once);
+            _sallingServiceMock.Verify(x => x.GetRelevantProducts(It.IsAny<string>()), Times.Once);
         }
 
         [Test()]
@@ -274,6 +381,24 @@ namespace P7Internet.Test.Controllers
 
             //Assert
             Assert.NotNull(contentResult);
+            _cachedOfferRepositoryMock.Verify(x => x.GetOfferByStore(testIngredient, testStore), Times.Once);
+        }
+        [Test()]
+        public void GetOfferByStoreIfAvailableFromCacheFail()
+        {
+            //Arrange
+            var testIngredient = "Julebryg";
+            var testStore = "Bilka";
+            _cachedOfferRepositoryMock.Setup(x => x.GetOfferByStore(It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(value: null);
+
+            //Act
+            IActionResult actionResult =
+                controller.GetOfferByStoreIfAvailableFromCache(testIngredient, testStore).Result;
+            var contentResult = actionResult as OkObjectResult;
+
+            //Assert
+            Assert.Null(contentResult);
             _cachedOfferRepositoryMock.Verify(x => x.GetOfferByStore(testIngredient, testStore), Times.Once);
         }
 
@@ -301,6 +426,24 @@ namespace P7Internet.Test.Controllers
         }
 
         [Test()]
+        public void CreateUserFailUserAlreadyExists()
+        {
+            //Arrange
+            _userRepositoryMock.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>())).Returns(_testUser);
+            _userRepositoryMock.Setup(x => x.Upsert(_testUser, It.IsAny<string>())).ReturnsAsync(false);
+            
+            //Act
+            IActionResult actionResult = controller.CreateUser(new CreateUserRequest(_testUser.Name, _testUser.EmailAddress, "TestPass")).Result;
+            var contentResult = actionResult as BadRequestObjectResult;
+            
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("User with the specified Username or Email already exists, please choose another Username or Email", contentResult.Value);
+            _userRepositoryMock.Verify(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            _userRepositoryMock.Verify(x => x.Upsert(_testUser, It.IsAny<string>()), Times.Once);
+        }
+
+        [Test()]
         public void LoginSuccess()
         {
             //Arrange
@@ -317,6 +460,22 @@ namespace P7Internet.Test.Controllers
             //Assert
             Assert.NotNull(contentResult);
             Assert.AreEqual(contentResult.Value.GetType(), typeof(LogInResponse));
+        }
+        
+        [Test()]
+        public void LoginFailUserNotFound()
+        {
+            //Arrange
+            var loginRequest = new LogInRequest("TestUser", "TestPass");
+            _userRepositoryMock.Setup(x => x.LogIn(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(value: null);
+
+            //Act
+            IActionResult actionResult = controller.Login(loginRequest).Result;
+            var contentResult = actionResult as BadRequestObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("Username or password is incorrect please try again", contentResult.Value);
         }
 
         [Test()]
@@ -374,6 +533,25 @@ namespace P7Internet.Test.Controllers
             _favouriteRecipeRepositoryMock.Verify(x => x.Upsert(_testUser.Id, _testRecipe.Id), Times.Once);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
         }
+        
+        [Test()]
+        public void AddFavouriteRecipeFailUserNotAuthorized()
+        {
+            //Arrange
+            var addFavouriteRequest = new AddFavouriteRecipeRequest(_testUser.Id, _seshToken, _testRecipe.Id);
+            _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken)).ReturnsAsync(false);
+            _favouriteRecipeRepositoryMock.Setup(x => x.Upsert(_testUser.Id, _testRecipe.Id)).ReturnsAsync(true);
+
+            //Act
+            IActionResult actionResult = controller.AddFavouriteRecipe(addFavouriteRequest).Result;
+            var contentResult = actionResult as UnauthorizedObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("User session is not valid, please login again", contentResult.Value);
+            _favouriteRecipeRepositoryMock.Verify(x => x.Upsert(_testUser.Id, _testRecipe.Id), Times.Never);
+            _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
+        }
 
         [Test()]
         public void GetFavouriteRecipesSuccess()
@@ -393,6 +571,45 @@ namespace P7Internet.Test.Controllers
             _favouriteRecipeRepositoryMock.Verify(x => x.Get(_testUser.Id), Times.Once);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
         }
+        
+        [Test()]
+        public void GetFavouriteRecipesFailUserNotAuthorized()
+        {
+            //Arrange
+            var getFavRecipesReq = new GetFavouriteRecipesRequest(_testUser.Id, _seshToken);
+            _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken)).ReturnsAsync(false);
+            _favouriteRecipeRepositoryMock.Setup(x => x.Get(_testUser.Id))
+                .ReturnsAsync(new List<string>() {"TestRecipe1", "TestRecipe2"});
+
+            //Act
+            IActionResult actionResult = controller.GetFavouriteRecipes(getFavRecipesReq).Result;
+            var contentResult = actionResult as UnauthorizedObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("User session is not valid, please login again", contentResult.Value);
+            _favouriteRecipeRepositoryMock.Verify(x => x.Get(_testUser.Id), Times.Never);
+            _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
+        }
+        [Test()]
+        public void GetFavouriteRecipesFailNoRecipesFound()
+        {
+            //Arrange
+            var getFavRecipesReq = new GetFavouriteRecipesRequest(_testUser.Id, _seshToken);
+            _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken)).ReturnsAsync(true);
+            _favouriteRecipeRepositoryMock.Setup(x => x.Get(_testUser.Id))
+                .ReturnsAsync(new List<string>());
+
+            //Act
+            IActionResult actionResult = controller.GetFavouriteRecipes(getFavRecipesReq).Result;
+            var contentResult = actionResult as NotFoundObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("No favourite recipes found", contentResult.Value);
+            _favouriteRecipeRepositoryMock.Verify(x => x.Get(_testUser.Id), Times.Once);
+            _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
+        }
 
         [Test()]
         public void DeleteFavouriteRecipeSuccess()
@@ -409,6 +626,24 @@ namespace P7Internet.Test.Controllers
             //Assert
             Assert.NotNull(contentResult);
             _favouriteRecipeRepositoryMock.Verify(x => x.Delete(_testUser.Id, _testRecipe.Id), Times.Once);
+            _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
+        }
+        [Test()]
+        public void DeleteFavouriteRecipeFailUserNotAuthorized()
+        {
+            var deleteFavouriteReq = new DeleteFavouriteRecipeRequest(_testUser.Id, _seshToken, _testRecipe.Id);
+            //Arrange
+            _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken)).ReturnsAsync(false);
+            _favouriteRecipeRepositoryMock.Setup(x => x.Delete(_testUser.Id, _testRecipe.Id)).ReturnsAsync(true);
+
+            //Act
+            IActionResult actionResult = controller.DeleteFavouriteRecipe(deleteFavouriteReq).Result;
+            var contentResult = actionResult as UnauthorizedObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("User session is not valid, please login again", contentResult.Value);
+            _favouriteRecipeRepositoryMock.Verify(x => x.Delete(_testUser.Id, _testRecipe.Id), Times.Never);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
         }
 
@@ -448,6 +683,9 @@ namespace P7Internet.Test.Controllers
 
             //Assert
             Assert.NotNull(contentResult);
+            _userSessionRepositoryMock.Verify(x => x.GetUserIdFromVerificationCode(_seshToken), Times.Once);
+            _userSessionRepositoryMock.Verify(x => x.VerificationCodeTypeMatchesAction(_seshToken, It.IsAny<string>()),
+                Times.Once);
         }
 
         [Test()]
@@ -471,6 +709,45 @@ namespace P7Internet.Test.Controllers
             _userRepositoryMock.Verify(x => x.ChangePassword(_testUser.Name, It.IsAny<string>(), It.IsAny<string>()),
                 Times.Once);
         }
+        [Test()]
+        public void ChangePasswordFailUserNotAuthorized()
+        {
+            //Arrange
+            var changePasswordReq = new ChangePasswordRequest(_testUser.Id, _seshToken, _testUser.Name,
+                It.IsAny<string>(), It.IsAny<string>());
+            _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
+                .ReturnsAsync(false);
+
+            //Act
+            IActionResult actionResult = controller.ChangePassword(changePasswordReq).Result;
+            var contentResult = actionResult as UnauthorizedObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("User session is not valid, please login again", contentResult.Value);
+        }
+
+        [Test()]
+        public void ChangePasswordIncorrectPassword()
+        {
+            //Arrange
+            var changePasswordReq = new ChangePasswordRequest(_testUser.Id, _seshToken, _testUser.Name,
+                It.IsAny<string>(), It.IsAny<string>());
+            _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
+                .ReturnsAsync(true);
+            _userRepositoryMock.Setup(x => x.ChangePassword(_testUser.Name, It.IsAny<string>(), It.IsAny<string>()))
+                .ReturnsAsync(false);
+            
+            //Act
+            IActionResult actionResult = controller.ChangePassword(changePasswordReq).Result;
+            var contentResult =  actionResult as BadRequestObjectResult;
+            
+            //Assert
+            Assert.AreEqual("Password is incorrect please try again", contentResult.Value);
+            _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()), Times.Once);
+            _userRepositoryMock.Verify(x => x.ChangePassword(_testUser.Name, It.IsAny<string>(), It.IsAny<string>()),
+                Times.Once);
+        }
 
         [Test()]
         public void ConfirmEmailSuccess()
@@ -491,15 +768,21 @@ namespace P7Internet.Test.Controllers
             //Assert
             Assert.NotNull(contentResult);
         }
-
         [Test()]
-        public void Example()
+        public void ConfirmEmailFailUserNotExist()
         {
             //Arrange
+            _userSessionRepositoryMock.Setup(x => x.VerificationCodeTypeMatchesAction(_seshToken, It.IsAny<string>()))
+                .ReturnsAsync(true);
+            _userSessionRepositoryMock.Setup(x => x.GetUserIdFromVerificationCode(It.IsAny<string>()))
+                .ReturnsAsync(value: null);
 
             //Act
+            IActionResult actionResult = controller.ConfirmEmail(It.IsAny<Guid>(), _seshToken).Result;
+            var contentResult = actionResult as BadRequestObjectResult;
 
             //Assert
+            Assert.NotNull(contentResult);
         }
     }
 }

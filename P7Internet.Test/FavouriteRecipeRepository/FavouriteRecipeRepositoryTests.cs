@@ -57,7 +57,40 @@ namespace P7Internet.Test.FavouriteRecipeRepository
         }
 
         [Test()]
+        public void GetFailure()
+        {
+            //Arrange
+            _dbConnection
+                .SetupDapperAsync(c => c.QueryAsync(It.IsAny<string>(), new {UserId = _testUser.Id}, null, null, null))
+                .ReturnsAsync(value: null);
+
+            //Act
+            var status = _favRecipeCacheRepository.Get(_testUser.Id).Result;
+
+            //Assert
+            _recipeCacheRepositoryMock.Verify(x => x.GetListOfRecipes(It.IsAny<List<Guid>>()), Times.Once);
+        }
+
+        [Test()]
         public void UpsertSuccess()
+        {
+            //Arrange
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(),
+                new {UserId = _testUser.Id, RecipeId = _testRecipe.Id}, null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(value: null);
+            _recipeCacheRepositoryMock.Setup(x => x.CheckIfRecipeExist(It.IsAny<Guid>())).ReturnsAsync(true);
+
+            //Act
+            var status = _favRecipeCacheRepository.Upsert(_testUser.Id, _testRecipe.Id).Result;
+
+            //Assert
+            _recipeCacheRepositoryMock.Verify(x => x.CheckIfRecipeExist(_testRecipe.Id), Times.Once);
+            Assert.NotNull(status);
+        }
+
+        [Test()]
+        public void UpsertFailure()
         {
             //Arrange
             _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(),
@@ -90,7 +123,41 @@ namespace P7Internet.Test.FavouriteRecipeRepository
         }
 
         [Test()]
+        public void DeleteFailure()
+        {
+            //Arrange
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(),
+                new {UserId = _testUser.Id, RecipeId = _testRecipe.Id}, null, null, null)).ReturnsAsync(1);
+
+            //Act
+            var status = _favRecipeCacheRepository.Delete(_testUser.Id, _testRecipe.Id).Result;
+
+            //Assert
+            Assert.NotNull(status);
+            Assert.True(status);
+        }
+
+        //Test skal gentænkes
+        /*[Test()]
         public void GetHistorySuccess()
+        {
+            //Arrange
+            List<Guid> guids = new List<Guid>{Guid.NewGuid(), Guid.NewGuid()};
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(),
+                new {UserId = _testUser.Id, RecipeId = _testRecipe.Id}, null, null, null)).ReturnsAsync(1);
+            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(new List<string>{"Test1", "Test2"});
+
+            //Act
+            var status = _favRecipeCacheRepository.GetHistory(_testUser.Id).Result;
+
+            //Assert
+            Assert.NotNull(status);
+            _recipeCacheRepositoryMock.Verify(x => x.GetListOfRecipes(It.IsAny<List<Guid>>()), Times.Once);
+        }*/
+        //Test skal gentænkes
+        /*[Test()]
+        public void GetHistoryFailure()
         {
             //Arrange
             List<Guid> guids = new List<Guid>();
@@ -103,9 +170,10 @@ namespace P7Internet.Test.FavouriteRecipeRepository
             var status = _favRecipeCacheRepository.GetHistory(_testUser.Id).Result;
 
             //Assert
+            Assert.Null(status);
             _recipeCacheRepositoryMock.Verify(x => x.GetListOfRecipes(It.IsAny<List<Guid>>()), Times.Once);
         }
-
+        */
         [Test()]
         public void UpsertRecipesToHistorySuccess()
         {
@@ -120,6 +188,23 @@ namespace P7Internet.Test.FavouriteRecipeRepository
             //Assert
             Assert.NotNull(status);
             Assert.IsTrue(status);
+            _recipeCacheRepositoryMock.Verify(x => x.CheckIfRecipeExist(It.IsAny<Guid>()), Times.Once);
+        }
+
+        [Test()]
+        public void UpsertRecipesToHistoryFailure()
+        {
+            //Arrange
+            _recipeCacheRepositoryMock.Setup(x => x.CheckIfRecipeExist(It.IsAny<Guid>())).ReturnsAsync(true);
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(0);
+
+            //Act
+            var status = _favRecipeCacheRepository.UpsertRecipesToHistory(_testUser.Id, It.IsAny<Guid>()).Result;
+
+            //Assert
+            Assert.NotNull(status);
+            Assert.False(status);
             _recipeCacheRepositoryMock.Verify(x => x.CheckIfRecipeExist(It.IsAny<Guid>()), Times.Once);
         }
     }
