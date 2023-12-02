@@ -142,6 +142,7 @@ namespace P7Internet.Test.Controllers
             //Assert
             Assert.NotNull(contentResult);
         }
+
         [Test()]
         public void GetRecipeHistoryFailUserNotAuthorized()
         {
@@ -162,6 +163,7 @@ namespace P7Internet.Test.Controllers
             Assert.NotNull(contentResult);
             Assert.AreEqual("User session is not valid, please login again", contentResult.Value);
         }
+
         [Test()]
         public void GetRecipeHistoryFailNoHistoryFound()
         {
@@ -257,7 +259,7 @@ namespace P7Internet.Test.Controllers
             //Assert
             Assert.NotNull(contentResult);
         }
-        
+
         [Test()]
         public void GetOfferFromCacheFail()
         {
@@ -291,11 +293,12 @@ namespace P7Internet.Test.Controllers
 
             //Assert
             Assert.NotNull(contentResult);
-            _cachedOfferRepositoryMock.Verify(x => x.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>()), Times.AtLeastOnce);
+            _cachedOfferRepositoryMock.Verify(
+                x => x.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>()), Times.AtLeastOnce);
             _cachedOfferRepositoryMock.Verify(x => x.GetOffer(It.IsAny<string>()), Times.Once);
             _etilbudsAvisServiceMock.Verify(x => x.GetAllOffers(offerRequest), Times.Once);
         }
-        
+
         [Test()]
         public void GetOfferFromEtilbudsavisFail()
         {
@@ -310,12 +313,12 @@ namespace P7Internet.Test.Controllers
 
             //Assert
             Assert.NotNull(contentResult);
-            Assert.AreEqual("No offer found",contentResult.Value);
+            Assert.AreEqual("No offer found", contentResult.Value);
             _cachedOfferRepositoryMock.Verify(x => x.GetOffer(It.IsAny<string>()), Times.Once);
             _etilbudsAvisServiceMock.Verify(x => x.GetAllOffers(offerRequest), Times.Once);
         }
-        
-        
+
+
         [Test()]
         public void GetOfferFromSallingSuccessIfNotFoundInCacheOrEtilbudsavisSuccess()
         {
@@ -338,9 +341,10 @@ namespace P7Internet.Test.Controllers
             _cachedOfferRepositoryMock.Verify(x => x.GetOffer(It.IsAny<string>()), Times.AtLeastOnce);
             _etilbudsAvisServiceMock.Verify(x => x.GetAllOffers(offerRequest), Times.Once);
             _sallingServiceMock.Verify(x => x.GetRelevantProducts(It.IsAny<string>()), Times.Once);
-            _cachedOfferRepositoryMock.Verify(x => x.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>()), Times.AtLeastOnce);
+            _cachedOfferRepositoryMock.Verify(
+                x => x.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>()), Times.AtLeastOnce);
         }
-        
+
         [Test()]
         public void GetOfferFromSallingSuccessIfNotFoundInCacheOrEtilbudsavisFail()
         {
@@ -359,7 +363,7 @@ namespace P7Internet.Test.Controllers
 
             //Assert
             Assert.NotNull(contentResult);
-            Assert.AreEqual("No offer found",contentResult.Value);
+            Assert.AreEqual("No offer found", contentResult.Value);
             _cachedOfferRepositoryMock.Verify(x => x.GetOffer(It.IsAny<string>()), Times.Once);
             _etilbudsAvisServiceMock.Verify(x => x.GetAllOffers(offerRequest), Times.Once);
             _sallingServiceMock.Verify(x => x.GetRelevantProducts(It.IsAny<string>()), Times.Once);
@@ -383,6 +387,7 @@ namespace P7Internet.Test.Controllers
             Assert.NotNull(contentResult);
             _cachedOfferRepositoryMock.Verify(x => x.GetOfferByStore(testIngredient, testStore), Times.Once);
         }
+
         [Test()]
         public void GetOfferByStoreIfAvailableFromCacheFail()
         {
@@ -431,14 +436,17 @@ namespace P7Internet.Test.Controllers
             //Arrange
             _userRepositoryMock.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>())).Returns(_testUser);
             _userRepositoryMock.Setup(x => x.Upsert(_testUser, It.IsAny<string>())).ReturnsAsync(false);
-            
+
             //Act
-            IActionResult actionResult = controller.CreateUser(new CreateUserRequest(_testUser.Name, _testUser.EmailAddress, "TestPass")).Result;
+            IActionResult actionResult = controller
+                .CreateUser(new CreateUserRequest(_testUser.Name, _testUser.EmailAddress, "TestPass")).Result;
             var contentResult = actionResult as BadRequestObjectResult;
-            
+
             //Assert
             Assert.NotNull(contentResult);
-            Assert.AreEqual("User with the specified Username or Email already exists, please choose another Username or Email", contentResult.Value);
+            Assert.AreEqual(
+                "User with the specified Username or Email already exists, please choose another Username or Email",
+                contentResult.Value);
             _userRepositoryMock.Verify(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             _userRepositoryMock.Verify(x => x.Upsert(_testUser, It.IsAny<string>()), Times.Once);
         }
@@ -461,7 +469,7 @@ namespace P7Internet.Test.Controllers
             Assert.NotNull(contentResult);
             Assert.AreEqual(contentResult.Value.GetType(), typeof(LogInResponse));
         }
-        
+
         [Test()]
         public void LoginFailUserNotFound()
         {
@@ -533,7 +541,7 @@ namespace P7Internet.Test.Controllers
             _favouriteRecipeRepositoryMock.Verify(x => x.Upsert(_testUser.Id, _testRecipe.Id), Times.Once);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
         }
-        
+
         [Test()]
         public void AddFavouriteRecipeFailUserNotAuthorized()
         {
@@ -571,7 +579,7 @@ namespace P7Internet.Test.Controllers
             _favouriteRecipeRepositoryMock.Verify(x => x.Get(_testUser.Id), Times.Once);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
         }
-        
+
         [Test()]
         public void GetFavouriteRecipesFailUserNotAuthorized()
         {
@@ -591,6 +599,7 @@ namespace P7Internet.Test.Controllers
             _favouriteRecipeRepositoryMock.Verify(x => x.Get(_testUser.Id), Times.Never);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
         }
+
         [Test()]
         public void GetFavouriteRecipesFailNoRecipesFound()
         {
@@ -628,6 +637,7 @@ namespace P7Internet.Test.Controllers
             _favouriteRecipeRepositoryMock.Verify(x => x.Delete(_testUser.Id, _testRecipe.Id), Times.Once);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
         }
+
         [Test()]
         public void DeleteFavouriteRecipeFailUserNotAuthorized()
         {
@@ -709,6 +719,7 @@ namespace P7Internet.Test.Controllers
             _userRepositoryMock.Verify(x => x.ChangePassword(_testUser.Name, It.IsAny<string>(), It.IsAny<string>()),
                 Times.Once);
         }
+
         [Test()]
         public void ChangePasswordFailUserNotAuthorized()
         {
@@ -737,14 +748,15 @@ namespace P7Internet.Test.Controllers
                 .ReturnsAsync(true);
             _userRepositoryMock.Setup(x => x.ChangePassword(_testUser.Name, It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(false);
-            
+
             //Act
             IActionResult actionResult = controller.ChangePassword(changePasswordReq).Result;
-            var contentResult =  actionResult as BadRequestObjectResult;
-            
+            var contentResult = actionResult as BadRequestObjectResult;
+
             //Assert
             Assert.AreEqual("Password is incorrect please try again", contentResult.Value);
-            _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()), Times.Once);
+            _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()),
+                Times.Once);
             _userRepositoryMock.Verify(x => x.ChangePassword(_testUser.Name, It.IsAny<string>(), It.IsAny<string>()),
                 Times.Once);
         }
@@ -768,6 +780,7 @@ namespace P7Internet.Test.Controllers
             //Assert
             Assert.NotNull(contentResult);
         }
+
         [Test()]
         public void ConfirmEmailFailUserNotExist()
         {

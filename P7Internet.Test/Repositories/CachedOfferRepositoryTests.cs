@@ -10,7 +10,7 @@ using P7Internet.Persistence.CachedOfferRepository;
 using P7Internet.Persistence.Connection;
 using P7Internet.Shared;
 
-namespace P7Internet.Repositories.Tests
+namespace P7Internet.Test.Repositories
 {
     [TestFixture()]
     public class CachedOfferRepositoryTests
@@ -82,9 +82,9 @@ namespace P7Internet.Repositories.Tests
             var offer = _cachedOfferRepository.GetOffer(It.IsAny<string>()).Result;
 
             //Assert
-            Assert.AreNotEqual(_testOfferStruct,offer);
+            Assert.AreNotEqual(_testOfferStruct, offer);
         }
-        
+
         [Test()]
         public void GetOfferByStoreSuccess()
         {
@@ -100,6 +100,7 @@ namespace P7Internet.Repositories.Tests
             //Assert
             Assert.NotNull(offer);
         }
+
         [Test()]
         public void GetOfferByStoreFailure()
         {
@@ -114,7 +115,7 @@ namespace P7Internet.Repositories.Tests
             var offer = _cachedOfferRepository.GetOfferByStore(It.IsAny<string>(), It.IsAny<string>()).Result;
 
             //Assert
-            Assert.AreNotEqual(_testOfferStruct,offer);
+            Assert.AreNotEqual(_testOfferStruct, offer);
         }
 
         [Test()]
@@ -144,7 +145,7 @@ namespace P7Internet.Repositories.Tests
             //Act
             var status = _cachedOfferRepository.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>())
                 .Result;
-            
+
             //Assert
             Assert.NotNull(status);
             Assert.IsFalse(false);

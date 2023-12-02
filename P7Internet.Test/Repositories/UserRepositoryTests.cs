@@ -71,7 +71,7 @@ namespace P7Internet.Test.Repositories
         {
             //Arrange
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
-            
+
             //Act
             var user = _userRepository.GetUser(_testUser.Name).Result;
 
@@ -79,6 +79,7 @@ namespace P7Internet.Test.Repositories
             Assert.NotNull(user);
             Assert.NotNull(user.Name);
         }
+
         [Test()]
         public void GetUserFail()
         {
@@ -87,8 +88,8 @@ namespace P7Internet.Test.Repositories
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
             _dbConnection.SetupDapperAsync(x => x.QuerySingleOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
                 .ReturnsAsync(testUser);
-            
-            
+
+
             //Act
             var user = _userRepository.GetUser("TestUser2").Result;
 
@@ -96,20 +97,37 @@ namespace P7Internet.Test.Repositories
             Assert.Null(user);
             Assert.AreNotEqual(_testUser, user);
         }
-        
-        //TODO: Fix this test
-        //[Test()]
+
+        [Test()]
         public void GetUserByIdSuccess()
         {
             //Arrange
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
-            
+
             //Act
             var user = _userRepository.GetUserFromId(_testUser.Id).Result;
 
             //Assert
             Assert.NotNull(user);
             Assert.NotNull(user.Name);
+        }
+
+        [Test()]
+        public void GetUserByIdFail()
+        {
+            User testUser = default;
+            //Arrange
+            _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
+            _dbConnection.SetupDapperAsync(x => x.QuerySingleOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(testUser);
+
+
+            //Act
+            var user = _userRepository.GetUserFromId(Guid.NewGuid()).Result;
+
+            //Assert
+            Assert.Null(user);
+            Assert.AreNotEqual(_testUser, user);
         }
 
         [Test()]
@@ -124,6 +142,24 @@ namespace P7Internet.Test.Repositories
             //Assert
             Assert.NotNull(user);
             Assert.NotNull(user.Name);
+        }
+
+        [Test()]
+        public void GetUserByEmailFail()
+        {
+            User testUser = default;
+            //Arrange
+            _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
+            _dbConnection.SetupDapperAsync(x => x.QuerySingleOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(testUser);
+
+
+            //Act
+            var user = _userRepository.GetUserByEmail(_testUser.EmailAddress).Result;
+
+            //Assert
+            Assert.Null(user);
+            Assert.AreNotEqual(_testUser, user);
         }
 
         [Test()]
@@ -147,6 +183,26 @@ namespace P7Internet.Test.Repositories
         }
 
         [Test()]
+        public void UpsertFail()
+        {
+            //Arrange
+            var testPwd = "testPassword";
+            _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
+            _dbConnection
+                .SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null))
+                .ReturnsAsync(0);
+            _dbConnection
+                .SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<dynamic>(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(_testUserStruct);
+
+            //Act
+            var response = _userRepository.Upsert(_testUser, testPwd);
+
+            //Assert
+            Assert.IsFalse(response.Result);
+        }
+
+        [Test()]
         public void LogInSuccess()
         {
             //Arrange
@@ -164,6 +220,22 @@ namespace P7Internet.Test.Repositories
         }
 
         [Test()]
+        public void LogInFail()
+        {
+            //Arrange
+            var testPwd = "testPassword";
+            _dbConnection
+                .SetupDapperAsync(c => c.QuerySingleAsync<TestUser>(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(default(TestUser));
+
+            //Act
+            var user = _userRepository.LogIn(_testUser.Name, testPwd).Result;
+
+            //Assert
+            Assert.Null(user);
+        }
+
+        [Test()]
         public async Task ConfirmEmailSuccess()
         {
             //Arrange
@@ -177,6 +249,22 @@ namespace P7Internet.Test.Repositories
 
             //Assert
             Assert.True(status);
+        }
+
+        [Test()]
+        public async Task ConfirmEmailFail()
+        {
+            //Arrange
+            var testPwd = "testPassword";
+            _dbConnection
+                .SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null))
+                .ReturnsAsync(0);
+
+            //Act
+            var status = await _userRepository.ConfirmEmail(_testUser.Name, testPwd);
+
+            //Assert
+            Assert.False(status);
         }
 
         [Test()]
@@ -200,13 +288,43 @@ namespace P7Internet.Test.Repositories
         }
 
         [Test()]
+        public void ResetPasswordFail()
+        {
+            //Arrange
+            var testPwd = "testPassword";
+            _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
+            _dbConnection
+                .SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null))
+                .ReturnsAsync(0);
+            _dbConnection
+                .SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<dynamic>(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(_testUserStruct);
+
+            //Act
+            var status = _userRepository.ResetPassword(_testUser.Name, testPwd).Result;
+
+            //Assert
+            Assert.IsFalse(status);
+        }
+
+        [Test()]
         public void ChangePasswordSuccess()
         {
             //Arrange/Act
-            var user = _userRepository.ChangePassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
+            var result = _userRepository.ChangePassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
                 .Result;
             //Assert
-            Assert.NotNull(user);
+            Assert.NotNull(result);
+        }
+
+        [Test()]
+        public void ChangePasswordFail()
+        {
+            //Arrange/Act
+            var result = _userRepository.ChangePassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
+                .Result;
+            //Assert
+            Assert.False(result);
         }
 
         [Test()]

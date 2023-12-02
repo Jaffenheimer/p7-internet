@@ -35,9 +35,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 
         var result = await _cachedRecipeRepository.GetListOfRecipes(guids.ToList());
 
-        if (result != null)
-            return result;
-        return null;
+        return result is {Count: > 0} ? result : null;
     }
 
     /// <summary>

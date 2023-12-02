@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using Dapper;
@@ -9,7 +8,6 @@ using NUnit.Framework;
 using P7Internet.Persistence.Connection;
 using P7Internet.Persistence.RecipeCacheRepository;
 using P7Internet.Shared;
-using Guid = System.Guid;
 
 namespace P7Internet.Test.Repositories
 {
@@ -60,6 +58,7 @@ namespace P7Internet.Test.Repositories
             //Assert
             Assert.IsTrue(res);
         }
+
         [Test()]
         public void CheckIfRecipeExistFail()
         {
@@ -76,12 +75,14 @@ namespace P7Internet.Test.Repositories
             //Assert
             Assert.IsFalse(res);
         }
-        
+
         //Kan muligvis ikke laves pga dapper og guids men dunno
         //[Test()]
         public void GetAllRecipesSuccess()
         {
             //Arrange
+            const string TableName = "CachedRecipes";
+            var query = $@"SELECT Id FROM {TableName}";
             var testRecipe = new Recipe(Guid.Parse("d3d01e66-2943-463c-ab22-4abd09f1bd7f"), "TestDesc");
             IEnumerable<Guid> testGuids = new List<Guid>() {testRecipe.Id};
             IEnumerable<string> testStrings = new List<string>() {testRecipe.Description};
@@ -114,6 +115,7 @@ namespace P7Internet.Test.Repositories
             //Assert
             Assert.IsTrue(status);
         }
+
         [Test()]
         public void UpsertFail()
         {
@@ -146,6 +148,7 @@ namespace P7Internet.Test.Repositories
             //Assert
             Assert.NotNull(res);
         }
+
         [Test()]
         public void GetListOfRecipesFail()
         {
@@ -180,6 +183,7 @@ namespace P7Internet.Test.Repositories
             //Assert
             Assert.NotNull(res);
         }
+
         [Test()]
         public void GetListOfRecipesFromListOfStringsFail()
         {

@@ -138,15 +138,16 @@ namespace P7Internet.Test.FavouriteRecipeRepository
         }
 
         //Test skal gentænkes
-        /*[Test()]
+        //[Test()]
         public void GetHistorySuccess()
         {
             //Arrange
-            List<Guid> guids = new List<Guid>{Guid.NewGuid(), Guid.NewGuid()};
-            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(),
-                new {UserId = _testUser.Id, RecipeId = _testRecipe.Id}, null, null, null)).ReturnsAsync(1);
-            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(new List<string>{"Test1", "Test2"});
+            var expected = new List<string>() {"test"};
+            var expectedGuid = new List<Guid>() {Guid.NewGuid()};
+            _dbConnection.SetupDapperAsync(c => c.QueryAsync<Guid>(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(expectedGuid);
+            _dbConnection.SetupDapperAsync(c => c.QueryAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(expected);
 
             //Act
             var status = _favRecipeCacheRepository.GetHistory(_testUser.Id).Result;
@@ -154,16 +155,13 @@ namespace P7Internet.Test.FavouriteRecipeRepository
             //Assert
             Assert.NotNull(status);
             _recipeCacheRepositoryMock.Verify(x => x.GetListOfRecipes(It.IsAny<List<Guid>>()), Times.Once);
-        }*/
-        //Test skal gentænkes
-        /*[Test()]
+        }
+
+        [Test()]
         public void GetHistoryFailure()
         {
             //Arrange
-            List<Guid> guids = new List<Guid>();
-            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(),
-                new {UserId = _testUser.Id, RecipeId = _testRecipe.Id}, null, null, null)).ReturnsAsync(1);
-            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
+            _dbConnection.SetupDapperAsync(c => c.QueryAsync(It.IsAny<string>(), null, null, null, null))
                 .ReturnsAsync(value: null);
 
             //Act
@@ -173,7 +171,7 @@ namespace P7Internet.Test.FavouriteRecipeRepository
             Assert.Null(status);
             _recipeCacheRepositoryMock.Verify(x => x.GetListOfRecipes(It.IsAny<List<Guid>>()), Times.Once);
         }
-        */
+
         [Test()]
         public void UpsertRecipesToHistorySuccess()
         {

@@ -36,7 +36,7 @@ public class UserRepository : IUserRepository
             user.PasswordHash = result.Password_hash;
             user.PasswordSalt = result.Password_salt;
             user.CreatedAt = result.Creation_date;
-            user.IsEmailConfirmed = result.EmailConfirmed;
+            user.IsEmailConfirmed = result.IsEmailConfirmed;
             return user;
         }
 

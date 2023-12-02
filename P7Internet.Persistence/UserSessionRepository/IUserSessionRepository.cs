@@ -57,4 +57,6 @@ public interface IUserSessionRepository
     /// <param name="verificationCode"></param>
     /// <returns>True if it went well false if not</returns>
     public Task<bool> DeleteVerificationToken(Guid userId, string verificationCode);
+
+    public string GenerateToken();
 }

@@ -4,10 +4,14 @@ using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using P7Internet.CustomExceptions;
 using P7Internet.Requests;
+using P7Internet.Services;
+using P7Internet.Shared;
+using P7Internet.Test.Mocks;
 using RichardSzalay.MockHttp;
 
-namespace P7Internet.Services.Tests
+namespace P7Internet.Test.Services
 {
     [TestFixture()]
     public class ServiceTests
@@ -52,6 +56,14 @@ namespace P7Internet.Services.Tests
         [Test()]
         public async Task GetSallingOfferFail()
         {
+            //Arrange
+            mockHttp.When("https://api.sallinggroup.com/*").Respond("application/json", "");
+            var query = "Akvavit";
+            List<Offer> products = null;
+
+            //Act/Assert
+            Assert.CatchAsync<NoProductsFoundException>(
+                async () => products = await _sallingService.GetRelevantProducts(query), "No products were fetched");
         }
 
         [Test()]
@@ -75,6 +87,26 @@ namespace P7Internet.Services.Tests
                 p.Name.Contains("Snaps") || p.Name.Contains("Akvavit") || p.Name.Contains("akvavit") ||
                 p.Name.Contains("snaps")));
             Assert.IsTrue(offers.Count() == 3);
+        }
+
+        [Test()]
+        public async Task GetAllOffersFail()
+        {
+            //Arrange
+            mockHttp.Clear();
+            mockHttp.When(HttpMethod.Post, "https://squid-api.tjek.com/v4/rpc/get_offers")
+                .Respond("application/json", "");
+            OfferRequest request = new OfferRequest()
+            {
+                Lat = 55.212391, Long = 10.035490, Pagesize = 3, Radius = 4500, SearchTerm = "Snaps", Upcoming = "true"
+            };
+
+            //Act
+            IList<Offer> offers = null;
+
+            //Assert
+
+            Assert.CatchAsync<NullReferenceException>(async () => await _eTilbudsAvisService.GetAllOffers(request));
         }
 
         #endregion
@@ -102,7 +134,7 @@ namespace P7Internet.Services.Tests
         {
             //Arrange
             var recipeRequest = new RecipeRequest(Guid.NewGuid(), "test-token",
-                new List<string>(), 2, new List<string> (),
+                new List<string>(), 2, new List<string>(),
                 new List<string>(), 4);
             var checkPrompt =
                 @"Jeg vil gerne have 2 opskrifter med disse ingredienser kylling, julebryg, hestebønner uden disse ingredienser kartoffel,løg der er vegansk til 4 personer";
