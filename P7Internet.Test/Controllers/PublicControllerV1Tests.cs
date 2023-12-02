@@ -737,6 +737,58 @@ namespace P7Internet.Test.Controllers
             Assert.NotNull(contentResult);
             Assert.AreEqual("User session is not valid, please login again", contentResult.Value);
         }
+        [Test()]
+        public void DeleteUserSuccess()
+        {
+            //Arrange
+            _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken))
+                .ReturnsAsync(true);
+            _userRepositoryMock.Setup(x => x.GetUserFromId(_testUser.Id)).ReturnsAsync(_testUser);
+            _userRepositoryMock.Setup(x => x.DeleteUser(_testUser)).ReturnsAsync(true);
+
+            //Act
+            IActionResult actionResult = controller.DeleteUser(_testUser.Id,_seshToken).Result;
+            var contentResult = actionResult as OkObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("User deleted",contentResult.Value);
+            _userRepositoryMock.Verify(x => x.DeleteUser(_testUser), Times.Once);
+            _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
+            _userRepositoryMock.Verify(x => x.GetUserFromId(_testUser.Id), Times.Once);
+        }
+        [Test()]
+        public void DeleteUserFailUserNotAuthorized()
+        {
+            //Arrange
+            _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken))
+                .ReturnsAsync(false);
+            //Act
+            IActionResult actionResult = controller.DeleteUser(_testUser.Id,_seshToken).Result;
+            var contentResult = actionResult as UnauthorizedObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("User session is not valid, please login again",contentResult.Value);
+            _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
+        }
+        [Test()]
+        public void DeleteUserFailUserNotFound()
+        {
+            //Arrange
+            _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken))
+                .ReturnsAsync(true);
+            _userRepositoryMock.Setup(x => x.GetUserFromId(_testUser.Id)).ReturnsAsync(value: null);
+            //Act
+            IActionResult actionResult = controller.DeleteUser(_testUser.Id,_seshToken).Result;
+            var contentResult = actionResult as NotFoundObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("User does not exist",contentResult.Value);
+            _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
+            _userRepositoryMock.Verify(x => x.GetUserFromId(_testUser.Id), Times.Once);
+        }
 
         [Test()]
         public void ChangePasswordIncorrectPassword()

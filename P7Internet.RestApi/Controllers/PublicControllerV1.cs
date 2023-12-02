@@ -553,6 +553,25 @@ public class PublicControllerV1 : ControllerBase
 
         return BadRequest("The user was not found");
     }
+    [HttpDelete("user/delete-user")]
+    public async Task<IActionResult> DeleteUser([FromQuery] Guid userId, string sessionToken)
+    {
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
+        if (!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
+
+        var user = await _userRepository.GetUserFromId(userId);
+        if (user == null)
+            return NotFound("User does not exist");
+        
+        var result = await _userRepository.DeleteUser(user);
+        if (result)
+        {
+            return Ok("User deleted");
+        }
+
+        return BadRequest("This should never happen");
+    }
 
     #endregion
 

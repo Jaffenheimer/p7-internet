@@ -336,5 +336,31 @@ namespace P7Internet.Test.Repositories
             //Assert
             Assert.NotNull(user);
         }
+        [Test()]
+        public void DeleteUserSuccess()
+        {
+            //Arrange
+            _dbConnection
+                .SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null))
+                .ReturnsAsync(1);
+            //Act
+            var result = _userRepository.DeleteUser(_testUser).Result;
+
+            //Assert
+            Assert.True(result);
+        }
+        [Test()]
+        public void DeleteUserFail()
+        {
+            //Arrange
+            _dbConnection
+                .SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null))
+                .ReturnsAsync(0);
+            //Act
+            var result = _userRepository.DeleteUser(_testUser).Result;
+
+            //Assert
+            Assert.False(result);
+        }
     }
 }

@@ -68,6 +68,13 @@ public interface IUserRepository
     public Task<bool> ResetPassword(string email, string password);
 
     /// <summary>
+    /// Deletes a user from the database
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns>Returns true if it went well otherwise false</returns>
+    public Task<bool> DeleteUser(User user);
+
+    /// <summary>
     /// Changes the password of a user, if the old password matches the correct password stores in the database
     /// </summary>
     /// <param name="email"></param>

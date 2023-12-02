@@ -182,6 +182,18 @@ public class UserRepository : IUserRepository
     }
 
     /// <summary>
+    /// Deletes a user from the database
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns>Returns true if it went well otherwise false</returns>
+    public async Task<bool> DeleteUser(User user)
+    {
+        var query = $@"DELETE FROM {TableName} WHERE Name = @Name";
+        var result = await Connection.ExecuteAsync(query, new {Name = user.Name});
+        return result > 0;
+    }
+
+    /// <summary>
     /// Changes the password of a user, if the old password matches the correct password stores in the database
     /// </summary>
     /// <param name="userName"></param>
