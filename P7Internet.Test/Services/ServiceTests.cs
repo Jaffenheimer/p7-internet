@@ -34,10 +34,11 @@ namespace P7Internet.Test.Services
 
         #region ProductsAndOffersTests
 
-        [Test]
+        [Test()]
         public async Task GetSallingOffersSuccess()
         {
             //Arrange
+            mockHttp.Clear();
             mockHttp.When("https://api.sallinggroup.com/*").Respond("application/json",
                 "{ \"suggestions\": [ { \"id\": \"30271101\", \"prod_id\": \"31835\", \"title\": \"Akvavit\", \"description\": \"Akvavit\", \"img\": \"https://image.prod.iposeninfra.com/bilkaimg.php?pid=31835&imgType=jpeg\", \"link\": \"https://www.bilkatogo.dk/p/31835\", \"price\": 120 }]}");
             var query = "Akvavit";
@@ -54,7 +55,7 @@ namespace P7Internet.Test.Services
         }
 
         [Test()]
-        public async Task GetSallingOfferFail()
+        public async Task GetSallingOffersFail()
         {
             //Arrange
             mockHttp.When("https://api.sallinggroup.com/*").Respond("application/json", "");
