@@ -587,8 +587,6 @@ namespace P7Internet.Test.Controllers
             //Arrange
             var getFavRecipesReq = new GetFavouriteRecipesRequest(_testUser.Id, _seshToken);
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken)).ReturnsAsync(false);
-            _favouriteRecipeRepositoryMock.Setup(x => x.Get(_testUser.Id))
-                .ReturnsAsync(new List<string>() {"TestRecipe1", "TestRecipe2"});
 
             //Act
             IActionResult actionResult = controller.GetFavouriteRecipes(getFavRecipesReq).Result;
