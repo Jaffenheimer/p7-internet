@@ -576,6 +576,7 @@ namespace P7Internet.Test.Controllers
 
             //Assert
             Assert.NotNull(contentResult);
+            Assert.AreEqual(new List<string>() {"TestRecipe1", "TestRecipe2"}, contentResult.Value);
             _favouriteRecipeRepositoryMock.Verify(x => x.Get(_testUser.Id), Times.Once);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
         }
