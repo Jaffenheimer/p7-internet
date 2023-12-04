@@ -20,35 +20,41 @@ const FavoritesModalContainer = () => {
   const favoriteRecipes = loggedIn === undefined ? [] : favoriteRecipesRedux;
   const dispatch = useDispatch();
 
-  function selectRecipe(event, recipeTitle) {
+  function selectRecipe(event, selectedRecipe) {
     event.preventDefault();
 
     var recipeTitles = [];
     recipes.forEach((recipe) => recipeTitles.push(recipe["title"]));
-    if (!recipeTitles.includes(recipeTitle)) {
+    if (!recipeTitles.includes(selectedRecipe.title)) {
       toast.error(
-        `${recipeTitle} er ikke i listen af opskrifter på databasen. Prøv at vælge en anden opskrift.`
+        `${selectedRecipe.title} er ikke i listen af opskrifter på databasen. Prøv at vælge en anden opskrift.`
       );
     } else {
       dispatch(
-        recipeActions.setCurrentRecipeIndex(recipeTitles.indexOf(recipeTitle))
+        recipeActions.setCurrentRecipeIndex(
+          recipeTitles.indexOf(selectedRecipe.title)
+        )
       );
       dispatch(pageActions.goToPage(Pages.fullRecipeViewNoBackButton));
+      dispatch(recipeActions.setRecipeToShow(selectedRecipe));
       dispatch(pageActions.closeFavoritesModal());
     }
   }
 
-  function handleRemove(_, recipeTitle) {
+  function handleRemove(_, recipe) {
     if (
       window.confirm(
-        `Er du sikker på du gerne vil fjerne ${recipeTitle} fra dine favoritter`
+        `Er du sikker på du gerne vil fjerne ${recipe.title} fra dine favoritter`
       )
     )
-      dispatch(userActions.removeFavoriteRecipe(recipeTitle));
+      dispatch(userActions.removeFavoriteRecipe(recipe));
   }
 
   return (
-    <div className="scrollableModalContainer" data-testid="FavoritesModalContainer">
+    <div
+      className="scrollableModalContainer"
+      data-testid="FavoritesModalContainer"
+    >
       {favoriteRecipes.length === 0 ? (
         <p>Ingen opskrifter er blevet markeret som favorit.</p>
       ) : (
@@ -59,7 +65,7 @@ const FavoritesModalContainer = () => {
                 className="FavoriteRecipeButton"
                 value={recipe.title}
                 key={nanoid()}
-                onClick={(event) => selectRecipe(event, recipe.title)}
+                onClick={(event) => selectRecipe(event, recipe)}
               >
                 {recipe.title}
               </button>
@@ -69,7 +75,7 @@ const FavoritesModalContainer = () => {
                 className="RemoveFavoritedElement"
                 src={cross}
                 alt="cross"
-                onClick={(event) => handleRemove(event, recipe.title)}
+                onClick={(event) => handleRemove(event, recipe)}
               />
             </div>
           ))}
