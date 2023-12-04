@@ -68,7 +68,7 @@ namespace P7Internet.Test.Services
         }
 
         [Test()]
-        public async Task GetAllOffersTest()
+        public async Task GetAllOffersSuccess()
         {
             //Arrange
             mockHttp.Clear();
