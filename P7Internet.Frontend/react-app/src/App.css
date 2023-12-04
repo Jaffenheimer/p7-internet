@@ -420,12 +420,16 @@ button:active {
   }
 }
 
-.menu-item:nth-child(2) {
-  animation-delay: 0.2s;
+.dropdown-content li:nth-child(2) {
+  animation: slideInFromRight 0.5s 0.2s forwards;
 }
 
-.menu-item:nth-child(3) {
-  animation-delay: 0.4s;
+.dropdown-content li:nth-child(3) {
+  animation: slideInFromRight 0.5s 0.4s forwards;
+}
+
+.dropdown-content li:nth-child(4) {
+  animation: slideInFromRight 0.5s 0.6s forwards;
 }
 
 #FavoritesButton {
