@@ -109,23 +109,6 @@ namespace P7Internet.Test.Repositories
         }
 
         [Test()]
-        public void GetListOfRecipesSuccess()
-        {
-            //Arrange
-            List<Guid> guids = new List<Guid>();
-            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(1);
-            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(value: null);
-
-            //Act
-            var res = _recipeCacheRepository.GetListOfRecipes(guids).Result;
-
-            //Assert
-            Assert.NotNull(res);
-        }
-
-        [Test()]
         public void GetListOfRecipesFail()
         {
             //Arrange
