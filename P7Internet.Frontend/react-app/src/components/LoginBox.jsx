@@ -215,7 +215,7 @@ const LoginBox = ({ closeModal }) => {
           {verifyingAccount
             ? "Nulstil kodeord"
             : creatingAccount
-            ? "Opret Bruger"
+            ? "Opret bruger"
             : "Login"}
           <img
             src={cross}
@@ -305,9 +305,9 @@ const LoginBox = ({ closeModal }) => {
               Glemt kodeord?
             </a>
             <br />
-            <p id="noUserText">Ingen bruger:</p>
             <a href="/#" onClick={() => setModalPage("creatingAccount")}>
-              Opret Bruger
+              <br />
+              Opret bruger
             </a>
           </form>
         )}

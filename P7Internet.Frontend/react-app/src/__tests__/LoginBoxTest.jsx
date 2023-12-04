@@ -10,7 +10,8 @@ test("Renders the expected text in login box", () => {
   renderComponent(<LoginBox />);
   expect(screen.getByText(/Brugernavn/)).toBeInTheDocument();
   expect(screen.getByText(/Kodeord/)).toBeInTheDocument();
-  expect(screen.getByText(/Ingen bruger:/)).toBeInTheDocument();
+  expect(screen.getByText(/Glemt kodeord?/)).toBeInTheDocument();
+  expect(screen.getByText(/Opret bruger/)).toBeInTheDocument();
 });
 
 test("Renders the expected image in login box", () => {

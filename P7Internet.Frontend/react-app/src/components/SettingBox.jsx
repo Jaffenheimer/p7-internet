@@ -13,10 +13,10 @@ const SettingBox = ({ closeModal }) => {
   // eslint-disable-next-line
   const [userConfirmEmailRequest, { isConfirmEmailRequestLoading }] =
     useUserConfirmEmailRequestMutation();
-    // eslint-disable-next-line
+  // eslint-disable-next-line
   const [userChangePassword, { isChangePasswordLoading }] =
     useUserChangePasswordMutation();
-    // eslint-disable-next-line
+  // eslint-disable-next-line
   const [userConfirmEmail, { isConfirmEmailLoading }] =
     useUserConfirmEmailMutation();
 
@@ -116,8 +116,7 @@ const SettingBox = ({ closeModal }) => {
             </label>
             <button
               className="SendVerificationEmailButton"
-              onClick={sendVerificationCode}
-            >
+              onClick={sendVerificationCode}>
               Send kode
             </button>
           </div>
@@ -133,9 +132,9 @@ const SettingBox = ({ closeModal }) => {
           </button>
           <br />
 
-          <p id="alreadyHasUserText">Skift kodeord:</p>
           <a href="/#" onClick={() => setModalPage("ChangePasswordPage")}>
-            Her
+            <br />
+            Skift kodeord
           </a>
         </>
       ) : (

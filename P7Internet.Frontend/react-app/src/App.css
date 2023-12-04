@@ -544,11 +544,6 @@ input[type="password"] {
   float: right;
 }
 
-#alreadyHasUserText,
-#noUserText {
-  display: inline-block;
-}
-
 .LoginPage {
   display: flex;
   margin: auto;
