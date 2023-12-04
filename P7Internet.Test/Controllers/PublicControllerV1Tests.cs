@@ -127,14 +127,12 @@ namespace P7Internet.Test.Controllers
         public void GetRecipeHistorySuccess()
         {
             //Arrange
-            var favouriteRecipes = new List<string>() {"Recipe1", "Recipe2"};
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(true));
             _favouriteRecipeRepositoryMock.Setup(x => x.GetHistory(It.IsAny<Guid>()))
-                .Returns(Task.FromResult(new List<string>() {"FavRecipe1", "FavRecipe2"}));
-            _recipeCacheRepositoryMock.Setup(x => x.GetListOfRecipesFromListOfStrings(It.IsAny<List<string>>()))
-                .ReturnsAsync(() => new List<string> {"Recipe1", "Recipe2"});
-
+                .Returns(Task.FromResult(new List<Recipe>() {new Recipe(Guid.NewGuid(), "Favrecipe1"), new Recipe(Guid.NewGuid(), "Favrecipe2")}));
+            _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()));
+            
             //Act
             IActionResult actionResult = controller.GetRecipeHistory(Guid.NewGuid(), "TestToken").Result;
             var contentResult = actionResult as OkObjectResult;
@@ -151,9 +149,7 @@ namespace P7Internet.Test.Controllers
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(false));
             _favouriteRecipeRepositoryMock.Setup(x => x.GetHistory(It.IsAny<Guid>()))
-                .Returns(Task.FromResult(new List<string>() {"FavRecipe1", "FavRecipe2"}));
-            _recipeCacheRepositoryMock.Setup(x => x.GetListOfRecipesFromListOfStrings(It.IsAny<List<string>>()))
-                .ReturnsAsync(() => new List<string> {"Recipe1", "Recipe2"});
+                .Returns(Task.FromResult(new List<Recipe>() {new Recipe(Guid.NewGuid(), "Favrecipe1"), new Recipe(Guid.NewGuid(), "Favrecipe2")}));
 
             //Act
             IActionResult actionResult = controller.GetRecipeHistory(Guid.NewGuid(), "TestToken").Result;
@@ -168,12 +164,12 @@ namespace P7Internet.Test.Controllers
         public void GetRecipeHistoryFailNoHistoryFound()
         {
             //Arrange
-            var favouriteRecipes = new List<string>() {"Recipe1", "Recipe2"};
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(true));
             _favouriteRecipeRepositoryMock.Setup(x => x.GetHistory(It.IsAny<Guid>()))
-                .Returns(Task.FromResult(new List<string>()));
-
+                .ReturnsAsync(new List<Recipe>());
+            _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()));
+            
             //Act
             IActionResult actionResult = controller.GetRecipeHistory(Guid.NewGuid(), "TestToken").Result;
             var contentResult = actionResult as NotFoundObjectResult;
@@ -184,6 +180,7 @@ namespace P7Internet.Test.Controllers
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()),
                 Times.Once);
             _favouriteRecipeRepositoryMock.Verify(x => x.GetHistory(It.IsAny<Guid>()), Times.Once);
+            _iIngredientRepositoryMock.Verify(x => x.GetAllIngredients(), Times.Never);
         }
 
         [Test()]
@@ -567,18 +564,20 @@ namespace P7Internet.Test.Controllers
             //Arrange
             var getFavRecipesReq = new GetFavouriteRecipesRequest(_testUser.Id, _seshToken);
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken)).ReturnsAsync(true);
-            _favouriteRecipeRepositoryMock.Setup(x => x.Get(_testUser.Id))
-                .ReturnsAsync(new List<string>() {"TestRecipe1", "TestRecipe2"});
-
+            _favouriteRecipeRepositoryMock.Setup(x => x.Get(It.IsAny<Guid>()))
+                .ReturnsAsync(new List<Recipe>() {new Recipe(_testRecipe.Id, "Favrecipe")});
+            _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()));
+            
             //Act
             IActionResult actionResult = controller.GetFavouriteRecipes(getFavRecipesReq).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
-            Assert.AreEqual(new List<string>() {"TestRecipe1", "TestRecipe2"}, contentResult.Value);
+            Assert.AreEqual(typeof(List<RecipeResponse>),contentResult.Value.GetType());
             _favouriteRecipeRepositoryMock.Verify(x => x.Get(_testUser.Id), Times.Once);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
+            _iIngredientRepositoryMock.Verify(x => x.GetAllIngredients(), Times.Once);
         }
 
         [Test()]
@@ -605,8 +604,7 @@ namespace P7Internet.Test.Controllers
             //Arrange
             var getFavRecipesReq = new GetFavouriteRecipesRequest(_testUser.Id, _seshToken);
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken)).ReturnsAsync(true);
-            _favouriteRecipeRepositoryMock.Setup(x => x.Get(_testUser.Id))
-                .ReturnsAsync(new List<string>());
+            _favouriteRecipeRepositoryMock.Setup(x => x.Get(_testUser.Id)).ReturnsAsync(new List<Recipe>());
 
             //Act
             IActionResult actionResult = controller.GetFavouriteRecipes(getFavRecipesReq).Result;

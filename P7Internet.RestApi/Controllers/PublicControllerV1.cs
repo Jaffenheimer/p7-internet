@@ -125,11 +125,11 @@ public class PublicControllerV1 : ControllerBase
 
         var res = await _openAiService.GetAiResponse(req);
         var validIngredients = await _ingredientRepository.GetAllIngredients();
-        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
+        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipe, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
 
 
-        await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+        await _cachedRecipeRepository.Upsert(res.Recipe, res.RecipeId);
 
         return Ok(res);
     }
@@ -149,10 +149,19 @@ public class PublicControllerV1 : ControllerBase
             return Unauthorized("User session is not valid, please login again");
 
         var result = await _favouriteRecipeRepository.GetHistory(userId);
-        if (result != null && result.Count != 0)
+        
+        var recipeList = new List<RecipeResponse>();
+        
+        foreach (var res in result)
         {
-            var res = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result);
-            return Ok(res);
+            var validIngredients = await _ingredientRepository.GetAllIngredients();
+            var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Description, validIngredients);
+            recipeList.Add(new RecipeResponse(res.Description, ingredientsToPassToFrontend, res.Id));
+        }
+        
+        if (recipeList != null && recipeList.Count != 0)
+        {
+            return Ok(recipeList);
         }
 
         return NotFound("No history found");
@@ -208,6 +217,7 @@ public class PublicControllerV1 : ControllerBase
             {
                 var validIng = await _ingredientRepository.GetAllIngredients();
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
+                await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(), recipe.Id);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
                 if (counter == req.Amount)
@@ -228,6 +238,7 @@ public class PublicControllerV1 : ControllerBase
                 if (recipe.Success == false)
                     return BadRequest(recipe.ErrorMessage);
                 recipeList.Add(recipe);
+                await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(), recipe.RecipeId);
                 if (req.UserId != null && req.SessionToken != null)
                     await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(),
                         recipeList[i].RecipeId);
@@ -238,9 +249,9 @@ public class PublicControllerV1 : ControllerBase
 
         var res = await _openAiService.GetAiResponse(req);
         var validIngredients = await _ingredientRepository.GetAllIngredients();
-        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
+        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipe, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
-        await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+        await _cachedRecipeRepository.Upsert(res.Recipe, res.RecipeId);
         if (req.UserId != null && req.SessionToken != null)
             await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(), res.RecipeId);
         return Ok(res);
@@ -409,9 +420,19 @@ public class PublicControllerV1 : ControllerBase
             return Unauthorized("User session is not valid, please login again");
 
         var result = await _favouriteRecipeRepository.Get(req.UserId);
-        if (result != null && result.Count != 0)
+        
+        var recipeList = new List<RecipeResponse>();
+        
+        foreach (var res in result)
         {
-            return Ok(result);
+            var validIngredients = await _ingredientRepository.GetAllIngredients();
+            var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Description, validIngredients);
+            recipeList.Add(new RecipeResponse(res.Description, ingredientsToPassToFrontend, res.Id));
+        }
+        
+        if (recipeList != null && recipeList.Count != 0)
+        {
+            return Ok(recipeList);
         }
         return NotFound("No favourite recipes found");
     }
@@ -640,9 +661,9 @@ public class PublicControllerV1 : ControllerBase
     private async Task<RecipeResponse> GetRecipeAsync(RecipeRequest req, List<string> validIngredients)
     {
         var res = await _openAiService.GetAiResponse(req);
-        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
+        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipe, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
-        await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+        await _cachedRecipeRepository.Upsert(res.Recipe, res.RecipeId);
         return res;
     }
 

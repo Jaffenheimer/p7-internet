@@ -125,23 +125,5 @@ namespace P7Internet.Test.Repositories
             Assert.NotNull(res);
             Assert.AreEqual(0, res.Count);
         }
-        
-        [Test()]
-        public void GetListOfRecipesFromListOfStringsFail()
-        {
-            //Arrange
-            List<string> listOfStrings = new List<string>();
-            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(0);
-            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(value: null);
-
-            //Act
-            var res = _recipeCacheRepository.GetListOfRecipesFromListOfStrings(listOfStrings).Result;
-
-            //Assert
-            Assert.NotNull(res);
-            Assert.AreEqual(0, res.Count);
-        }
     }
 }
