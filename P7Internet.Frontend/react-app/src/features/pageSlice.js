@@ -34,6 +34,7 @@ export const pageSlice = createSlice({
     },
     closeHistoryModal(state) {
       state.historyModalShown = false;
+    },
     openSettingModal(state) {
       state.settingModalShown = true;
     },

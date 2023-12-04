@@ -22,6 +22,7 @@ const Header = () => {
   );
   const historyModalShown = useSelector(
     (state) => state.page.historyModalShown
+  );
   const settingModalShown = useSelector(
     (state) => state.page.settingModalShown
   );
@@ -84,10 +85,13 @@ const Header = () => {
           Container={HistoryModalContainer}
         ></ModalContent>
       </Modal>
-      <div className="title" onClick={ () => dispatch(pageActions.goToPage(Pages.frontPage))}>
+      <div
+        className="title"
+        onClick={() => dispatch(pageActions.goToPage(Pages.frontPage))}
+      >
         OpskriftsOraklet
         <img src={icon} alt="logo" className="titleLogo" />
-        </div>
+      </div>
 
       {loggedIn ? (
         <ProfilePicture />

@@ -104,7 +104,7 @@ body {
   display: flex;
   cursor: pointer;
 }
-.titleLogo{
+.titleLogo {
   height: 1.3em;
 }
 
@@ -294,7 +294,7 @@ button:active {
   position: relative;
 }
 
-.Profile 
+.Profile {
   width: 40px;
   height: 40px;
   flex: 1;
