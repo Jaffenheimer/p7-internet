@@ -59,18 +59,21 @@ namespace P7Internet.Test.Repositories
             Assert.IsTrue(res);
         }
 
-
-        //[Test()]
-        public void GetAllRecipesSuccess()
+        [Test()]
+        public void CheckIfRecipeExistFail()
         {
             //Arrange
-            //_dbConnection.SetupDapperAsync(c => c.QueryMultipleAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(true);
+            var testRecipe = new Recipe(new Guid("d3d01e66-2943-463c-ab22-4abd09f1bd7f"), "TestDesc");
+            _dbConnection
+                .SetupDapperAsync(c =>
+                    c.QuerySingleOrDefaultAsync<string>(It.IsAny<string>(), new {Id = testRecipe.Id}, null, null, null))
+                .ReturnsAsync(value: null);
 
             //Act
-            var recipes = _recipeCacheRepository.GetAllRecipes().Result;
+            var res = _recipeCacheRepository.CheckIfRecipeExist(testRecipe.Id).Result;
 
             //Assert
-            Assert.NotNull(recipes);
+            Assert.IsFalse(res);
         }
 
         [Test()]
@@ -87,6 +90,22 @@ namespace P7Internet.Test.Repositories
 
             //Assert
             Assert.IsTrue(status);
+        }
+
+        [Test()]
+        public void UpsertFail()
+        {
+            //Arrange
+            var testRecipe = new Recipe(new Guid("d3d01e66-2943-463c-ab22-4abd09f1bd7f"), "TestDesc");
+            _dbConnection
+                .SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null))
+                .ReturnsAsync(0);
+
+            //Act
+            var status = _recipeCacheRepository.Upsert(testRecipe.Description, testRecipe.Id).Result;
+
+            //Assert
+            Assert.IsFalse(status);
         }
 
         [Test()]
@@ -107,6 +126,24 @@ namespace P7Internet.Test.Repositories
         }
 
         [Test()]
+        public void GetListOfRecipesFail()
+        {
+            //Arrange
+            List<Guid> guids = new List<Guid>();
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(0);
+            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(value: null);
+
+            //Act
+            var res = _recipeCacheRepository.GetListOfRecipes(guids).Result;
+
+            //Assert
+            Assert.NotNull(res);
+            Assert.AreEqual(0, res.Count);
+        }
+
+        [Test()]
         public void GetListOfRecipesFromListOfStringsSuccess()
         {
             //Arrange
@@ -121,6 +158,24 @@ namespace P7Internet.Test.Repositories
 
             //Assert
             Assert.NotNull(res);
+        }
+
+        [Test()]
+        public void GetListOfRecipesFromListOfStringsFail()
+        {
+            //Arrange
+            List<string> listOfStrings = new List<string>();
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(0);
+            _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(value: null);
+
+            //Act
+            var res = _recipeCacheRepository.GetListOfRecipesFromListOfStrings(listOfStrings).Result;
+
+            //Assert
+            Assert.NotNull(res);
+            Assert.AreEqual(0, res.Count);
         }
     }
 }

@@ -159,7 +159,7 @@ public class UserSessionRepository : IUserSessionRepository
     /// Generates a token from a Guid
     /// </summary>
     /// <returns>Returns the generated token as a string</returns>
-    private static string GenerateToken()
+    public virtual string GenerateToken()
     {
         string token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
 

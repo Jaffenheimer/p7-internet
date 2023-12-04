@@ -8,7 +8,7 @@ using P7Internet.Persistence.Connection;
 using P7Internet.Persistence.UserSessionRepository;
 using P7Internet.Shared;
 
-namespace P7Internet.Repositories.Tests
+namespace P7Internet.Test.Repositories
 {
     [TestFixture()]
     public class UserSessionRepositoryTests
@@ -135,6 +135,20 @@ namespace P7Internet.Repositories.Tests
 
             //Assert
             Assert.IsTrue(status);
+        }
+
+        [Test()]
+        public void DeleteSessionTokenFail()
+        {
+            //Arrange
+            _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(0);
+
+            //Act
+            var status = _userSessionRepository.DeleteSessionToken(_testUser.Id, _testTokenStruct.SessionToken).Result;
+
+            //Assert
+            Assert.IsFalse(status);
         }
     }
 }

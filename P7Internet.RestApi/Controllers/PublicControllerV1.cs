@@ -149,13 +149,13 @@ public class PublicControllerV1 : ControllerBase
             return Unauthorized("User session is not valid, please login again");
 
         var result = await _favouriteRecipeRepository.GetHistory(userId);
-        if (result != null)
+        if (result != null && result.Count != 0)
         {
             var res = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result);
             return Ok(res);
         }
 
-        return BadRequest("No favourite recipes found");
+        return NotFound("No history found");
     }
 
     /// <summary>
@@ -409,12 +409,11 @@ public class PublicControllerV1 : ControllerBase
             return Unauthorized("User session is not valid, please login again");
 
         var result = await _favouriteRecipeRepository.Get(req.UserId);
-        if (result != null)
+        if (result != null && result.Count != 0)
         {
             return Ok(result);
         }
-
-        return BadRequest("No favourite recipes found");
+        return NotFound("No favourite recipes found");
     }
 
     /// <summary>
@@ -450,7 +449,7 @@ public class PublicControllerV1 : ControllerBase
         var user = await _userRepository.GetUserByEmail(email);
         if (user != null)
         {
-            if (!user.IsEmailConfirmed)
+            if (!await _userRepository.CheckIfEmailIsConfirmed(user.Name))
                 return BadRequest("Email is not confirmed, please confirm your email before resetting your password");
 
             var token = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "resetPassword");
@@ -487,7 +486,7 @@ public class PublicControllerV1 : ControllerBase
 
         if (user != null)
         {
-            var result = await _userRepository.ResetPassword(user.EmailAddress, password);
+            var result = await _userRepository.ResetPassword(user, password);
             if (result)
             {
                 await _userSessionRepository.DeleteVerificationToken(userId.GetValueOrDefault(), verificationCode);
@@ -511,7 +510,11 @@ public class PublicControllerV1 : ControllerBase
         if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
 
-        var result = await _userRepository.ChangePassword(req.UserName, req.OldPassword, req.NewPassword);
+        var user = await  _userRepository.GetUser(req.UserName);
+        if (user == null)
+            return NotFound("User does not exist");
+        
+        var result = await _userRepository.ChangePassword(user, req.OldPassword, req.NewPassword);
         if (result)
         {
             return Ok("Password changed");
@@ -535,7 +538,7 @@ public class PublicControllerV1 : ControllerBase
 
         if (user != null)
         {
-            if (user.IsEmailConfirmed)
+            if (await _userRepository.CheckIfEmailIsConfirmed(user.Name))
                 return BadRequest("The email is already confirmed");
 
             var isValidAction =
@@ -553,6 +556,25 @@ public class PublicControllerV1 : ControllerBase
         }
 
         return BadRequest("The user was not found");
+    }
+    [HttpDelete("user/delete-user")]
+    public async Task<IActionResult> DeleteUser([FromQuery] Guid userId, string sessionToken)
+    {
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
+        if (!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
+
+        var user = await _userRepository.GetUserFromId(userId);
+        if (user == null)
+            return NotFound("User does not exist");
+        
+        var result = await _userRepository.DeleteUser(user);
+        if (result)
+        {
+            return Ok("User deleted");
+        }
+
+        return BadRequest("This should never happen");
     }
 
     #endregion
