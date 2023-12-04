@@ -16,8 +16,6 @@ import {
   useUserLoginMutation,
   useUserResetPasswordEmailRequestMutation,
   useUserResetPasswordMutation,
-  useUserChangePasswordMutation,
-  useUserConfirmEmailRequestMutation,
 } from "../services/usersEndpoints";
 
 const LoginBox = ({ closeModal }) => {
@@ -30,19 +28,16 @@ const LoginBox = ({ closeModal }) => {
   const [loggingIn, setLoggingIn] = useState(true);
   const [creatingAccount, setCreatingAccount] = useState(false);
   const [verifyingAccount, setVerifyingAccount] = useState(false);
-  const [isClicked, setIsClicked] = useState(false);
 
   //States used to fetch data from backend
   const [userLogin, { isLogInLoading }] = useUserLoginMutation();
   const [userCreate, { isCreateLoading }] = useUserCreateMutation();
   const [
     userResetPasswordEmailRequest,
+    // eslint-disable-next-line
     { isResetPasswordEmailRequestLoading },
   ] = useUserResetPasswordEmailRequestMutation();
-  const [userChangePasswordRequest, { isChangePassword }] =
-    useUserChangePasswordMutation();
-  const [userConfirmEmailRequest, { isConfirmEmailRequestLoading }] =
-    useUserConfirmEmailRequestMutation();
+  // eslint-disable-next-line
   const [userResetPassword, { isResetPasswordLoading }] =
     useUserResetPasswordMutation();
 
