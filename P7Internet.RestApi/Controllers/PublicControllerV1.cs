@@ -36,7 +36,7 @@ public class PublicControllerV1 : ControllerBase
         IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository,
         ICachedOfferRepository cachedOfferRepository, EmailService emailService,
         IUserSessionRepository userSessionRepository, IIngredientRepository ingredientRepository,
-        SallingService sallingService)
+        SallingService sallingService, ETilbudsAvisService eTilbudsAvisService)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
@@ -46,8 +46,8 @@ public class PublicControllerV1 : ControllerBase
         _emailService = emailService;
         _userSessionRepository = userSessionRepository;
         _ingredientRepository = ingredientRepository;
-        _eTilbudsAvisService = new ETilbudsAvisService();
         _sallingService = sallingService;
+        _eTilbudsAvisService = eTilbudsAvisService;
     }
 
     #region Recipe Endpoints
@@ -99,7 +99,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 
@@ -210,7 +210,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 
@@ -324,7 +324,8 @@ public class PublicControllerV1 : ControllerBase
             return BadRequest(
                 "User with the specified Username or Email already exists, please choose another Username or Email");
         // ONLY COMMENT THIS IN WHEN WE NEED TO SHOW THIS FEATURE
-        //await _emailService.ConfirmEmail(user.EmailAddress, user.Name);
+        //var confirmEmailToken = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "confirmEmail");
+        //await _emailService.ConfirmEmail(user, confirmEmailToken);
         var token = await _userSessionRepository.GenerateSessionToken(user.Id);
         var response = new LogInResponse(user.Id, token, user.Name, user.EmailAddress);
 
@@ -439,18 +440,21 @@ public class PublicControllerV1 : ControllerBase
     }
 
     /// <summary>
-    /// Endpoint to reset the password of a user if requested.
-    /// This is done by sending an email to the users specified email 
+    /// Endpoint to request a verification code and send it by email if the user cannot remember their password and wish to reset it.
     /// </summary>
     /// <param name="email"></param>
     /// <returns>Returns Ok if a user is found and the email has been sent, if the user is not found it returns BadRequest</returns>
-    [HttpPost("user/reset-password-request")]
-    public async Task<IActionResult> ResetPassword([EmailAddress] string email)
+    [HttpPost("user/reset-password-email-request")]
+    public async Task<IActionResult> ResetPasswordRequest([EmailAddress] string email)
     {
         var user = await _userRepository.GetUserByEmail(email);
         if (user != null)
         {
-            await _emailService.ResetPassword(user);
+            if (!user.IsEmailConfirmed)
+                return BadRequest("Email is not confirmed, please confirm your email before resetting your password");
+
+            var token = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "resetPassword");
+            await _emailService.ResetPassword(user, token);
             return Ok("Email sent");
         }
 
@@ -458,11 +462,48 @@ public class PublicControllerV1 : ControllerBase
     }
 
     /// <summary>
+    /// Resets the password of a user
+    /// </summary>
+    /// <param name="password"></param>
+    /// <param name="verificationCode"></param>
+    /// <returns>Ok if the user is found and the verification code is valid, returns bad request if not</returns>
+    [HttpPost("user/reset-password")]
+    public async Task<IActionResult> ResetPassword(string password, string verificationCode)
+    {
+        var isValidAction =
+            await _userSessionRepository.VerificationCodeTypeMatchesAction(verificationCode, type: "resetPassword");
+        if (!isValidAction)
+        {
+            return BadRequest("The verification code is not for resetting the password");
+        }
+
+        var userId = await _userSessionRepository.GetUserIdFromVerificationCode(verificationCode);
+        if (userId == null)
+        {
+            return BadRequest("No user found on the verification code");
+        }
+
+        var user = await _userRepository.GetUserFromId(userId.GetValueOrDefault());
+
+        if (user != null)
+        {
+            var result = await _userRepository.ResetPassword(user.EmailAddress, password);
+            if (result)
+            {
+                await _userSessionRepository.DeleteVerificationToken(userId.GetValueOrDefault(), verificationCode);
+                return Ok("Password was reset and has been changed, you can now login with your new password");
+            }
+        }
+
+        return BadRequest("Verification code was invalid, please check that the inserted value is correct");
+    }
+
+    /// <summary>
     /// Endpoint to change the password of a user if requested.
     /// </summary>
     /// <param name="req"></param>
     /// <returns>Unauthorized if the session token is invalid, returns ok if it is successful
-    /// and Badrequest if the username or password is incorrect</returns>
+    /// and Badrequest if the password is incorrect or user session is not valid</returns>
     [HttpPost("user/change-password")]
     public async Task<IActionResult> ChangePassword([FromQuery] ChangePasswordRequest req)
     {
@@ -476,26 +517,42 @@ public class PublicControllerV1 : ControllerBase
             return Ok("Password changed");
         }
 
-        return BadRequest("Username or password is incorrect please try again");
+        return BadRequest("Password is incorrect please try again");
     }
 
     //NOTE: IKKE BRUG DET HER ENDPOINT TIL TESTING DER ER KUN 100 GRATIS EMAILS OM DAGEN
     /// <summary>
     /// Endpoint to confirm the email of a user if requested.
     /// </summary>
-    /// <param name="req"></param>
+    /// <param name="userId"></param>
+    /// <param name="verificationCode"></param>
     /// <returns>Returns Ok if the link has been followed and and the DB returns that the confirmation was good,
     /// otherwise badrequest which should never happen</returns>
     [HttpPost("user/confirm-email")]
-    public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailRequest req)
+    public async Task<IActionResult> ConfirmEmail([FromQuery] Guid userId, string verificationCode)
     {
-        var result = await _userRepository.ConfirmEmail(req.UserName, req.EmailAddress);
-        if (result)
+        var user = await _userRepository.GetUserFromId(userId);
+
+        if (user != null)
         {
-            return Ok("Email confirmed");
+            if (user.IsEmailConfirmed)
+                return BadRequest("The email is already confirmed");
+
+            var isValidAction =
+                await _userSessionRepository.VerificationCodeTypeMatchesAction(verificationCode, type: "confirmEmail");
+            if (!isValidAction)
+                return BadRequest("The verification code is not for confirming an email");
+
+            var result = await _userRepository.ConfirmEmail(user.Name, user.EmailAddress);
+
+            if (result)
+            {
+                await _userSessionRepository.DeleteVerificationToken(userId, verificationCode);
+                return Ok("Email confirmed");
+            }
         }
 
-        return BadRequest("This should never happen");
+        return BadRequest("The user was not found");
     }
 
     #endregion

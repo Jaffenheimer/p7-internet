@@ -13,6 +13,10 @@ public class OpenAiService
 {
     private readonly OpenAIAPI _openAi;
 
+    public OpenAiService()
+    {
+    }
+
     public OpenAiService(string? apiKey)
     {
         _openAi = new OpenAIAPI(apiKey);
@@ -24,7 +28,7 @@ public class OpenAiService
     /// </summary>
     /// <param name="req"></param>
     /// <returns>A list of RecipeResponses corresponding to the amount of requested recipes</returns>
-    public async Task<RecipeResponse> GetAiResponse(RecipeRequest req)
+    public virtual async Task<RecipeResponse> GetAiResponse(RecipeRequest req)
     {
         var request = new ChatRequest()
         {
@@ -44,8 +48,8 @@ public class OpenAiService
         var recipeId = Guid.NewGuid();
         try
         {
-            var completionResult = _openAi.Chat.CreateChatCompletionAsync(request);
-            var result = completionResult.Result;
+            var completionResult = await _openAi.Chat.CreateChatCompletionAsync(request);
+            var result = completionResult;
             if (result.Choices.Count == 0) return null;
             return new RecipeResponse(result.Choices[0].Message.Content, null, recipeId);
         }
@@ -63,27 +67,33 @@ public class OpenAiService
     private string ComposePromptFromRecipeRequest(RecipeRequest req)
     {
         var prompt = "";
-
-        prompt += "Jeg vil gerne have en opskrift";
+        if (req.Amount > 1 || req.Amount != null)
+        {
+            prompt += $"Jeg vil gerne have {req.Amount} opskrifter";
+        }
+        else
+        {
+            prompt += "Jeg vil gerne have en opskrift";
+        }
 
         if (req.Ingredients != null)
         {
             prompt += $" med disse ingredienser {string.Join(", ", req.Ingredients)}";
         }
 
-        if (req.ExcludedIngredients != null && req.ExcludedIngredients.Count > 0)
+        if (req.ExcludedIngredients != null)
         {
             prompt += $" uden disse ingredienser {string.Join(",", req.ExcludedIngredients)}";
         }
 
-        if (req.DietaryRestrictions != null && req.DietaryRestrictions.Count > 0)
+        if (req.DietaryRestrictions != null)
         {
             prompt += $" der er {string.Join(",", req.DietaryRestrictions)}";
         }
 
-        if (req.AmountOfPeople != null && req.AmountOfPeople > 0)
+        if (req.AmountOfPeople != null)
         {
-            prompt += $" til {req.AmountOfPeople} personer. Det skal have følgende formar: Titel, ingredienser og metode.";
+            prompt += $" til {req.AmountOfPeople} personer";
         }
 
         return prompt;

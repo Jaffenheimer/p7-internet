@@ -25,6 +25,47 @@ const userEndpoints = apiSlice.injectEndpoints({
         body: "",
       }),
     }),
+    userResetPasswordEmailRequest: builder.mutation({
+      query: ({ email }) => ({
+        url: `/public/user/reset-password-email-request?email=${email}`,
+        method: "POST",
+        body: "",
+      }),
+    }),
+    userResetPassword: builder.mutation({
+      query: ({ password, verificationCode }) => ({
+        url: `/public/user/reset-password?password=${password}&verificationCode=${verificationCode}`,
+        method: "POST",
+        body: "",
+      }),
+    }),
+    userChangePassword: builder.mutation({
+      query: ({
+        userId,
+        sessionToken,
+        userName,
+        oldPassword,
+        newPassword,
+      }) => ({
+        url: `public/user/change-password?UserId=${userId}&SessionToken=${sessionToken}&UserName=${userName}&OldPassword=${oldPassword}&NewPassword=${newPassword}`,
+        method: "POST",
+        body: "",
+      }),
+    }),
+    userConfirmEmailRequest: builder.mutation({
+      query: ({ UserId }) => ({
+        url: `/public/user/confirm-email-request?UserId=${UserId}`,
+        method: "POST",
+        body: "",
+      }),
+    }),
+    userConfirmEmail: builder.mutation({
+      query: ({ UserId, VerificationCode }) => ({
+        url: `/public/user/confirm-email?userId=${UserId}&verificationCode=${VerificationCode}`,
+        method: "POST",
+        body: "",
+      }),
+    }),
   }),
   //Is a flag that tells redux that is does not override existing endpoints
   overrideExisting: false,
@@ -34,4 +75,9 @@ export const {
   useUserLoginMutation,
   useUserCreateMutation,
   useUserLogOutMutation,
+  useUserResetPasswordEmailRequestMutation,
+  useUserResetPasswordMutation,
+  useUserChangePasswordMutation,
+  useUserConfirmEmailRequestMutation,
+  useUserConfirmEmailMutation,
 } = userEndpoints;

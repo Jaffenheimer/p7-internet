@@ -27,6 +27,30 @@ export const deleteCookies = () => {
   document.cookie = `sessionToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
 };
 
+export const getCookieUserId = () => {
+  let cookies = document.cookie.split(";");
+  for (let cookie in cookies) {
+    if (cookies[cookie].includes("userid")) {
+      return cookies[cookie].split("=")[1];
+    }
+  }
+};
+
+export const getCookies = () => {
+  let username, userid, sessionToken;
+  let cookies = document.cookie.split(";");
+  for (let cookie in cookies) {
+    if (cookies[cookie].includes("username")) {
+      username = cookies[cookie].split("=")[1];
+    } else if (cookies[cookie].includes("userid")) {
+      userid = cookies[cookie].split("=")[1];
+    } else if (cookies[cookie].includes("sessionToken")) {
+      sessionToken = cookies[cookie].split("sessionToken=")[1];
+    }
+  }
+  return { username, userid, sessionToken };
+};
+
 function getTime() {
   var now = new Date();
   var time = now.getTime();

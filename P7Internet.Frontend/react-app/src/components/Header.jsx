@@ -8,6 +8,7 @@ import FavoritesModalContainer from "./FavoritesModalContainer";
 import HistoryModalContainer from "./HistoryModalContainer";
 import { modalStyling } from "../objects/Modal";
 import ModalContent from "./ModalContent";
+import SettingBox from "./SettingBox";
 import icon from "../data/recipe_oracle_icon.png";
 import Pages from "../objects/Pages";
 
@@ -21,12 +22,15 @@ const Header = () => {
   );
   const historyModalShown = useSelector(
     (state) => state.page.historyModalShown
+  const settingModalShown = useSelector(
+    (state) => state.page.settingModalShown
   );
 
   const openLoginModal = () => dispatch(pageActions.openLoginModal());
   const closeLoginModal = () => dispatch(pageActions.closeLoginModal());
   const closeFavoritesModal = () => dispatch(pageActions.closeFavoritesModal());
   const closeHistoryModal = () => dispatch(pageActions.closeHistoryModal());
+  const closeSettingModal = () => dispatch(pageActions.closeSettingModal());
 
   return (
     <div className="header no-print">
@@ -39,6 +43,21 @@ const Header = () => {
       >
         <LoginBox closeModal={closeLoginModal} />
       </Modal>
+
+      <Modal
+        isOpen={settingModalShown}
+        style={modalStyling}
+        onRequestClose={closeSettingModal}
+        contentLabel="Setting Modal"
+        ariaHideApp={false}
+      >
+        <ModalContent
+          title="Indstillinger"
+          closeModal={closeSettingModal}
+          Container={SettingBox}
+        />
+      </Modal>
+
       <Modal
         isOpen={favoritesModalShown}
         style={modalStyling}
@@ -69,6 +88,7 @@ const Header = () => {
         OpskriftsOraklet
         <img src={icon} alt="logo" className="titleLogo" />
         </div>
+
       {loggedIn ? (
         <ProfilePicture />
       ) : (

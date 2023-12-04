@@ -21,14 +21,14 @@ public class UserRepository : IUserRepository
     }
 
     /// <summary>
-    /// Gets a user by username
+    /// Gets a user from a user id
     /// </summary>
-    /// <param name="name"></param>
-    /// <returns>Returns a user if found in the database otherwise 0</returns>
-    public async Task<User> GetUser(string name)
+    /// <param name="userId"></param>
+    /// <returns>Returns a user of type user</returns>
+    public async Task<User> GetUserFromId(Guid userId)
     {
-        var query = $@"SELECT * FROM {TableName} WHERE Name = @name";
-        var result = await Connection.QuerySingleOrDefaultAsync(query, new { name });
+        var query = $@"SELECT * FROM {TableName} WHERE Id = @Id";
+        var result = await Connection.QuerySingleOrDefaultAsync(query, new {Id = userId});
         if (result != null)
         {
             var user = new User(result.Name, result.Email);
@@ -36,6 +36,30 @@ public class UserRepository : IUserRepository
             user.PasswordHash = result.Password_hash;
             user.PasswordSalt = result.Password_salt;
             user.CreatedAt = result.Creation_date;
+            user.IsEmailConfirmed = result.EmailConfirmed;
+            return user;
+        }
+
+        return null;
+    }
+
+    /// <summary>
+    /// Gets a user by username
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns>Returns a user if found in the database otherwise 0</returns>
+    public async Task<User> GetUser(string name)
+    {
+        var query = $@"SELECT * FROM {TableName} WHERE Name = @name";
+        var result = await Connection.QuerySingleOrDefaultAsync(query, new {name});
+        if (result != null)
+        {
+            var user = new User(result.Name, result.Email);
+            user.Id = Guid.Parse(result.Id);
+            user.PasswordHash = result.Password_hash;
+            user.PasswordSalt = result.Password_salt;
+            user.CreatedAt = result.Creation_date;
+            user.IsEmailConfirmed = result.IsEmailConfirmed;
             return user;
         }
 
@@ -50,7 +74,7 @@ public class UserRepository : IUserRepository
     public async Task<User> GetUserByEmail(string email)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Email = @email";
-        var result = await Connection.QuerySingleOrDefaultAsync(query, new { email });
+        var result = await Connection.QuerySingleOrDefaultAsync(query, new {email});
         if (result != null)
         {
             var user = new User(result.Name, result.Email);
@@ -58,6 +82,7 @@ public class UserRepository : IUserRepository
             user.PasswordHash = result.Password_hash;
             user.PasswordSalt = result.Password_salt;
             user.CreatedAt = result.Creation_date;
+            user.IsEmailConfirmed = result.IsEmailConfirmed;
             return user;
         }
 
@@ -107,7 +132,7 @@ public class UserRepository : IUserRepository
         var query = $@"SELECT * FROM {TableName} WHERE Name = @userName";
 
 
-        var result = await Connection.QueryFirstOrDefaultAsync(query, new { userName });
+        var result = await Connection.QueryFirstOrDefaultAsync(query, new {userName});
 
         if (result != null)
         {
@@ -131,7 +156,7 @@ public class UserRepository : IUserRepository
     public async Task<bool> ConfirmEmail(string userName, string emailAddress)
     {
         var query = $@"UPDATE {TableName} SET EmailConfirmed = true WHERE Name = @Name AND Email = @Email";
-        var result = await Connection.ExecuteAsync(query, new { Name = userName, Email = emailAddress });
+        var result = await Connection.ExecuteAsync(query, new {Name = userName, Email = emailAddress});
         return result > 0;
     }
 
@@ -152,7 +177,7 @@ public class UserRepository : IUserRepository
         var salt = GenerateSalt();
         var passwordHash = GenerateHash(password + salt);
         var result = await Connection.ExecuteAsync(query,
-            new { Email = email, Password_hash = passwordHash, Password_salt = salt, Updated = DateTime.UtcNow });
+            new {Email = email, PasswordHash = passwordHash, PasswordSalt = salt, Updated = DateTime.UtcNow});
         return result > 0;
     }
 

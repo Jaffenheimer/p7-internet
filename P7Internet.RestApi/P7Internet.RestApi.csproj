@@ -19,7 +19,9 @@
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0-rc.1.23419.4" />
         <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="8.0.0-rc.1.23419.4" />
         <PackageReference Include="Microsoft.OpenApi" Version="1.6.8" />
+        <PackageReference Include="Moq.Dapper" Version="1.0.7" />
         <PackageReference Include="OpenAI" Version="1.7.2" />
+        <PackageReference Include="RichardSzalay.MockHttp" Version="7.0.0" />
         <PackageReference Include="SendGrid" Version="9.28.1" />
         <PackageReference Include="Swagger" Version="1.0.0" />
         <PackageReference Include="Swagger-Net" Version="8.4.19.1" />
