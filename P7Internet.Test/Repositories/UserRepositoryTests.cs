@@ -46,13 +46,13 @@ namespace P7Internet.Test.Repositories
             _testUserStruct = new TestUser("TestUser", "test@example.com")
             {
                 Id = Guid.NewGuid().ToString(), Creation_date = new DateTime(2023, 11, 23),
-                Password_hash = new string("361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB"),
+                Password_hash = new string("FC7179B333C7894D05B21273BF51AA5C14E9AC1CAB68477A3F3C40A8116FD96E"),
                 Password_salt = "salt1234salt", Email = "test@example.com", Name = "TestUser", IsEmailConfirmed = false
             };
             _testUser = new User("TestUser", "test@example.com")
             {
                 Id = Guid.NewGuid(), CreatedAt = DateTime.Now,
-                PasswordHash = "361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB",
+                PasswordHash = "FC7179B333C7894D05B21273BF51AA5C14E9AC1CAB68477A3F3C40A8116FD96E",
                 PasswordSalt = "salt1234salt",
                 IsEmailConfirmed = false
             };
@@ -71,13 +71,14 @@ namespace P7Internet.Test.Repositories
         {
             //Arrange
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
-          
+
             //Act
             var user = _userRepository.GetUser(_testUser.Name).Result;
 
             //Assert
             Assert.NotNull(user);
             Assert.NotNull(user.Name);
+            Assert.AreEqual(_testUser.Name, user.Name);
         }
 
         [Test()]
@@ -103,7 +104,7 @@ namespace P7Internet.Test.Repositories
         {
             //Arrange
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
-            
+
             //Act
             var user = _userRepository.GetUserFromId(_testUser.Id).Result;
 
@@ -135,7 +136,7 @@ namespace P7Internet.Test.Repositories
         {
             //Arrange
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
-            
+
             //Act
             var user = _userRepository.GetUserByEmail(_testUser.EmailAddress).Result;
 
@@ -207,13 +208,23 @@ namespace P7Internet.Test.Repositories
         {
             //Arrange
             var testPwd = "testPassword";
+            var testUserStruct = new TestUser("test", "test@test.com")
+            {
+                Id = Guid.NewGuid().ToString(), Creation_date = new DateTime(2023, 11, 23),
+                Password_hash = new string("361D43834C1F83BEF2E1553884C329182F51798228F8FAAF78D7040B9F43A8AB"),
+                Password_salt = "salt1234salt", Email = "test@test.com", Name = "TestUser",
+                IsEmailConfirmed = false
+            };
+            _dbConnection
+                .SetupDapperAsync(c => c.QueryFirstOrDefaultAsync<TestUser>(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(testUserStruct);
 
             //Act
-            var user = _userRepository.LogIn(_testUser.Name, testPwd).Result;
+            var user = _userRepository.LogIn(testUserStruct.Name, testPwd).Result;
 
             //Assert
             Assert.NotNull(user);
-            Assert.That(user.EmailAddress, Is.EqualTo("test@example.com"));
+            Assert.That(user.EmailAddress, Is.EqualTo("test@test.com"));
         }
 
         [Test()]
@@ -265,7 +276,7 @@ namespace P7Internet.Test.Repositories
         }
 
         [Test()]
-        public void ResetPasswordSuccess()
+        public async Task ResetPasswordSuccess()
         {
             //Arrange
             var testPwd = "testPassword";
@@ -273,15 +284,12 @@ namespace P7Internet.Test.Repositories
             _dbConnection
                 .SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null))
                 .ReturnsAsync(1);
-            _dbConnection
-                .SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<dynamic>(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(_testUserStruct);
-
             //Act
-            var status = _userRepository.ResetPassword(_testUser.Name, testPwd).Result;
+            var status = await _userRepository.ResetPassword(_testUser, testPwd);
 
             //Assert
             Assert.NotNull(status);
+            Assert.IsTrue(status);
         }
 
         [Test()]
@@ -293,12 +301,9 @@ namespace P7Internet.Test.Repositories
             _dbConnection
                 .SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), It.IsAny<object>(), null, null, null))
                 .ReturnsAsync(0);
-            _dbConnection
-                .SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<dynamic>(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(_testUserStruct);
 
             //Act
-            var status = _userRepository.ResetPassword(_testUser.Name, testPwd).Result;
+            var status = _userRepository.ResetPassword(_testUser, testPwd).Result;
 
             //Assert
             Assert.IsFalse(status);
@@ -307,24 +312,29 @@ namespace P7Internet.Test.Repositories
         [Test()]
         public void ChangePasswordSuccess()
         {
+            Mock<HelperFunctions> helperFunctionsMock = new Mock<HelperFunctions>();
             //Arrange
-            _dbConnection.SetupDapperAsync(x => x.QuerySingleOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(_testUser);
-            
-            
+            _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
+            helperFunctionsMock.Setup(x => x.GenerateSalt()).Returns("salt1234salt");
+            helperFunctionsMock.Setup(x => x.GenerateHash(It.IsAny<string>()))
+                .Returns("FC7179B333C7894D05B21273BF51AA5C14E9AC1CAB68477A3F3C40A8116FD96E");
+            _dbConnection.SetupDapperAsync(x => x.ExecuteAsync(It.IsAny<string>(), null, null, null, null))
+                .ReturnsAsync(1);
+
+
             //Act
-            var result = _userRepository.ChangePassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
-                .Result;
-            
+            var result = _userRepository.ChangePassword(_testUser, It.IsAny<string>(), It.IsAny<string>()).Result;
+
             //Assert
             Assert.NotNull(result);
+            Assert.IsTrue(result);
         }
 
         [Test()]
         public void ChangePasswordFail()
         {
             //Arrange/Act
-            var result = _userRepository.ChangePassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
+            var result = _userRepository.ChangePassword(_testUser, It.IsAny<string>(), It.IsAny<string>())
                 .Result;
             //Assert
             Assert.False(result);
@@ -339,6 +349,7 @@ namespace P7Internet.Test.Repositories
             //Assert
             Assert.NotNull(user);
         }
+
         [Test()]
         public void DeleteUserSuccess()
         {
@@ -352,6 +363,7 @@ namespace P7Internet.Test.Repositories
             //Assert
             Assert.True(result);
         }
+
         [Test()]
         public void DeleteUserFail()
         {

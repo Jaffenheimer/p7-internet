@@ -486,7 +486,7 @@ public class PublicControllerV1 : ControllerBase
 
         if (user != null)
         {
-            var result = await _userRepository.ResetPassword(user.EmailAddress, password);
+            var result = await _userRepository.ResetPassword(user, password);
             if (result)
             {
                 await _userSessionRepository.DeleteVerificationToken(userId.GetValueOrDefault(), verificationCode);
@@ -510,7 +510,11 @@ public class PublicControllerV1 : ControllerBase
         if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
 
-        var result = await _userRepository.ChangePassword(req.UserName, req.OldPassword, req.NewPassword);
+        var user = await  _userRepository.GetUser(req.UserName);
+        if (user == null)
+            return NotFound("User does not exist");
+        
+        var result = await _userRepository.ChangePassword(user, req.OldPassword, req.NewPassword);
         if (result)
         {
             return Ok("Password changed");

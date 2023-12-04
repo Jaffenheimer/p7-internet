@@ -57,15 +57,15 @@ public interface IUserRepository
     /// <param name="userName"></param>
     /// <param name="emailAddress"></param>
     /// <returns>Returns true if successful E.g the number of rows affected is more than 0, otherwise false</returns>
-    public Task<bool> ConfirmEmail(string userName, string emailAdress);
+    public Task<bool> ConfirmEmail(string userName, string emailAddress);
 
     /// <summary>
     /// Resets the password of a user, must be directed to said site from an email
     /// </summary>
-    /// <param name="email"></param>
+    /// <param name="user"></param>
     /// <param name="password"></param>
     /// <returns>Returns true if the process is successful, otherwise false also false if no user is found</returns>
-    public Task<bool> ResetPassword(string email, string password);
+    public Task<bool> ResetPassword(User user, string password);
 
     /// <summary>
     /// Deletes a user from the database
@@ -77,11 +77,11 @@ public interface IUserRepository
     /// <summary>
     /// Changes the password of a user, if the old password matches the correct password stores in the database
     /// </summary>
-    /// <param name="userName"></param>
+    /// <param name="user"></param>
     /// <param name="oldPassword"></param>
     /// <param name="newPassword"></param>
     /// <returns>Returns true if the old password was correct and false if not</returns>
-    public Task<bool> ChangePassword(string userName, string oldPassword, string newPassword);
+    public Task<bool> ChangePassword(User user, string oldPassword, string newPassword);
 
     /// <summary>
     /// Checks if the email is confirmed

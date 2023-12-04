@@ -665,7 +665,7 @@ namespace P7Internet.Test.Controllers
             _userSessionRepositoryMock.Setup(x => x.GetUserIdFromVerificationCode(_seshToken))
                 .ReturnsAsync(_testUser.Id);
             _userRepositoryMock.Setup(x => x.GetUserFromId(_testUser.Id)).ReturnsAsync(_testUser);
-            _userRepositoryMock.Setup(x => x.ResetPassword(_testUser.EmailAddress, It.IsAny<string>()))
+            _userRepositoryMock.Setup(x => x.ResetPassword(_testUser, It.IsAny<string>()))
                 .ReturnsAsync(true);
             _userSessionRepositoryMock.Setup(x => x.DeleteVerificationToken(_testUser.Id, _seshToken))
                 .ReturnsAsync(true);
@@ -705,7 +705,8 @@ namespace P7Internet.Test.Controllers
                 It.IsAny<string>(), It.IsAny<string>());
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .ReturnsAsync(true);
-            _userRepositoryMock.Setup(x => x.ChangePassword(_testUser.Name, It.IsAny<string>(), It.IsAny<string>()))
+            _userRepositoryMock.Setup(x => x.GetUser(_testUser.Name)).ReturnsAsync(_testUser);
+            _userRepositoryMock.Setup(x => x.ChangePassword(_testUser, It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(true);
 
             //Act
@@ -715,8 +716,9 @@ namespace P7Internet.Test.Controllers
             //Assert
             Assert.NotNull(contentResult);
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken)).ReturnsAsync(true);
-            _userRepositoryMock.Verify(x => x.ChangePassword(_testUser.Name, It.IsAny<string>(), It.IsAny<string>()),
+            _userRepositoryMock.Verify(x => x.ChangePassword(_testUser, It.IsAny<string>(), It.IsAny<string>()),
                 Times.Once);
+            _userRepositoryMock.Verify(x => x.GetUser(_testUser.Name), Times.Once);
         }
 
         [Test()]
@@ -797,19 +799,46 @@ namespace P7Internet.Test.Controllers
                 It.IsAny<string>(), It.IsAny<string>());
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .ReturnsAsync(true);
-            _userRepositoryMock.Setup(x => x.ChangePassword(_testUser.Name, It.IsAny<string>(), It.IsAny<string>()))
+            _userRepositoryMock.Setup(x => x.ChangePassword(_testUser, It.IsAny<string>(), It.IsAny<string>()))
                 .ReturnsAsync(false);
+            _userRepositoryMock.Setup(x => x.GetUser(_testUser.Name)).ReturnsAsync(_testUser);
 
             //Act
             IActionResult actionResult = controller.ChangePassword(changePasswordReq).Result;
             var contentResult = actionResult as BadRequestObjectResult;
 
             //Assert
+            Assert.NotNull(contentResult);
             Assert.AreEqual("Password is incorrect please try again", contentResult.Value);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()),
                 Times.Once);
-            _userRepositoryMock.Verify(x => x.ChangePassword(_testUser.Name, It.IsAny<string>(), It.IsAny<string>()),
+            _userRepositoryMock.Verify(x => x.ChangePassword(_testUser, It.IsAny<string>(), It.IsAny<string>()),
                 Times.Once);
+            _userRepositoryMock.Verify(x => x.GetUser(_testUser.Name), Times.Once);
+        }
+        [Test()]
+        public void ChangePasswordUserNotFound()
+        {
+            //Arrange
+            User testUser = null;
+            var changePasswordReq = new ChangePasswordRequest(_testUser.Id, _seshToken, _testUser.Name,
+                It.IsAny<string>(), It.IsAny<string>());
+            _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
+                .ReturnsAsync(true);
+            _userRepositoryMock.Setup(x => x.GetUser(It.IsAny<string>())).ReturnsAsync(testUser);
+
+            //Act
+            IActionResult actionResult = controller.ChangePassword(changePasswordReq).Result;
+            var contentResult = actionResult as NotFoundObjectResult;
+
+            //Assert
+            Assert.NotNull(contentResult);
+            Assert.AreEqual("User does not exist", contentResult.Value);
+            _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()),
+                Times.Once);
+            _userRepositoryMock.Verify(x => x.ChangePassword(_testUser, It.IsAny<string>(), It.IsAny<string>()),
+                Times.Never);
+            _userRepositoryMock.Verify(x=> x.GetUser(It.IsAny<string>()),Times.Once);
         }
 
         [Test()]

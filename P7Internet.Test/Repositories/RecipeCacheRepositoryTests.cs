@@ -76,30 +76,6 @@ namespace P7Internet.Test.Repositories
             Assert.IsFalse(res);
         }
 
-        //Kan muligvis ikke laves pga dapper og guids men dunno
-        //[Test()]
-        public void GetAllRecipesSuccess()
-        {
-            //Arrange
-            const string TableName = "CachedRecipes";
-            var query = $@"SELECT Id FROM {TableName}";
-            var testRecipe = new Recipe(Guid.Parse("d3d01e66-2943-463c-ab22-4abd09f1bd7f"), "TestDesc");
-            IEnumerable<Guid> testGuids = new List<Guid>() {testRecipe.Id};
-            IEnumerable<string> testStrings = new List<string>() {testRecipe.Description};
-            _dbConnection.SetupDapperAsync(c => c.QueryAsync<Guid>(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(testGuids);
-            _dbConnection.SetupDapperAsync(c => c.QueryAsync<string>(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(testStrings);
-
-            //Act
-            var res = _recipeCacheRepository.GetAllRecipes().Result;
-
-            //Assert
-            Assert.NotNull(res);
-            Assert.AreEqual(testRecipe.Id, res[0].Id);
-            Assert.AreEqual(testRecipe.Description, res[0].Description);
-        }
-
         [Test()]
         public void UpsertSuccess()
         {
