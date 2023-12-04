@@ -23,11 +23,10 @@ export const userSlice = createSlice({
     },
     addFavoriteRecipe(state, action) {
       state.favoriteRecipes.push(action.payload);
-      console.log(action.payload);
     },
     removeFavoriteRecipe(state, action) {
       state.favoriteRecipes = state.favoriteRecipes.filter(
-        (recipe) => recipe.title !== action.payload
+        (recipe) => recipe.title !== action.payload.title
       );
     },
     addRecipeToHistory(state, action) {
