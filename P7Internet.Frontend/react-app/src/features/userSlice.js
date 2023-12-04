@@ -4,7 +4,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   user: {},
   favoriteRecipes: [],
-  loggedIn: false,
+  loggedIn: true,
   recipesInHistory: [],
 };
 

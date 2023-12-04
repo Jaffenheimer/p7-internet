@@ -10,10 +10,13 @@ import { checkValidTwoPasswords } from "../helperFunctions/inputValidation";
 import { getCookies } from "../helperFunctions/cookieHandler";
 
 const SettingBox = ({ closeModal }) => {
+  // eslint-disable-next-line
   const [userConfirmEmailRequest, { isConfirmEmailRequestLoading }] =
     useUserConfirmEmailRequestMutation();
+    // eslint-disable-next-line
   const [userChangePassword, { isChangePasswordLoading }] =
     useUserChangePasswordMutation();
+    // eslint-disable-next-line
   const [userConfirmEmail, { isConfirmEmailLoading }] =
     useUserConfirmEmailMutation();
 
