@@ -50,7 +50,7 @@ namespace P7Internet.Test.Repositories
             _dbConnection
                 .SetupDapperAsync(c =>
                     c.QuerySingleOrDefaultAsync<string>(It.IsAny<string>(), new {Id = testRecipe.Id}, null, null, null))
-                .ReturnsAsync(testRecipe.Description);
+                .ReturnsAsync(testRecipe.Id.ToString);
 
             //Act
             var res = _recipeCacheRepository.CheckIfRecipeExist(testRecipe.Id).Result;
