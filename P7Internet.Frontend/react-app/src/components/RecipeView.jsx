@@ -10,6 +10,7 @@ const RecipeView = () => {
 
   const tab = useSelector((state) => state.recipe.currentRecipeIndex);
   const recipes = useSelector((state) => state.recipe.recipes);
+
   // //this should of course not be hardcoded in here like it is now
   // //and the ingredients you own should also be sent somehow
   // var recipeString =
@@ -22,10 +23,13 @@ const RecipeView = () => {
   // }, []);
   // console.log("Recipe View from store");
   // console.log(recipes);
-  
+
   return (
     <div className="RecipeView">
-      <RecipeTitle recipeTitle={recipes[tab].recipe.title} recipeId={recipes[tab].recipeId} />
+      <RecipeTitle
+        recipeTitle={recipes[tab].recipe.title}
+        recipeId={recipes[tab].recipeId}
+      />
       <IngredientsList
         ingredients={convertIngredientsToIngredientObjects(
           recipes[tab].recipe.ingredients

@@ -12,7 +12,7 @@ function ingredientIsOwned(ingredient, ownedIngredients) {
 
 function convertIngredientsToIngredientObjects(ingredients) {
   var ingredientObjects = [];
-  console.log("ingredients: ", ingredients); 
+  console.log("ingredients: ", ingredients);
   for (const ingredient of ingredients) {
     ingredientObjects.push(
       new Offer(ingredient, nanoid(), 2, "test", "test", "test", "test", "test")

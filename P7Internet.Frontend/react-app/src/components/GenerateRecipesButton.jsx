@@ -6,8 +6,10 @@ import { toast } from "react-toastify";
 import { getGeoLocation } from "../helperFunctions/getGeoLocation";
 import recipeBodyCreator from "../helperFunctions/recipeBodyCreator";
 import { recipeActions } from "../features/recipeSlice";
-import { useGenerateUserRecipeMutation, useGenerateRecipeMutation } from "../services/recipeEndpoints";
-
+import {
+  useGenerateUserRecipeMutation,
+  useGenerateRecipeMutation,
+} from "../services/recipeEndpoints";
 
 //import data from "../testdata/testrescipes.json";
 import recipeFromResponse from "../helperFunctions/recipeFromResponse";
@@ -31,7 +33,7 @@ const GenerateRecipesButton = () => {
   const [generateUserRecipe, { isLoading: isRecipeUserLoading }] =
     useGenerateUserRecipeMutation();
   const [generateRecipe, { isLoading: isRecipeLoading, error: generateError }] =
-  useGenerateRecipeMutation();
+    useGenerateRecipeMutation();
   let response;
 
   const fetchRecipe = async (body) => {
@@ -51,7 +53,7 @@ const GenerateRecipesButton = () => {
         if (response) {
           console.log(response);
 
-          for (let i = 0; i < response.length; i++){
+          for (let i = 0; i < response.length; i++) {
             const recipe = response[i];
             var recipeString = recipeFromResponse(recipe.recipes);
             console.log("recipe: ", recipeString);
@@ -69,14 +71,14 @@ const GenerateRecipesButton = () => {
       } catch (error) {
         console.log("Fejl fra request");
         console.log(error);
-        console.log(generateError); 
+        console.log(generateError);
         toast.error("Kunne ikke lave en opskrift");
       }
     }
   };
 
   const test = (response) => {
-    for (let i = 0; i < response.length; i++){
+    for (let i = 0; i < response.length; i++) {
       const recipe = response[i];
       var recipeString = recipeFromResponse(recipe.recipes);
       console.log("recipe: ", recipeString);
@@ -88,7 +90,7 @@ const GenerateRecipesButton = () => {
         })
       );
     }
-  }
+  };
 
   //handles all the logic for when the button is clicked
   const handleOnClick = async () => {
@@ -104,7 +106,7 @@ const GenerateRecipesButton = () => {
 
     console.log(body);
 
-    //test(data); 
+    //test(data);
 
     await fetchRecipe(body);
 
