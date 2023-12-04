@@ -12,7 +12,7 @@ export const recipeGenerationSlice = createSlice({
   name: "recipeGeneration",
   initialState,
   reducers: {
-    addOwnedIngredients(state, action) {
+    addOwnedIngredient(state, action) {
       const ownedIngredient = {
         id: nanoid(),
         text: action.payload,
@@ -43,8 +43,11 @@ export const recipeGenerationSlice = createSlice({
         (ingredient) => ingredient.id !== action.payload
       );
     },
-    clearAllExcludedIngredient(state) {
+    clearAllExcludedIngredients(state) {
       state.excludeList = [];
+    },
+    clearAllOwnedIngredients(state) {
+      state.ownedIngredients = [];
     },
     addPerson(state) {
       state.numPeople++;

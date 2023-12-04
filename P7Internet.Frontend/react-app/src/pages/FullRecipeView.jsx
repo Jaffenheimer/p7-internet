@@ -1,41 +1,71 @@
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import RecipeTitle from "../components/RecipeTitle";
 import IngredientsList from "../components/IngredientsList";
 import MethodsList from "../components/MethodsList";
 import Pages from "../objects/Pages";
-import React from "react";
 import ForPersons from "../components/ForPersons";
+import Header from "../components/Header";
+import RecipeIngredientElement from "../components/RecipeIngredientElement";
+import FrontPageButton from "../components/FrontPageButton";
+import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientHelper";
+import { ToastContainer } from "react-toastify";
 
-function FullRecipeView() {
+const FullRecipeView = ({ shouldShowBackButton }) => {
   const dispatch = useDispatch();
 
-  const recipes = useSelector((state) => state.recipe.recipes);
-
-  const currentRecipeIndex = useSelector(
-    (state) => state.recipe.currentRecipeIndex
-  );
-
-  const recipe = recipes[currentRecipeIndex];
+  const recipe = useSelector((state) => state.recipe.recipeToShow);
 
   function goToPageRecipeSelection() {
-    //pt har vi ikke den side, så det er bare frontpage
-    dispatch(pageActions.goToPage(Pages.frontPage));
+    dispatch(pageActions.goToPage(Pages.RecipeSelection));
+  }
+
+  function PrintRecipe() {
+    window.print();
   }
 
   return (
-    <div className="App">
+    <div className="AppContainer">
+      <ToastContainer
+        position="top-center"
+        newestOnTop={true}
+        closeButton={false}
+        draggablePercent
+      />
+      <div className="headerContainer">
+        <Header />
+      </div>
       <div className="FullRecipeView">
-        <RecipeTitle id="RecipeTitle" title={recipe.title} />
+        <RecipeTitle id="RecipeTitle" title={recipe.title} recipe={recipe} />
         <ForPersons />
-        <IngredientsList ingredients={recipe.ingredients} />
+        <IngredientsList
+          ingredients={convertIngredientsToIngredientObjects(
+            recipe.ingredients
+          )}
+          ListElement={RecipeIngredientElement}
+        />
         <MethodsList methods={recipe.method} />
-        <button id="backButton" onClick={goToPageRecipeSelection}>
-          Tilbage
-        </button>
+        <div className="BottomButtons no-print">
+          <div className="BottomButtonsSpacer">
+            <div id="BackToFrontPageButtonRecipeView">
+              <FrontPageButton buttonText="Tilbage til forsiden" />
+            </div>
+            {shouldShowBackButton ? (
+              <button id="BackButton" onClick={goToPageRecipeSelection}>
+                Tilbage
+              </button>
+            ) : (
+              <></>
+            )}
+            <button id="PrintButton" onClick={PrintRecipe}>
+              Print
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   );
-}
+};
 
 export default FullRecipeView;

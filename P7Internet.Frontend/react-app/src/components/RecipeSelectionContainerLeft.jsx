@@ -2,6 +2,7 @@ import React from "react";
 import RecipeView from "./RecipeView";
 import SelectArrows from "./SelectArrows";
 import SelectRecipeButton from "./SelectRecipeButton";
+import FrontPageButton from "./FrontPageButton";
 
 const RecipeSelectionContainerLeft = () => {
   function enableArrowKeyPress() {
@@ -11,8 +12,13 @@ const RecipeSelectionContainerLeft = () => {
   return (
     <div className="RecipeSelectionContainerLeft" onClick={enableArrowKeyPress}>
       <RecipeView />
-      <SelectRecipeButton />
-      <SelectArrows />
+      <div style={{ position: "relative" }}>
+        <SelectRecipeButton />
+        <div id="BackToFrontPageButtonRecipeSelection">
+          <FrontPageButton buttonText="Tilbage" />
+        </div>
+        <SelectArrows />
+      </div>
     </div>
   );
 };

@@ -3,11 +3,11 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   recipes: [],
   currentRecipeIndex: 0,
-  heartedRecipeTitles : [],
-}
+  recipeToShow: null,
+};
 
 export const recipeSlice = createSlice({
-  name: "recipes",
+  name: "recipe",
   initialState,
   reducers: {
     addRecipes(state, action) {
@@ -15,11 +15,8 @@ export const recipeSlice = createSlice({
         state.recipes.push(action.payload[i]);
       }
     },
-    setDefaultRecipes(state, action) { //this function will not be necessary later, but is useful since we dont have communication with the backend yet
-      state.recipes = [action.payload[0]];
-      for (let i = 1; i < action.payload.length; i++) {
-        state.recipes.push(action.payload[i]);
-      }
+    addRecipe(state, action) {
+      state.recipes.push(action.payload);
     },
     removeRecipe(state, action) {
       state.recipes = state.recipes.filter(
@@ -29,16 +26,9 @@ export const recipeSlice = createSlice({
     setCurrentRecipeIndex(state, action) {
       state.currentRecipeIndex = action.payload;
     },
-    addHeartedRecipeTitles(state, action) { //not necessary later, as this should be stored in database
-      const title = action.payload
-      if(!state.heartedRecipeTitles.includes(title))
-        state.heartedRecipeTitles.push(action.payload)
-    },
-    removeHeartedRecipeTitles(state, action) { //not necessary later, as this should be stored in database
-      state.heartedRecipeTitles = state.heartedRecipeTitles.filter(
-        (title) => title !== action.payload
-      );
-    },
+    setRecipeToShow(state, action) {
+      state.recipeToShow = action.payload;
+    }
   },
 });
 

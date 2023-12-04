@@ -1,59 +1,184 @@
-body > #root > div {
-  min-height: 100vh;
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
-.App {
-  background: #f8ede3;
+html {
+  /* this makes sure the padding and the border is included in the box sizing */
+  box-sizing: inherit;
+  overflow-x: hidden;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100vh;
+  width: 100%;
+  padding: 0;
+  background: #fff2d8;
+}
+
+.AppContainer {
+  height: 100vh;
+  width: 100%;
+  background: #fff2d8;
+}
+
+.headerContainer {
+  height: auto;
+  background-color: #bca37f;
+  padding: 10px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+}
+
+.split-container {
+  position: relative;
+  min-height: calc(100vh - 110px);
   display: flex;
   flex-direction: row;
 }
 
-.App > .AppLeft {
+.split-screen-left {
   width: 75%;
-  height: 100vh;
-  margin-top: -22px;
+  background: #fff2d8;
+  min-height: 100vh;
 }
 
-.App > .AppLeft > .ContainerLeft {
+.split-screen-right {
+  width: 25%;
+  background: #ead7bb;
+  min-height: 100vh;
+}
+
+.split-screen-left,
+.split-screen-right {
+  min-height: 100vh;
+  padding: 20px;
+  display: block;
+}
+
+.searchfield {
+  min-width: 250px;
+  width: 400px;
+  height: 35px;
+  border: none;
+  border-radius: 5px;
+}
+
+/* .AppContainer{
   height: 100%;
-  position: relative;
+} */
+
+/* .App {
+  height: 100%;
+  width: 100%;
+  background: #f8ede3;
+  display: flex;
+  flex-direction: row;
+} */
+/* 
+.App > .AppLeft {
+  display: block;
+  width: 75%;
+  height: 100%;
+  display: flex;
+  margin-top: -22px;
+} */
+
+.header {
+  padding: 0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
-.App > .AppLeft > .RecipeSelectionContainerLeft {
+.title {
+  text-align: center;
+  font-size: 40px;
+  font-family: Verdana;
+  display: flex;
+  cursor: pointer;
+}
+.titleLogo {
+  height: 1.3em;
+}
+
+.RecipeSelectionContainerLeft {
   padding: 10px;
   height: 60%;
-  background: #f8ede3;
 }
 
 .App > .AppRight {
-  background: #bdd2b6;
+  background: #ead7bb;
   width: 25%;
   min-height: 100vh;
 }
 
 h1 {
   font-family: Verdana;
-  display: block;
-  height: 65px;
+  /* display: block; */
+  /* height: 65px; */
+  font-size: xx-large;
   text-align: center;
-  flex-shrink: 0;
+  /* flex-shrink: 0; */
 }
 
 h2 {
   color: #000;
   font-family: Verdana;
-  font-size: 35px;
+  font-size: x-large;
   font-style: normal;
   font-weight: 400;
   line-height: 16px; /* 45.714% */
   letter-spacing: 0.75px;
 }
 
-h3 {
-  /*choose styling here for preference titles*/
+/* h3 {
+  choose styling here for preference titles
+} */
+
+ul {
+  padding: 0;
 }
 
-input[type="text"] {
+/*modal*/
+.ReactModal__Content {
+  width: 40%;
+}
+
+body.Modal__Content {
+  overflow-y: hidden;
+}
+
+.IngredientElement {
+  margin-left: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#OwnedIngredientsList > div > ul > .IngredientElement {
+  width: 30%;
+}
+#OwnedIngredientsList {
+  margin-right: 10%;
+}
+
+#ExcludedIngredientsList > .ingredientsList > ul > .IngredientElement {
+  width: 70%;
+}
+
+.RemoveIngredientCross {
+  float: right;
+}
+
+input[type="text"],
+input[type="password"] {
   color: rgba(0, 0, 0, 0.5);
   width: 30%;
   margin-right: 3%;
@@ -86,11 +211,13 @@ img {
 button {
   width: 145px;
   height: 40px;
-  background-color: white;
+  /* background-color: white; */
+  background-color: #113946;
+  color: white;
   border: 2px solid black;
   border-radius: 5px; /* rounded corners */
-  border-color: #212120;
-  color: #000;
+  border-color: #113946;
+  /* color: #000; */
   cursor: pointer;
   text-align: center;
   font-family: Verdana;
@@ -102,20 +229,28 @@ button {
 }
 
 button:hover {
-  background: #e7e7e7;
+  background: #979191;
+  transition: all 0.1s;
 }
+button:active {
+  transform: scale(0.95);
+}
+/* 
+.FormStyle{
+  width: 100%;
+} */
 
-#IngredientsBody {
+/* #IngredientsBody {
   margin-left: 2%;
   margin-top: 10%;
+} */
+
+.excludedIngredientListItems {
+  width: 90%;
 }
 
-#GenerateRecipeButton {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  margin-bottom: 3%;
-  margin-right: 3%;
+.ownedIngredientListItems {
+  width: 40%;
 }
 
 .RecipeView > #RecipeTitleDiv > h1 {
@@ -127,8 +262,18 @@ button:hover {
   outline: none;
 }
 
+#GenerateRecipesButton {
+  margin-top: 5%;
+  float: right;
+}
+
 #selectRecipeButton {
   float: right;
+  align-items: right;
+  right: 0;
+  bottom: 0;
+  margin-bottom: 3%;
+  margin-right: 3%;
 }
 
 #SelectArrows > img {
@@ -136,26 +281,39 @@ button:hover {
   transform: scale(2);
 }
 
-.ProfilePicture > img {
-  transform: scale(2.5);
-  margin-top: 10%;
-  float: right;
-  margin-right: 15%;
+.IngredientCheckboxesLabel {
+  cursor: pointer;
 }
 
-.NumberField {
+#acceptAdditionalIngredientsButton {
+  margin-top: 2%;
+}
+
+#IngredientsContainer {
+  height: 90%;
+  position: relative;
+}
+
+.Profile {
+  width: 40px;
+  height: 40px;
+  flex: 1;
+  text-align: center;
+}
+
+.NumberOfPersonsField {
   transform: scale(1.5);
   display: flex;
   justify-content: center;
-  margin-top: 10%;
+  margin-left: 22px;
 }
 
-#NumberFieldToast {
+#NumberOfPersonsFieldToast {
   transform: scale(0.7);
   text-align: center;
   justify-content: center;
 }
-#InputNumberField {
+#InputNumberOfPersonsField {
   width: 30px;
   height: auto;
   border: 1px solid black;
@@ -167,17 +325,17 @@ button:hover {
   -moz-appearance: textfield;
 }
 
-#InputNumberField::-webkit-outer-spin-button,
-#InputNumberField::-webkit-inner-spin-button {
+#InputNumberOfPersonsField::-webkit-outer-spin-button,
+#InputNumberOfPersonsField::-webkit-inner-spin-button {
   /*Hides arrows on input field number Chrome*/
   -webkit-appearance: none;
   margin: 0;
 }
 
-.ContainerRight
+.FrontPageContainerRight
   > .ContainerRightTop
   > .ContainerRightColumn
-  > .NumberField
+  > .NumberOfPersonsField
   > .PlusMinusButton {
   text-align: center;
   width: 30px;
@@ -189,15 +347,14 @@ button:hover {
   font-size: small;
 }
 
-.numberPersonsText{
+.numberPersonsText {
   margin-top: 0%;
   padding: 0%;
-  margin-left: 10%;
+  margin-left: 20%;
 }
 
 .ContainerRightColumn {
   float: left;
-  width: 33.33%;
   justify-content: center;
   margin-top: 3%;
 }
@@ -221,57 +378,87 @@ button:hover {
 
 .dropdown {
   position: relative;
-}
-
-.menu {
-  position: absolute;
-  list-style-type: none;
   margin: 5px 0;
   padding: 0;
-  border: 1px solid grey;
-  width: 150px;
-  transform: translateY(40px);
+  z-index: 1000;
 }
 
-.menu > li {
-  margin: 0;
-  background-color: white;
-}
-
-.menu > li:hover {
-  background-color: lightgray;
-}
-
-.menu > li > button {
+.dropdown-content {
+  list-style: none;
+  position: absolute;
+  top: -1em;
+  right: 7.5em;
   width: 100%;
-  height: 100%;
-  text-align: left;
-
-  background: none;
-  color: inherit;
-  border: none;
-  padding: 5px;
-  margin: 0;
-  font: inherit;
-  cursor: pointer;
 }
 
-#ExcludeList {
-  text-align: center;
+.dropdown-content li {
+  position: relative;
+  transform: translateX(
+    150%
+  ); /* Initially move the dropdown content off-screen */
+  width: 155px;
+  border-radius: 0em;
+  animation: slideInFromRight 0.5s forwards;
+}
+.dropdown-buttons {
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  border-radius: 0px;
+}
+
+.dropdown-content li.open {
+  animation: slideInFromRight 0.5s forwards;
+}
+
+@keyframes slideInFromRight {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.menu-item:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.menu-item:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+#FavoritesButton {
+  border-radius: 0px;
+}
+#SettingsButton {
+  border-radius: 0px;
+}
+#LogoutButton {
+  border-radius: 0px;
+}
+
+.menuItemButton {
+  border-radius: 0px;
 }
 
 #InputFieldExclude {
-  width: 90%;
+  width: 60%;
   height: 100%;
   border: 1px solid black;
   font-size: medium;
   text-align: center;
   float: center;
   margin-left: 2.5%;
+
+  height: 35px;
+  border: none;
+  border-radius: 5px;
 }
 
-#RemoveButton {
+.RemoveAllButton {
   margin-top: 5%;
+  margin-left: 1%;
 }
 
 #ExcludeListText {
@@ -285,19 +472,9 @@ button:hover {
   margin-left: 8%;
 }
 
-.App > .FullRecipeView {
-  flex: 1;
-}
-
 .ForPersons > h4 {
   text-align: center;
   margin-top: -20px;
-}
-
-#backButton {
-  float: right;
-  margin-top: 25px;
-  margin-right: 25px;
 }
 
 .App > .RecipeSelectionContainerLeft {
@@ -309,10 +486,242 @@ button:hover {
   margin-left: 2%;
 }
 
-#selectRecipeButton {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  margin-bottom: 3%;
-  margin-right: 3%;
+/* Login */
+.LoginModal {
+  background-color: white;
+  height: 600px;
+  width: 400px;
+  margin: auto;
+}
+
+.SettingModal input[type="text"],
+input[type="password"] {
+  width: 90%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.SettingModal h3 {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+.SettingModal .SendVerificationEmailButton {
+  width: 25%;
+  margin-right: 10%;
+  float: right;
+}
+
+.LoginModal input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.LoginModal select {
+  width: 100%;
+}
+
+.LoginModal option {
+  font-size: 18px;
+  font-family: Verdana;
+}
+
+#loginCross {
+  padding: 3%;
+  transform: scale(1.2);
+  float: right;
+}
+
+#alreadyHasUserText,
+#noUserText {
+  display: inline-block;
+}
+
+.LoginPage {
+  display: flex;
+  margin: auto;
+}
+
+.LoginForm button {
+  width: 96%;
+}
+
+.ModalHeaderContainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+.scrollableModalContainer,
+#AdditionalOwnedIngredientsModalContainer {
+  overflow: auto;
+  display: block;
+  padding: 16px;
+  max-height: 75%;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+#loginModal {
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+}
+
+input[type="range"] {
+  width: 100%;
+}
+
+/* Apply style only when printing */
+@media print {
+  .no-print,
+  .no-print * {
+    display: none;
+  }
+  /* Styles applied to the printed page */
+  @page {
+    margin: 0;
+  }
+}
+
+#BackButton {
+  float: right;
+  margin-top: 25px;
+  margin-right: 25px;
+}
+
+#PrintButton {
+  float: left;
+  margin-top: 25px;
+  margin-right: 25px;
+  margin-left: 1%;
+}
+
+.FullRecipeView {
+  flex: 1;
+  margin: 1cm;
+}
+
+.BottomButtonsSpacer {
+  padding-bottom: 10%;
+}
+
+.ingredientsList > ul {
+  padding-left: 40px;
+}
+
+.toggleButtonLeft {
+  border-radius: "5px 0px 0px 5px";
+}
+
+.toggleButtonRight {
+  border-radius: "0px 5px 5px 0px";
+}
+
+.toggleButton {
+  width: 100%;
+  background-color: #113946;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid black;
+  border-radius: 5px; /* rounded corners */
+  border-color: #113946;
+}
+
+.toggleButton button {
+  background-color: white;
+  color: black;
+  border: 0;
+  text-transform: none;
+  width: 40%;
+  margin: 8px;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 550;
+  line-height: 16px;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+}
+
+.SliderContainer h3,
+p {
+  display: inline;
+}
+
+.options {
+  background: white;
+  border: 1px solid #ccc;
+  top: -1px;
+  left: -1px;
+  width: 100%;
+  min-height: 30vh;
+  cursor: pointer;
+  overflow-y: scroll;
+}
+
+.FavoriteRecipeElement {
+  width: 100%;
+}
+
+.FavoriteRecipeButton,
+.HistoryRecipeButton {
+  width: 90%;
+  height: 5%;
+  float: left;
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+.RemoveFavoritedElement {
+  /* float: right; */
+  display: inline-block;
+}
+
+.RemoveFavoritedElement {
+  float: right;
+  margin-right: 2%;
+}
+
+#BackToFrontPageButtonRecipeSelection {
+  float: right;
+  align-items: right;
+  margin-right: 1%;
+}
+
+#BackToFrontPageButtonRecipeView {
+  float: right;
+  align-items: right;
+  margin-top: 25px;
+  margin-right: 1%;
 }

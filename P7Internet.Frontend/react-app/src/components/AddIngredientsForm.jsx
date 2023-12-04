@@ -1,74 +1,71 @@
-import React, { useState, useEffect } from "react";
-import { recipeGenerationActions } from "../features/recipeGenerationSlice";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import AddButton from "./AddButton";
 import RemoveAllButton from "./RemoveAllButton";
 import AddIngredientInput from "./AddIngredientInput";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { ingredientInputValidation } from "../helperFunctions/inputValidation";
 
-const AddIngredientsForm = ({ingredientsList, addIngredient, removeAllHandler}) => {
+const AddIngredientsForm = ({
+  ingredientsList,
+  addIngredient,
+  removeAllHandler,
+}) => {
   const dispatch = useDispatch();
-  const [ingredient, setIngredient] = useState('');
-  //const ownedIngredientsList = useSelector(state => state.recipeGeneration.ownedIngredients);
-  const [addButtonIsDisabled, setAddButtonDisabled] = useState(true);
-  const [removeAllButtonIsDisabled, setRemoveAllButtonDisabled] = useState(true);
+  const [ingredient, setIngredient] = useState("");
 
-  useEffect(() => {
-    handleRemoveAllButtonDisabling();
-  }, [ingredientsList]);
+  const excludeList = useSelector(
+    (state) => state.recipeGeneration.excludeList
+  );
 
-  useEffect(() => {
-    handleAddButtonDisabling(ingredient);
-  }, [ingredient]);
+  const ownedIngredientsList = useSelector(
+    (state) => state.recipeGeneration.ownedIngredients
+  );
 
   const handleChange = (event) => {
     setIngredient(event.target.value);
   };
 
+  const ingredientIsInIngredientsObject = (ingredient, ingredientsObject) => {
+    for (const ingredientObject of ingredientsObject) {
+      if (ingredientObject.text === ingredient) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (ingredient !== null && typeof ingredient !== "undefined") {
-      if (ingredient == "") return;
-
-      // receives the ingredient text (aka. name) from dict on store in format
-      // {0:{id: '', text: ''}, 1:{id: '', text: ''}}¨
-      var ingredientsDictionary = Object.values(ingredientsList);
-      var ingredientText = [];
-
-      ingredientsDictionary.forEach((ingredient) =>
-      ingredientText.push(ingredient["text"])
-      );
-
-      console.log("what",handleChange)
-      // only adds to ownedIngredient if non-dublicate
-      if (!ingredientText.includes(ingredient))
-        dispatch(addIngredient(ingredient));
-      else alert(`Elementet "${ingredient}" er allerede tilføjet til listen!`);
+    if (!ingredientInputValidation(ingredient)) return;
+    if (ingredientsList.length >= 10) {
+      toast.error("Du kan ikke tilføje flere end 10 ingredienser");
+      return;
     }
+    if (ingredientIsInIngredientsObject(ingredient, excludeList)) {
+      toast.error(
+        `"${ingredient}" er allerede tilføjet til listen af ekskluderede ingredienser!`
+      );
+      return;
+    }
+    if (ingredientIsInIngredientsObject(ingredient, ownedIngredientsList)) {
+      toast.error(
+        `"${ingredient}" er allerede tilføjet til listen af ejede ingredienser!`
+      );
+      return;
+    }
+    dispatch(addIngredient(ingredient));
     setIngredient("");
   };
 
-  //add button is disabled if input is empty, else enabled
-  const handleAddButtonDisabling = (value) => {
-    if (value === "")
-      setAddButtonDisabled(true)
-    else
-      setAddButtonDisabled(false)
-  }
-
-  //remove all button is disabled if there are no ingredients to remove, else enabled
-  const handleRemoveAllButtonDisabling = () => {
-    if (ingredientsList.length === 0)
-      setRemoveAllButtonDisabled(true)
-    else
-      setRemoveAllButtonDisabled(false)
-  }
-    
   return (
-      <form onSubmit={handleSubmit}>
-        <AddIngredientInput ingredient={ingredient} handleChange={handleChange} placeholder="Tilføj en ingrediens..." />
-        <AddButton type="submit" isDisabled={addButtonIsDisabled} className="AddIngredientButton" />
-        <RemoveAllButton handleClick={removeAllHandler} isDisabled={removeAllButtonIsDisabled} />
-      </form>
+    <form onSubmit={handleSubmit} data-testid="AddIngredientsForm">
+      <AddIngredientInput ingredient={ingredient} handleChange={handleChange} />
+      <button type="submit" data-testid="AddButton">
+        Tilføj
+      </button>
+      <RemoveAllButton handleClick={removeAllHandler} />
+    </form>
   );
 };
 

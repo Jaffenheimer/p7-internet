@@ -14,23 +14,33 @@ namespace P7Internet.Services;
 
 public class ETilbudsAvisService
 {
-    private readonly HttpClient _client = new();
+    private readonly HttpClient _client;
     private readonly QueryBuilder _queryBuilder = new();
-
+    private readonly string _apiKey;
 
     public ETilbudsAvisService()
     {
+    }
+
+    public ETilbudsAvisService(string? apiKey, HttpClient httpClient)
+    {
+        _client = httpClient;
+        _apiKey = apiKey;
         _client.BaseAddress = new Uri("https://squid-api.tjek.com/v4/rpc/get_offers");
     }
 
-    public async Task<IList<Offer>> GetAllOffers(OfferRequest req)
+    /// <summary>
+    /// Sends a request to the eTilbudsavis API and returns a list of offers from the given parameters in the OfferRequest.
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>An IList of offers from the api</returns>
+    public virtual async Task<IList<Offer>> GetAllOffers(OfferRequest req)
     {
-        
         var url = new Uri(_client.BaseAddress.ToString());
         var request = new HttpRequestMessage(HttpMethod.Post, url);
 
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        request.Headers.Add("X-Api-Key", "EFSiDV");
+        request.Headers.Add("X-Api-Key", _apiKey);
         StringContent payload = new StringContent(req.ComposeOfferObject(), Encoding.UTF8, "application/json");
 
         request.Content = payload;
@@ -51,16 +61,13 @@ public class ETilbudsAvisService
             offer.Price = offerArray[i]["price"].Value<decimal>();
             offer.Currency = offerArray[i]["currency_code"].Value<string>();
             offer.Store = offerArray[i]["business"]["name"].Value<string>();
-            offer.Size = new KeyValuePair<float, float>(offerArray[i]["unit_size"]["from"].Value<float>(), offerArray[i]["unit_size"]["to"].Value<float>());
+            offer.Size = new KeyValuePair<float, float>(offerArray[i]["unit_size"]["from"].Value<float>(),
+                offerArray[i]["unit_size"]["to"].Value<float>());
             offer.Created = offerArray[i]["validity"]["from"].Value<DateTime>();
             offer.Ending = offerArray[i]["validity"]["to"].Value<DateTime>();
             offers.Add(offer);
         }
 
         return offers;
-    }
-    public T CreateObjectFromDeserializedJson<T>(JObject jsonObject)
-    {
-        return jsonObject.ToObject<T>();
     }
 }

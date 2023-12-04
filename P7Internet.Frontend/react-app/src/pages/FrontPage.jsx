@@ -1,16 +1,31 @@
 import React from "react";
-import ContainerRight from "../components/ContainerRight";
-import ContainerLeft from "../components/ContainerLeft";
+import FrontPageContainerRight from "../components/FrontPageContainerRight";
+import FrontPageContainerLeft from "../components/FrontPageContainerLeft";
+import Header from "../components/Header";
+import { ToastContainer } from "react-toastify";
+import { getGeoLocation } from "../helperFunctions/getGeoLocation";
 
 const FrontPage = () => {
+  getGeoLocation();
+
   return (
-    <div className="App">
-      <div className="AppLeft">
-        <ContainerLeft />
-        
+    <div className="AppContainer">
+      <ToastContainer
+        position="top-center"
+        newestOnTop={true}
+        closeButton={false}
+        draggablePercent
+      />
+      <div className="headerContainer">
+        <Header />
       </div>
-      <div className="AppRight">
-        <ContainerRight />
+      <div className={"split-container"}>
+        <div className={"split-screen-left"}>
+          <FrontPageContainerLeft />
+        </div>
+        <div className={"split-screen-right"}>
+          <FrontPageContainerRight />
+        </div>
       </div>
     </div>
   );

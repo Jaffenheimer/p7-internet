@@ -7,6 +7,7 @@ CREATE TABLE IF NOT EXISTS UserTable (
     Password_hash VARCHAR(255) NOT NULL,
     Password_salt VARCHAR(255) NOT NULL,
     Creation_date DateTime,
+    EmailConfirmed BOOLEAN NOT NULL,
     Updated DateTime,
     PRIMARY KEY (id)
 );
