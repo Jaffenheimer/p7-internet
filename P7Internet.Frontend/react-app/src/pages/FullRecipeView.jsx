@@ -12,15 +12,10 @@ import FrontPageButton from "../components/FrontPageButton";
 import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientHelper";
 import { ToastContainer } from "react-toastify";
 
-function FullRecipeView() {
+const FullRecipeView = ({ shouldShowBackButton }) => {
   const dispatch = useDispatch();
 
-  const recipes = useSelector((state) => state.recipe.recipes);
-  const currentRecipeIndex = useSelector(
-    (state) => state.recipe.currentRecipeIndex
-  );
-
-  const recipe = recipes[currentRecipeIndex];
+  const recipe = useSelector((state) => state.recipe.recipeToShow);
 
   function goToPageRecipeSelection() {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
@@ -56,9 +51,13 @@ function FullRecipeView() {
             <div id="BackToFrontPageButtonRecipeView">
               <FrontPageButton buttonText="Tilbage til forsiden" />
             </div>
-            <button id="BackButton" onClick={goToPageRecipeSelection}>
-              Tilbage
-            </button>
+            {shouldShowBackButton ? (
+              <button id="BackButton" onClick={goToPageRecipeSelection}>
+                Tilbage
+              </button>
+            ) : (
+              <></>
+            )}
             <button id="PrintButton" onClick={PrintRecipe}>
               Print
             </button>
@@ -67,6 +66,6 @@ function FullRecipeView() {
       </div>
     </div>
   );
-}
+};
 
 export default FullRecipeView;

@@ -23,6 +23,11 @@ const ProfilePicture = ({ openFavoritesModal }) => {
     dispatch(pageActions.openFavoritesModal());
   };
 
+  const handleHistory = () => {
+    setOpen(false);
+    dispatch(pageActions.openHistoryModal());
+  };
+
   const handleSettings = () => {
     dispatch(pageActions.openSettingModal());
     setOpen(false);
@@ -66,7 +71,7 @@ const ProfilePicture = ({ openFavoritesModal }) => {
 
   return (
     <div className="ProfilePicture" data-testid="ProfilePicture">
-      <div className="dropdown-button">
+      <div className="dropdown-buttons">
         <img
           className="Profile"
           src={profile}
@@ -77,18 +82,39 @@ const ProfilePicture = ({ openFavoritesModal }) => {
       {open ? (
         <div className="dropdown">
           <ul className="dropdown-content">
-            <li className="menu-item">
-              <button id="FavoritesButton" onClick={handleFavorites}>
+            <li>
+              <button
+                id="FavoritesButton"
+                className="menuItemButton"
+                onClick={handleFavorites}
+              >
                 Favoritter
               </button>
             </li>
-            <li className="menu-item">
-              <button id="SettingsButton" onClick={handleSettings}>
+            <li>
+              <button
+                id="HistoryButton"
+                className="menuItemButton"
+                onClick={handleHistory}
+              >
+                Historik
+              </button>
+            </li>
+            <li>
+              <button
+                id="SettingsButton"
+                className="menuItemButton"
+                onClick={handleSettings}
+              >
                 Indstillinger
               </button>
             </li>
-            <li className="menu-item">
-              <button id="LogoutButton" onClick={handleLogOut}>
+            <li>
+              <button
+                id="LogoutButton"
+                className="menuItemButton"
+                onClick={handleLogOut}
+              >
                 Log ud
               </button>
             </li>

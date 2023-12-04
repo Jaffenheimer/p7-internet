@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   recipes: [],
   currentRecipeIndex: 0,
+  recipeToShow: null,
 };
 
 export const recipeSlice = createSlice({
@@ -25,6 +26,9 @@ export const recipeSlice = createSlice({
     setCurrentRecipeIndex(state, action) {
       state.currentRecipeIndex = action.payload;
     },
+    setRecipeToShow(state, action) {
+      state.recipeToShow = action.payload;
+    }
   },
 });
 

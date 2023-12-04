@@ -14,6 +14,8 @@ export default function App() {
   } else if (page === Pages.RecipeSelection) {
     return <RecipeSelection />;
   } else if (page === Pages.fullRecipeView) {
-    return <FullRecipeView />;
+    return <FullRecipeView shouldShowBackButton={true} />;
+  } else if (page === Pages.fullRecipeViewNoBackButton) {
+    return <FullRecipeView shouldShowBackButton={false} />;
   }
 }

@@ -77,7 +77,7 @@ test("Marking one recipe as favorite, changes state of the heart icon for that r
   ];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
     recipeActions.addRecipes(recipes),
-    userActions.addRecipe("Recipe 1"),
+    userActions.addFavoriteRecipe(recipes[0]), //mark first recipe as favorite
   ]);
 
   const rightArrow = screen.getByTestId("selectArrowRight");

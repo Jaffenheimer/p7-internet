@@ -104,7 +104,7 @@ body {
   display: flex;
   cursor: pointer;
 }
-.titleLogo{
+.titleLogo {
   height: 1.3em;
 }
 
@@ -400,8 +400,7 @@ button:active {
   border-radius: 0em;
   animation: slideInFromRight 0.5s forwards;
 }
-
-.dropdown-button {
+.dropdown-buttons {
   display: flex;
   justify-content: space-between;
   cursor: pointer;
@@ -439,8 +438,8 @@ button:active {
   border-radius: 0px;
 }
 
-#ExcludeList {
-  text-align: center;
+.menuItemButton {
+  border-radius: 0px;
 }
 
 #InputFieldExclude {
@@ -692,7 +691,8 @@ p {
   width: 100%;
 }
 
-.FavoriteRecipeButton {
+.FavoriteRecipeButton,
+.HistoryRecipeButton {
   width: 90%;
   height: 5%;
   float: left;

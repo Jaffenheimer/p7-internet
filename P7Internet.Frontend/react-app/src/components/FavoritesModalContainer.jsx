@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { nanoid } from "@reduxjs/toolkit";
 
-const FavoritesModalContainer = ({ closeModal }) => {
+const FavoritesModalContainer = () => {
   const recipes = useSelector((state) => state.recipe.recipes);
   const loggedIn = useSelector((state) => state.user.loggedIn);
   const favoriteRecipesRedux = useSelector(
@@ -33,7 +33,7 @@ const FavoritesModalContainer = ({ closeModal }) => {
       dispatch(
         recipeActions.setCurrentRecipeIndex(recipeTitles.indexOf(recipeTitle))
       );
-      dispatch(pageActions.goToPage(Pages.fullRecipeView));
+      dispatch(pageActions.goToPage(Pages.fullRecipeViewNoBackButton));
       dispatch(pageActions.closeFavoritesModal());
     }
   }
@@ -44,38 +44,37 @@ const FavoritesModalContainer = ({ closeModal }) => {
         `Er du sikker på du gerne vil fjerne ${recipeTitle} fra dine favoritter`
       )
     )
-      dispatch(userActions.removeRecipe(recipeTitle));
+      dispatch(userActions.removeFavoriteRecipe(recipeTitle));
   }
 
   return (
-    <div id="FavoritesModalContainer" data-testid="FavoritesModalContainer">
-      <div className="scrollableModalContainer">
-        {favoriteRecipes.length === 0 ? (
-          <p>Ingen opskrifter er blevet markeret som favorit.</p>
-        ) : (
-          <>
-            {favoriteRecipes.map((recipeTitle) => (
-              <div className="FavoriteRecipeElement" key={nanoid()}>
-                <button
-                  className="FavoriteRecipeButton"
-                  value={recipeTitle}
-                  key={nanoid()}
-                  onClick={(event) => selectRecipe(event, recipeTitle)}>
-                  {recipeTitle}
-                </button>
-                <img
-                  key={nanoid()}
-                  data-testid="RemoveFavoriteRecipeCross"
-                  className="RemoveFavoritedElement"
-                  src={cross}
-                  alt="cross"
-                  onClick={(event) => handleRemove(event, recipeTitle)}
-                />
-              </div>
-            ))}
-          </>
-        )}
-      </div>
+    <div className="scrollableModalContainer" data-testid="FavoritesModalContainer">
+      {favoriteRecipes.length === 0 ? (
+        <p>Ingen opskrifter er blevet markeret som favorit.</p>
+      ) : (
+        <>
+          {favoriteRecipes.map((recipe) => (
+            <div className="FavoriteRecipeElement" key={nanoid()}>
+              <button
+                className="FavoriteRecipeButton"
+                value={recipe.title}
+                key={nanoid()}
+                onClick={(event) => selectRecipe(event, recipe.title)}
+              >
+                {recipe.title}
+              </button>
+              <img
+                key={nanoid()}
+                data-testid="RemoveFavoriteRecipeCross"
+                className="RemoveFavoritedElement"
+                src={cross}
+                alt="cross"
+                onClick={(event) => handleRemove(event, recipe.title)}
+              />
+            </div>
+          ))}
+        </>
+      )}
     </div>
   );
 };

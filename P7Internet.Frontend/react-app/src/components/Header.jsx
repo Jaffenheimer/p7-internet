@@ -5,6 +5,7 @@ import Modal from "react-modal";
 import { pageActions } from "../features/pageSlice";
 import { useDispatch, useSelector } from "react-redux";
 import FavoritesModalContainer from "./FavoritesModalContainer";
+import HistoryModalContainer from "./HistoryModalContainer";
 import { modalStyling } from "../objects/Modal";
 import ModalContent from "./ModalContent";
 import SettingBox from "./SettingBox";
@@ -19,6 +20,9 @@ const Header = () => {
   const favoritesModalShown = useSelector(
     (state) => state.page.favoritesModalShown
   );
+  const historyModalShown = useSelector(
+    (state) => state.page.historyModalShown
+  );
   const settingModalShown = useSelector(
     (state) => state.page.settingModalShown
   );
@@ -26,6 +30,7 @@ const Header = () => {
   const openLoginModal = () => dispatch(pageActions.openLoginModal());
   const closeLoginModal = () => dispatch(pageActions.closeLoginModal());
   const closeFavoritesModal = () => dispatch(pageActions.closeFavoritesModal());
+  const closeHistoryModal = () => dispatch(pageActions.closeHistoryModal());
   const closeSettingModal = () => dispatch(pageActions.closeSettingModal());
 
   return (
@@ -67,11 +72,26 @@ const Header = () => {
           Container={FavoritesModalContainer}
         ></ModalContent>
       </Modal>
-
-      <div className="title" onClick={ () => dispatch(pageActions.goToPage(Pages.frontPage))}>
+      <Modal
+        isOpen={historyModalShown}
+        style={modalStyling}
+        onRequestClose={closeHistoryModal}
+        contentLabel="History Modal"
+        ariaHideApp={false}
+      >
+        <ModalContent
+          title="Historik"
+          closeModal={closeHistoryModal}
+          Container={HistoryModalContainer}
+        ></ModalContent>
+      </Modal>
+      <div
+        className="title"
+        onClick={() => dispatch(pageActions.goToPage(Pages.frontPage))}
+      >
         OpskriftsOraklet
         <img src={icon} alt="logo" className="titleLogo" />
-        </div>
+      </div>
 
       {loggedIn ? (
         <ProfilePicture />
