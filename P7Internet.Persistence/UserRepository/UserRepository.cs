@@ -28,14 +28,14 @@ public class UserRepository : IUserRepository
     public async Task<User> GetUserFromId(Guid userId)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Id = @Id";
-        var result = await Connection.QuerySingleOrDefaultAsync(query, new {Id = userId});
+        var result = await Connection.QuerySingleOrDefaultAsync<User>(query, new {Id = userId});
         if (result != null)
         {
-            var user = new User(result.Name, result.Email);
-            user.Id = Guid.Parse(result.Id);
-            user.PasswordHash = result.Password_hash;
-            user.PasswordSalt = result.Password_salt;
-            user.CreatedAt = result.Creation_date;
+            var user = new User(result.Name, result.EmailAddress);
+            user.Id = result.Id;
+            user.PasswordHash = result.PasswordHash;
+            user.PasswordSalt = result.PasswordSalt;
+            user.CreatedAt = result.CreatedAt;
             user.IsEmailConfirmed = result.IsEmailConfirmed;
             return user;
         }
@@ -51,14 +51,14 @@ public class UserRepository : IUserRepository
     public async Task<User> GetUser(string name)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Name = @name";
-        var result = await Connection.QuerySingleOrDefaultAsync(query, new {name});
+        var result = await Connection.QuerySingleOrDefaultAsync<User>(query, new {name});
         if (result != null)
         {
-            var user = new User(result.Name, result.Email);
-            user.Id = Guid.Parse(result.Id);
-            user.PasswordHash = result.Password_hash;
-            user.PasswordSalt = result.Password_salt;
-            user.CreatedAt = result.Creation_date;
+            var user = new User(result.Name, result.EmailAddress);
+            user.Id = result.Id;
+            user.PasswordHash = result.PasswordHash;
+            user.PasswordSalt = result.PasswordSalt;
+            user.CreatedAt = result.CreatedAt;
             user.IsEmailConfirmed = result.IsEmailConfirmed;
             return user;
         }
@@ -74,14 +74,14 @@ public class UserRepository : IUserRepository
     public async Task<User> GetUserByEmail(string email)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Email = @email";
-        var result = await Connection.QuerySingleOrDefaultAsync(query, new {email});
+        var result = await Connection.QuerySingleOrDefaultAsync<User>(query, new {email});
         if (result != null)
         {
-            var user = new User(result.Name, result.Email);
-            user.Id = Guid.Parse(result.Id);
-            user.PasswordHash = result.Password_hash;
-            user.PasswordSalt = result.Password_salt;
-            user.CreatedAt = result.Creation_date;
+            var user = new User(result.Name, result.EmailAddress);
+            user.Id = result.Id;
+            user.PasswordHash = result.PasswordHash;
+            user.PasswordSalt = result.PasswordSalt;
+            user.CreatedAt = result.CreatedAt;
             user.IsEmailConfirmed = result.IsEmailConfirmed;
             return user;
         }
@@ -132,13 +132,13 @@ public class UserRepository : IUserRepository
         var query = $@"SELECT * FROM {TableName} WHERE Name = @userName";
 
 
-        var result = await Connection.QueryFirstOrDefaultAsync(query, new {userName});
+        var result = await Connection.QuerySingleOrDefaultAsync<User>(query, new {userName});
 
         if (result != null)
         {
-            var salt = result.Password_salt;
+            var salt = result.PasswordSalt;
             var passwordHash = GenerateHash(password + salt);
-            if (passwordHash == result.Password_hash)
+            if (passwordHash == result.PasswordHash)
             {
                 return GetUser(userName).Result;
             }
