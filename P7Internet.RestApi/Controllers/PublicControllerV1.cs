@@ -449,7 +449,7 @@ public class PublicControllerV1 : ControllerBase
         var user = await _userRepository.GetUserByEmail(email);
         if (user != null)
         {
-            if (!user.IsEmailConfirmed)
+            if (!await _userRepository.CheckIfEmailIsConfirmed(user.Name))
                 return BadRequest("Email is not confirmed, please confirm your email before resetting your password");
 
             var token = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "resetPassword");
@@ -534,7 +534,7 @@ public class PublicControllerV1 : ControllerBase
 
         if (user != null)
         {
-            if (user.IsEmailConfirmed)
+            if (await _userRepository.CheckIfEmailIsConfirmed(user.Name))
                 return BadRequest("The email is already confirmed");
 
             var isValidAction =

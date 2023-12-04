@@ -77,9 +77,16 @@ public interface IUserRepository
     /// <summary>
     /// Changes the password of a user, if the old password matches the correct password stores in the database
     /// </summary>
-    /// <param name="email"></param>
+    /// <param name="userName"></param>
     /// <param name="oldPassword"></param>
     /// <param name="newPassword"></param>
     /// <returns>Returns true if the old password was correct and false if not</returns>
     public Task<bool> ChangePassword(string userName, string oldPassword, string newPassword);
+
+    /// <summary>
+    /// Checks if the email is confirmed
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns>True if yes, false if no</returns>
+    public Task<bool> CheckIfEmailIsConfirmed(string name);
 }

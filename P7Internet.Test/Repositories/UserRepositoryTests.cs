@@ -71,8 +71,7 @@ namespace P7Internet.Test.Repositories
         {
             //Arrange
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
-            _dbConnection.SetupDapperAsync(x => x.QuerySingleOrDefaultAsync<User>(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(_testUser);
+          
             //Act
             var user = _userRepository.GetUser(_testUser.Name).Result;
 
@@ -104,9 +103,6 @@ namespace P7Internet.Test.Repositories
         {
             //Arrange
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
-            _dbConnection.SetupDapperAsync(x => x.QuerySingleOrDefaultAsync<User>(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(_testUser);
-            
             
             //Act
             var user = _userRepository.GetUserFromId(_testUser.Id).Result;
@@ -139,8 +135,7 @@ namespace P7Internet.Test.Repositories
         {
             //Arrange
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
-            _dbConnection.SetupDapperAsync(x => x.QuerySingleOrDefaultAsync<User>(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(_testUser);
+            
             //Act
             var user = _userRepository.GetUserByEmail(_testUser.EmailAddress).Result;
 
@@ -212,9 +207,6 @@ namespace P7Internet.Test.Repositories
         {
             //Arrange
             var testPwd = "testPassword";
-            _dbConnection
-                .SetupDapperAsync(c => c.QuerySingleOrDefaultAsync<User>(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(_testUser);
 
             //Act
             var user = _userRepository.LogIn(_testUser.Name, testPwd).Result;
@@ -316,7 +308,7 @@ namespace P7Internet.Test.Repositories
         public void ChangePasswordSuccess()
         {
             //Arrange
-            _dbConnection.SetupDapperAsync(x => x.QuerySingleOrDefaultAsync<User>(It.IsAny<string>(), null, null, null, null))
+            _dbConnection.SetupDapperAsync(x => x.QuerySingleOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
                 .ReturnsAsync(_testUser);
             
             
@@ -331,11 +323,7 @@ namespace P7Internet.Test.Repositories
         [Test()]
         public void ChangePasswordFail()
         {
-            //Arrange
-            _dbConnection.SetupDapperAsync(x => x.QuerySingleOrDefaultAsync<User>(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(_testUser);
-            
-            //Act
+            //Arrange/Act
             var result = _userRepository.ChangePassword(It.IsAny<string>(), It.IsAny<string>(), It.IsAny<string>())
                 .Result;
             //Assert
