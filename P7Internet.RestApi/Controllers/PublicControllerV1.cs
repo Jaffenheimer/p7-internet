@@ -1,8 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P7Internet.Persistence.CachedIngredientPricesRepository;
 using P7Internet.Persistence.FavouriteRecipeRepository;
@@ -292,7 +294,15 @@ public class PublicControllerV1 : ControllerBase
             return Ok(res);
         }
 
-        res = await _sallingService.GetRelevantProducts(req.SearchTerm);
+        var queryStrings = req.SearchTerm.Split(" ");
+        var query = req.SearchTerm;
+        foreach (var q in queryStrings)
+        {
+            _ingredientRepository.CheckIfIngredientExists(q);
+            query = q;
+        }
+
+        res = await _sallingService.GetRelevantProducts(query.Trim());
 
         if (res != null)
         {

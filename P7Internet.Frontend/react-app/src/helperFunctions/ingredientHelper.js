@@ -1,5 +1,4 @@
 import { nanoid } from "nanoid";
-import Offer from "../objects/Offer";
 
 function ingredientIsOwned(ingredient, ownedIngredients) {
   for (const ownedIngredient of ownedIngredients) {
@@ -14,13 +13,8 @@ function convertIngredientsToIngredientObjects(ingredients) {
   var ingredientObjects = [];
   console.log("ingredients: ", ingredients);
   for (const ingredient of ingredients) {
-    ingredientObjects.push(
-      new Offer(ingredient, nanoid(), 2, "test", "test", "test", "test", "test")
-    );
-
-    //ingredientObjects.push({ text: ingredient, id: nanoid(), stores: [] });
+    ingredientObjects.push({ text: ingredient, id: nanoid(), stores: [] });
   }
-  console.log(ingredientObjects);
   return ingredientObjects;
 }
 

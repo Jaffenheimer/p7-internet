@@ -5,10 +5,9 @@ const offerEndpoints = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     //Because it is a post request it is a mutation
     getOffer: builder.mutation({
-      query: ({ coords, pageSize, searchTerm, radius, upcoming }) => ({
-        url: `/public/offer/getOffer?Lat=${57}&Long=${10}&Pagesize=${1}&SearchTerm=${"kylling"}&Radius=${3000}&Upcoming=${true}`,
+      query: ({ lat, lon, pageSize, searchTerm, radius, upcoming }) => ({
+        url: `/public/offer/getOffer?Lat=${57}&Long=${10}&Pagesize=${1}&SearchTerm=${searchTerm}&Radius=${3000}&Upcoming=${"true"}`,
         method: "GET",
-        body: "",
       }),
     }),
   }),

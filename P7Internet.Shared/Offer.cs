@@ -22,6 +22,5 @@ public class Offer
     public DateTime Created { get; set; }
     public DateTime Ending { get; set; }
     public string Image { get; set; }
-
     
 }

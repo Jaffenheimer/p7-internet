@@ -7,26 +7,22 @@ import MethodsList from "../components/MethodsList";
 import Pages from "../objects/Pages";
 import ForPersons from "../components/ForPersons";
 import Header from "../components/Header";
-import RecipeIngredientElement from "../components/RecipeIngredientElement";
 import FrontPageButton from "../components/FrontPageButton";
 import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingredientHelper";
 import { ToastContainer } from "react-toastify";
+import RecipeOfferElement from "../components/RecipeOfferElement";
 
 function FullRecipeView() {
   const dispatch = useDispatch();
 
   const recipes = useSelector((state) => state.recipe.recipes);
-  console.log("Fullrecipeveiw: ", recipes); 
+  console.log("Fullrecipeveiw: ", recipes);
 
   const currentRecipeIndex = useSelector(
     (state) => state.recipe.currentRecipeIndex
   );
 
   const recipe = recipes[currentRecipeIndex];
-
-  console.log("id: ", recipe.recipeId);
-  console.log("title: ", recipe.recipe.title);
-  
 
   function goToPageRecipeSelection() {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
@@ -48,16 +44,20 @@ function FullRecipeView() {
         <Header />
       </div>
       <div className="FullRecipeView">
-        <RecipeTitle id="RecipeTitle" recipeId={recipe.recipeId} recipeTitle={recipe.recipe.title} />
+        <RecipeTitle
+          id="RecipeTitle"
+          recipeId={recipe.recipeId}
+          recipeTitle={recipe.recipe.title}
+        />
         <ForPersons />
-        <br/>
+        <br />
         <IngredientsList
           ingredients={convertIngredientsToIngredientObjects(
             recipe.recipe.ingredients
           )}
-          ListElement={RecipeIngredientElement}
+          ListElement={RecipeOfferElement}
         />
-        <br/>
+        <br />
         <MethodsList methods={recipe.recipe.method} />
         <div className="BottomButtons no-print">
           <div className="BottomButtonsSpacer">

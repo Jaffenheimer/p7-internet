@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import RecipeTitle from "./RecipeTitle";
 import IngredientsList from "./IngredientsList";
 import { useSelector } from "react-redux";

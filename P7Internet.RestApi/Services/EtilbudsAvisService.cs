@@ -5,8 +5,10 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http.Extensions;
+using NetTopologySuite.Utilities;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using OpenAI_API.Images;
 using P7Internet.Requests;
 using P7Internet.Shared;
 
@@ -47,16 +49,18 @@ public class ETilbudsAvisService
 
         //This creates the offer objects from the parsed json data.
         IList<Offer> offers = new List<Offer>();
+        if (offerArray == null) return offers;
         for (int i = 0; i < offerArray.Count; i++)
         {
             Offer offer = new Offer();
             offer.Id = offerArray[i]["id"].Value<string>();
             offer.Name = offerArray[i]["name"].Value<string>();
+            offer.Description = offerArray[i]["description"].Value<string>();
             offer.Price = offerArray[i]["price"].Value<decimal>();
             offer.Currency = offerArray[i]["currency_code"].Value<string>();
             offer.Store = offerArray[i]["business"]["name"].Value<string>();
             offer.Size = new KeyValuePair<float, float>(offerArray[i]["unit_size"]["from"].Value<float>(),
-                offerArray[i]["unit_size"]["to"].Value<float>());
+            offerArray[i]["unit_size"]["to"].Value<float>());
             offer.Created = offerArray[i]["validity"]["from"].Value<DateTime>();
             offer.Ending = offerArray[i]["validity"]["to"].Value<DateTime>();
             offer.Image = offerArray[i]["business"]["positive_logotypes"].Last["url"].Value<string>();

@@ -24,8 +24,6 @@ const GenerateRecipesButton = () => {
   //Selector for finde out wheater or not the user is login
   const loggedIn = useSelector((state) => state.user.loggedIn);
 
-  getGeoLocation();
-
   function goToPageFullRecipeSelection() {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
   }
