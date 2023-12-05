@@ -657,6 +657,7 @@ namespace P7Internet.Test.Controllers
         [Test()]
         public void ResetPasswordSuccess()
         {
+            var resetPasswordReq = new ResetPasswordRequest(It.IsAny<string>(), _seshToken);
             //Arrange
             _userSessionRepositoryMock.Setup(x => x.VerificationCodeTypeMatchesAction(_seshToken, It.IsAny<string>()))
                 .ReturnsAsync(true);
@@ -668,7 +669,7 @@ namespace P7Internet.Test.Controllers
             _userSessionRepositoryMock.Setup(x => x.DeleteVerificationToken(_testUser.Id, _seshToken))
                 .ReturnsAsync(true);
             //Act
-            IActionResult actionResult = controller.ResetPassword("test", _seshToken).Result;
+            IActionResult actionResult = controller.ResetPassword(resetPasswordReq).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
@@ -678,6 +679,7 @@ namespace P7Internet.Test.Controllers
         [Test()]
         public void ResetPasswordFailUserNotExist()
         {
+            var resetPasswordReq = new ResetPasswordRequest(It.IsAny<string>(), _seshToken);
             //Arrange
             _userSessionRepositoryMock.Setup(x => x.VerificationCodeTypeMatchesAction(_seshToken, It.IsAny<string>()))
                 .ReturnsAsync(true);
@@ -685,7 +687,7 @@ namespace P7Internet.Test.Controllers
                 .ReturnsAsync(value: null);
 
             //Act
-            IActionResult actionResult = controller.ResetPassword(It.IsAny<string>(), _seshToken).Result;
+            IActionResult actionResult = controller.ResetPassword(resetPasswordReq).Result;
             var contentResult = actionResult as BadRequestObjectResult;
 
             //Assert
