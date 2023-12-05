@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
@@ -81,7 +82,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     /// </summary>
     /// <param name="ids"></param>
     /// <returns>Returns a list of recipes as strings</returns>
-    public async Task<List<string>> GetListOfRecipes(List<Guid> ids)
+    public async Task<List<Recipe>> GetListOfRecipes(List<Guid> ids)
     {
         var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
 
@@ -89,34 +90,13 @@ public class RecipeCacheRepository : IRecipeCacheRepository
 
         var result = gridReader.Read<string>();
 
-        var recipes = new List<string>();
+        var recipes = new List<Recipe>();
 
+        var counter = 0;
         foreach (var recipe in result)
         {
-            recipes.Add(recipe);
-        }
-
-        return recipes;
-    }
-
-    /// <summary>
-    /// Gets a list of recipes from the database based on a list of Id's as strings
-    /// </summary>
-    /// <param name="ids"></param>
-    /// <returns>Returns a list of recipes as strings</returns>
-    public async Task<List<string>> GetListOfRecipesFromListOfStrings(List<string> ids)
-    {
-        var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
-
-        var gridReader = await Connection.QueryMultipleAsync(query, new {Ids = ids});
-
-        var result = gridReader.Read<string>();
-
-        var recipes = new List<string>();
-
-        foreach (var recipe in result)
-        {
-            recipes.Add(recipe);
+            recipes.Add(new Recipe(ids[counter], recipe));
+            counter++;
         }
 
         return recipes;

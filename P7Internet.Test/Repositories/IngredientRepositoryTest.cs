@@ -63,21 +63,6 @@ public class IngredientRepositoryTest
         }
     }
 
-    //TODO: Fix this test kan ikke mocke den funktion heri der rent faktisk gør det og kan ikke helt gennemskue hvordan jeg skal komme uden om det
-    /*[Test()]
-     public void UpsertIngredientSuccess()
-     {
-         //Arrange
-         _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(), null, null, null, null)).ReturnsAsync(1);
-         _ingredientRepository = new IngredientRepository(_dbConnectionFactory.Object);
-
-         //Act
-         var result = _ingredientRepository.UpsertIngredients().Result;
-
-         //Assert
-         Assert.IsTrue(result);
-     }*/
-
     [Test()]
     public void CheckIfIngredientExistsSuccess()
     {

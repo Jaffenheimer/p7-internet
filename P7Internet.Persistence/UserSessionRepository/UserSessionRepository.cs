@@ -55,7 +55,7 @@ public class UserSessionRepository : IUserSessionRepository
         var query =
             $@"SELECT * FROM {TableName} WHERE UserId = @userId AND SessionToken = @token AND ExpiresAt >= (TIME(NOW()))";
         var result = await Connection.QuerySingleOrDefaultAsync(query, new {userId, token});
-        if (result != null && result.ExpiresAt > DateTime.UtcNow)
+        if (result != null && result.ExpiresAt > DateTime.UtcNow.AddHours(1))
         {
             return true;
         }
@@ -159,7 +159,7 @@ public class UserSessionRepository : IUserSessionRepository
     /// Generates a token from a Guid
     /// </summary>
     /// <returns>Returns the generated token as a string</returns>
-    private static string GenerateToken()
+    public virtual string GenerateToken()
     {
         string token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
 

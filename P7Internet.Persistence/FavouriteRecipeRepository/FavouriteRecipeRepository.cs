@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Dapper;
 using P7Internet.Persistence.Connection;
 using P7Internet.Persistence.RecipeCacheRepository;
+using P7Internet.Shared;
 
 namespace P7Internet.Persistence.FavouriteRecipeRepository;
 
@@ -25,7 +26,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     }
 
 
-    public async Task<List<string>> Get(Guid userId)
+    public async Task<List<Recipe>> Get(Guid userId)
     {
         var query = $@"SELECT RecipeId FROM {TableName} WHERE UserId = @UserId";
 
@@ -35,9 +36,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 
         var result = await _cachedRecipeRepository.GetListOfRecipes(guids.ToList());
 
-        if (result != null)
-            return result;
-        return null;
+        return result is {Count: > 0} ? result : null;
     }
 
     /// <summary>
@@ -98,7 +97,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     /// </summary>
     /// <param name="userId"></param>
     /// <returns>Returns a list of strings of the Ids of said recipes if any found otherwise returns null</returns>
-    public async Task<List<string>> GetHistory(Guid userId)
+    public async Task<List<Recipe>> GetHistory(Guid userId)
     {
         var query = $@"SELECT RecipeId FROM {HistoryTableName} WHERE UserId = @UserId";
 

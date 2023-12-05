@@ -11,7 +11,7 @@ namespace P7Internet.Response
     /// <param name="ingredients"></param>
     public class RecipeResponse
     {
-        public string Recipes { get; }
+        public string Recipe { get; }
         public Guid RecipeId { get; set; }
         public List<string> Ingredients { get; set; }
         public bool Success => string.IsNullOrEmpty(ErrorMessage);
@@ -20,22 +20,22 @@ namespace P7Internet.Response
         /// <summary>
         /// Composes a response from a recipe string and a recipe id. It trims away unwanted characters from the recipe string.
         /// </summary>
-        /// <param name="recipes"></param>
+        /// <param name="recipe"></param>
         /// <param name="ingredients"></param>
         /// <param name="recipeId"></param>
-        public RecipeResponse(string recipes, List<string> ingredients, Guid recipeId)
+        public RecipeResponse(string recipe, List<string> ingredients, Guid recipeId)
         {
-            recipes = recipes.Trim();
-            if (recipes.StartsWith("\"") || recipes.StartsWith("'"))
-                recipes = recipes.Substring(1);
+            recipe = recipe.Trim();
+            if (recipe.StartsWith("\"") || recipe.StartsWith("'"))
+                recipe = recipe.Substring(1);
 
-            if (recipes.EndsWith("\"") || recipes.EndsWith("'"))
-                recipes = recipes.Substring(0, recipes.Length - 1);
-            recipes = recipes.Replace('\n', ' ');
+            if (recipe.EndsWith("\"") || recipe.EndsWith("'"))
+                recipe = recipe.Substring(0, recipe.Length - 1);
+            recipe = recipe.Replace('\n', ' ');
 
             Ingredients = ingredients;
             RecipeId = recipeId;
-            Recipes = recipes;
+            Recipe = recipe;
         }
 
         private RecipeResponse(string errorMessage, Guid id)

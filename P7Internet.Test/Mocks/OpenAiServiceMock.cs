@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using Moq;
 using P7Internet.Requests;
 using P7Internet.Response;
+using P7Internet.Services;
 
-namespace P7Internet.Services;
+namespace P7Internet.Test.Mocks;
 
 public class OpenAiServiceMock
 {

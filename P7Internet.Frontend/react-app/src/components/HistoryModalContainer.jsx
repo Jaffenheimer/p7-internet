@@ -19,7 +19,6 @@ const HistoryModalContainer = () => {
     dispatch(
       recipeActions.setCurrentRecipeIndex(recipeTitles.indexOf(recipe.title))
     );
-
     dispatch(recipeActions.setRecipeToShow(recipe));
     dispatch(pageActions.goToPage(Pages.fullRecipeViewNoBackButton));
     dispatch(pageActions.closeHistoryModal());
