@@ -140,7 +140,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="userId"></param>
     /// <param name="sessionToken"></param>
     /// <returns>Returns a list of recipes if found, returns unauthorized of the user is not logged in</returns>
-    [HttpGet("recipes/history")]
+    [HttpGet("user/recipes-history")]
     public async Task<IActionResult> GetRecipeHistory([FromQuery] Guid userId, string sessionToken)
     {
         var checkIfUserSessionIsValid =
