@@ -23,7 +23,7 @@
   "scripts": {
     "start": "react-scripts --openssl-legacy-provider start",
     "build": "react-scripts --openssl-legacy-provider build",
-    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!my-library-dir)/' --detectOpenHandles",
+    "test": "react-scripts test --transformIgnorePatterns 'node_modules/(?!my-library-dir)/'",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
