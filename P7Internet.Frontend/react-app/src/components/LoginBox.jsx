@@ -34,7 +34,6 @@ const LoginBox = ({ closeModal }) => {
   const [userCreate, { isCreateLoading }] = useUserCreateMutation();
   const [
     userResetPasswordEmailRequest,
-    // eslint-disable-next-line
     { isResetPasswordEmailRequestLoading },
   ] = useUserResetPasswordEmailRequestMutation();
   // eslint-disable-next-line

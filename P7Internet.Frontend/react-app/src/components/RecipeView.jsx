@@ -8,10 +8,11 @@ import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingred
 const RecipeView = () => {
   const tab = useSelector((state) => state.recipe.currentRecipeIndex);
   const recipes = useSelector((state) => state.recipe.recipes);
+  console.log("reipces", recipes);
 
   return (
     <div className="RecipeView">
-      <RecipeTitle title={recipes[tab].title} recipe={recipes[tab]} />
+      <RecipeTitle recipe={recipes[tab]} />
       <IngredientsList
         ingredients={convertIngredientsToIngredientObjects(
           recipes[tab].ingredients

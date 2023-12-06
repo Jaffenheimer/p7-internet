@@ -390,7 +390,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns unauthorized if the user is not logged in or the sessiontoken has expired, otherwise it returns Ok if it is valid,
     /// and bad request if none of these are met, should never happen tho</returns>
-    [HttpPost("user/favourite-recipe")]
+    [HttpPost("user/favorite-recipe")]
     public async Task<IActionResult> AddFavouriteRecipe([FromQuery] AddFavouriteRecipeRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
@@ -412,7 +412,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns unauthorized if the sessiontoken is invalid, otherwise Ok. If the sessiontoken is valid and no favorite recipes are found
     /// it returns Badrequest</returns>
-    [HttpGet("user/favourite-recipes")]
+    [HttpGet("user/favorite-recipes")]
     public async Task<IActionResult> GetFavouriteRecipes([FromQuery] GetFavouriteRecipesRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
@@ -443,7 +443,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Unauthorized if the session token is invalid, returns ok if it is successful and Badrequest if something unexpected happens
     /// E.g it should never happen</returns>
-    [HttpDelete("user/favourite-recipe")]
+    [HttpDelete("user/favorite-recipe")]
     public async Task<IActionResult> DeleteFavouriteRecipe([FromQuery] DeleteFavouriteRecipeRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);

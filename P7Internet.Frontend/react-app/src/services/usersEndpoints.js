@@ -25,6 +25,26 @@ const userEndpoints = apiSlice.injectEndpoints({
         body: "",
       }),
     }),
+    userPostFavoriteRecipe: builder.mutation({
+      query: ({ userId, sessionToken, recipeId }) => ({
+        url: `public/user/favorite-recipe?UserId=${userId}&SessionToken=${sessionToken}&RecipeId=${recipeId}`,
+        method: "POST",
+        body: "",
+      }),
+    }),
+    userDeleteFavoriteRecipe: builder.mutation({
+      query: ({ userId, sessionToken, recipeId }) => ({
+        url: `public/user/favorite-recipe?UserId=${userId}&SessionToken=${sessionToken}&RecipeId=${recipeId}`,
+        method: "DELETE",
+        body: "",
+      }),
+    }),
+    userGetAllFavoriteRecipes: builder.mutation({
+      query: ({ userId, sessionToken }) => ({
+        url: `public/user/favorite-recipes?UserId=${userId}&SessionToken=${sessionToken}`,
+        method: "GET",
+      }),
+    }),
     userResetPasswordEmailRequest: builder.mutation({
       query: ({ email }) => ({
         url: `/public/user/reset-password-email-request?email=${email}`,
@@ -75,6 +95,9 @@ export const {
   useUserLoginMutation,
   useUserCreateMutation,
   useUserLogOutMutation,
+  useUserPostFavoriteRecipeMutation,
+  useUserDeleteFavoriteRecipeMutation,
+  useUserGetAllFavoriteRecipesMutation,
   useUserResetPasswordEmailRequestMutation,
   useUserResetPasswordMutation,
   useUserChangePasswordMutation,
