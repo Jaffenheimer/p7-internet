@@ -12,6 +12,7 @@ const RecipeOfferElement = ({ ingredient }) => {
     (state) => state.recipeGeneration.ownedIngredients
   );
 
+  const stores = useSelector((state) => state.offers.stores);
   const radius = useSelector((state) => state.offers.radius);
 
   const [offers, setOffers] = useState([]);
@@ -33,30 +34,30 @@ const RecipeOfferElement = ({ ingredient }) => {
           searchTerm: encodeURIComponent(ingredient.text),
           radius: encodeURIComponent(radius),
           upcoming: encodeURIComponent(false),
+          stores: encodeURIComponent(stores),
         }).unwrap();
       } catch (error) {
         console.log("Error " + error);
       }
       return response;
     };
-    if (ingredient.text != "") {
-      fetchOffer().then((res) => {
-        res.forEach((offer) => {
-          let _offer = new Offer();
-          _offer.name = offer.name;
-          _offer.id = offer.id;
-          _offer.price = Math.round(CalcMin(res));
-          _offer.store = offer.store;
-          _offer.created = offer.created;
-          _offer.ending = offer.ending;
-          _offer.storeImage = offer.image;
-          setOffer(_offer);
-          let _offers = offers;
-          _offers.push(_offer);
-          setOffers(_offers);
-        });
-      });
-    }
+
+    fetchOffer().then((res) => {
+      for (let i = 0; i < res.length; i++) {
+        let _offer = new Offer();
+        _offer.name = res[i].name;
+        _offer.id = res[i].id;
+        _offer.price = Math.round(CalcMin(res));
+        _offer.store = res[i].store;
+        _offer.created = res[i].created;
+        _offer.ending = res[i].ending;
+        _offer.storeImage = res[i].image;
+        setOffer(_offer);
+        let _offers = offers;
+        _offers.push(_offer);
+        setOffers(_offers);
+      }
+    });
   }, []);
 
   return (
@@ -83,9 +84,9 @@ const RecipeOfferElement = ({ ingredient }) => {
 
 function CalcMin(arr) {
   let min;
-  arr.forEach(function (offer) {
-    min = Math.min(offer.price);
-  });
+  for (let i = 0; i < arr.length; i++) {
+    min = Math.min(arr[i].price);
+  }
   return min;
 }
 

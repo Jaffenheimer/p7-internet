@@ -53,12 +53,15 @@ const GenerateRecipesButton = () => {
 
           for (let i = 0; i < response.length; i++) {
             const recipe = response[i];
-            var recipeString = recipeFromResponse(recipe.recipes);
-            console.log("recipe: ", recipeString);
+            var _recipe = recipeFromResponse(recipe.recipes);
+            _recipe.ingredients = recipe.ingredients.filter(
+              (ingredient) => ingredient !== ""
+            );
+            console.log("recipe: ", _recipe);
             dispatch(
               recipeActions.addRecipes({
                 recipeId: recipe.recipeId,
-                recipe: recipeString,
+                recipe: _recipe,
                 ingredients: recipe.ingredients,
               })
             );
