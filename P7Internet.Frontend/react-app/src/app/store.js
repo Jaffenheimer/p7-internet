@@ -13,6 +13,7 @@ export const store = configureStore({
     page: pageReducer,
     user: userReducer,
     offers: offersReducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }).concat(
