@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace P7Internet.Requests;
 
@@ -9,17 +10,15 @@ namespace P7Internet.Requests;
 /// <param name="emailAddress"></param>
 public class ConfirmEmailRequest
 {
-    public string UserId { get; set; }
-    public string UserName { get; set; }
-    [EmailAddress] public string EmailAddress { get; set; }
-
+    public Guid UserId { get; set; }
+    public string VerificationCode { get; set; }
     public ConfirmEmailRequest()
     {
     }
 
-    public ConfirmEmailRequest(string userName, string emailAddress)
+    public ConfirmEmailRequest(Guid userName, string verificationCode)
     {
-        UserName = userName;
-        EmailAddress = emailAddress;
+        UserId = userName;
+        VerificationCode = verificationCode;
     }
 }
