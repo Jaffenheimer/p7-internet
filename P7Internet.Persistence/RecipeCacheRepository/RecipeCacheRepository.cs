@@ -84,9 +84,13 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     public async Task<List<Recipe>> GetListOfRecipes(List<Guid> ids)
     {
         var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
-
-        var result = await Connection.QueryAsync<string>(query, new {Ids = ids});
-
+        
+        List<string> result = new List<string>();
+        foreach (var id in ids)
+        {
+            var res = await Connection.QuerySingleOrDefaultAsync<string>(query, new {Ids = id});
+            result.Add(res);
+        }
         var recipes = new List<Recipe>();
 
         var counter = 0;
