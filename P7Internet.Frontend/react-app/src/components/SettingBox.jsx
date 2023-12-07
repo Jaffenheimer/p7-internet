@@ -1,15 +1,22 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import {
   useUserConfirmEmailRequestMutation,
   useUserChangePasswordMutation,
   useUserConfirmEmailMutation,
+  useUserDeleteUserMutation,
 } from "../services/usersEndpoints";
 import { getCookieUserId } from "../helperFunctions/cookieHandler";
 import { checkValidTwoPasswords } from "../helperFunctions/inputValidation";
 import { getCookies } from "../helperFunctions/cookieHandler";
+import Cookies from "js-cookie";
+import { pageActions } from "../features/pageSlice";
+import { userActions } from "../features/userSlice";
 
 const SettingBox = ({ closeModal }) => {
+  const dispatch = useDispatch();
+
   // eslint-disable-next-line
   const [userConfirmEmailRequest, { isConfirmEmailRequestLoading }] =
     useUserConfirmEmailRequestMutation();
@@ -19,6 +26,8 @@ const SettingBox = ({ closeModal }) => {
   // eslint-disable-next-line
   const [userConfirmEmail, { isConfirmEmailLoading }] =
     useUserConfirmEmailMutation();
+  // eslint-disable-next-line
+  const [userDeleteUser, { isDeleteUserLoading }] = useUserDeleteUserMutation();
 
   const [modalPage, setModalPage] = useState("settingPage");
   const [verificationCode, setVerificationCode] = useState("");
@@ -105,6 +114,31 @@ const SettingBox = ({ closeModal }) => {
     }
   }
 
+  async function deleteUser() {
+    try {
+      if (window.confirm("Er du sikker på du vil slette din bruger?")) {
+        let userId = encodeURIComponent(getCookieUserId());
+        let sessionToken = encodeURIComponent(Cookies.get("sessionToken"));
+        const query = `?userId=${userId}&sessionToken=${sessionToken}`;
+
+        let response = await userDeleteUser(query);
+        dispatch(pageActions.closeSettingModal());
+        dispatch(userActions.logoutUser());
+        if (response.error.originalStatus === 200) {
+          toast.success("Din bruger er nu slettet");
+        }
+      }
+    } catch (error) {
+      if (error.originalStatus === 404) {
+        toast.error("Brugeren blev ikke fundet");
+      } else if (error.originalStatus === 401) {
+        toast.error("Sessionen er udløbet, log ind igen");
+      } else {
+        toast.error("Der opstod en fejl");
+        console.log(error);
+      }
+    }
+  }
   return (
     <div className="SettingModal">
       {modalPage === "settingPage" ? (
@@ -135,6 +169,11 @@ const SettingBox = ({ closeModal }) => {
           <a href="/#" onClick={() => setModalPage("ChangePasswordPage")}>
             <br />
             Skift kodeord
+          </a>
+          <a href="/#" onClick={() => deleteUser()}>
+            <br />
+            <br />
+            Slet bruger
           </a>
         </>
       ) : (
