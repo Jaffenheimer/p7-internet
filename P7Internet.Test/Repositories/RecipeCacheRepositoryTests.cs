@@ -37,7 +37,7 @@ namespace P7Internet.Test.Repositories
         [SetUp]
         public void SetUp()
         {
-            _recipeListStruct = new RecipeList() { Recipes = { "TestRecipe1", "TestRecipe2", "TestRecipe3" } };
+            _recipeListStruct = new RecipeList() {Recipes = {"TestRecipe1", "TestRecipe2", "TestRecipe3"}};
             _dbConnectionFactory.Setup(x => x.Connection).Returns(_dbConnection.Object);
             _recipeCacheRepository = new RecipeCacheRepository(_dbConnectionFactory.Object);
         }
@@ -49,7 +49,7 @@ namespace P7Internet.Test.Repositories
             var testRecipe = new Recipe(new Guid("d3d01e66-2943-463c-ab22-4abd09f1bd7f"), "TestDesc");
             _dbConnection
                 .SetupDapperAsync(c =>
-                    c.QuerySingleOrDefaultAsync<string>(It.IsAny<string>(), new { Id = testRecipe.Id }, null, null,
+                    c.QuerySingleOrDefaultAsync<string>(It.IsAny<string>(), new {Id = testRecipe.Id}, null, null,
                         null))
                 .ReturnsAsync(testRecipe.Id.ToString);
 
@@ -67,7 +67,7 @@ namespace P7Internet.Test.Repositories
             var testRecipe = new Recipe(new Guid("d3d01e66-2943-463c-ab22-4abd09f1bd7f"), "TestDesc");
             _dbConnection
                 .SetupDapperAsync(c =>
-                    c.QuerySingleOrDefaultAsync<string>(It.IsAny<string>(), new { Id = testRecipe.Id }, null, null,
+                    c.QuerySingleOrDefaultAsync<string>(It.IsAny<string>(), new {Id = testRecipe.Id}, null, null,
                         null))
                 .ReturnsAsync(value: null);
 

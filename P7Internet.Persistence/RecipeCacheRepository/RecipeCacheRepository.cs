@@ -29,7 +29,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     {
         var query = $@"SELECT Id FROM {TableName} WHERE Id = @Id";
 
-        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new { Id = recipeId });
+        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new {Id = recipeId});
 
         return resultFromDb != null;
     }
@@ -85,7 +85,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     {
         var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
 
-        var result = await Connection.QueryAsync<string>(query, new { Ids = ids });
+        var result = await Connection.QueryAsync<string>(query, new {Ids = ids});
 
         var recipes = new List<Recipe>();
 
