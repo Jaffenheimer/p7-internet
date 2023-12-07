@@ -86,9 +86,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     {
         var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
 
-        var gridReader = await Connection.QueryMultipleAsync(query, new {Ids = ids});
-
-        var result = gridReader.Read<string>();
+        var result = await Connection.QueryAsync<string>(query, new {Ids = ids});
 
         var recipes = new List<Recipe>();
 

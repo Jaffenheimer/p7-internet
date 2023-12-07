@@ -30,9 +30,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     {
         var query = $@"SELECT RecipeId FROM {TableName} WHERE UserId = @UserId";
 
-        var gridReader = await Connection.QueryMultipleAsync(query, new {UserId = userId});
-
-        var guids = gridReader.Read<Guid>();
+        var guids = await Connection.QueryAsync<Guid>(query, new {UserId = userId});
 
         var result = await _cachedRecipeRepository.GetListOfRecipes(guids.ToList());
 
@@ -101,9 +99,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     {
         var query = $@"SELECT RecipeId FROM {HistoryTableName} WHERE UserId = @UserId";
 
-        var gridReader = await Connection.QueryMultipleAsync(query, new {UserId = userId});
-
-        var guids = gridReader.Read<Guid>();
+        var guids = await Connection.QueryAsync<Guid>(query, new {UserId = userId});
 
         var result = await _cachedRecipeRepository.GetListOfRecipes(guids.ToList());
 
