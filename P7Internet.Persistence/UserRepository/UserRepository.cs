@@ -1,7 +1,5 @@
 using System;
 using System.Data;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using P7Internet.Persistence.Connection;
@@ -64,7 +62,7 @@ public class UserRepository : IUserRepository
 
         return null;
     }
-    
+
     /// <summary>
     /// Checks if the email is confirmed
     /// </summary>
@@ -179,13 +177,15 @@ public class UserRepository : IUserRepository
     /// <returns>Returns true if the process is successful, otherwise false also false if no user is found</returns>
     public async Task<bool> ResetPassword(User user, string password)
     {
-
         var query =
             $@"UPDATE {TableName} SET Password_hash = @passwordHash, Password_salt = @passwordSalt, Updated = @Updated WHERE Email = @email";
         var salt = HelperFunctions.GenerateSalt();
         var passwordHash = HelperFunctions.GenerateHash(password + salt);
         var result = await Connection.ExecuteAsync(query,
-            new {Email = user.EmailAddress, PasswordHash = passwordHash, PasswordSalt = salt, Updated = DateTime.UtcNow});
+            new
+            {
+                Email = user.EmailAddress, PasswordHash = passwordHash, PasswordSalt = salt, Updated = DateTime.UtcNow
+            });
         return result > 0;
     }
 

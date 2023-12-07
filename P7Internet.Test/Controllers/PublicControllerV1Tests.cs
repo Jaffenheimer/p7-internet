@@ -126,15 +126,17 @@ namespace P7Internet.Test.Controllers
         [Test()]
         public void GetRecipeHistorySuccess()
         {
+            GetRecipeHistoryRequest getRecipeHistoryRequest = new GetRecipeHistoryRequest(Guid.NewGuid(), "TestToken");
             //Arrange
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(true));
             _favouriteRecipeRepositoryMock.Setup(x => x.GetHistory(It.IsAny<Guid>()))
-                .Returns(Task.FromResult(new List<Recipe>() {new Recipe(Guid.NewGuid(), "Favrecipe1"), new Recipe(Guid.NewGuid(), "Favrecipe2")}));
+                .Returns(Task.FromResult(new List<Recipe>()
+                    {new Recipe(Guid.NewGuid(), "Favrecipe1"), new Recipe(Guid.NewGuid(), "Favrecipe2")}));
             _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()));
-            
+
             //Act
-            IActionResult actionResult = controller.GetRecipeHistory(Guid.NewGuid(), "TestToken").Result;
+            IActionResult actionResult = controller.GetRecipeHistory(getRecipeHistoryRequest).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
@@ -144,15 +146,17 @@ namespace P7Internet.Test.Controllers
         [Test()]
         public void GetRecipeHistoryFailUserNotAuthorized()
         {
+            GetRecipeHistoryRequest getRecipeHistoryRequest = new GetRecipeHistoryRequest(Guid.NewGuid(), "TestToken");
             //Arrange
             var favouriteRecipes = new List<string>() {"Recipe1", "Recipe2"};
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(false));
             _favouriteRecipeRepositoryMock.Setup(x => x.GetHistory(It.IsAny<Guid>()))
-                .Returns(Task.FromResult(new List<Recipe>() {new Recipe(Guid.NewGuid(), "Favrecipe1"), new Recipe(Guid.NewGuid(), "Favrecipe2")}));
+                .Returns(Task.FromResult(new List<Recipe>()
+                    {new Recipe(Guid.NewGuid(), "Favrecipe1"), new Recipe(Guid.NewGuid(), "Favrecipe2")}));
 
             //Act
-            IActionResult actionResult = controller.GetRecipeHistory(Guid.NewGuid(), "TestToken").Result;
+            IActionResult actionResult = controller.GetRecipeHistory(getRecipeHistoryRequest).Result;
             var contentResult = actionResult as UnauthorizedObjectResult;
 
             //Assert
@@ -163,15 +167,16 @@ namespace P7Internet.Test.Controllers
         [Test()]
         public void GetRecipeHistoryFailNoHistoryFound()
         {
+            GetRecipeHistoryRequest getRecipeHistoryRequest = new GetRecipeHistoryRequest(Guid.NewGuid(), "TestToken");
             //Arrange
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(true));
             _favouriteRecipeRepositoryMock.Setup(x => x.GetHistory(It.IsAny<Guid>()))
                 .ReturnsAsync(new List<Recipe>());
             _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()));
-            
+
             //Act
-            IActionResult actionResult = controller.GetRecipeHistory(Guid.NewGuid(), "TestToken").Result;
+            IActionResult actionResult = controller.GetRecipeHistory(getRecipeHistoryRequest).Result;
             var contentResult = actionResult as NotFoundObjectResult;
 
             //Assert
@@ -567,14 +572,14 @@ namespace P7Internet.Test.Controllers
             _favouriteRecipeRepositoryMock.Setup(x => x.Get(It.IsAny<Guid>()))
                 .ReturnsAsync(new List<Recipe>() {new Recipe(_testRecipe.Id, "Favrecipe")});
             _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()));
-            
+
             //Act
             IActionResult actionResult = controller.GetFavouriteRecipes(getFavRecipesReq).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
-            Assert.AreEqual(typeof(List<RecipeResponse>),contentResult.Value.GetType());
+            Assert.AreEqual(typeof(List<RecipeResponse>), contentResult.Value.GetType());
             _favouriteRecipeRepositoryMock.Verify(x => x.Get(_testUser.Id), Times.Once);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
             _iIngredientRepositoryMock.Verify(x => x.GetAllIngredients(), Times.Once);
@@ -738,9 +743,11 @@ namespace P7Internet.Test.Controllers
             Assert.NotNull(contentResult);
             Assert.AreEqual("User session is not valid, please login again", contentResult.Value);
         }
+
         [Test()]
         public void DeleteUserSuccess()
         {
+            DeleteUserRequest deleteUserRequest = new DeleteUserRequest(_testUser.Id, _seshToken);
             //Arrange
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken))
                 .ReturnsAsync(true);
@@ -748,45 +755,49 @@ namespace P7Internet.Test.Controllers
             _userRepositoryMock.Setup(x => x.DeleteUser(_testUser)).ReturnsAsync(true);
 
             //Act
-            IActionResult actionResult = controller.DeleteUser(_testUser.Id,_seshToken).Result;
+            IActionResult actionResult = controller.DeleteUser(deleteUserRequest).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
-            Assert.AreEqual("User deleted",contentResult.Value);
+            Assert.AreEqual("User deleted", contentResult.Value);
             _userRepositoryMock.Verify(x => x.DeleteUser(_testUser), Times.Once);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
             _userRepositoryMock.Verify(x => x.GetUserFromId(_testUser.Id), Times.Once);
         }
+
         [Test()]
         public void DeleteUserFailUserNotAuthorized()
         {
+            DeleteUserRequest deleteUserRequest = new DeleteUserRequest(_testUser.Id, _seshToken);
             //Arrange
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken))
                 .ReturnsAsync(false);
             //Act
-            IActionResult actionResult = controller.DeleteUser(_testUser.Id,_seshToken).Result;
+            IActionResult actionResult = controller.DeleteUser(deleteUserRequest).Result;
             var contentResult = actionResult as UnauthorizedObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
-            Assert.AreEqual("User session is not valid, please login again",contentResult.Value);
+            Assert.AreEqual("User session is not valid, please login again", contentResult.Value);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
         }
+
         [Test()]
         public void DeleteUserFailUserNotFound()
         {
+            DeleteUserRequest deleteUserRequest = new DeleteUserRequest(_testUser.Id, _seshToken);
             //Arrange
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken))
                 .ReturnsAsync(true);
             _userRepositoryMock.Setup(x => x.GetUserFromId(_testUser.Id)).ReturnsAsync(value: null);
             //Act
-            IActionResult actionResult = controller.DeleteUser(_testUser.Id,_seshToken).Result;
+            IActionResult actionResult = controller.DeleteUser(deleteUserRequest).Result;
             var contentResult = actionResult as NotFoundObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
-            Assert.AreEqual("User does not exist",contentResult.Value);
+            Assert.AreEqual("User does not exist", contentResult.Value);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
             _userRepositoryMock.Verify(x => x.GetUserFromId(_testUser.Id), Times.Once);
         }
@@ -816,6 +827,7 @@ namespace P7Internet.Test.Controllers
                 Times.Once);
             _userRepositoryMock.Verify(x => x.GetUser(_testUser.Name), Times.Once);
         }
+
         [Test()]
         public void ChangePasswordUserNotFound()
         {
@@ -838,14 +850,14 @@ namespace P7Internet.Test.Controllers
                 Times.Once);
             _userRepositoryMock.Verify(x => x.ChangePassword(_testUser, It.IsAny<string>(), It.IsAny<string>()),
                 Times.Never);
-            _userRepositoryMock.Verify(x=> x.GetUser(It.IsAny<string>()),Times.Once);
+            _userRepositoryMock.Verify(x => x.GetUser(It.IsAny<string>()), Times.Once);
         }
 
         [Test()]
         public void ConfirmEmailSuccess()
         {
             //Arrange
-            var confirmEmailReq = new ConfirmEmailRequest(_testUser.Name, _testUser.EmailAddress);
+            ConfirmEmailRequest confirmEmailReq = new ConfirmEmailRequest(_testUser.Id, _seshToken);
             _userRepositoryMock.Setup(x => x.GetUserFromId(_testUser.Id)).ReturnsAsync(_testUser);
             _userSessionRepositoryMock.Setup(x => x.VerificationCodeTypeMatchesAction(_seshToken, It.IsAny<string>()))
                 .ReturnsAsync(true);
@@ -854,16 +866,22 @@ namespace P7Internet.Test.Controllers
                 .ReturnsAsync(true);
 
             //Act
-            IActionResult actionResult = controller.ConfirmEmail(_testUser.Id, _seshToken).Result;
+            IActionResult actionResult = controller.ConfirmEmail(confirmEmailReq).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
+            _userRepositoryMock.Verify(x => x.ConfirmEmail(_testUser.Name, _testUser.EmailAddress), Times.Once);
+            _userSessionRepositoryMock.Verify(x => x.DeleteVerificationToken(_testUser.Id, _seshToken), Times.Once);
+            _userSessionRepositoryMock.Verify(x => x.VerificationCodeTypeMatchesAction(_seshToken, "confirmEmail"),
+                Times.Once);
+            _userRepositoryMock.Verify(x => x.GetUserFromId(_testUser.Id), Times.Once);
         }
 
         [Test()]
         public void ConfirmEmailFailUserNotExist()
         {
+            ConfirmEmailRequest confirmEmailRequest = new ConfirmEmailRequest(_testUser.Id, _seshToken);
             //Arrange
             _userSessionRepositoryMock.Setup(x => x.VerificationCodeTypeMatchesAction(_seshToken, It.IsAny<string>()))
                 .ReturnsAsync(true);
@@ -871,11 +889,15 @@ namespace P7Internet.Test.Controllers
                 .ReturnsAsync(value: null);
 
             //Act
-            IActionResult actionResult = controller.ConfirmEmail(It.IsAny<Guid>(), _seshToken).Result;
+            IActionResult actionResult = controller.ConfirmEmail(confirmEmailRequest).Result;
             var contentResult = actionResult as BadRequestObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
+            Assert.AreEqual("The user was not found", contentResult.Value);
+            _userSessionRepositoryMock.Verify(x => x.GetUserIdFromVerificationCode(It.IsAny<string>()), Times.Never);
+            _userSessionRepositoryMock.Verify(x => x.VerificationCodeTypeMatchesAction(_seshToken, It.IsAny<string>()),
+                Times.Never);
         }
     }
 }
