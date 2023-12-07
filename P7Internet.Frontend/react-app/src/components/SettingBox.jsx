@@ -43,11 +43,11 @@ const SettingBox = ({ closeModal }) => {
       try {
         console.log(sessionToken);
         let response = await userChangePassword({
-          userId: encodeURIComponent(userId),
-          sessionToken: encodeURIComponent(sessionToken),
-          userName: encodeURIComponent(username),
-          oldPassword: encodeURIComponent(oldPassword),
-          newPassword: encodeURIComponent(repeatedPassword),
+          userId: userId,
+          sessionToken: sessionToken,
+          userName: username,
+          oldPassword: oldPassword,
+          newPassword: repeatedPassword,
         });
         if (response.error.originalStatus === 200) {
           toast.success("Verifikationskoden er sendt til din email");

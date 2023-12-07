@@ -140,8 +140,8 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="userId"></param>
     /// <param name="sessionToken"></param>
     /// <returns>Returns a list of recipes if found, returns unauthorized of the user is not logged in</returns>
-    [HttpGet("recipes/history")]
-    public async Task<IActionResult> GetRecipeHistory([FromQuery] Guid userId, string sessionToken)
+    [HttpPost("user/recipes-history")]
+    public async Task<IActionResult> GetRecipeHistory([FromBody] Guid userId, string sessionToken)
     {
         var checkIfUserSessionIsValid =
             await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
@@ -327,7 +327,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns a login response if the user creation was successful, otherwise badrequest</returns>
     [HttpPost("user/create-user")]
-    public async Task<IActionResult> CreateUser([FromQuery] CreateUserRequest req)
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest req)
     {
         var user = _userRepository.CreateUser(req.Name, req.EmailAddress);
         var res = await _userRepository.Upsert(user, req.Password);
@@ -349,7 +349,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns a login response if successful otherwise bad request</returns>
     [HttpPost("user/login")]
-    public async Task<IActionResult> Login([FromQuery] LogInRequest req)
+    public async Task<IActionResult> Login([FromBody] LogInRequest req)
     {
         var result = await _userRepository.LogIn(req.Username, req.Password);
         if (result != null)
@@ -369,7 +369,7 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>Returns Unauthorized if the sessiontoken is not valid, returns Ok if the session token is valid,
     /// and bad request if none of these are met, should never happen tho</returns>
     [HttpPost("user/logout")]
-    public async Task<IActionResult> Logout([FromQuery] LogOutRequest req)
+    public async Task<IActionResult> Logout([FromBody] LogOutRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
@@ -391,7 +391,7 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>Returns unauthorized if the user is not logged in or the sessiontoken has expired, otherwise it returns Ok if it is valid,
     /// and bad request if none of these are met, should never happen tho</returns>
     [HttpPost("user/favourite-recipe")]
-    public async Task<IActionResult> AddFavouriteRecipe([FromQuery] AddFavouriteRecipeRequest req)
+    public async Task<IActionResult> AddFavouriteRecipe([FromBody] AddFavouriteRecipeRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
@@ -412,8 +412,8 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns unauthorized if the sessiontoken is invalid, otherwise Ok. If the sessiontoken is valid and no favorite recipes are found
     /// it returns Badrequest</returns>
-    [HttpGet("user/favourite-recipes")]
-    public async Task<IActionResult> GetFavouriteRecipes([FromQuery] GetFavouriteRecipesRequest req)
+    [HttpPost("user/favourite-recipes")]
+    public async Task<IActionResult> GetFavouriteRecipes([FromBody] GetFavouriteRecipesRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
@@ -444,7 +444,7 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>Unauthorized if the session token is invalid, returns ok if it is successful and Badrequest if something unexpected happens
     /// E.g it should never happen</returns>
     [HttpDelete("user/favourite-recipe")]
-    public async Task<IActionResult> DeleteFavouriteRecipe([FromQuery] DeleteFavouriteRecipeRequest req)
+    public async Task<IActionResult> DeleteFavouriteRecipe([FromBody] DeleteFavouriteRecipeRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
@@ -488,16 +488,16 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="verificationCode"></param>
     /// <returns>Ok if the user is found and the verification code is valid, returns bad request if not</returns>
     [HttpPost("user/reset-password")]
-    public async Task<IActionResult> ResetPassword(string password, string verificationCode)
+    public async Task<IActionResult> ResetPassword([FromBody]ResetPasswordRequest req)
     {
         var isValidAction =
-            await _userSessionRepository.VerificationCodeTypeMatchesAction(verificationCode, type: "resetPassword");
+            await _userSessionRepository.VerificationCodeTypeMatchesAction(req.VerificationCode, type: "resetPassword");
         if (!isValidAction)
         {
             return BadRequest("The verification code is not for resetting the password");
         }
 
-        var userId = await _userSessionRepository.GetUserIdFromVerificationCode(verificationCode);
+        var userId = await _userSessionRepository.GetUserIdFromVerificationCode(req.VerificationCode);
         if (userId == null)
         {
             return BadRequest("No user found on the verification code");
@@ -507,10 +507,10 @@ public class PublicControllerV1 : ControllerBase
 
         if (user != null)
         {
-            var result = await _userRepository.ResetPassword(user, password);
+            var result = await _userRepository.ResetPassword(user, req.Password);
             if (result)
             {
-                await _userSessionRepository.DeleteVerificationToken(userId.GetValueOrDefault(), verificationCode);
+                await _userSessionRepository.DeleteVerificationToken(userId.GetValueOrDefault(), req.VerificationCode);
                 return Ok("Password was reset and has been changed, you can now login with your new password");
             }
         }
@@ -525,7 +525,7 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>Unauthorized if the session token is invalid, returns ok if it is successful
     /// and Badrequest if the password is incorrect or user session is not valid</returns>
     [HttpPost("user/change-password")]
-    public async Task<IActionResult> ChangePassword([FromQuery] ChangePasswordRequest req)
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
@@ -553,7 +553,7 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>Returns Ok if the link has been followed and and the DB returns that the confirmation was good,
     /// otherwise badrequest which should never happen</returns>
     [HttpPost("user/confirm-email")]
-    public async Task<IActionResult> ConfirmEmail([FromQuery] Guid userId, string verificationCode)
+    public async Task<IActionResult> ConfirmEmail([FromBody] Guid userId, string verificationCode)
     {
         var user = await _userRepository.GetUserFromId(userId);
 

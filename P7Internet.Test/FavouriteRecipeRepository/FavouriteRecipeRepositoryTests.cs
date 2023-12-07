@@ -42,21 +42,6 @@ namespace P7Internet.Test.FavouriteRecipeRepository
         }
 
         [Test()]
-        public void GetSuccess()
-        {
-            //Arrange
-            _dbConnection
-                .SetupDapperAsync(c => c.QueryAsync(It.IsAny<string>(), new {UserId = _testUser.Id}, null, null, null))
-                .ReturnsAsync(value: null);
-
-            //Act
-            var status = _favRecipeCacheRepository.Get(_testUser.Id).Result;
-
-            //Assert
-            _recipeCacheRepositoryMock.Verify(x => x.GetListOfRecipes(It.IsAny<List<Guid>>()), Times.Once);
-        }
-
-        [Test()]
         public void GetFailure()
         {
             //Arrange
@@ -68,6 +53,7 @@ namespace P7Internet.Test.FavouriteRecipeRepository
             var status = _favRecipeCacheRepository.Get(_testUser.Id).Result;
 
             //Assert
+            Assert.Null(status);
             _recipeCacheRepositoryMock.Verify(x => x.GetListOfRecipes(It.IsAny<List<Guid>>()), Times.Once);
         }
 
@@ -135,26 +121,6 @@ namespace P7Internet.Test.FavouriteRecipeRepository
             //Assert
             Assert.NotNull(status);
             Assert.True(status);
-        }
-
-        //Test skal gentænkes
-        //[Test()]
-        public void GetHistorySuccess()
-        {
-            //Arrange
-            var expected = new List<string>() {"test"};
-            var expectedGuid = new List<Guid>() {Guid.NewGuid()};
-            _dbConnection.SetupDapperAsync(c => c.QueryAsync<Guid>(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(expectedGuid);
-            _dbConnection.SetupDapperAsync(c => c.QueryAsync(It.IsAny<string>(), null, null, null, null))
-                .ReturnsAsync(expected);
-
-            //Act
-            var status = _favRecipeCacheRepository.GetHistory(_testUser.Id).Result;
-
-            //Assert
-            Assert.NotNull(status);
-            _recipeCacheRepositoryMock.Verify(x => x.GetListOfRecipes(It.IsAny<List<Guid>>()), Times.Once);
         }
 
         [Test()]
