@@ -117,11 +117,14 @@ const SettingBox = ({ closeModal }) => {
   async function deleteUser() {
     try {
       if (window.confirm("Er du sikker på du vil slette din bruger?")) {
+        // encode the userId and sessionToken such that they can be sent in the query
         let userId = encodeURIComponent(getCookieUserId());
         let sessionToken = encodeURIComponent(Cookies.get("sessionToken"));
+        // create the query for the request
         const query = `?userId=${userId}&sessionToken=${sessionToken}`;
-
+        // send a request to API for deleting the user
         let response = await userDeleteUser(query);
+        // close the modal and log the user out
         dispatch(pageActions.closeSettingModal());
         dispatch(userActions.logoutUser());
         if (response.error.originalStatus === 200) {
