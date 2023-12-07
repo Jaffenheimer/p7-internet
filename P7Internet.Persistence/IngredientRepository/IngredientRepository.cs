@@ -47,7 +47,7 @@ public class IngredientRepository : IIngredientRepository
     /// <returns>Returns true if it exists false if not</returns>
     public async Task<bool> CheckIfIngredientExists(string ingredient)
     {
-        var query = $@"SELECT Ingredient FROM {TableName} WHERE Name = @Name";
+        var query = $@"SELECT Name FROM {TableName} WHERE Name = @Name";
 
         var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new { Name = ingredient });
 
