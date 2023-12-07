@@ -564,6 +564,13 @@ input[type="range"] {
     margin: 0;
   }
 }
+.offer-default {
+  cursor: default;
+  align-items: end;
+}
+.offer-price {
+  padding-left: 1%;
+}
 
 #BackButton {
   float: right;

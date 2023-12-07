@@ -55,7 +55,7 @@ function FullRecipeView() {
           ingredients={convertIngredientsToIngredientObjects(
             recipe.recipe.ingredients
           )}
-          ListElement={RecipeOfferElement}
+          ListElement={RecipeOfferElement(recipe)}
         />
         <br />
         <MethodsList methods={recipe.recipe.method} />

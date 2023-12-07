@@ -1,6 +1,11 @@
 import React from "react";
 
-const IngredientsList = ({ ingredients, ListElement, handleRemove }) => {
+const IngredientsList = ({
+  ingredients,
+  shortIngredients,
+  ListElement,
+  handleRemove,
+}) => {
   return (
     <div className="ingredientsList" data-testid="IngredientsList">
       <h2>Ingredienser:</h2>
@@ -11,11 +16,14 @@ const IngredientsList = ({ ingredients, ListElement, handleRemove }) => {
             key={index}
             ingredient={ingredient}
             handleRemove={handleRemove}
+            shortIngredient={null}
           />
         ))}
       </ul>
     </div>
   );
 };
+
+function FindShortIngredient() {}
 
 export default IngredientsList;

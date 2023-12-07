@@ -45,15 +45,16 @@ const RecipeOfferElement = ({ ingredient }) => {
           let _offer = new Offer();
           _offer.name = offer.name;
           _offer.id = offer.id;
-          _offer.price = Math.round(CalcMin(res));
+          _offer.price = offer.price;
+          _offer.size = offer.size;
           _offer.store = offer.store;
           _offer.created = offer.created;
           _offer.ending = offer.ending;
           _offer.storeImage = offer.image;
-          setOffer(_offer);
           let _offers = offers;
           _offers.push(_offer);
           setOffers(_offers);
+          setOffer(FindCheapestProduct(_offers));
         });
       });
     }
@@ -64,15 +65,16 @@ const RecipeOfferElement = ({ ingredient }) => {
       <li>
         {ingredient.text}
         {ingredientIsOwned(ingredient, ownedIngredientsList) ? (
-          <b> Ejet </b>
+          <b className="no-print"> Ejet </b>
         ) : (
           <>
-            {" - "}
-            <p>{offer.price},-</p>
+            <p className="offer-default no-print offer-price">
+              {offer.price},-
+            </p>
             <img
-              className="IngredientStoreLogo"
+              className="IngredientStoreLogo offer-default no-print"
               src={offer.storeImage}
-              alt="new"
+              alt=""
             />
           </>
         )}
@@ -81,12 +83,10 @@ const RecipeOfferElement = ({ ingredient }) => {
   );
 };
 
-function CalcMin(arr) {
-  let min;
-  arr.forEach(function (offer) {
-    min = Math.min(offer.price);
-  });
-  return min;
+function FindCheapestProduct(arr) {
+  let offer;
+  offer = arr.reduce((prev, curr) => (prev.price < curr.price ? prev : curr));
+  return offer;
 }
 
 export default RecipeOfferElement;
