@@ -15,7 +15,7 @@ test("renders AdditionalOwnedIngredientsModalContainer with continue button", ()
       loggedIn: true,
     },
     recipe: {
-      recipes: [new Recipe("title", ["1", "2"], "method")],
+      recipes: [new Recipe("id", "title", ["1", "2"], "method")],
       currentRecipeIndex: 0,
     },
     recipeGeneration: {
@@ -43,7 +43,7 @@ describe("checkboxes and continue button", () => {
         loggedIn: true,
       },
       recipe: {
-        recipes: [new Recipe("title", ["1", "2"], "method")],
+        recipes: [new Recipe("id", "title", ["1", "2"], "method")],
         currentRecipeIndex: 0,
       },
       recipeGeneration: {
