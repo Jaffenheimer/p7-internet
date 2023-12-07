@@ -29,6 +29,9 @@ export const userSlice = createSlice({
         (recipe) => recipe.title !== action.payload.title
       );
     },
+    setFavoriteRecipes(state, action) {
+      state.favoriteRecipes = action.payload;
+    },
     addRecipeToHistory(state, action) {
       for (const recipe of state.recipesInHistory) {
         if (recipe.title === action.payload.title) {

@@ -33,20 +33,33 @@ const GenerateRecipesButton = () => {
       userId: "14decab6-b035-4114-8596-9063da45e0f3",
       sessionToken: "47HZd8n3QkGmLFwn/pduDQ==",
       ingredients: ["agurk"],
-      amount: 1,
+      amount: 2,
       amountOfPeople: 4,
       excludedIngredients: [],
       dietaryRestrictions: [],
     };
     try {
       let response = await generateUserRecipe(body);
-      console.log(response);
+      console.log("response", response);
       // if (response.error.originalStatus === 200) {
       //   toast.success("Verifikationskoden er sendt til din email");
       // }
-      const recipes = [
-        new Recipe("Agurk", ["Agurk"], ["metode 1"], response.data[0].recipeId),
-      ];
+      let recipes = [];
+      let i = 0;
+      for (const recipe of response.data) {
+        recipes.push(
+          new Recipe(
+            `Agurk${i}`,
+            recipe.ingredients,
+            ["agurk"],
+            recipe.recipeId
+          )
+        );
+        i++;
+      }
+      // const recipes = [
+      //   new Recipe("Agurk", ["Agurk"], ["metode 1"], response.data[0].recipeId),
+      // ];
       dispatch(recipeActions.addRecipes(recipes));
     } catch (error) {
       console.log(error);

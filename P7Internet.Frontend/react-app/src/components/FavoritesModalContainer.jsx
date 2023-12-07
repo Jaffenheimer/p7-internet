@@ -29,40 +29,7 @@ const FavoritesModalContainer = () => {
     useUserGetAllFavoriteRecipesMutation();
 
   const recipes = useSelector((state) => state.recipe.recipes);
-  const [favoriteRecipes, setFavoriteRecipes] = useState([]);
-
-  const getFavoriteRecipes = async () => {
-    try {
-      const userId = getCookieUserId();
-      const sessionToken = getCookieSessionToken();
-
-      let response = await userGetAllFavoriteRecipes({
-        userId: encodeURIComponent(userId),
-        sessionToken: encodeURIComponent(sessionToken),
-      });
-      console.log(response);
-      // setFavoriteRecipes([
-      //   new Recipe("Agurk", ["Agurk"], ["metode 1"], response.data[0].recipeId),
-      // ]);
-
-      // if (response.error.originalStatus === 200) {
-      //   setFavoriteRecipes(response.data);
-      // }
-      // if (response.error.originalStatus === 401) {
-      //   toast.error(
-      //     "Din session er udløbet. Log ind igen for at se din historik"
-      //   );
-      // }
-      // if (response.error.originalStatus === 404) {
-      // } // use default value of empty string, since no history is found
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    getFavoriteRecipes();
-  }, []);
+  const favoriteRecipes = useSelector((state) => state.user.favoriteRecipes); //useState([]);
 
   const dispatch = useDispatch();
 
@@ -99,7 +66,14 @@ const FavoritesModalContainer = () => {
           sessionToken: encodeURIComponent(retriveCookie("sessionToken=")),
           recipeId: encodeURIComponent(recipe.id),
         });
-        await getFavoriteRecipes();
+        dispatch(
+          userActions.setFavoriteRecipes(
+            favoriteRecipes.filter((favoriteRecipe) => {
+              return favoriteRecipe.id !== recipe.id;
+            })
+          )
+        );
+        // setIsMarkedAsFavorite(false);
       } catch (error) {
         console.log(error);
       }

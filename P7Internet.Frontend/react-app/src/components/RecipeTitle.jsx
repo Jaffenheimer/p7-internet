@@ -25,7 +25,7 @@ const RecipeTitle = ({ recipe }) => {
 
   const dispatch = useDispatch();
   const loggedIn = useSelector((state) => state.user.loggedIn);
-  const [favoriteRecipes, setFavoriteRecipes] = useState([]);
+  const favoriteRecipes = useSelector((state) => state.user.favoriteRecipes); //useState([]);
 
   useEffect(() => {
     const getFavoriteRecipes = async () => {
@@ -48,7 +48,7 @@ const RecipeTitle = ({ recipe }) => {
             )
           );
         }
-        setFavoriteRecipes(recipes);
+        dispatch(userActions.setFavoriteRecipes(recipes));
         // console.log(response);
 
         // if (response.error.originalStatus === 200) {
@@ -65,7 +65,7 @@ const RecipeTitle = ({ recipe }) => {
         //AF EN ELLER ANDED GRUND DUKKER DER STADIG EN ERROR OP I CONSOLEN, NÅR DER IKKE ER NOGEN FAVORITRECIPE
         if (error.originalStatus === 500)
           //if no recipes are found, set favoriteRecipes to empty array
-          setFavoriteRecipes([]);
+          dispatch(userActions.setFavoriteRecipes([]));
         else console.log(error);
       }
     };
@@ -77,6 +77,7 @@ const RecipeTitle = ({ recipe }) => {
   useEffect(() => {
     for (const favoriteRecipe of favoriteRecipes) {
       if (favoriteRecipe.id === recipe.id) {
+        console.log("setting marked as favoirte");
         setIsMarkedAsFavorite(true);
       }
     }
@@ -84,14 +85,14 @@ const RecipeTitle = ({ recipe }) => {
 
   async function addFavoriteRecipe() {
     console.log(recipe);
-    dispatch(userActions.addFavoriteRecipe(recipe));
 
     try {
-      let response = await userPostFavoriteRecipe({
+      await userPostFavoriteRecipe({
         userId: encodeURIComponent(retriveCookie("userid=")),
         sessionToken: encodeURIComponent(retriveCookie("sessionToken=")),
         recipeId: encodeURIComponent(recipe.id),
       });
+      dispatch(userActions.addFavoriteRecipe(recipe));
       setIsMarkedAsFavorite(true);
     } catch (error) {
       console.log(error);
@@ -105,6 +106,13 @@ const RecipeTitle = ({ recipe }) => {
         sessionToken: encodeURIComponent(retriveCookie("sessionToken=")),
         recipeId: encodeURIComponent(recipe.id),
       });
+      dispatch(
+        userActions.setFavoriteRecipes(
+          favoriteRecipes.filter((favoriteRecipe) => {
+            return favoriteRecipe.id !== recipe.id;
+          })
+        )
+      );
       setIsMarkedAsFavorite(false);
     } catch (error) {
       console.log(error);
@@ -117,11 +125,27 @@ const RecipeTitle = ({ recipe }) => {
       dispatch(pageActions.openLoginModal());
     } else {
       if (isMarkedAsFavorite) {
+        console.log("is marked as favorite");
         deleteFavoriteRecipe();
       } else {
+        console.log("not marked as favorite");
         addFavoriteRecipe();
       }
     }
+  }
+
+  function SetHeartIconOnChange() {
+    //component that dynamically changes heart icon when using arrows
+    useEffect(() => {
+      for (const favoriteRecipe of favoriteRecipes) {
+        if (favoriteRecipe.id === recipe.id) {
+          console.log("setting marked as favoirte");
+          setIsMarkedAsFavorite(true);
+          return;
+        }
+      }
+      setIsMarkedAsFavorite(false);
+    });
   }
 
   return (
@@ -135,6 +159,7 @@ const RecipeTitle = ({ recipe }) => {
           className="no-print"
           onClick={handleClick}
         />
+        <SetHeartIconOnChange />
       </h1>
     </div>
   );
