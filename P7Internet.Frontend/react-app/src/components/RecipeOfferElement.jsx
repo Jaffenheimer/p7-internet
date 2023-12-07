@@ -13,6 +13,13 @@ const RecipeOfferElement = ({ ingredient }) => {
   );
 
   const radius = useSelector((state) => state.offers.radius);
+  const recipes = useSelector((state) => state.recipe.recipes);
+
+  const currentRecipeIndex = useSelector(
+    (state) => state.recipe.currentRecipeIndex
+  );
+
+  const recipe = recipes[currentRecipeIndex];
 
   const [offers, setOffers] = useState([]);
   const [offer, setOffer] = useState(new Offer());
@@ -63,7 +70,7 @@ const RecipeOfferElement = ({ ingredient }) => {
   return (
     <div className="RecipeOfferElement" data-testid="RecipeOfferElement">
       <li>
-        {ingredient.text}
+        {FindFullIngredientName(ingredient.text, recipe)}
         {ingredientIsOwned(ingredient, ownedIngredientsList) ? (
           <b className="no-print"> Ejet </b>
         ) : (
@@ -87,6 +94,14 @@ function FindCheapestProduct(arr) {
   let offer;
   offer = arr.reduce((prev, curr) => (prev.price < curr.price ? prev : curr));
   return offer;
+}
+function FindFullIngredientName(shortName, recipe) {
+  let fullName;
+  const fullNames = recipe.recipe.ingredients;
+  fullName = fullNames.find((fullName) =>
+    fullName.toLowerCase().includes(shortName.toLowerCase())
+  );
+  return fullName;
 }
 
 export default RecipeOfferElement;

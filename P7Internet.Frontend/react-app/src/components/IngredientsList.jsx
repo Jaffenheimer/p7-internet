@@ -1,11 +1,7 @@
 import React from "react";
+import { useSelector } from "react-redux";
 
-const IngredientsList = ({
-  ingredients,
-  shortIngredients,
-  ListElement,
-  handleRemove,
-}) => {
+const IngredientsList = ({ ingredients, ListElement, handleRemove }) => {
   return (
     <div className="ingredientsList" data-testid="IngredientsList">
       <h2>Ingredienser:</h2>
@@ -16,14 +12,11 @@ const IngredientsList = ({
             key={index}
             ingredient={ingredient}
             handleRemove={handleRemove}
-            shortIngredient={null}
           />
         ))}
       </ul>
     </div>
   );
 };
-
-function FindShortIngredient() {}
 
 export default IngredientsList;
