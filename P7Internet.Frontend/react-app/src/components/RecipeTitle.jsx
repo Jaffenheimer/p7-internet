@@ -32,7 +32,8 @@ const RecipeTitle = ({ recipe }) => {
       try {
         const userId = getCookieUserId();
         const sessionToken = getCookieSessionToken();
-        console.log(sessionToken);
+        console.log("sesh token: ", sessionToken);
+        console.log("user id: ", userId);
         let response = await userGetAllFavoriteRecipes({
           userId: userId,
           sessionToken: sessionToken,
@@ -42,10 +43,11 @@ const RecipeTitle = ({ recipe }) => {
         for (const favoriteRecipe of response) {
           recipes.push(
             new Recipe(
+              favoriteRecipe.recipeId,
               "Agurk",
               favoriteRecipe.ingredients,
               ["metode 1"],
-              favoriteRecipe.recipeId
+              favoriteRecipe.ingredients
             )
           );
         }
@@ -78,6 +80,7 @@ const RecipeTitle = ({ recipe }) => {
   const [isMarkedAsFavorite, setIsMarkedAsFavorite] = useState(false);
   useEffect(() => {
     for (const favoriteRecipe of favoriteRecipes) {
+      console.log(recipe.id, favoriteRecipe.id);
       if (favoriteRecipe.id === recipe.id) {
         console.log("setting marked as favoirte");
         setIsMarkedAsFavorite(true);

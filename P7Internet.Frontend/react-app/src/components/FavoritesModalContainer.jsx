@@ -62,9 +62,9 @@ const FavoritesModalContainer = () => {
     )
       try {
         await userDeleteFavoriteRecipe({
-          userId: encodeURIComponent(retriveCookie("userid=")),
-          sessionToken: encodeURIComponent(retriveCookie("sessionToken=")),
-          recipeId: encodeURIComponent(recipe.id),
+          userId: getCookieUserId(),
+          sessionToken: getCookieSessionToken(),
+          recipeId: recipe.id,
         });
         dispatch(
           userActions.setFavoriteRecipes(
