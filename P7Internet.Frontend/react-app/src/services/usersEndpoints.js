@@ -6,43 +6,52 @@ const userEndpoints = apiSlice.injectEndpoints({
     //Because it is a post request it is a mutation
     userLogin: builder.mutation({
       query: ({ username, password }) => ({
-        url: `/public/user/login?Username=${username}&Password=${password}`,
+        url: `/public/user/login`,
         method: "POST",
-        body: "",
+        body: { username: username, password: password },
       }),
     }),
     userCreate: builder.mutation({
       query: ({ username, password, email }) => ({
-        url: `/public/user/create-user?Name=${username}&EmailAddress=${email}&Password=${password}`,
+        url: `/public/user/create-user`,
         method: "POST",
-        body: "",
+        body: { name: username, emailAddress: email, password: password },
       }),
     }),
     userLogOut: builder.mutation({
       query: ({ userId, sessionToken }) => ({
-        url: `public/user/logout?UserId=${userId}&SessionToken=${sessionToken}`,
+        url: `public/user/logout`,
         method: "POST",
-        body: "",
+        body: { userId: userId, sessionToken: sessionToken },
       }),
     }),
     userPostFavoriteRecipe: builder.mutation({
       query: ({ userId, sessionToken, recipeId }) => ({
-        url: `public/user/favorite-recipe?UserId=${userId}&SessionToken=${sessionToken}&RecipeId=${recipeId}`,
+        url: `public/user/favorite-recipe`,
         method: "POST",
-        body: "",
+        body: {
+          userId: userId,
+          sessionToken: sessionToken,
+          recipeId: recipeId,
+        },
       }),
     }),
     userDeleteFavoriteRecipe: builder.mutation({
       query: ({ userId, sessionToken, recipeId }) => ({
-        url: `public/user/favorite-recipe?UserId=${userId}&SessionToken=${sessionToken}&RecipeId=${recipeId}`,
+        url: `public/user/favorite-recipe`,
         method: "DELETE",
-        body: "",
+        body: {
+          userId: userId,
+          sessionToken: sessionToken,
+          recipeId: recipeId,
+        },
       }),
     }),
     userGetAllFavoriteRecipes: builder.mutation({
       query: ({ userId, sessionToken }) => ({
-        url: `public/user/favorite-recipes?UserId=${userId}&SessionToken=${sessionToken}`,
-        method: "GET",
+        url: `public/user/favorite-recipes`,
+        method: "POST",
+        body: { userId: userId, sessionToken: sessionToken },
       }),
     }),
     userResetPasswordEmailRequest: builder.mutation({
@@ -54,9 +63,9 @@ const userEndpoints = apiSlice.injectEndpoints({
     }),
     userResetPassword: builder.mutation({
       query: ({ password, verificationCode }) => ({
-        url: `/public/user/reset-password?password=${password}&verificationCode=${verificationCode}`,
+        url: `/public/user/reset-password`,
         method: "POST",
-        body: "",
+        body: { password: password, verificationCode: verificationCode },
       }),
     }),
     userChangePassword: builder.mutation({
@@ -67,9 +76,15 @@ const userEndpoints = apiSlice.injectEndpoints({
         oldPassword,
         newPassword,
       }) => ({
-        url: `public/user/change-password?UserId=${userId}&SessionToken=${sessionToken}&UserName=${userName}&OldPassword=${oldPassword}&NewPassword=${newPassword}`,
+        url: `public/user/change-password`,
         method: "POST",
-        body: "",
+        body: {
+          userId: userId,
+          sessionToken: sessionToken,
+          userName: userName,
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        },
       }),
     }),
     userConfirmEmailRequest: builder.mutation({

@@ -45,14 +45,10 @@ const ProfilePicture = () => {
       const userId = retriveCookie("userid=");
 
       try {
-        //Enconding request to URI standart (handles symbols in request)
-        const encodedSessionToken = encodeURIComponent(sessionToken);
-        const encodedUserId = encodeURIComponent(userId);
-
         // Waits for the response and allows to use response (unwrap, because JSON)
         const response = await userLogOut({
-          userId: encodedUserId,
-          sessionToken: encodedSessionToken,
+          userId: userId,
+          sessionToken: sessionToken,
         });
         if (response) {
           toast.success("Du loggede succesfuldt ud");

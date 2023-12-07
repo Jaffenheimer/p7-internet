@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Recipe from "../objects/Recipe";
 
 const initialState = {
   recipes: [],
@@ -10,25 +11,32 @@ export const recipeSlice = createSlice({
   name: "recipe",
   initialState,
   reducers: {
-    addRecipes(state, action) {
-      for (let i = 0; i < action.payload.length; i++) {
-        state.recipes.push(action.payload[i]);
-      }
-    },
     addRecipe(state, action) {
-      state.recipes.push(action.payload);
+      // console.log("Actions: ", action.payload);
+      const recipe = new Recipe(
+        action.payload.id,
+        action.payload.title,
+        action.payload.ingredients,
+        action.payload.method,
+        action.payload.shortIngredients
+      );
+      state.recipes.push(recipe);
+      // console.log("Lenght of state: ", state.recipes.length);
     },
     removeRecipe(state, action) {
       state.recipes = state.recipes.filter(
         (recipe) => recipe.id !== action.payload
       );
     },
+    clearRecipes(state) {
+      state.recipes = [];
+    },
     setCurrentRecipeIndex(state, action) {
       state.currentRecipeIndex = action.payload;
     },
     setRecipeToShow(state, action) {
       state.recipeToShow = action.payload;
-    }
+    },
   },
 });
 

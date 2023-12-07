@@ -32,9 +32,10 @@ const RecipeTitle = ({ recipe }) => {
       try {
         const userId = getCookieUserId();
         const sessionToken = getCookieSessionToken();
+        console.log(sessionToken);
         let response = await userGetAllFavoriteRecipes({
-          userId: encodeURIComponent(userId),
-          sessionToken: encodeURIComponent(sessionToken),
+          userId: userId,
+          sessionToken: sessionToken,
         }).unwrap();
         console.log("response", response);
         const recipes = [];
@@ -63,6 +64,7 @@ const RecipeTitle = ({ recipe }) => {
         // } // use default value of empty string, since no history is found
       } catch (error) {
         //AF EN ELLER ANDED GRUND DUKKER DER STADIG EN ERROR OP I CONSOLEN, NÅR DER IKKE ER NOGEN FAVORITRECIPE
+        console.log("the erorr;", error);
         if (error.originalStatus === 500)
           //if no recipes are found, set favoriteRecipes to empty array
           dispatch(userActions.setFavoriteRecipes([]));
@@ -85,12 +87,15 @@ const RecipeTitle = ({ recipe }) => {
 
   async function addFavoriteRecipe() {
     console.log(recipe);
+    console.log("recipeid", recipe.id);
+    console.log("userid", getCookieUserId());
+    console.log("sessiontoken", getCookieSessionToken());
 
     try {
       await userPostFavoriteRecipe({
-        userId: encodeURIComponent(retriveCookie("userid=")),
-        sessionToken: encodeURIComponent(retriveCookie("sessionToken=")),
-        recipeId: encodeURIComponent(recipe.id),
+        userId: getCookieUserId(),
+        sessionToken: getCookieSessionToken(),
+        recipeId: recipe.id,
       });
       dispatch(userActions.addFavoriteRecipe(recipe));
       setIsMarkedAsFavorite(true);
@@ -102,9 +107,9 @@ const RecipeTitle = ({ recipe }) => {
   async function deleteFavoriteRecipe() {
     try {
       await userDeleteFavoriteRecipe({
-        userId: encodeURIComponent(retriveCookie("userid=")),
-        sessionToken: encodeURIComponent(retriveCookie("sessionToken=")),
-        recipeId: encodeURIComponent(recipe.id),
+        userId: retriveCookie("userid="),
+        sessionToken: getCookieSessionToken(),
+        recipeId: recipe.id,
       });
       dispatch(
         userActions.setFavoriteRecipes(
@@ -120,6 +125,7 @@ const RecipeTitle = ({ recipe }) => {
   }
 
   async function handleClick(event) {
+    console.log("isclicked");
     event.preventDefault();
     if (loggedIn === false) {
       dispatch(pageActions.openLoginModal());

@@ -49,21 +49,17 @@ const LoginBox = ({ closeModal }) => {
       */
 
       try {
-        const encodedUsername = encodeURIComponent(username);
-        const encodedPassword = encodeURIComponent(password);
-
         let response;
         if (!creatingAccount) {
           response = await userLogin({
-            username: encodedUsername,
-            password: encodedPassword,
+            username: username,
+            password: password,
           }).unwrap();
         } else if (userInputValidation(username, password, email) === true) {
-          const encodedEmail = encodeURIComponent(email);
           response = await userCreate({
-            username: encodedUsername,
-            password: encodedPassword,
-            email: encodedEmail,
+            username: username,
+            password: password,
+            email: email,
           }).unwrap();
         }
 
@@ -165,8 +161,8 @@ const LoginBox = ({ closeModal }) => {
       if (checkValidPassword(password)) {
         try {
           await userResetPassword({
-            password: encodeURIComponent(password),
-            verificationCode: encodeURIComponent(verificationCode),
+            password: password,
+            verificationCode: verificationCode,
           }).unwrap();
         } catch (error) {
           console.log(error);
