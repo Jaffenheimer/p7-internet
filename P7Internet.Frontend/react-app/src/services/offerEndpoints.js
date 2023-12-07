@@ -14,7 +14,7 @@ const offerEndpoints = apiSlice.injectEndpoints({
         upcoming,
         stores,
       }) => ({
-        url: `/public/offer/getOffer?Lat=${57}&Long=${10}&Pagesize=${1}&SearchTerm=${searchTerm}&Radius=${3000}&Upcoming=${"true"}&Stores=${stores}`,
+        url: `/public/offer/getOffer?Lat=${lat}&Long=${lon}&Pagesize=${pageSize}&SearchTerm=${searchTerm}&Radius=${radius}&Upcoming=${upcoming}&Stores=${stores}`,
         method: "GET",
       }),
     }),

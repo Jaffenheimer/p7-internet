@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { ingredientIsOwned } from "../helperFunctions/ingredientHelper";
-import { offersActions } from "../features/offersSlice";
 import { useGetOfferMutation } from "../services/offerEndpoints";
 import Offer from "../objects/Offer";
-import bilkatogo_logo from "../data/bilkatogo_logo.png";
 
 const RecipeOfferElement = ({ ingredient }) => {
   const dispatch = useDispatch();
@@ -14,26 +12,39 @@ const RecipeOfferElement = ({ ingredient }) => {
 
   const stores = useSelector((state) => state.offers.stores);
   const radius = useSelector((state) => state.offers.radius);
+  const toggleStateIsRadius = useSelector(
+    (state) => state.offers.toggleStateIsRadius
+  );
 
   const [offers, setOffers] = useState([]);
   const [offer, setOffer] = useState(new Offer());
 
   const [getOffer, { isOfferLoading }] = useGetOfferMutation();
 
+  function CalcMin(arr) {
+    let min;
+    for (let i = 0; i < arr.length; i++) {
+      min = Math.min(arr[i].price);
+    }
+    return min;
+  }
+
   useEffect(() => {
     const fetchOffer = async () => {
       try {
+        //let _radius = toggleStateIsRadius ? radius : 3000; //TODO: INDSÆT DETTE VED MERGE MED DEVELOP
+        let _radius = 3000;
         var response = await getOffer({
           lat: encodeURIComponent(
-            JSON.parse(localStorage.getItem("geolocation")).lat
+            Math.round(JSON.parse(localStorage.getItem("geolocation")).lat)
           ),
           lon: encodeURIComponent(
-            JSON.parse(localStorage.getItem("geolocation")).lon
+            Math.round(JSON.parse(localStorage.getItem("geolocation")).lon)
           ),
-          pagesize: encodeURIComponent(24),
+          pageSize: 24,
           searchTerm: encodeURIComponent(ingredient.text),
-          radius: encodeURIComponent(radius),
-          upcoming: encodeURIComponent(false),
+          radius: encodeURIComponent(_radius),
+          upcoming: false,
           stores: encodeURIComponent(stores),
         }).unwrap();
       } catch (error) {
@@ -81,13 +92,5 @@ const RecipeOfferElement = ({ ingredient }) => {
     </div>
   );
 };
-
-function CalcMin(arr) {
-  let min;
-  for (let i = 0; i < arr.length; i++) {
-    min = Math.min(arr[i].price);
-  }
-  return min;
-}
 
 export default RecipeOfferElement;
