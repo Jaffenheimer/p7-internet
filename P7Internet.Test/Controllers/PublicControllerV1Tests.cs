@@ -50,7 +50,7 @@ namespace P7Internet.Test.Controllers
             //Mock repos, APIs & and reused variables
             _testRecipe = new Recipe(Guid.Parse("4ef842ac-3ba2-4986-b1fb-9ccc8c1fbeeb"), "Test recipe description");
             _testUser = new User("TestUser", "Test@Example.com")
-                {Id = Guid.Parse("833e9c5d-2471-4f40-bbfa-f983ae998075"), CreatedAt = DateTime.Now};
+                { Id = Guid.Parse("833e9c5d-2471-4f40-bbfa-f983ae998075"), CreatedAt = DateTime.Now };
 
             _userRepositoryMock = new Mock<IUserRepository>();
             _recipeCacheRepositoryMock = new Mock<IRecipeCacheRepository>();
@@ -73,14 +73,14 @@ namespace P7Internet.Test.Controllers
         {
             //Arrange
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(),
-                new List<string>() {"æble", "kartoffel", "julebryg"}, 1, new List<string>() {"fløde"},
-                new List<string>() {"vegansk"}, It.IsAny<int>());
+                new List<string>() { "æble", "kartoffel", "julebryg" }, 1, new List<string>() { "fløde" },
+                new List<string>() { "vegansk" }, It.IsAny<int>());
             var res = new RecipeResponse(_testRecipe.Description, null, _testRecipe.Id);
             _recipeCacheRepositoryMock.Setup(x => x.GetAllRecipes()).ReturnsAsync(new List<Recipe>());
             _recipeCacheRepositoryMock.Setup(x => x.Upsert(_testRecipe.Description, _testRecipe.Id))
                 .Returns(Task.FromResult(true));
             _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()
-                {"Æble, Kartoffel, Julebryg, Fløde, Vegansk"}));
+                { "Æble, Kartoffel, Julebryg, Fløde, Vegansk" }));
             _openAiServiceMock.Setup(x => x.GetAiResponse(recipeRequest)).ReturnsAsync(res);
 
             //Act
@@ -98,8 +98,8 @@ namespace P7Internet.Test.Controllers
         {
             //Arrange
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(),
-                new List<string>() {"æble", "kartoffel", "julebryg"}, 1, new List<string>() {"fløde"},
-                new List<string>() {"vegansk"}, It.IsAny<int>());
+                new List<string>() { "æble", "kartoffel", "julebryg" }, 1, new List<string>() { "fløde" },
+                new List<string>() { "vegansk" }, It.IsAny<int>());
             var res = new RecipeResponse(_testRecipe.Description, null, Guid.NewGuid());
             _openAiServiceMock.Setup(x => x.GetAiResponse(recipeRequest)).ReturnsAsync(res);
             _recipeCacheRepositoryMock.Setup(x => x.GetAllRecipes()).Returns(Task.FromResult(new List<Recipe>()
@@ -109,7 +109,7 @@ namespace P7Internet.Test.Controllers
                 new Recipe(Guid.NewGuid(), "Test med test på")
             }));
             _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()
-                {"Æble, Kartoffel, Julebryg, Fløde, Vegansk"}));
+                { "Æble, Kartoffel, Julebryg, Fløde, Vegansk" }));
             _recipeCacheRepositoryMock.Setup(x => x.Upsert(_testRecipe.Description, _testRecipe.Id))
                 .Returns(Task.FromResult(false));
 
@@ -130,9 +130,10 @@ namespace P7Internet.Test.Controllers
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(true));
             _favouriteRecipeRepositoryMock.Setup(x => x.GetHistory(It.IsAny<Guid>()))
-                .Returns(Task.FromResult(new List<Recipe>() {new Recipe(Guid.NewGuid(), "Favrecipe1"), new Recipe(Guid.NewGuid(), "Favrecipe2")}));
+                .Returns(Task.FromResult(new List<Recipe>()
+                    { new Recipe(Guid.NewGuid(), "Favrecipe1"), new Recipe(Guid.NewGuid(), "Favrecipe2") }));
             _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()));
-            
+
             //Act
             IActionResult actionResult = controller.GetRecipeHistory(Guid.NewGuid(), "TestToken").Result;
             var contentResult = actionResult as OkObjectResult;
@@ -145,11 +146,12 @@ namespace P7Internet.Test.Controllers
         public void GetRecipeHistoryFailUserNotAuthorized()
         {
             //Arrange
-            var favouriteRecipes = new List<string>() {"Recipe1", "Recipe2"};
+            var favouriteRecipes = new List<string>() { "Recipe1", "Recipe2" };
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(false));
             _favouriteRecipeRepositoryMock.Setup(x => x.GetHistory(It.IsAny<Guid>()))
-                .Returns(Task.FromResult(new List<Recipe>() {new Recipe(Guid.NewGuid(), "Favrecipe1"), new Recipe(Guid.NewGuid(), "Favrecipe2")}));
+                .Returns(Task.FromResult(new List<Recipe>()
+                    { new Recipe(Guid.NewGuid(), "Favrecipe1"), new Recipe(Guid.NewGuid(), "Favrecipe2") }));
 
             //Act
             IActionResult actionResult = controller.GetRecipeHistory(Guid.NewGuid(), "TestToken").Result;
@@ -169,7 +171,7 @@ namespace P7Internet.Test.Controllers
             _favouriteRecipeRepositoryMock.Setup(x => x.GetHistory(It.IsAny<Guid>()))
                 .ReturnsAsync(new List<Recipe>());
             _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()));
-            
+
             //Act
             IActionResult actionResult = controller.GetRecipeHistory(Guid.NewGuid(), "TestToken").Result;
             var contentResult = actionResult as NotFoundObjectResult;
@@ -188,8 +190,8 @@ namespace P7Internet.Test.Controllers
         {
             //Arrange
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(),
-                new List<string>() {"æble", "kartoffel", "julebryg"}, 1, new List<string>() {"fløde"},
-                new List<string>() {"vegansk"}, It.IsAny<int>());
+                new List<string>() { "æble", "kartoffel", "julebryg" }, 1, new List<string>() { "fløde" },
+                new List<string>() { "vegansk" }, It.IsAny<int>());
             var res = new RecipeResponse(_testRecipe.Description, null, Guid.NewGuid());
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(true));
@@ -201,7 +203,7 @@ namespace P7Internet.Test.Controllers
                 new Recipe(Guid.NewGuid(), "Test med test på")
             }));
             _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()
-                {"Æble, Kartoffel, Julebryg, Fløde, Vegansk"}));
+                { "Æble, Kartoffel, Julebryg, Fløde, Vegansk" }));
             _recipeCacheRepositoryMock.Setup(x => x.Upsert(_testRecipe.Description, _testRecipe.Id))
                 .Returns(Task.FromResult(false));
 
@@ -218,8 +220,8 @@ namespace P7Internet.Test.Controllers
         {
             //Arrange
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(),
-                new List<string>() {"æble", "kartoffel", "julebryg"}, 1, new List<string>() {"fløde"},
-                new List<string>() {"vegansk"}, It.IsAny<int>());
+                new List<string>() { "æble", "kartoffel", "julebryg" }, 1, new List<string>() { "fløde" },
+                new List<string>() { "vegansk" }, It.IsAny<int>());
             var res = new RecipeResponse(_testRecipe.Description, null, Guid.NewGuid());
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(false));
@@ -231,7 +233,7 @@ namespace P7Internet.Test.Controllers
                 new Recipe(Guid.NewGuid(), "Test med test på")
             }));
             _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()
-                {"Æble, Kartoffel, Julebryg, Fløde, Vegansk"}));
+                { "Æble, Kartoffel, Julebryg, Fløde, Vegansk" }));
             _recipeCacheRepositoryMock.Setup(x => x.Upsert(_testRecipe.Description, _testRecipe.Id))
                 .Returns(Task.FromResult(false));
 
@@ -282,7 +284,7 @@ namespace P7Internet.Test.Controllers
                 .Setup(x => x.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>()))
                 .ReturnsAsync(true);
             _etilbudsAvisServiceMock.Setup(x => x.GetAllOffers(offerRequest))
-                .ReturnsAsync(new List<Offer>() {new Offer(), new Offer()});
+                .ReturnsAsync(new List<Offer>() { new Offer(), new Offer() });
 
             //Act
             IActionResult actionResult = controller.GetOffer(offerRequest).Result;
@@ -327,7 +329,7 @@ namespace P7Internet.Test.Controllers
                 .ReturnsAsync(true);
             _etilbudsAvisServiceMock.Setup(x => x.GetAllOffers(offerRequest)).ReturnsAsync(value: null);
             _sallingServiceMock.Setup(x => x.GetRelevantProducts(It.IsAny<string>()))
-                .ReturnsAsync(new List<Offer>() {new Offer(), new Offer()});
+                .ReturnsAsync(new List<Offer>() { new Offer(), new Offer() });
 
             //Act
             IActionResult actionResult = controller.GetOffer(offerRequest).Result;
@@ -349,7 +351,7 @@ namespace P7Internet.Test.Controllers
             var offerRequest = new OfferRequest(1, "Kylling", 5000, "true");
             _cachedOfferRepositoryMock.Setup(x => x.GetOffer(It.IsAny<string>())).ReturnsAsync(value: null);
             _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()
-                {"Æble, Kartoffel, Julebryg, Fløde, Vegansk"}));
+                { "Æble, Kartoffel, Julebryg, Fløde, Vegansk" }));
             _etilbudsAvisServiceMock.Setup(x => x.GetAllOffers(offerRequest)).ReturnsAsync(value: null);
             _sallingServiceMock.Setup(x => x.GetRelevantProducts(It.IsAny<string>()))
                 .ReturnsAsync(value: null);
@@ -409,7 +411,7 @@ namespace P7Internet.Test.Controllers
         {
             //Arrange
             var createUserRequest = new CreateUserRequest("TestUser", "Test@example.com", "TestPass");
-            var user = new User("TestUser", "Test@example.com") {Id = Guid.NewGuid()};
+            var user = new User("TestUser", "Test@example.com") { Id = Guid.NewGuid() };
             _userRepositoryMock.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<string>())).Returns(user);
             _userRepositoryMock.Setup(x => x.Upsert(It.IsAny<User>(), It.IsAny<string>())).ReturnsAsync(true);
             _userSessionRepositoryMock.Setup(x => x.GenerateSessionToken(user.Id)).ReturnsAsync("SeshToken");
@@ -453,7 +455,7 @@ namespace P7Internet.Test.Controllers
         {
             //Arrange
             var loginRequest = new LogInRequest("TestUser", "TestPass");
-            var user = new User("TestUser", "Test@example.com") {Id = Guid.NewGuid()};
+            var user = new User("TestUser", "Test@example.com") { Id = Guid.NewGuid() };
             _userRepositoryMock.Setup(x => x.LogIn(It.IsAny<string>(), It.IsAny<string>())).ReturnsAsync(user);
             _userSessionRepositoryMock.Setup(x => x.GenerateSessionToken(user.Id)).ReturnsAsync("SeshToken");
 
@@ -565,16 +567,16 @@ namespace P7Internet.Test.Controllers
             var getFavRecipesReq = new GetFavouriteRecipesRequest(_testUser.Id, _seshToken);
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken)).ReturnsAsync(true);
             _favouriteRecipeRepositoryMock.Setup(x => x.Get(It.IsAny<Guid>()))
-                .ReturnsAsync(new List<Recipe>() {new Recipe(_testRecipe.Id, "Favrecipe")});
+                .ReturnsAsync(new List<Recipe>() { new Recipe(_testRecipe.Id, "Favrecipe") });
             _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()));
-            
+
             //Act
             IActionResult actionResult = controller.GetFavouriteRecipes(getFavRecipesReq).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
-            Assert.AreEqual(typeof(List<RecipeResponse>),contentResult.Value.GetType());
+            Assert.AreEqual(typeof(List<RecipeResponse>), contentResult.Value.GetType());
             _favouriteRecipeRepositoryMock.Verify(x => x.Get(_testUser.Id), Times.Once);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
             _iIngredientRepositoryMock.Verify(x => x.GetAllIngredients(), Times.Once);
@@ -738,6 +740,7 @@ namespace P7Internet.Test.Controllers
             Assert.NotNull(contentResult);
             Assert.AreEqual("User session is not valid, please login again", contentResult.Value);
         }
+
         [Test()]
         public void DeleteUserSuccess()
         {
@@ -748,16 +751,17 @@ namespace P7Internet.Test.Controllers
             _userRepositoryMock.Setup(x => x.DeleteUser(_testUser)).ReturnsAsync(true);
 
             //Act
-            IActionResult actionResult = controller.DeleteUser(_testUser.Id,_seshToken).Result;
+            IActionResult actionResult = controller.DeleteUser(_testUser.Id, _seshToken).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
-            Assert.AreEqual("User deleted",contentResult.Value);
+            Assert.AreEqual("User deleted", contentResult.Value);
             _userRepositoryMock.Verify(x => x.DeleteUser(_testUser), Times.Once);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
             _userRepositoryMock.Verify(x => x.GetUserFromId(_testUser.Id), Times.Once);
         }
+
         [Test()]
         public void DeleteUserFailUserNotAuthorized()
         {
@@ -765,14 +769,15 @@ namespace P7Internet.Test.Controllers
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken))
                 .ReturnsAsync(false);
             //Act
-            IActionResult actionResult = controller.DeleteUser(_testUser.Id,_seshToken).Result;
+            IActionResult actionResult = controller.DeleteUser(_testUser.Id, _seshToken).Result;
             var contentResult = actionResult as UnauthorizedObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
-            Assert.AreEqual("User session is not valid, please login again",contentResult.Value);
+            Assert.AreEqual("User session is not valid, please login again", contentResult.Value);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
         }
+
         [Test()]
         public void DeleteUserFailUserNotFound()
         {
@@ -781,12 +786,12 @@ namespace P7Internet.Test.Controllers
                 .ReturnsAsync(true);
             _userRepositoryMock.Setup(x => x.GetUserFromId(_testUser.Id)).ReturnsAsync(value: null);
             //Act
-            IActionResult actionResult = controller.DeleteUser(_testUser.Id,_seshToken).Result;
+            IActionResult actionResult = controller.DeleteUser(_testUser.Id, _seshToken).Result;
             var contentResult = actionResult as NotFoundObjectResult;
 
             //Assert
             Assert.NotNull(contentResult);
-            Assert.AreEqual("User does not exist",contentResult.Value);
+            Assert.AreEqual("User does not exist", contentResult.Value);
             _userSessionRepositoryMock.Verify(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken), Times.Once);
             _userRepositoryMock.Verify(x => x.GetUserFromId(_testUser.Id), Times.Once);
         }
@@ -816,6 +821,7 @@ namespace P7Internet.Test.Controllers
                 Times.Once);
             _userRepositoryMock.Verify(x => x.GetUser(_testUser.Name), Times.Once);
         }
+
         [Test()]
         public void ChangePasswordUserNotFound()
         {
@@ -838,7 +844,7 @@ namespace P7Internet.Test.Controllers
                 Times.Once);
             _userRepositoryMock.Verify(x => x.ChangePassword(_testUser, It.IsAny<string>(), It.IsAny<string>()),
                 Times.Never);
-            _userRepositoryMock.Verify(x=> x.GetUser(It.IsAny<string>()),Times.Once);
+            _userRepositoryMock.Verify(x => x.GetUser(It.IsAny<string>()), Times.Once);
         }
 
         [Test()]

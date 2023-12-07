@@ -40,6 +40,7 @@ public class HelperFunctions
         string salt = BitConverter.ToString(buffer);
         return salt;
     }
+
     /// <summary>
     /// Helper function to get ingredients from a text file
     /// </summary>

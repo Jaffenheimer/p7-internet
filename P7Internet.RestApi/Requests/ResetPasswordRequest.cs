@@ -7,8 +7,8 @@ public class ResetPasswordRequest
 
     public ResetPasswordRequest()
     {
-        
     }
+
     public ResetPasswordRequest(string password, string verificationCode)
     {
         Password = password;
