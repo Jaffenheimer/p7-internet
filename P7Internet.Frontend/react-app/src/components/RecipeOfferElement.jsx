@@ -75,14 +75,15 @@ const RecipeOfferElement = ({ ingredient }) => {
           setOffers(_offers);
           setOffer(FindCheapestProduct(_offers));
         }
-
-        dispatch(
-          offersActions.addTotalPrice({
-            [FindCheapestProduct(offers).name]: `${
-              FindCheapestProduct(offers).price
-            }`,
-          })
-        );
+        if (FindCheapestProduct(offers).name !== undefined) {
+          dispatch(
+            offersActions.addTotalPrice({
+              [FindCheapestProduct(offers).name]: `${
+                FindCheapestProduct(offers).price
+              }`,
+            })
+          );
+        }
       });
     }
   }, []);
@@ -96,7 +97,7 @@ const RecipeOfferElement = ({ ingredient }) => {
         ) : (
           <>
             <p className="offer-default no-print offer-price">
-              {offer.price},-
+              {offer.name == null ? "[pris ikke fundet]" : offer.price + ",-"}
             </p>
             <img
               className="IngredientStoreLogo offer-default no-print"

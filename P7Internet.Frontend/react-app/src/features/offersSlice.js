@@ -33,9 +33,7 @@ export const offersSlice = createSlice({
         return parseFloat(state.finalRecipes[key]);
       });
 
-      state.finalRecipesSum = Math.round(
-        valuesDictionary.reduce((a, b) => a + b, 0)
-      );
+      state.finalRecipesSum = valuesDictionary.reduce((a, b) => a + b, 0);
     },
   },
 });
