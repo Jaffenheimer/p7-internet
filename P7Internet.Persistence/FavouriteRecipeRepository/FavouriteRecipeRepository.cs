@@ -109,7 +109,8 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     }
 
     /// <summary>
-    /// Upserts a list of recipes to the history table
+    /// Upserts a recipe id to the history table and deletes the oldest recipe 
+    /// if the user has more than 50 recipes in the history table
     /// </summary>
     /// <param name="userId"></param>
     /// <param name="recipeId"></param>
@@ -122,11 +123,16 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
             throw new ArgumentException(
                 $@"The recipe with the id: {recipeId} does not exist in the database. And therefore cannot be added to the favourite recipes.");
 
-        var query = $@"INSERT INTO {HistoryTableName} (UserId, RecipeId)
+        var insertQuery = $@"INSERT INTO {HistoryTableName} (UserId, RecipeId)
                        VALUES (@UserId, @RecipeId)";
-
-        var result = await Connection.ExecuteAsync(query, new {UserId = userId, RecipeId = recipeId});
-
+        var countQuery =  $@"SELECT COUNT(*) FROM {HistoryTableName} WHERE UserId = @UserId";
+        var deleteQuery = $@"DELETE FROM {HistoryTableName} WHERE Updated IS NOT NULL AND UserId = @UserId ORDER BY Updated ASC LIMIT 1;";
+        var result = await Connection.ExecuteAsync(insertQuery, new {UserId = userId, RecipeId = recipeId});
+        var count = await Connection.QueryAsync(countQuery, new {UserId = userId});
+        if (count > 50)
+        {
+            await Connection.ExecuteAsync(deleteQuery, new {UserId = userId});
+        }
         return result > 0;
     }
 }
