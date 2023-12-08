@@ -59,7 +59,7 @@ describe("clicking the select recipe button:", () => {
 });
 
 test("if additionalOwnedIngredientsModalContainerIsOpen is true the AdditionalOwnedIngredients modal is shown", async () => {
-  const recipes = [new Recipe("title", ["ingredients"], "method")];
+  const recipes = [new Recipe("1", "title", ["ingredients"])];
   renderComponentWithDispatchActions(<SelectRecipeButton />, [
     recipeActions.addRecipes(recipes),
     pageActions.openAdditionalOwnedIngredientsModalContainer(),

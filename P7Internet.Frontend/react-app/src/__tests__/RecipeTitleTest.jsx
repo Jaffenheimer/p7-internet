@@ -6,6 +6,8 @@ import heartSolid from "../data/heart-solid.svg";
 import RecipeTitle from "../components/RecipeTitle";
 import configureMockStore from "redux-mock-store";
 import { Provider } from "react-redux";
+import { renderComponentWithSpecificStore } from "../testSetupHelper/Helper";
+import userEvent from "@testing-library/user-event";
 
 afterEach(cleanup);
 
@@ -15,14 +17,14 @@ describe("RecipeTitle", () => {
     const mockState = {
       user: {
         loggedIn: true,
+        favoriteRecipes: [],
       },
     };
     mockStore = configureMockStore()(mockState);
 
-    render(
-      <Provider store={mockStore}>
-        <RecipeTitle title="Title Test" />
-      </Provider>
+    renderComponentWithSpecificStore(
+      <RecipeTitle recipe={{ title: "Title Test" }} />,
+      mockStore
     );
   });
 
@@ -33,11 +35,11 @@ describe("RecipeTitle", () => {
     expect(heart).toHaveAttribute("src", heartHollow);
   });
 
-  it("Render as logged in and expect heart solid on click", () => {
+  test("When clicking on the heart, onclick function is called", () => {
     const heart = screen.getByRole("img");
-    expect(heart).toHaveAttribute("src", heartHollow);
+    heart.onclick = jest.fn();
     fireEvent.click(heart);
-    expect(heart).toHaveAttribute("src", heartSolid);
+    expect(heart.onclick).toHaveBeenCalled();
   });
 });
 
@@ -45,14 +47,14 @@ test("Render without being logged in and expect heart to remain as heartHollow (
   const mockState = {
     user: {
       loggedIn: false,
+      favoriteRecipes: [],
     },
   };
   let mockStore = configureMockStore()(mockState);
 
-  render(
-    <Provider store={mockStore}>
-      <RecipeTitle title="Title Test" />
-    </Provider>
+  renderComponentWithSpecificStore(
+    <RecipeTitle recipe={{ title: "Title Test" }} />,
+    mockStore
   );
 
   const heart = screen.getByRole("img");

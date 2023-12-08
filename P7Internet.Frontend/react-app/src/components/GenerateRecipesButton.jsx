@@ -11,6 +11,7 @@ import {
   useGenerateUserRecipeMutation,
 } from "../services/recipeEndpoints";
 import recipeFromResponse from "../helperFunctions/recipeFromResponse";
+import Recipe from "../objects/Recipe";
 
 const GenerateRecipesButton = () => {
   const dispatch = useDispatch();
@@ -54,13 +55,13 @@ const GenerateRecipesButton = () => {
             // Convert recipe from response into recipe object
             // var recipeObject = recipeFromResponse(recipe);
             console.log("Recipe object: ", recipe);
-            const newRecipe = {
-              id: recipe.recipeId,
-              title: i,
-              ingredients: ["ingredienser"],
-              method: ["metoder"],
-              shortIngredients: ["ingredienser"],
-            };
+            const newRecipe = new Recipe(
+              recipe.recipeId,
+              i,
+              ["ingredienser"],
+              ["metoder"],
+              ["ingredienser"]
+            );
             i++;
             dispatch(recipeActions.addRecipe(newRecipe));
           });

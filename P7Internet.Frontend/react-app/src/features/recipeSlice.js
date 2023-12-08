@@ -11,17 +11,13 @@ export const recipeSlice = createSlice({
   name: "recipe",
   initialState,
   reducers: {
+    addRecipes(state, action) {
+      for (const recipe of action.payload) {
+        state.recipes.push(recipe);
+      }
+    },
     addRecipe(state, action) {
-      // console.log("Actions: ", action.payload);
-      const recipe = new Recipe(
-        action.payload.id,
-        action.payload.title,
-        action.payload.ingredients,
-        action.payload.method,
-        action.payload.shortIngredients
-      );
-      state.recipes.push(recipe);
-      // console.log("Lenght of state: ", state.recipes.length);
+      state.recipes.push(action.payload);
     },
     removeRecipe(state, action) {
       state.recipes = state.recipes.filter(
