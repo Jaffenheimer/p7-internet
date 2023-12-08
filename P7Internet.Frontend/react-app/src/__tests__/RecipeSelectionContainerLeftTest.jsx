@@ -16,12 +16,11 @@ afterEach(cleanup);
 
 test("Content of left container is rendered correctly ", () => {
   const recipes = [
-    new Recipe("id", "Recipe 1", ["ingredient 1", "ingredient 2"]),
-    new Recipe("id", "Recipe 2", ["ingredient 3", "ingredient 4"]),
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
   ];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
-    recipeActions.addRecipes(new Recipe("id", "Recipe 1", ["ingredient 1", "ingredient 2"])),
-    recipeActions.addRecipes(new Recipe("id", "Recipe 2", ["ingredient 3", "ingredient 4"])),
+    recipeActions.addRecipes(recipes),
   ]);
   const heart = screen.getByTestId("heartImage");
   expect(screen.getByText(/Recipe 1/)).toBeInTheDocument();
@@ -41,12 +40,11 @@ test("Content of left container is rendered correctly ", () => {
 
 test("Recipe changes after pressing arrow right", async () => {
   const recipes = [
-    new Recipe("id1", "Recipe 1", ["ingredient 1", "ingredient 2"]),
-    new Recipe("id2", "Recipe 2", ["ingredient 3", "ingredient 4"]),
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
   ];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
-    recipeActions.addRecipes(new Recipe("id", "Recipe 1", ["ingredient 1", "ingredient 2"])),
-    recipeActions.addRecipes(new Recipe("id", "Recipe 2", ["ingredient 3", "ingredient 4"])),
+    recipeActions.addRecipes(recipes),
   ]);
   const rightArrow = screen.getByTestId("selectArrowRight");
 
@@ -57,14 +55,12 @@ test("Recipe changes after pressing arrow right", async () => {
 
 test("Recipe changes after pressing arrow left", async () => {
   const recipes = [
-    new Recipe("id1",  "Recipe 1", ["ingredient 1", "ingredient 2"]),
-    new Recipe("id2", "Recipe 2", ["ingredient 3", "ingredient 4"]),
-    new Recipe("id3","Recipe 3", ["ingredient 5", "ingredient 6"]),
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
+    new Recipe("Recipe 3", ["ingredient 5", "ingredient 6"]),
   ];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
-    recipeActions.addRecipes(new Recipe("id1",  "Recipe 1", ["ingredient 1", "ingredient 2"])),
-    recipeActions.addRecipes(new Recipe("id2", "Recipe 2", ["ingredient 3", "ingredient 4"]),),
-    recipeActions.addRecipes(new Recipe("id3","Recipe 3", ["ingredient 5", "ingredient 6"]),),
+    recipeActions.addRecipes(recipes),
   ]);
   const leftArrow = screen.getByTestId("selectArrowLeft");
 
@@ -75,15 +71,12 @@ test("Recipe changes after pressing arrow left", async () => {
 
 test("Marking one recipe as favorite, changes state of the heart icon for that recipe, but remaining recipes are not marked as favorite", async () => {
   const recipes = [
-    new Recipe("id1",  "Recipe 1", ["ingredient 1", "ingredient 2"]),
-    new Recipe("id2", "Recipe 2", ["ingredient 3", "ingredient 4"]),
-    new Recipe("id3","Recipe 3", ["ingredient 5", "ingredient 6"]),
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
+    new Recipe("Recipe 3", ["ingredient 5", "ingredient 6"]),
   ];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
-    recipeActions.addRecipes(new Recipe("id1",  "Recipe 1", ["ingredient 1", "ingredient 2"]),),
-    recipeActions.addRecipes(new Recipe("id2", "Recipe 2", ["ingredient 3", "ingredient 4"]),),
-    recipeActions.addRecipes(new Recipe("id3","Recipe 3", ["ingredient 5", "ingredient 6"]),),
-    
+    recipeActions.addRecipes(recipes),
     userActions.addFavoriteRecipe(recipes[0]), //mark first recipe as favorite
   ]);
 

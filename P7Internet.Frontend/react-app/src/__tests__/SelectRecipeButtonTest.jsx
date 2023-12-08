@@ -25,7 +25,7 @@ describe("clicking the select recipe button:", () => {
   beforeEach(() => {
     const mockState = {
       recipe: {
-        recipes: [new Recipe("id", "title", ["ingredients"], ["method"])],
+        recipes: [new Recipe("title", ["ingredients"], "method")],
       },
       offers: {
         stores: [],
@@ -59,9 +59,9 @@ describe("clicking the select recipe button:", () => {
 });
 
 test("if additionalOwnedIngredientsModalContainerIsOpen is true the AdditionalOwnedIngredients modal is shown", async () => {
-  const recipes = [new Recipe("id", "title", ["ingredients"], ["method"])];
+  const recipes = [new Recipe("title", ["ingredients"], "method")];
   renderComponentWithDispatchActions(<SelectRecipeButton />, [
-    recipeActions.addRecipes(new Recipe("id", "title", ["ingredients"], ["method"])),
+    recipeActions.addRecipes(recipes),
     pageActions.openAdditionalOwnedIngredientsModalContainer(),
   ]);
 

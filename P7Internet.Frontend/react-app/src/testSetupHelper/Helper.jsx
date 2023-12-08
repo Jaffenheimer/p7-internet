@@ -49,7 +49,6 @@ function renderComponentWithDispatchActions(component, dispatchActions) {
   const store = configureDefaultStore();
   dispatchActions.forEach((dispatchAction) => {
     store.dispatch(dispatchAction);
-    console.log("store: ", store);
   });
   render(<Provider store={store}>{component}</Provider>);
 }

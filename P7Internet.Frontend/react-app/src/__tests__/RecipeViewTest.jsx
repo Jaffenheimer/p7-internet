@@ -19,11 +19,7 @@ import Recipe from "../objects/Recipe.js";
 afterEach(cleanup);
 
 test("Renders expected default recipe not marked as favorite by default", () => {
-  const recipes = {
-    id: "0",
-    title: "Recipe 1",
-    ingredients: ["ingredient 1", "ingredient 2"],
-  };
+  const recipes = [new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"])];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
     recipeActions.addRecipes(recipes),
   ]);
@@ -36,25 +32,14 @@ test("Renders expected default recipe not marked as favorite by default", () => 
 });
 
 test("Renders expected default recipe not marked as favorite by default when currentRecipeIndex is changed", () => {
-  const recipe1 = {
-    id: "1",
-    title: "Recipe 1",
-    ingredients: ["ingredient 1", "ingredient 2"],
-    method: ["method"],
-    shortIngredients: ["1", "2"],
-  };
-  const recipe2 = {
-    id: "1",
-    title: "Recipe 2",
-    ingredients: ["ingredient 3", "ingredient 4"],
-    method: ["method"],
-    shortIngredients: ["1", "2"],
-  };
+  const recipes = [
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
+  ];
   // const mockStore = getMockStoreWithMultipleRecipesWithRecipeIndexOf(0);
   // expect(defaultRecipes).toHaveLength(2);
   renderComponentWithDispatchActions(<RecipeView />, [
-    recipeActions.addRecipes(recipe1),
-    recipeActions.addRecipes(recipe2),
+    recipeActions.addRecipes(recipes),
     recipeActions.setCurrentRecipeIndex(1),
   ]);
 
@@ -79,9 +64,10 @@ test("When clicking heart, the dispatch method for adding it to favorites is cal
     page: {},
     recipe: {
       recipes: [
+        recipe1,
         {
-          title: "Recipe 1",
-          ingredients: ["ingredient 1", "ingredient 2"],
+          title: "Recipe 2",
+          ingredients: ["ingredient 3", "ingredient 4"],
         },
       ],
       currentRecipeIndex: 0,
@@ -101,18 +87,9 @@ test("When clicking heart, the dispatch method for adding it to favorites is cal
 });
 
 test("heart is solid when recipe is marked as favorite", () => {
-  //new Recipe(response.recipeId, title, filteredingredientList, methodArray, response.ingredients);
-
-  const recipes = {
-    id: "1",
-    title: "Recipe 1",
-    ingredients: ["1", "2"],
-    method: ["method"],
-    shortIngredients: ["1", "2"],
-  };
-
+  const recipes = [new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"])];
   renderComponentWithDispatchActions(<RecipeView />, [
-    recipeActions.addRecipes("heart: ", recipes),
+    recipeActions.addRecipes(recipes),
     userActions.addFavoriteRecipe(recipes[0]),
   ]);
 
