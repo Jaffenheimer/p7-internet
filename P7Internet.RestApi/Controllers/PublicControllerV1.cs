@@ -294,15 +294,7 @@ public class PublicControllerV1 : ControllerBase
             return Ok(res);
         }
 
-        var queryStrings = req.SearchTerm.Split(" ");
-        var query = req.SearchTerm;
-        foreach (var q in queryStrings)
-        {
-            _ingredientRepository.CheckIfIngredientExists(q);
-            query = q;
-        }
-
-        res = await _sallingService.GetRelevantProducts(query.Trim());
+        res = await _sallingService.GetRelevantProducts(req.SearchTerm);
 
         if (res != null)
         {
