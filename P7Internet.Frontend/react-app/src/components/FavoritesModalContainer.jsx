@@ -20,7 +20,8 @@ import {
 } from "../helperFunctions/cookieHandler";
 import Recipe from "../objects/Recipe";
 
-const FavoritesModalContainer = () => {
+const FavoritesModalContainer = ({ closeModal }) => {
+  console.log(closeModal);
   const [userDeleteFavoriteRecipe, { isDeleteFavoriteRecipeLoading }] =
     useUserDeleteFavoriteRecipeMutation();
   const [userPostFavoriteRecipe, { isPostFavoriteRecipeLoading }] =
@@ -31,51 +32,51 @@ const FavoritesModalContainer = () => {
   const recipes = useSelector((state) => state.recipe.recipes);
   const favoriteRecipes = useSelector((state) => state.user.favoriteRecipes); //useState([]);
 
-  useEffect(() => {
-    const getFavoriteRecipes = async () => {
-      try {
-        const userId = getCookieUserId();
-        const sessionToken = getCookieSessionToken();
-        let response = await userGetAllFavoriteRecipes({
-          userId: userId,
-          sessionToken: sessionToken,
-        }).unwrap();
-        const recipes = [];
-        for (const favoriteRecipe of response) {
-          recipes.push(
-            new Recipe(
-              favoriteRecipe.recipeId,
-              "Agurk",
-              favoriteRecipe.ingredients,
-              ["metode 1"],
-              favoriteRecipe.ingredients
-            )
-          );
-        }
-        dispatch(userActions.setFavoriteRecipes(recipes));
-        // console.log(response);
-
-        // if (response.error.originalStatus === 200) {
-        //   setFavoriteRecipes(response.data);
-        // }
-        // if (response.error.originalStatus === 401) {
-        //   toast.error(
-        //     "Din session er udløbet. Log ind igen for at se din historik"
-        //   );
-        // }
-        // if (response.error.originalStatus === 404) {
-        // } // use default value of empty string, since no history is found
-      } catch (error) {
-        //AF EN ELLER ANDED GRUND DUKKER DER STADIG EN ERROR OP I CONSOLEN, NÅR DER IKKE ER NOGEN FAVORITRECIPE
-        console.log("the erorr;", error);
-        if (error.originalStatus === 500)
-          //if no recipes are found, set favoriteRecipes to empty array
-          dispatch(userActions.setFavoriteRecipes([]));
-        else console.log(error);
+  const getFavoriteRecipes = async () => {
+    try {
+      const userId = getCookieUserId();
+      const sessionToken = getCookieSessionToken();
+      console.log(sessionToken);
+      let response = await userGetAllFavoriteRecipes({
+        userId: userId,
+        sessionToken: sessionToken,
+      }).unwrap();
+      console.log("rez", response);
+      const recipes = [];
+      for (const favoriteRecipe of response) {
+        recipes.push(
+          new Recipe(
+            favoriteRecipe.recipeId,
+            "Agurk",
+            favoriteRecipe.ingredients,
+            ["metode 1"],
+            favoriteRecipe.ingredients
+          )
+        );
       }
-    };
-
+      dispatch(userActions.setFavoriteRecipes(recipes));
+    } catch (error) {
+      console.log(error.originalStatus);
+      if (error.originalStatus === 401) {
+        console.log("what");
+        closeModal();
+        //hvorfor dukker den op 2 gange?
+        toast.error(
+          "Din session er udløbet. Log ind igen for at se dine favorit opskrifter "
+        );
+        dispatch(userActions.logoutUser());
+        return;
+      }
+      if (error.originalStatus === 500)
+        //if no recipes are found, set favoriteRecipes to empty array
+        dispatch(userActions.setFavoriteRecipes([]));
+      console.log(error.originalStatus);
+    }
+  };
+  useEffect(() => {
+    // try {
     getFavoriteRecipes();
+    // }
   }, []);
   const dispatch = useDispatch();
 

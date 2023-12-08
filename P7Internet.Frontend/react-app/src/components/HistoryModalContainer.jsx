@@ -15,7 +15,7 @@ import { useUserGetRecipesInHistoryMutation } from "../services/usersEndpoints";
 import Recipe from "../objects/Recipe";
 import { toast } from "react-toastify";
 
-const HistoryModalContainer = () => {
+const HistoryModalContainer = ({ closeModal }) => {
   const [userGetRecipesInHistory] = useUserGetRecipesInHistoryMutation();
   const dispatch = useDispatch();
   const recipes = useSelector((state) => state.recipe.recipes);
@@ -32,12 +32,6 @@ const HistoryModalContainer = () => {
           sessionToken: sessionToken,
         }).unwrap();
         console.log("response", response);
-        if (response.error.originalStatus === 401) {
-          toast.error(
-            "Din session er udløbet. Log ind igen for at se din historik"
-          );
-          return;
-        }
         const recipes = [];
         for (const recipeInHistory of response) {
           recipes.push(
@@ -56,7 +50,15 @@ const HistoryModalContainer = () => {
         if (error.originalStatus === 500)
           //if no recipes are found, set favoriteRecipes to empty array
           dispatch(userActions.setHistory([]));
-        else console.log(error);
+        if (error.originalStatus === 401) {
+          closeModal();
+          //hvorfor dukker den op 2 gange?
+          toast.error(
+            "Din session er udløbet. Log ind igen for at se din historik"
+          );
+          dispatch(userActions.logoutUser());
+          return;
+        } else console.log(error);
       }
     };
 
