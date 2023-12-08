@@ -6,7 +6,10 @@ import { toast } from "react-toastify";
 import { recipeActions } from "../features/recipeSlice";
 //import { defaultRecipes } from "../objects/DefaultRecipes";
 import recipeBodyCreator from "../helperFunctions/recipeBodyCreator";
-import { useGenerateRecipeMutation, useGenerateUserRecipeMutation } from "../services/recipeEndpoints";
+import {
+  useGenerateRecipeMutation,
+  useGenerateUserRecipeMutation,
+} from "../services/recipeEndpoints";
 import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 
 const GenerateRecipesButton = () => {
@@ -15,51 +18,55 @@ const GenerateRecipesButton = () => {
     (state) => state.recipeGeneration.ownedIngredients
   );
 
-  const [generateUserRecipe, {isLoading: isRecipeUserLoading}] = useGenerateUserRecipeMutation();
-  const [generateRecipe, {isLoading: isRecipeLoading}] = useGenerateRecipeMutation();
+  const [generateUserRecipe, { isLoading: isRecipeUserLoading }] =
+    useGenerateUserRecipeMutation();
+  const [generateRecipe, { isLoading: isRecipeLoading }] =
+    useGenerateRecipeMutation();
 
-
-  const recipeGenData = useSelector((state) => state.recipeGeneration); 
+  const recipeGenData = useSelector((state) => state.recipeGeneration);
   const loggedIn = useSelector((state) => state.user.loggedIn);
-
 
   function goToPageFullRecipeSelection() {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
-  }   
+  }
 
-  async function fetchRecipes(body){
-    var response;
-    
-    if(!isRecipeLoading || !isRecipeUserLoading){
+  async function fetchRecipes(body) {
+    var response; 
+    const recepies = [];
 
+    if (!isRecipeLoading || !isRecipeUserLoading) {
       try {
         toast.loading("Generer Opskrifter");
-        
-        if(loggedIn){
+
+        if (loggedIn) {
           response = await generateUserRecipe(body).unwrap();
         } else {
           response = await generateRecipe(body).unwrap();
         }
 
-        if (response){
-          console.log("Response before; " + response + "Num: " + response.length);
+        if (response) {
+          console.log(
+            "Response before; " + response + "Num: " + response.length
+          );
 
-         response.forEach((recipe) => {
+          response.forEach((recipe) => {
             //Convert recipe from response into recipe object
-            var recipeObject = recipeFromResponse(recipe); 
-            console.log("Recipe object: ", recipeObject);
-            dispatch(recipeActions.addRecipes(recipeObject));
-         });
+            var recipeObject = recipeFromResponse(recipe);
+            recepies.push(recipeObject);
+          });
 
+          if (recepies.length !== 0) {
+            dispatch(recipeActions.addRecipes(recepies));
+          } else {
+            toast.error("Fejl ved generation");
+          }
+          
         }
-
       } catch (error) {
-        
+        console.log(error);
+        toast.error("Fejl ved generation");
       }
-
-
     }
-
   }
 
   //handles all the logic for when the button is clicked
@@ -73,7 +80,7 @@ const GenerateRecipesButton = () => {
 
     //Create Body for request
     const body = recipeBodyCreator(loggedIn, recipeGenData);
-    
+
     //Runs function to request recipes from backend
     await fetchRecipes(body);
 

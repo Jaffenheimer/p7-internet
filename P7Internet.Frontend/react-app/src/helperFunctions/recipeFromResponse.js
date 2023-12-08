@@ -17,7 +17,7 @@ function recipeFromResponse(response) {
   const filteredingredientList = ingredientList.slice(0);
 
   //Returns an recipe
-  return new Recipe(response.recipeId, title, filteredingredientList, methodArray, response.ingredients);
+  return new Recipe(title, filteredingredientList, methodArray, response.recipeId, response.ingredients);
 }
 
 export default recipeFromResponse;
