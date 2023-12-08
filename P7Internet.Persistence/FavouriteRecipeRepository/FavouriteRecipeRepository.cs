@@ -89,6 +89,22 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 
         return resultFromDb != null;
     }
+    
+    /// <summary>
+    /// Checks if a recipe is already a favourite recipe
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="recipeId"></param>
+    /// <returns>Returns true of the process was successful E.g resultFromDb is something else than NULL else it returns false</returns>
+    private async Task<bool> CheckIfRecipeIsAlreadyInHistory(Guid userId, Guid recipeId)
+    {
+        var query = $@"SELECT RecipeId FROM {HistoryTableName} WHERE UserId = @UserId AND RecipeId = @RecipeId";
+
+        var resultFromDb =
+            await Connection.QueryFirstOrDefaultAsync<string>(query, new {UserId = userId, RecipeId = recipeId});
+
+        return resultFromDb != null;
+    }
 
     /// <summary>
     /// Gets the history of recipes that the user has seen
@@ -123,10 +139,16 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
             throw new ArgumentException(
                 $@"The recipe with the id: {recipeId} does not exist in the database. And therefore cannot be added to the favourite recipes.");
 
+        var recipeIsAlreadyInHistory = await CheckIfRecipeIsAlreadyInHistory(userId, recipeId);
+        if (recipeIsAlreadyInHistory)
+            throw new ArgumentException($@"The recipe with the id: {recipeId} is already in history.");
+
+        
         var insertQuery = $@"INSERT INTO {HistoryTableName} (UserId, RecipeId)
                        VALUES (@UserId, @RecipeId)";
         var countQuery =  $@"SELECT COUNT(*) FROM {HistoryTableName} WHERE UserId = @UserId";
         var deleteQuery = $@"DELETE FROM {HistoryTableName} WHERE Updated IS NOT NULL AND UserId = @UserId ORDER BY Updated ASC LIMIT 1;";
+        
         var result = await Connection.ExecuteAsync(insertQuery, new {UserId = userId, RecipeId = recipeId});
         var count = await Connection.ExecuteScalarAsync<int>(countQuery, new {UserId = userId});
         if (count > 50)

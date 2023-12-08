@@ -69,7 +69,6 @@ const AdditionalOwnedIngredientsModalContainer = () => {
       }
     }
     
-    dispatch(userActions.addRecipeToHistory(currentRecipe));
     closeModalAndGoToFullRecipeView();
   }
 
