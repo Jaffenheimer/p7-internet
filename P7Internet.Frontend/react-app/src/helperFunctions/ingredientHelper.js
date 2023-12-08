@@ -15,6 +15,7 @@ function convertIngredientsToIngredientObjects(ingredients) {
   for (const ingredient of ingredients) {
     ingredientObjects.push({ text: ingredient, id: nanoid(), stores: [] });
   }
+  console.log(ingredientObjects);
   return ingredientObjects;
 }
 

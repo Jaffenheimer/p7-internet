@@ -16,6 +16,8 @@ function FullRecipeView() {
   const dispatch = useDispatch();
 
   const recipes = useSelector((state) => state.recipe.recipes);
+  const finalRecipesSum = useSelector((state) => state.offers.finalRecipesSum);
+
   console.log("Fullrecipeveiw: ", recipes);
 
   const currentRecipeIndex = useSelector(
@@ -57,6 +59,7 @@ function FullRecipeView() {
           )}
           ListElement={RecipeOfferElement}
         />
+        <h4>Ialt: {finalRecipesSum},-</h4>
         <br />
         <MethodsList methods={recipe.recipe.method} />
         <div className="BottomButtons no-print">

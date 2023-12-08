@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { ingredientIsOwned } from "../helperFunctions/ingredientHelper";
 import { useGetOfferMutation } from "../services/offerEndpoints";
 import Offer from "../objects/Offer";
+import { offersActions } from "../features/offersSlice";
 
 const RecipeOfferElement = ({ ingredient }) => {
   const dispatch = useDispatch();
@@ -13,6 +14,9 @@ const RecipeOfferElement = ({ ingredient }) => {
   const stores = useSelector((state) => state.offers.stores);
   const radius = useSelector((state) => state.offers.radius);
   const recipes = useSelector((state) => state.recipe.recipes);
+  const ownedIngredients = useSelector(
+    (state) => state.recipeGeneration.ownedIngredients
+  );
 
   const currentRecipeIndex = useSelector(
     (state) => state.recipe.currentRecipeIndex
@@ -28,14 +32,6 @@ const RecipeOfferElement = ({ ingredient }) => {
 
   const [getOffer, { isOfferLoading }] = useGetOfferMutation();
 
-  function CalcMin(arr) {
-    let min;
-    for (let i = 0; i < arr.length; i++) {
-      min = Math.min(arr[i].price);
-    }
-    return min;
-  }
-
   useEffect(() => {
     const fetchOffer = async () => {
       try {
@@ -48,7 +44,7 @@ const RecipeOfferElement = ({ ingredient }) => {
           lon: encodeURIComponent(
             Math.round(JSON.parse(localStorage.getItem("geolocation")).lon)
           ),
-          pageSize: 24,
+          pageSize: 1,
           searchTerm: encodeURIComponent(ingredient.text),
           radius: encodeURIComponent(_radius),
           upcoming: false,
@@ -59,43 +55,36 @@ const RecipeOfferElement = ({ ingredient }) => {
       }
       return response;
     };
-    if (ingredient.text != "") {
+    if (
+      ingredient.text != "" &&
+      !ingredientIsOwned(ingredient, ownedIngredients)
+    ) {
       //Empty check should be removed when the empty ingredient issue is fixed
       fetchOffer().then((res) => {
-        res.forEach((offer) => {
+        for (let i = 0; i < res.length; i++) {
           let _offer = new Offer();
-          _offer.name = offer.name;
-          _offer.id = offer.id;
-          _offer.price = offer.price;
-          _offer.size = offer.size;
-          _offer.store = offer.store;
-          _offer.created = offer.created;
-          _offer.ending = offer.ending;
-          _offer.storeImage = offer.image;
+          _offer.name = res[i].name;
+          _offer.id = res[i].id;
+          _offer.price = res[i].price;
+          _offer.store = res[i].store;
+          _offer.created = res[i].created;
+          _offer.ending = res[i].ending;
+          _offer.storeImage = res[i].image;
           let _offers = offers;
           _offers.push(_offer);
           setOffers(_offers);
           setOffer(FindCheapestProduct(_offers));
-        });
+        }
+
+        dispatch(
+          offersActions.addTotalPrice({
+            [FindCheapestProduct(offers).name]: `${
+              FindCheapestProduct(offers).price
+            }`,
+          })
+        );
       });
     }
-
-    fetchOffer().then((res) => {
-      for (let i = 0; i < res.length; i++) {
-        let _offer = new Offer();
-        _offer.name = res[i].name;
-        _offer.id = res[i].id;
-        _offer.price = res[i].price;
-        _offer.store = res[i].store;
-        _offer.created = res[i].created;
-        _offer.ending = res[i].ending;
-        _offer.storeImage = res[i].image;
-        setOffer(_offer);
-        let _offers = offers;
-        _offers.push(_offer);
-        setOffers(_offers);
-      }
-    });
   }, []);
 
   return (
@@ -123,9 +112,11 @@ const RecipeOfferElement = ({ ingredient }) => {
 //#region Helpers
 function FindCheapestProduct(arr) {
   let offer;
+  if (typeof arr === "undefined" || arr.length == 0) return new Offer();
   offer = arr.reduce((prev, curr) => (prev.price < curr.price ? prev : curr));
   return offer;
 }
+
 function FindFullIngredientName(shortName, recipe) {
   let fullName;
   const fullNames = recipe.recipe.ingredients;
