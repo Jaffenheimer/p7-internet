@@ -45,10 +45,6 @@ const GenerateRecipesButton = () => {
         }
 
         if (response) {
-          console.log(
-            "Response before; " + response + "Num: " + response.length
-          );
-
           response.forEach((recipe) => {
             //Convert recipe from response into recipe object
             var recipeObject = recipeFromResponse(recipe);
