@@ -277,6 +277,7 @@ public class PublicControllerV1 : ControllerBase
     public async Task<IActionResult> GetOffer([FromQuery] OfferRequest req)
     {
         var checkIfOfferExists = await _cachedOfferRepository.GetOffer(req.SearchTerm);
+
         if (checkIfOfferExists != null)
         {
             return Ok(checkIfOfferExists);
@@ -290,8 +291,9 @@ public class PublicControllerV1 : ControllerBase
             {
                 await _cachedOfferRepository.UpsertOffer(offer.Name, offer.Price, offer.Store);
             }
-
-            return Ok(res);
+            var stores = req.StoresStringToList(req.Stores);
+            if (res.Any(offer => stores.Contains(offer.Store)))
+                return Ok(res);
         }
 
         res = await _sallingService.GetRelevantProducts(req.SearchTerm);
@@ -303,7 +305,6 @@ public class PublicControllerV1 : ControllerBase
                 if (await _cachedOfferRepository.GetOffer(product.Name) != null) break;
                 await _cachedOfferRepository.UpsertOffer(product.Name, product.Price, product.Store);
             }
-
             return Ok(res);
         }
 

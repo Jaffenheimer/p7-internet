@@ -1,4 +1,6 @@
 ﻿using Geohash;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace P7Internet.Requests
 {
@@ -18,18 +20,28 @@ namespace P7Internet.Requests
         public int Radius { get; set; }
         public string Upcoming { get; set; }
 
+        public string Stores { get; set; }
+
         public OfferRequest()
         {
         }
 
 
-        public OfferRequest(int pagesize, string searchTerm, int radius, string upcoming)
+        public OfferRequest(int pagesize, string searchTerm, int radius, string upcoming, string stores)
         {
             Pagesize = pagesize;
             SearchTerm = searchTerm;
             Radius = radius;
             Upcoming = upcoming;
+            Stores = stores;
         }
+
+        /// <summary>
+        /// Converts string in "store, store..." format to List<string> by splitting on comma and a whitespace
+        /// </summary>
+        /// <param name="stores"></param>
+        /// <returns>Returns a list of stores as strings</returns>
+        public List<string> StoresStringToList(string stores) => stores.Split(",").ToList();
 
         /// <summary>
         /// Composes the offer object to be sent to the etilbudsavis API as JsonObject
