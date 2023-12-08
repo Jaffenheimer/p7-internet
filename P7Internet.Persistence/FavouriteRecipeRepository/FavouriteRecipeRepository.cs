@@ -128,7 +128,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
         var countQuery =  $@"SELECT COUNT(*) FROM {HistoryTableName} WHERE UserId = @UserId";
         var deleteQuery = $@"DELETE FROM {HistoryTableName} WHERE Updated IS NOT NULL AND UserId = @UserId ORDER BY Updated ASC LIMIT 1;";
         var result = await Connection.ExecuteAsync(insertQuery, new {UserId = userId, RecipeId = recipeId});
-        var count = await Connection.QueryAsync(countQuery, new {UserId = userId});
+        var count = await Connection.ExecuteScalarAsync<int>(countQuery, new {UserId = userId});
         if (count > 50)
         {
             await Connection.ExecuteAsync(deleteQuery, new {UserId = userId});
