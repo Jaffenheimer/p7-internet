@@ -1,16 +1,73 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import { recipeActions } from "../features/recipeSlice";
+import { userActions } from "../features/userSlice";
 import { useSelector } from "react-redux";
+import {
+  getCookieUserId,
+  getCookieSessionToken,
+} from "../helperFunctions/cookieHandler";
 import Pages from "../objects/Pages";
 import "react-toastify/dist/ReactToastify.css";
 import { nanoid } from "@reduxjs/toolkit";
+import { useUserGetRecipesInHistoryMutation } from "../services/usersEndpoints";
+import Recipe from "../objects/Recipe";
 
 const HistoryModalContainer = () => {
+  const [userGetRecipesInHistory] = useUserGetRecipesInHistoryMutation();
   const dispatch = useDispatch();
-  const recipesInHistory = useSelector((state) => state.user.recipesInHistory);
   const recipes = useSelector((state) => state.recipe.recipes);
+
+  const recipesInHistory = useSelector((state) => state.user.recipesInHistory);
+
+  useEffect(() => {
+    const getRecipesInHistory = async () => {
+      try {
+        const userId = getCookieUserId();
+        const sessionToken = getCookieSessionToken();
+        let response = await userGetRecipesInHistory({
+          userId: userId,
+          sessionToken: sessionToken,
+        }).unwrap();
+        console.log("response", response);
+        const recipes = [];
+        for (const recipeInHistory of response) {
+          recipes.push(
+            new Recipe(
+              recipeInHistory.recipeId,
+              "Agurk",
+              recipeInHistory.ingredients,
+              ["metode 1"],
+              recipeInHistory.ingredients
+            )
+          );
+        }
+        dispatch(userActions.setHistory(recipes));
+        // console.log(response);
+
+        // if (response.error.originalStatus === 200) {
+        //   setFavoriteRecipes(response.data);
+        // }
+        // if (response.error.originalStatus === 401) {
+        //   toast.error(
+        //     "Din session er udløbet. Log ind igen for at se din historik"
+        //   );
+        // }
+        // if (response.error.originalStatus === 404) {
+        // } // use default value of empty string, since no history is found
+      } catch (error) {
+        //AF EN ELLER ANDED GRUND DUKKER DER STADIG EN ERROR OP I CONSOLEN, NÅR DER IKKE ER NOGEN FAVORITRECIPE
+        console.log("the erorr;", error);
+        if (error.originalStatus === 500)
+          //if no recipes are found, set favoriteRecipes to empty array
+          dispatch(userActions.setHistory([]));
+        else console.log(error);
+      }
+    };
+
+    getRecipesInHistory();
+  }, []);
 
   function selectRecipe(event, recipe) {
     event.preventDefault();

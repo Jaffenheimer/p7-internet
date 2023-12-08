@@ -31,6 +31,55 @@ const FavoritesModalContainer = () => {
   const recipes = useSelector((state) => state.recipe.recipes);
   const favoriteRecipes = useSelector((state) => state.user.favoriteRecipes); //useState([]);
 
+  useEffect(() => {
+    const getFavoriteRecipes = async () => {
+      try {
+        const userId = getCookieUserId();
+        const sessionToken = getCookieSessionToken();
+        console.log("sesh token: ", sessionToken);
+        console.log("user id: ", userId);
+        let response = await userGetAllFavoriteRecipes({
+          userId: userId,
+          sessionToken: sessionToken,
+        }).unwrap();
+        console.log("response", response);
+        const recipes = [];
+        for (const favoriteRecipe of response) {
+          recipes.push(
+            new Recipe(
+              favoriteRecipe.recipeId,
+              "Agurk",
+              favoriteRecipe.ingredients,
+              ["metode 1"],
+              favoriteRecipe.ingredients
+            )
+          );
+        }
+        dispatch(userActions.setFavoriteRecipes(recipes));
+        // console.log(response);
+
+        // if (response.error.originalStatus === 200) {
+        //   setFavoriteRecipes(response.data);
+        // }
+        // if (response.error.originalStatus === 401) {
+        //   toast.error(
+        //     "Din session er udløbet. Log ind igen for at se din historik"
+        //   );
+        // }
+        // if (response.error.originalStatus === 404) {
+        // } // use default value of empty string, since no history is found
+      } catch (error) {
+        //AF EN ELLER ANDED GRUND DUKKER DER STADIG EN ERROR OP I CONSOLEN, NÅR DER IKKE ER NOGEN FAVORITRECIPE
+        console.log("the erorr;", error);
+        if (error.originalStatus === 500)
+          //if no recipes are found, set favoriteRecipes to empty array
+          dispatch(userActions.setFavoriteRecipes([]));
+        else console.log(error);
+      }
+    };
+
+    getFavoriteRecipes();
+  }, []);
   const dispatch = useDispatch();
 
   function selectRecipe(event, selectedRecipe) {

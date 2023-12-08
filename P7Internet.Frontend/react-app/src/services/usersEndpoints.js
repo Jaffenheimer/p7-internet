@@ -54,6 +54,13 @@ const userEndpoints = apiSlice.injectEndpoints({
         body: { userId: userId, sessionToken: sessionToken },
       }),
     }),
+    userGetRecipesInHistory: builder.mutation({
+      query: ({ userId, sessionToken }) => ({
+        url: `/public/user/recipes-history`,
+        method: "POST",
+        body: { userId: userId, sessionToken: sessionToken },
+      }),
+    }),
     userResetPasswordEmailRequest: builder.mutation({
       query: ({ email }) => ({
         url: `/public/user/reset-password-email-request?email=${email}`,
@@ -113,6 +120,7 @@ export const {
   useUserPostFavoriteRecipeMutation,
   useUserDeleteFavoriteRecipeMutation,
   useUserGetAllFavoriteRecipesMutation,
+  useUserGetRecipesInHistoryMutation,
   useUserResetPasswordEmailRequestMutation,
   useUserResetPasswordMutation,
   useUserChangePasswordMutation,

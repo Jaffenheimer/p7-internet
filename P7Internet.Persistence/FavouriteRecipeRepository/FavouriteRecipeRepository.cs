@@ -141,7 +141,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
 
         var recipeIsAlreadyInHistory = await CheckIfRecipeIsAlreadyInHistory(userId, recipeId);
         if (recipeIsAlreadyInHistory)
-            throw new ArgumentException($@"The recipe with the id: {recipeId} is already in history.");
+            return false;
 
         
         var insertQuery = $@"INSERT INTO {HistoryTableName} (UserId, RecipeId)

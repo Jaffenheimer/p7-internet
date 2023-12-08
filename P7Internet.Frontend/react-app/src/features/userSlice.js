@@ -40,6 +40,9 @@ export const userSlice = createSlice({
       }
       state.recipesInHistory.push(action.payload);
     },
+    setHistory(state, action) {
+      state.recipesInHistory = action.payload;
+    },
   },
 });
 

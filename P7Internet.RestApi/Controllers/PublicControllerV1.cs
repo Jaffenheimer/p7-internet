@@ -184,15 +184,7 @@ public class PublicControllerV1 : ControllerBase
             {
                 var validIng = await _ingredientRepository.GetAllIngredients();
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
-                try
-                {
-                    await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(), recipe.Id);
-                }
-                catch (ArgumentException error)
-                {
-                    return BadRequest(error.Message);
-                }
-
+                await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(), recipe.Id);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
                 if (counter == req.Amount)
@@ -217,15 +209,8 @@ public class PublicControllerV1 : ControllerBase
                     recipe.RecipeId);
                 if (req.UserId != null && req.SessionToken != null)
                 {
-                    try {
                     await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(),
-                        recipeList[i].RecipeId);
-                        
-                    }
-                    catch(ArgumentException error)
-                    {
-                        return BadRequest(error.Message);
-                    }                    
+                        recipeList[i].RecipeId);                   
                 }
             }
 
