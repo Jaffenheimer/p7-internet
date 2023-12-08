@@ -23,7 +23,7 @@ const GenerateRecipesButton = () => {
   const [generateRecipe, { isLoading: isRecipeLoading }] =
     useGenerateRecipeMutation();
 
-  var toastId; 
+  var toastId;
 
   const recipeGenData = useSelector((state) => state.recipeGeneration);
   const loggedIn = useSelector((state) => state.user.loggedIn);
@@ -33,7 +33,7 @@ const GenerateRecipesButton = () => {
   }
 
   async function fetchRecipes(body) {
-    var response; 
+    var response;
     const recepies = [];
 
     if (!isRecipeLoading || !isRecipeUserLoading) {
@@ -57,15 +57,22 @@ const GenerateRecipesButton = () => {
             dispatch(recipeActions.addRecipes(recepies));
             return true;
           } else {
-            toast.update(toastId, { render: "Fejl under generation", type: "error", isLoading: false });
+            toast.update(toastId, {
+              render: "Fejl under generation, Prøv igen",
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
           }
-
-          
-          
         }
       } catch (error) {
         console.log(error);
-        toast.update(toastId, { render: "Fejl under generation", type: "error", isLoading: false });
+        toast.update(toastId, {
+          render: "Fejl under generation, Prøv igen",
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
       }
     }
   }
@@ -89,11 +96,15 @@ const GenerateRecipesButton = () => {
     //dispatch(recipeActions.addRecipes(defaultRecipes));
 
     //Checks if the fetch succed
-    if(succeed === true){
-      toast.update(toastId, { render: "Generation færdig", type: "success", isLoading: false });
+    if (succeed === true) {
+      toast.update(toastId, {
+        render: "Generation færdig",
+        type: "success",
+        isLoading: false,
+        autoClose: 5000,
+      });
       goToPageFullRecipeSelection();
     }
-    
   }
 
   return (
