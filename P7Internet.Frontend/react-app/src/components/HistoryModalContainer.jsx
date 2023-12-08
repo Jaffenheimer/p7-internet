@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { nanoid } from "@reduxjs/toolkit";
 import { useUserGetRecipesInHistoryMutation } from "../services/usersEndpoints";
 import Recipe from "../objects/Recipe";
+import { toast } from "react-toastify";
 
 const HistoryModalContainer = () => {
   const [userGetRecipesInHistory] = useUserGetRecipesInHistoryMutation();
@@ -31,6 +32,12 @@ const HistoryModalContainer = () => {
           sessionToken: sessionToken,
         }).unwrap();
         console.log("response", response);
+        if (response.error.originalStatus === 401) {
+          toast.error(
+            "Din session er udløbet. Log ind igen for at se din historik"
+          );
+          return;
+        }
         const recipes = [];
         for (const recipeInHistory of response) {
           recipes.push(
@@ -44,20 +51,7 @@ const HistoryModalContainer = () => {
           );
         }
         dispatch(userActions.setHistory(recipes));
-        // console.log(response);
-
-        // if (response.error.originalStatus === 200) {
-        //   setFavoriteRecipes(response.data);
-        // }
-        // if (response.error.originalStatus === 401) {
-        //   toast.error(
-        //     "Din session er udløbet. Log ind igen for at se din historik"
-        //   );
-        // }
-        // if (response.error.originalStatus === 404) {
-        // } // use default value of empty string, since no history is found
       } catch (error) {
-        //AF EN ELLER ANDED GRUND DUKKER DER STADIG EN ERROR OP I CONSOLEN, NÅR DER IKKE ER NOGEN FAVORITRECIPE
         console.log("the erorr;", error);
         if (error.originalStatus === 500)
           //if no recipes are found, set favoriteRecipes to empty array

@@ -12,6 +12,7 @@ import {
 } from "../services/recipeEndpoints";
 import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 import Recipe from "../objects/Recipe";
+import { userActions } from "../features/userSlice";
 
 const GenerateRecipesButton = () => {
   const dispatch = useDispatch();
@@ -35,38 +36,34 @@ const GenerateRecipesButton = () => {
     var response;
 
     if (!isRecipeLoading || !isRecipeUserLoading) {
-      try {
-        toast.loading("Generer Opskrifter");
+      toast.loading("Generer Opskrifter", { toastId: "generateRecipesToast" });
+      console.log(loggedIn);
+      if (loggedIn) {
+        response = await generateUserRecipe(body).unwrap();
+      } else {
+        response = await generateRecipe(body).unwrap();
+      }
 
-        if (loggedIn) {
-          response = await generateUserRecipe(body).unwrap();
-        } else {
-          response = await generateRecipe(body).unwrap();
-        }
-
-        if (response) {
-          console.log(
-            "Response before; " + response + "Num: " + response.length
+      if (response) {
+        console.log("Response before; " + response + "Num: " + response.length);
+        console.log(response[0]);
+        let i = 0;
+        dispatch(recipeActions.clearRecipes());
+        response.forEach((recipe) => {
+          // Convert recipe from response into recipe object
+          // var recipeObject = recipeFromResponse(recipe);
+          console.log("Recipe object: ", recipe);
+          const newRecipe = new Recipe(
+            recipe.recipeId,
+            i,
+            ["ingredienser"],
+            ["metoder"],
+            ["ingredienser"]
           );
-          console.log(response[0]);
-          let i = 0;
-          dispatch(recipeActions.clearRecipes());
-          response.forEach((recipe) => {
-            // Convert recipe from response into recipe object
-            // var recipeObject = recipeFromResponse(recipe);
-            console.log("Recipe object: ", recipe);
-            const newRecipe = new Recipe(
-              recipe.recipeId,
-              i,
-              ["ingredienser"],
-              ["metoder"],
-              ["ingredienser"]
-            );
-            i++;
-            dispatch(recipeActions.addRecipe(newRecipe));
-          });
-        }
-      } catch (error) {}
+          i++;
+          dispatch(recipeActions.addRecipe(newRecipe));
+        });
+      }
     }
   }
 
@@ -82,8 +79,18 @@ const GenerateRecipesButton = () => {
     //Create Body for request
     const body = recipeBodyCreator(loggedIn, recipeGenData);
 
-    //Runs function to request recipes from backend
-    await fetchRecipes(body);
+    try {
+      //Runs function to request recipes from backend
+      await fetchRecipes(body);
+    } catch (error) {
+      if (error.originalStatus === 401) {
+        toast.dismiss("generateRecipesToast");
+        toast.error("Din session er udløbet.");
+        dispatch(userActions.logoutUser());
+        return;
+      }
+      console.log(error.originalStatus);
+    }
 
     //for testing purposes to ensure we have recipes on next page:
     //dispatch(recipeActions.addRecipes(defaultRecipes));

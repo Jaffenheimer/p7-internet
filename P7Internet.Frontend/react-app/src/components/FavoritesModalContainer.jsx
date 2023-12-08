@@ -36,13 +36,10 @@ const FavoritesModalContainer = () => {
       try {
         const userId = getCookieUserId();
         const sessionToken = getCookieSessionToken();
-        console.log("sesh token: ", sessionToken);
-        console.log("user id: ", userId);
         let response = await userGetAllFavoriteRecipes({
           userId: userId,
           sessionToken: sessionToken,
         }).unwrap();
-        console.log("response", response);
         const recipes = [];
         for (const favoriteRecipe of response) {
           recipes.push(

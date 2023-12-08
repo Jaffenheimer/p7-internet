@@ -23,7 +23,6 @@ const AdditionalOwnedIngredientsModalContainer = () => {
   );
   const currentRecipe = recipes[currentRecipeIndex];
 
-  console.log("recipe helper: ", recipes);
 
   const currentRecipeUnownedIngredients = convertIngredientsToIngredientObjects(
     currentRecipe.ingredients
