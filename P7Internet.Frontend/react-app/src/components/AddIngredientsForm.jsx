@@ -28,7 +28,7 @@ const AddIngredientsForm = ({
 
   const ingredientIsInIngredientsObject = (ingredient, ingredientsObject) => {
     for (const ingredientObject of ingredientsObject) {
-      if (ingredientObject.text === ingredient) {
+      if (ingredientObject.text.toLowerCase() === ingredient.toLowerCase()) {
         return true;
       }
     }

@@ -8,21 +8,21 @@ const userEndpoints = apiSlice.injectEndpoints({
       query: ({ username, password }) => ({
         url: `/public/user/login`,
         method: "POST",
-        body: {username: username, password: password},
+        body: { username: username, password: password },
       }),
     }),
     userCreate: builder.mutation({
       query: ({ username, password, email }) => ({
         url: `/public/user/create-user`,
         method: "POST",
-        body: {name: username, emailAddress: email, password: password},
+        body: { name: username, emailAddress: email, password: password },
       }),
     }),
     userLogOut: builder.mutation({
       query: ({ userId, sessionToken }) => ({
         url: `public/user/logout`,
         method: "POST",
-        body: {userId: userId, sessionToken: sessionToken},
+        body: { userId: userId, sessionToken: sessionToken },
       }),
     }),
     userResetPasswordEmailRequest: builder.mutation({
@@ -36,7 +36,7 @@ const userEndpoints = apiSlice.injectEndpoints({
       query: ({ password, verificationCode }) => ({
         url: `/public/user/reset-password`,
         method: "POST",
-        body: {password: password, verificationCode: verificationCode},
+        body: { password: password, verificationCode: verificationCode },
       }),
     }),
     userChangePassword: builder.mutation({
@@ -49,7 +49,13 @@ const userEndpoints = apiSlice.injectEndpoints({
       }) => ({
         url: `public/user/change-password`,
         method: "POST",
-        body: {userId: userId, sessionToken: sessionToken, userName: userName, oldPassword: oldPassword, newPassword: newPassword},
+        body: {
+          userId: userId,
+          sessionToken: sessionToken,
+          userName: userName,
+          oldPassword: oldPassword,
+          newPassword: newPassword,
+        },
       }),
     }),
     userConfirmEmailRequest: builder.mutation({
@@ -63,6 +69,13 @@ const userEndpoints = apiSlice.injectEndpoints({
       query: ({ UserId, VerificationCode }) => ({
         url: `/public/user/confirm-email?userId=${UserId}&verificationCode=${VerificationCode}`,
         method: "POST",
+        body: "",
+      }),
+    }),
+    userDeleteUser: builder.mutation({
+      query: (querystring) => ({
+        url: `public/user/delete-user/${querystring}`,
+        method: "DELETE",
         body: "",
       }),
     }),
@@ -80,4 +93,5 @@ export const {
   useUserChangePasswordMutation,
   useUserConfirmEmailRequestMutation,
   useUserConfirmEmailMutation,
+  useUserDeleteUserMutation,
 } = userEndpoints;

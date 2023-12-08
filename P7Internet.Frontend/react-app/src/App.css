@@ -107,6 +107,13 @@ body {
 .titleLogo {
   height: 1.3em;
 }
+.titleLogo:hover {
+  animation: spin 3s linear infinite;;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
 
 .RecipeSelectionContainerLeft {
   padding: 10px;
@@ -420,12 +427,16 @@ button:active {
   }
 }
 
-.menu-item:nth-child(2) {
-  animation-delay: 0.2s;
+.dropdown-content li:nth-child(2) {
+  animation: slideInFromRight 0.5s 0.2s forwards;
 }
 
-.menu-item:nth-child(3) {
-  animation-delay: 0.4s;
+.dropdown-content li:nth-child(3) {
+  animation: slideInFromRight 0.5s 0.4s forwards;
+}
+
+.dropdown-content li:nth-child(4) {
+  animation: slideInFromRight 0.5s 0.6s forwards;
 }
 
 #FavoritesButton {
@@ -538,11 +549,6 @@ input[type="password"] {
   padding: 3%;
   transform: scale(1.2);
   float: right;
-}
-
-#alreadyHasUserText,
-#noUserText {
-  display: inline-block;
 }
 
 .LoginPage {
