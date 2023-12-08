@@ -80,7 +80,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     /// <param name="userId"></param>
     /// <param name="recipeId"></param>
     /// <returns>Returns true of the process was successful E.g resultFromDb is something else than NULL else it returns false</returns>
-    private async Task<bool> CheckIfRecipeIsAlreadyFavourite(Guid userId, Guid recipeId)
+    public virtual async Task<bool> CheckIfRecipeIsAlreadyFavourite(Guid userId, Guid recipeId)
     {
         var query = $@"SELECT RecipeId FROM {TableName} WHERE UserId = @UserId AND RecipeId = @RecipeId";
 

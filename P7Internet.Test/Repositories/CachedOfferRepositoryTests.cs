@@ -16,6 +16,7 @@ namespace P7Internet.Test.Repositories
     public class CachedOfferRepositoryTests
     {
         private TestOffer _testOfferStruct;
+        private Offer _testOffer;
         private User _testUser;
         private Mock<IDbConnection> _dbConnection = new Mock<IDbConnection>();
         private Mock<IDbConnectionFactory> _dbConnectionFactory = new Mock<IDbConnectionFactory>();
@@ -44,6 +45,12 @@ namespace P7Internet.Test.Repositories
                 Size = new KeyValuePair<float, float>(1, 5), Store = "Føtex", Created = new DateTime(2023, 12, 24),
                 Ending = new DateTime(2023, 12, 31)
             };
+            _testOffer = new Offer()
+            {
+                Id = "TestId", Name = "TestOffer", Description = "TestDesc", Price = 15.95m, Currency = "DKK",
+                Size = new KeyValuePair<float, float>(1, 5), Store = "Føtex", Created = new DateTime(2023, 12, 24),
+                Ending = new DateTime(2023, 12, 31)
+            };
             _dbConnection
                 .SetupDapperAsync(c =>
                     c.QuerySingleOrDefaultAsync<TestOffer>(It.IsAny<string>(), null, null, null, null))
@@ -66,6 +73,7 @@ namespace P7Internet.Test.Repositories
 
             //Assert
             Assert.NotNull(offer);
+            Assert.AreEqual(_testOffer.GetType(), offer.GetType());
         }
 
         [Test()]
@@ -82,7 +90,7 @@ namespace P7Internet.Test.Repositories
             var offer = _cachedOfferRepository.GetOffer(It.IsAny<string>()).Result;
 
             //Assert
-            Assert.AreNotEqual(_testOfferStruct, offer);
+            Assert.AreNotEqual(_testOffer, offer);
         }
 
         [Test()]
@@ -99,6 +107,7 @@ namespace P7Internet.Test.Repositories
 
             //Assert
             Assert.NotNull(offer);
+            Assert.AreEqual(_testOffer.GetType(), offer.GetType());
         }
 
         [Test()]
@@ -115,7 +124,7 @@ namespace P7Internet.Test.Repositories
             var offer = _cachedOfferRepository.GetOfferByStore(It.IsAny<string>(), It.IsAny<string>()).Result;
 
             //Assert
-            Assert.AreNotEqual(_testOfferStruct, offer);
+            Assert.AreNotEqual(_testOffer, offer);
         }
 
         [Test()]
