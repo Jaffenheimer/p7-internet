@@ -53,9 +53,12 @@ const GenerateRecipesButton = () => {
 
           if (recepies.length !== 0) {
             dispatch(recipeActions.addRecipes(recepies));
+            return true;
           } else {
             toast.error("Fejl ved generation");
           }
+
+          
           
         }
       } catch (error) {
@@ -78,11 +81,18 @@ const GenerateRecipesButton = () => {
     const body = recipeBodyCreator(loggedIn, recipeGenData);
 
     //Runs function to request recipes from backend
-    await fetchRecipes(body);
+    let succeed = await fetchRecipes(body);
+
+    console.log("succeed: ", succeed);
 
     //for testing purposes to ensure we have recipes on next page:
     //dispatch(recipeActions.addRecipes(defaultRecipes));
-    goToPageFullRecipeSelection();
+
+    //Checks if
+    if(succeed === true){
+      goToPageFullRecipeSelection();
+    }
+    
   }
 
   return (
