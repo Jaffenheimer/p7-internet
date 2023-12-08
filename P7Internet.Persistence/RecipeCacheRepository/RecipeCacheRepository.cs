@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
@@ -85,11 +84,13 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     public async Task<List<Recipe>> GetListOfRecipes(List<Guid> ids)
     {
         var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
-
-        var gridReader = await Connection.QueryMultipleAsync(query, new {Ids = ids});
-
-        var result = gridReader.Read<string>();
-
+        
+        List<string> result = new List<string>();
+        foreach (var id in ids)
+        {
+            var res = await Connection.QuerySingleOrDefaultAsync<string>(query, new {Ids = id});
+            result.Add(res);
+        }
         var recipes = new List<Recipe>();
 
         var counter = 0;

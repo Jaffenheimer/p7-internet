@@ -49,7 +49,8 @@ namespace P7Internet.Test.Repositories
             var testRecipe = new Recipe(new Guid("d3d01e66-2943-463c-ab22-4abd09f1bd7f"), "TestDesc");
             _dbConnection
                 .SetupDapperAsync(c =>
-                    c.QuerySingleOrDefaultAsync<string>(It.IsAny<string>(), new {Id = testRecipe.Id}, null, null, null))
+                    c.QuerySingleOrDefaultAsync<string>(It.IsAny<string>(), new {Id = testRecipe.Id}, null, null,
+                        null))
                 .ReturnsAsync(testRecipe.Id.ToString);
 
             //Act
@@ -66,7 +67,8 @@ namespace P7Internet.Test.Repositories
             var testRecipe = new Recipe(new Guid("d3d01e66-2943-463c-ab22-4abd09f1bd7f"), "TestDesc");
             _dbConnection
                 .SetupDapperAsync(c =>
-                    c.QuerySingleOrDefaultAsync<string>(It.IsAny<string>(), new {Id = testRecipe.Id}, null, null, null))
+                    c.QuerySingleOrDefaultAsync<string>(It.IsAny<string>(), new {Id = testRecipe.Id}, null, null,
+                        null))
                 .ReturnsAsync(value: null);
 
             //Act
