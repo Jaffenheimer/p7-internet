@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -132,39 +131,6 @@ public class PublicControllerV1 : ControllerBase
         await _cachedRecipeRepository.Upsert(res.Recipe, res.RecipeId);
 
         return Ok(res);
-    }
-
-    /// <summary>
-    /// Gets a list of recipes from history
-    /// </summary>
-    /// <param name="userId"></param>
-    /// <param name="sessionToken"></param>
-    /// <returns>Returns a list of recipes if found, returns unauthorized of the user is not logged in</returns>
-    [HttpPost("user/recipes-history")]
-    public async Task<IActionResult> GetRecipeHistory([FromBody] GetRecipeHistoryRequest req)
-    {
-        var checkIfUserSessionIsValid =
-            await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
-        if (!checkIfUserSessionIsValid)
-            return Unauthorized("User session is not valid, please login again");
-
-        var result = await _favouriteRecipeRepository.GetHistory(req.UserId);
-
-        var recipeList = new List<RecipeResponse>();
-
-        foreach (var res in result)
-        {
-            var validIngredients = await _ingredientRepository.GetAllIngredients();
-            var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Description, validIngredients);
-            recipeList.Add(new RecipeResponse(res.Description, ingredientsToPassToFrontend, res.Id));
-        }
-
-        if (recipeList != null && recipeList.Count != 0)
-        {
-            return Ok(recipeList);
-        }
-
-        return NotFound("No history found");
     }
 
     /// <summary>
@@ -413,7 +379,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns unauthorized if the sessiontoken is invalid, otherwise Ok. If the sessiontoken is valid and no favorite recipes are found
     /// it returns Badrequest</returns>
-    [HttpPost("user/favourite-recipes")]
+    [HttpPost("user/get-favourite-recipes")]
     public async Task<IActionResult> GetFavouriteRecipes([FromBody] GetFavouriteRecipesRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
@@ -437,6 +403,39 @@ public class PublicControllerV1 : ControllerBase
         }
 
         return NotFound("No favourite recipes found");
+    }
+
+    /// <summary>
+    /// Gets a list of recipes from history
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="sessionToken"></param>
+    /// <returns>Returns a list of recipes if found, returns unauthorized of the user is not logged in</returns>
+    [HttpPost("user/recipes-history")]
+    public async Task<IActionResult> GetRecipeHistory([FromBody] GetRecipeHistoryRequest req)
+    {
+        var checkIfUserSessionIsValid =
+            await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
+        if (!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
+
+        var result = await _favouriteRecipeRepository.GetHistory(req.UserId);
+
+        var recipeList = new List<RecipeResponse>();
+
+        foreach (var res in result)
+        {
+            var validIngredients = await _ingredientRepository.GetAllIngredients();
+            var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Description, validIngredients);
+            recipeList.Add(new RecipeResponse(res.Description, ingredientsToPassToFrontend, res.Id));
+        }
+
+        if (recipeList != null && recipeList.Count != 0)
+        {
+            return Ok(recipeList);
+        }
+
+        return NotFound("No history found");
     }
 
     /// <summary>
@@ -563,7 +562,8 @@ public class PublicControllerV1 : ControllerBase
                 return BadRequest("The email is already confirmed");
 
             var isValidAction =
-                await _userSessionRepository.VerificationCodeTypeMatchesAction(req.VerificationCode, type: "confirmEmail");
+                await _userSessionRepository.VerificationCodeTypeMatchesAction(req.VerificationCode,
+                    type: "confirmEmail");
             if (!isValidAction)
                 return BadRequest("The verification code is not for confirming an email");
 

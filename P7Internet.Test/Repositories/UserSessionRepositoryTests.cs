@@ -95,7 +95,7 @@ namespace P7Internet.Test.Repositories
             var testToken = "fw6ISluwyE609VkFFcZ4ug==";
             _dbConnection
                 .SetupDapperAsync(c =>
-                    c.QuerySingleOrDefaultAsync<TestToken>(_testUser.Id.ToString(), new { _testUser.Id, testToken },
+                    c.QuerySingleOrDefaultAsync<TestToken>(_testUser.Id.ToString(), new {_testUser.Id, testToken},
                         null,
                         null, null)).ReturnsAsync(_testTokenStruct);
 
@@ -114,7 +114,7 @@ namespace P7Internet.Test.Repositories
             _testTokenStruct.ExpiresAt = new DateTime(2023, 11, 23, 15, 0, 0);
             _dbConnection
                 .SetupDapperAsync(c =>
-                    c.QuerySingleOrDefaultAsync<TestToken>(_testUser.Id.ToString(), new { _testUser.Id, testToken },
+                    c.QuerySingleOrDefaultAsync<TestToken>(_testUser.Id.ToString(), new {_testUser.Id, testToken},
                         null,
                         null, null)).ReturnsAsync(_testTokenStruct);
 

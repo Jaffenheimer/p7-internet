@@ -1,5 +1,4 @@
 ﻿using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace P7Internet.Requests;
 
@@ -12,6 +11,7 @@ public class ConfirmEmailRequest
 {
     public Guid UserId { get; set; }
     public string VerificationCode { get; set; }
+
     public ConfirmEmailRequest()
     {
     }
