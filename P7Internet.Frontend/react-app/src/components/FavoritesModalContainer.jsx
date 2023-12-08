@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import cross from "../data/cross.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
@@ -10,24 +10,17 @@ import "react-toastify/dist/ReactToastify.css";
 import { nanoid } from "@reduxjs/toolkit";
 import {
   useUserDeleteFavoriteRecipeMutation,
-  useUserPostFavoriteRecipeMutation,
   useUserGetAllFavoriteRecipesMutation,
 } from "../services/usersEndpoints";
 import {
-  retriveCookie,
   getCookieUserId,
   getCookieSessionToken,
 } from "../helperFunctions/cookieHandler";
 import Recipe from "../objects/Recipe";
 
 const FavoritesModalContainer = ({ closeModal }) => {
-  console.log(closeModal);
-  const [userDeleteFavoriteRecipe, { isDeleteFavoriteRecipeLoading }] =
-    useUserDeleteFavoriteRecipeMutation();
-  const [userPostFavoriteRecipe, { isPostFavoriteRecipeLoading }] =
-    useUserPostFavoriteRecipeMutation();
-  const [userGetAllFavoriteRecipes, { isGetAllFavoriteRecipesLoading }] =
-    useUserGetAllFavoriteRecipesMutation();
+  const [userDeleteFavoriteRecipe] = useUserDeleteFavoriteRecipeMutation();
+  const [userGetAllFavoriteRecipes] = useUserGetAllFavoriteRecipesMutation();
 
   const recipes = useSelector((state) => state.recipe.recipes);
   const favoriteRecipes = useSelector((state) => state.user.favoriteRecipes); //useState([]);
@@ -36,12 +29,10 @@ const FavoritesModalContainer = ({ closeModal }) => {
     try {
       const userId = getCookieUserId();
       const sessionToken = getCookieSessionToken();
-      console.log(sessionToken);
       let response = await userGetAllFavoriteRecipes({
         userId: userId,
         sessionToken: sessionToken,
       }).unwrap();
-      console.log("rez", response);
       const recipes = [];
       for (const favoriteRecipe of response) {
         recipes.push(
@@ -58,7 +49,6 @@ const FavoritesModalContainer = ({ closeModal }) => {
     } catch (error) {
       console.log(error.originalStatus);
       if (error.originalStatus === 401) {
-        console.log("what");
         closeModal();
         //hvorfor dukker den op 2 gange?
         toast.error(
@@ -120,25 +110,9 @@ const FavoritesModalContainer = ({ closeModal }) => {
             })
           )
         );
-        // setIsMarkedAsFavorite(false);
       } catch (error) {
         console.log(error);
       }
-
-    // dispatch(userActions.removeFavoriteRecipe(recipe));
-    //database call
-    // try {
-    //   let response = await userDeleteFavoriteRecipe({
-    //     userId: encodeURIComponent(userId),
-    //     sessionToken: encodeURIComponent(sessionToken),
-    //     recipeId: encodeURIComponent(recipe.id),
-    //   });
-    //   if (response.error.originalStatus === 200) {
-    //     toast.success("Verifikationskoden er sendt til din email");
-    //   }
-    // } catch (error) {
-    //   console.log(error);
-    // }
   }
 
   return (

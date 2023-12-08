@@ -31,7 +31,6 @@ const HistoryModalContainer = ({ closeModal }) => {
           userId: userId,
           sessionToken: sessionToken,
         }).unwrap();
-        console.log("response", response);
         const recipes = [];
         for (const recipeInHistory of response) {
           recipes.push(
@@ -46,7 +45,6 @@ const HistoryModalContainer = ({ closeModal }) => {
         }
         dispatch(userActions.setHistory(recipes));
       } catch (error) {
-        console.log("the erorr;", error);
         if (error.originalStatus === 500)
           //if no recipes are found, set favoriteRecipes to empty array
           dispatch(userActions.setHistory([]));

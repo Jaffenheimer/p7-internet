@@ -15,7 +15,6 @@ import {
   getCookieUserId,
   getCookieSessionToken,
 } from "../helperFunctions/cookieHandler";
-import { toast } from "react-toastify";
 import Recipe from "../objects/Recipe";
 
 const RecipeTitle = ({ recipe }) => {
@@ -50,7 +49,6 @@ const RecipeTitle = ({ recipe }) => {
         }
         dispatch(userActions.setFavoriteRecipes(recipes));
       } catch (error) {
-        console.log(error.originalStatus);
         if (error.originalStatus === 500)
           //if no recipes are found, set favoriteRecipes to empty array
           dispatch(userActions.setFavoriteRecipes([]));
@@ -71,11 +69,6 @@ const RecipeTitle = ({ recipe }) => {
   });
 
   async function addFavoriteRecipe() {
-    console.log(recipe);
-    console.log("recipeid", recipe.id);
-    console.log("userid", getCookieUserId());
-    console.log("sessiontoken", getCookieSessionToken());
-
     try {
       await userPostFavoriteRecipe({
         userId: getCookieUserId(),
@@ -110,16 +103,13 @@ const RecipeTitle = ({ recipe }) => {
   }
 
   async function handleClick(event) {
-    console.log("isclicked");
     event.preventDefault();
     if (loggedIn === false) {
       dispatch(pageActions.openLoginModal());
     } else {
       if (isMarkedAsFavorite) {
-        console.log("is marked as favorite");
         deleteFavoriteRecipe();
       } else {
-        console.log("not marked as favorite");
         addFavoriteRecipe();
       }
     }
@@ -130,7 +120,6 @@ const RecipeTitle = ({ recipe }) => {
     useEffect(() => {
       for (const favoriteRecipe of favoriteRecipes) {
         if (favoriteRecipe.id === recipe.id) {
-          console.log("setting marked as favoirte");
           setIsMarkedAsFavorite(true);
           return;
         }

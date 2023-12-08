@@ -4,13 +4,11 @@ import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
 import { toast } from "react-toastify";
 import { recipeActions } from "../features/recipeSlice";
-//import { defaultRecipes } from "../objects/DefaultRecipes";
 import recipeBodyCreator from "../helperFunctions/recipeBodyCreator";
 import {
   useGenerateRecipeMutation,
   useGenerateUserRecipeMutation,
 } from "../services/recipeEndpoints";
-import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 import Recipe from "../objects/Recipe";
 import { userActions } from "../features/userSlice";
 
@@ -45,14 +43,11 @@ const GenerateRecipesButton = () => {
       }
 
       if (response) {
-        console.log("Response before; " + response + "Num: " + response.length);
-        console.log(response[0]);
         let i = 0;
         dispatch(recipeActions.clearRecipes());
         response.forEach((recipe) => {
           // Convert recipe from response into recipe object
           // var recipeObject = recipeFromResponse(recipe);
-          console.log("Recipe object: ", recipe);
           const newRecipe = new Recipe(
             recipe.recipeId,
             i,
@@ -76,10 +71,9 @@ const GenerateRecipesButton = () => {
       return;
     }
 
-    //Create Body for request
-    const body = recipeBodyCreator(loggedIn, recipeGenData);
-
     try {
+      //Create Body for request
+      const body = recipeBodyCreator(loggedIn, recipeGenData);
       //Runs function to request recipes from backend
       await fetchRecipes(body);
     } catch (error) {

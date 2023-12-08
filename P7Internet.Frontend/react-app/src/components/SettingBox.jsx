@@ -13,10 +13,10 @@ const SettingBox = ({ closeModal }) => {
   // eslint-disable-next-line
   const [userConfirmEmailRequest, { isConfirmEmailRequestLoading }] =
     useUserConfirmEmailRequestMutation();
-    // eslint-disable-next-line
+  // eslint-disable-next-line
   const [userChangePassword, { isChangePasswordLoading }] =
     useUserChangePasswordMutation();
-    // eslint-disable-next-line
+  // eslint-disable-next-line
   const [userConfirmEmail, { isConfirmEmailLoading }] =
     useUserConfirmEmailMutation();
 
@@ -41,7 +41,6 @@ const SettingBox = ({ closeModal }) => {
     } else if (isValid) {
       // send a request to API for changing the user's password
       try {
-        console.log(sessionToken);
         let response = await userChangePassword({
           userId: userId,
           sessionToken: sessionToken,
@@ -63,7 +62,6 @@ const SettingBox = ({ closeModal }) => {
       let userId = getCookieUserId();
 
       const encodedUserId = encodeURIComponent(userId);
-      console.log(encodedUserId);
       // send a request to API for confirming the user's email
       await userConfirmEmailRequest({
         UserId: encodedUserId,
