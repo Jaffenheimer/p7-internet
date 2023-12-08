@@ -47,6 +47,7 @@ const RecipeOfferElement = ({ ingredient }) => {
       return response;
     };
     if (ingredient.text != "") {
+      //Empty check should be removed when the empty ingredient issue is fixed
       fetchOffer().then((res) => {
         res.forEach((offer) => {
           let _offer = new Offer();
@@ -72,7 +73,7 @@ const RecipeOfferElement = ({ ingredient }) => {
       <li>
         {FindFullIngredientName(ingredient.text, recipe)}
         {ingredientIsOwned(ingredient, ownedIngredientsList) ? (
-          <b className="no-print"> Ejet </b>
+          <b className=""> Ejet </b>
         ) : (
           <>
             <p className="offer-default no-print offer-price">
@@ -89,7 +90,7 @@ const RecipeOfferElement = ({ ingredient }) => {
     </div>
   );
 };
-
+//#region Helpers
 function FindCheapestProduct(arr) {
   let offer;
   offer = arr.reduce((prev, curr) => (prev.price < curr.price ? prev : curr));
@@ -103,5 +104,5 @@ function FindFullIngredientName(shortName, recipe) {
   );
   return fullName;
 }
-
+//#endregion
 export default RecipeOfferElement;
