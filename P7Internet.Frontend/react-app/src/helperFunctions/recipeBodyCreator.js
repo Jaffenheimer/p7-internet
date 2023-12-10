@@ -15,7 +15,6 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     excludedIngredients = [],
     restrictions = [];
 
-
   //Checks if there is any dietaryRestrictions if there is and it is added
   if (dietaryRestrictions === "") {
     restrictions = [];

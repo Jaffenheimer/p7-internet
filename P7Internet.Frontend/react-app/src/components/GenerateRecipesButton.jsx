@@ -12,7 +12,6 @@ import {
 } from "../services/recipeEndpoints";
 import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 
-
 const GenerateRecipesButton = () => {
   const dispatch = useDispatch();
   const ingredients = useSelector(
@@ -60,7 +59,7 @@ const GenerateRecipesButton = () => {
             recipes.push(recipeObject);
           });
 
-          // If there are recipes on in array then add to the store 
+          // If there are recipes on in array then add to the store
           if (recipes.length !== 0) {
             //Clearing recipes from store
             dispatch(recipeActions.clearRecipes());
@@ -102,7 +101,7 @@ const GenerateRecipesButton = () => {
 
     //Create Body for request
     const body = recipeBodyCreator(loggedIn, recipeGenData);
-    
+
     //Runs function to request recipes from backend -> openAi/Database
     var succeed = await fetchRecipes(body);
 
