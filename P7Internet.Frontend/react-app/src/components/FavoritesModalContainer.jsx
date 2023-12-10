@@ -34,13 +34,14 @@ const FavoritesModalContainer = ({ closeModal }) => {
         sessionToken: sessionToken,
       }).unwrap();
       const recipes = [];
+      let i = 0;
       for (const favoriteRecipe of response) {
         recipes.push(
           new Recipe(
             favoriteRecipe.recipeId,
-            "Agurk",
+            i++, //favoriteRecipe.title,
             favoriteRecipe.ingredients,
-            ["metode 1"],
+            ["metode 1"], //favoriteRecipe.methods
             favoriteRecipe.ingredients
           )
         );

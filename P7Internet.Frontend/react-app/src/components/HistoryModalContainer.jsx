@@ -32,13 +32,15 @@ const HistoryModalContainer = ({ closeModal }) => {
           sessionToken: sessionToken,
         }).unwrap();
         const recipes = [];
+        console.log(response);
+        let i = 0;
         for (const recipeInHistory of response) {
           recipes.push(
             new Recipe(
               recipeInHistory.recipeId,
-              "Agurk",
+              i++, //recipeInHistory.title,
               recipeInHistory.ingredients,
-              ["metode 1"],
+              ["metode 1"], //recipeInHistory.methods,
               recipeInHistory.ingredients
             )
           );
@@ -50,7 +52,6 @@ const HistoryModalContainer = ({ closeModal }) => {
           dispatch(userActions.setHistory([]));
         if (error.originalStatus === 401) {
           closeModal();
-          //hvorfor dukker den op 2 gange?
           toast.error(
             "Din session er udløbet. Log ind igen for at se din historik"
           );
