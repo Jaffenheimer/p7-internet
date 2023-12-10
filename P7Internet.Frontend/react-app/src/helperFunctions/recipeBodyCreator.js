@@ -16,6 +16,7 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     restrictions = [];
 
 
+  //Checks if there is any dietaryRestrictions if there is and it is added
   if (dietaryRestrictions === "") {
     restrictions = [];
   } else {

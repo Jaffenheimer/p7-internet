@@ -12,19 +12,23 @@ import {
 } from "../services/recipeEndpoints";
 import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 
+
 const GenerateRecipesButton = () => {
   const dispatch = useDispatch();
   const ingredients = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
   );
 
+  //Creates functions from Mutations from the recipeEndpoints
   const [generateUserRecipe, { isLoading: isRecipeUserLoading }] =
     useGenerateUserRecipeMutation();
   const [generateRecipe, { isLoading: isRecipeLoading }] =
     useGenerateRecipeMutation();
 
+  //Id to toast
   var toastId;
 
+  //Collects the data from store
   const recipeGenData = useSelector((state) => state.recipeGeneration);
   const loggedIn = useSelector((state) => state.user.loggedIn);
 
@@ -32,32 +36,41 @@ const GenerateRecipesButton = () => {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
   }
 
+  //Async function to fetch recipes from backend
   async function fetchRecipes(body) {
     var response;
-    const recepies = [];
+    const recipes = [];
 
     if (!isRecipeLoading || !isRecipeUserLoading) {
       try {
         toastId = toast.loading("Generer Opskrifter");
 
+        //Checks if user is login
         if (loggedIn) {
           response = await generateUserRecipe(body).unwrap();
         } else {
           response = await generateRecipe(body).unwrap();
         }
 
+        //If these was an response then create recipes object from the response
         if (response) {
           response.forEach((recipe) => {
             //Convert recipe from response into recipe object
             var recipeObject = recipeFromResponse(recipe);
-            recepies.push(recipeObject);
+            recipes.push(recipeObject);
           });
 
-          if (recepies.length !== 0) {
+          // If there are recipes on in array then add to the store 
+          if (recipes.length !== 0) {
+            //Clearing recipes from store
             dispatch(recipeActions.clearRecipes());
-            dispatch(recipeActions.addRecipes(recepies));
+
+            //Adds new recipes to store
+            dispatch(recipeActions.addRecipes(recipes));
+
             return true;
           } else {
+            //Updates toast
             toast.update(toastId, {
               render: "Fejl under generation, Prøv igen",
               type: "error",
@@ -90,13 +103,13 @@ const GenerateRecipesButton = () => {
     //Create Body for request
     const body = recipeBodyCreator(loggedIn, recipeGenData);
     
-    //Runs function to request recipes from backend
+    //Runs function to request recipes from backend -> openAi/Database
     var succeed = await fetchRecipes(body);
 
     //for testing purposes to ensure we have recipes on next page:
     //dispatch(recipeActions.addRecipes(defaultRecipes));
 
-    //Checks if the fetch succed
+    //Checks if the fetch succeded. If succeded then it goes to next page
     if (succeed === true) {
       toast.update(toastId, {
         render: "Generation færdig",
