@@ -33,32 +33,37 @@ const GenerateRecipesButton = () => {
 
   async function fetchRecipes(body) {
     var response;
-
-    if (!isRecipeLoading || !isRecipeUserLoading) {
-      toast.loading("Generer Opskrifter", { toastId: "generateRecipesToast" });
-      if (loggedIn) {
-        response = await generateUserRecipe(body).unwrap();
-      } else {
-        response = await generateRecipe(body).unwrap();
-      }
-
-      if (response) {
-        let i = 0;
-        dispatch(recipeActions.clearRecipes());
-        response.forEach((recipe) => {
-          // Convert recipe from response into recipe object
-          // var recipeObject = recipeFromResponse(recipe);
-          const newRecipe = new Recipe(
-            recipe.recipeId,
-            i,
-            ["ingredienser"],
-            ["metoder"],
-            ["ingredienser"]
-          );
-          i++;
-          dispatch(recipeActions.addRecipe(newRecipe));
+    try {
+      if (!isRecipeLoading || !isRecipeUserLoading) {
+        toast.loading("Generer Opskrifter", {
+          toastId: "generateRecipesToast",
         });
+        if (loggedIn) {
+          response = await generateUserRecipe(body).unwrap();
+        } else {
+          response = await generateRecipe(body).unwrap();
+        }
+
+        if (response) {
+          let i = 0;
+          dispatch(recipeActions.clearRecipes());
+          response.forEach((recipe) => {
+            // Convert recipe from response into recipe object
+            // var recipeObject = recipeFromResponse(recipe);
+            const newRecipe = new Recipe(
+              recipe.recipeId,
+              i,
+              ["ingredienser"],
+              ["metoder"],
+              ["ingredienser"]
+            );
+            i++;
+            dispatch(recipeActions.addRecipe(newRecipe));
+          });
+        }
       }
+    } catch (error) {
+      console.log(error);
     }
   }
 

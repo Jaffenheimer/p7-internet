@@ -7,6 +7,7 @@ import { pageReducer } from "../features/pageSlice";
 import { userReducer } from "../features/userSlice";
 import { offersReducer } from "../features/offersSlice";
 import { configureStore } from "@reduxjs/toolkit";
+import { apiSlice } from "../services/apiSlice";
 
 function configureDefaultStore() {
   return configureStore({
@@ -18,9 +19,9 @@ function configureDefaultStore() {
       offers: offersReducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-        serializableCheck: false,
-      }),
+      getDefaultMiddleware({ serializableCheck: false }).concat(
+        apiSlice.middleware
+      ),
   });
 }
 
