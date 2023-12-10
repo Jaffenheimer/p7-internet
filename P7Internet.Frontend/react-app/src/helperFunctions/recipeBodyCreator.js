@@ -12,26 +12,35 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
   var userid = "",
     sessiontoken = "",
     ingredients = [],
-    excludedIngredients = [];
+    excludedIngredients = [],
+    restrictions = [];
 
-  //Combines allgeries with dietaryrestrictions
-  var restrictions = ((dietaryRestrictions.value === '') ? [] : [dietaryRestrictions.label]);
-  
+  console.log(
+    "recipeGenerationSlice: ",
+    recipeGenerationSlice.dietaryRestrictions
+  );
+
+  if (dietaryRestrictions === "") {
+    restrictions = [];
+  } else {
+    restrictions = [dietaryRestrictions.label];
+  }
+
   //Adds all allergies to restrictions array
-  if (allergens !== '' && dietaryRestrictions.value !== '') {
+  if (allergens !== "") {
     allergens.forEach((allergy) => {
       restrictions.push(allergy.label);
     });
-  }else if (allergens === '' && dietaryRestrictions.value === ''){
-    restrictions = [];
   }
 
-  //Add ownedIngredients to ingredients array 
+  console.log("restrictions:", restrictions);
+
+  //Add ownedIngredients to ingredients array
   ownedIngredients.forEach((ingredient) => {
     ingredients.push(ingredient.text);
   });
 
-  //Add excludeList to excludedIngredients array 
+  //Add excludeList to excludedIngredients array
   excludeList.forEach((ingredient) => {
     excludedIngredients.push(ingredient.text);
   });
