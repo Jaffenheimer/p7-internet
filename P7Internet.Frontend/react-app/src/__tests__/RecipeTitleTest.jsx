@@ -9,6 +9,7 @@ import { Provider } from "react-redux";
 import { renderComponentWithSpecificStore } from "../testSetupHelper/Helper";
 import userEvent from "@testing-library/user-event";
 
+const log = jest.spyOn(console, "log").mockImplementation(() => {});
 afterEach(cleanup);
 
 describe("RecipeTitle", () => {

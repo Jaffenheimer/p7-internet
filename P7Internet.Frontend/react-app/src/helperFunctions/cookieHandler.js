@@ -45,6 +45,15 @@ export const getCookieSessionToken = () => {
   }
 };
 
+export const getCookieUserName = () => {
+  let cookies = document.cookie.split(";");
+  for (let cookie in cookies) {
+    if (cookies[cookie].includes("username")) {
+      return cookies[cookie].split("=")[1];
+    }
+  }
+};
+
 export const getCookies = () => {
   let username, userid, sessionToken;
   let cookies = document.cookie.split(";");

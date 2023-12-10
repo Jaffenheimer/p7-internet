@@ -7,10 +7,13 @@ import {
   useUserConfirmEmailMutation,
   useUserDeleteUserMutation,
 } from "../services/usersEndpoints";
-import { getCookieUserId } from "../helperFunctions/cookieHandler";
+import {
+  getCookieSessionToken,
+  getCookieUserId,
+  getCookieUserName,
+} from "../helperFunctions/cookieHandler";
 import { checkValidTwoPasswords } from "../helperFunctions/inputValidation";
 import { getCookies } from "../helperFunctions/cookieHandler";
-import Cookies from "js-cookie";
 import { pageActions } from "../features/pageSlice";
 import { userActions } from "../features/userSlice";
 
@@ -29,10 +32,9 @@ const SettingsModalContainer = ({ closeModal }) => {
 
   async function handleSubmitForm(event) {
     event.preventDefault();
-    let cookies = getCookies();
-    let username = cookies.username;
-    let userId = cookies.userid;
-    let sessionToken = cookies.sessionToken;
+    const username = getCookieUserName();
+    const userId = getCookieUserId();
+    const sessionToken = getCookies().sessionToken;
 
     let isValid = checkValidTwoPasswords(password, repeatedPassword);
     if (password === oldPassword) {
@@ -109,7 +111,7 @@ const SettingsModalContainer = ({ closeModal }) => {
       if (window.confirm("Er du sikker på du vil slette din bruger?")) {
         // encode the userId and sessionToken such that they can be sent in the query
         let userId = encodeURIComponent(getCookieUserId());
-        let sessionToken = encodeURIComponent(Cookies.get("sessionToken"));
+        let sessionToken = encodeURIComponent(getCookieSessionToken());
         // create the query for the request
         const query = `?userId=${userId}&sessionToken=${sessionToken}`;
         // send a request to API for deleting the user

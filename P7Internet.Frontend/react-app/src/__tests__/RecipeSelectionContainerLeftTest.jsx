@@ -14,6 +14,7 @@ import Recipe from "../objects/Recipe.js";
 
 afterEach(cleanup);
 
+
 test("Content of left container is rendered correctly ", () => {
   const recipes = [
     new Recipe("1", "Recipe 1", ["ingredient 1", "ingredient 2"]),
