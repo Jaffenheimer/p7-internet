@@ -90,8 +90,9 @@ const GenerateRecipesButton = () => {
     //Create Body for request
     const body = recipeBodyCreator(loggedIn, recipeGenData);
 
+    
     //Runs function to request recipes from backend
-    let succeed = await fetchRecipes(body);
+    var succeed = await fetchRecipes(body);
 
     //for testing purposes to ensure we have recipes on next page:
     //dispatch(recipeActions.addRecipes(defaultRecipes));

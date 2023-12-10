@@ -9,19 +9,27 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     excludeList,
     numPeople,
   } = recipeGenerationSlice;
-  let userid = "",
+  var userid = "",
     sessiontoken = "",
     ingredients = [],
     excludedIngredients = [];
 
   //Combines allgeries with dietaryrestrictions
-  const restrictions = [...allergens];
-  if (dietaryRestrictions !== '') restrictions.push(dietaryRestrictions);
+  const restrictions = ((dietaryRestrictions.value === '') ? [] : [dietaryRestrictions.label]);
+  
+  //Adds all allergies to restrictions array
+  if (allergens !== "") {
+    allergens.forEach((allergy) => {
+      restrictions.push(allergy.label);
+    });
+  }
 
+  //Add ownedIngredients to ingredients array 
   ownedIngredients.forEach((ingredient) => {
     ingredients.push(ingredient.text);
   });
 
+  //Add excludeList to excludedIngredients array 
   excludeList.forEach((ingredient) => {
     excludedIngredients.push(ingredient.text);
   });
@@ -41,19 +49,21 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     sessiontoken = retriveCookie("sessionToken=");
 
     const userData = {
-      userId: userid, 
+      userId: userid,
       sessionToken: sessiontoken,
-    }
+    };
 
+    //Add user data to body if logged in
     const combinedBody = {
-      ...userData, 
+      ...userData,
       ...body,
-    }
+    };
 
+    //returns combind if the user is login
     return combinedBody;
-
   }
 
+  //returns body if the user is not logged in
   return body;
 }
 
