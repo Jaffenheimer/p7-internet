@@ -1,4 +1,4 @@
-import { retriveCookie } from "./cookieHandler";
+import { getCookieSessionToken, getCookieUserId } from "./cookieHandler";
 
 //Function to create the body for the post for recipes
 function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
@@ -16,7 +16,7 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
 
   //Combines allgeries with dietaryrestrictions
   const restrictions = [...allergens];
-  if (dietaryRestrictions !== '') restrictions.push(dietaryRestrictions);
+  if (dietaryRestrictions !== "") restrictions.push(dietaryRestrictions);
 
   ownedIngredients.forEach((ingredient) => {
     ingredients.push(ingredient.text);
@@ -37,21 +37,20 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
 
   //Retrive userid and sessiontoken if login
   if (loggedIn === true) {
-    userid = retriveCookie("userid=");
-    sessiontoken = retriveCookie("sessionToken=");
+    userid = getCookieUserId();
+    sessiontoken = getCookieSessionToken();
 
     const userData = {
-      userId: userid, 
+      userId: userid,
       sessionToken: sessiontoken,
-    }
+    };
 
     const combinedBody = {
-      ...userData, 
+      ...userData,
       ...body,
-    }
+    };
 
     return combinedBody;
-
   }
 
   return body;

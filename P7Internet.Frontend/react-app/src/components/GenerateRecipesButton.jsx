@@ -18,6 +18,7 @@ const GenerateRecipesButton = () => {
     (state) => state.recipeGeneration.ownedIngredients
   );
 
+  //States used to fetch data from backend
   const [generateUserRecipe, { isLoading: isRecipeUserLoading }] =
     useGenerateUserRecipeMutation();
   const [generateRecipe, { isLoading: isRecipeLoading }] =
@@ -35,7 +36,6 @@ const GenerateRecipesButton = () => {
 
     if (!isRecipeLoading || !isRecipeUserLoading) {
       toast.loading("Generer Opskrifter", { toastId: "generateRecipesToast" });
-      console.log(loggedIn);
       if (loggedIn) {
         response = await generateUserRecipe(body).unwrap();
       } else {
@@ -83,11 +83,7 @@ const GenerateRecipesButton = () => {
         dispatch(userActions.logoutUser());
         return;
       }
-      console.log(error.originalStatus);
     }
-
-    //for testing purposes to ensure we have recipes on next page:
-    //dispatch(recipeActions.addRecipes(defaultRecipes));
     goToPageFullRecipeSelection();
   }
 

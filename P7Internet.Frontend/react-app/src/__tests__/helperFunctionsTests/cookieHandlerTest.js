@@ -1,13 +1,13 @@
 import {
   addCookies,
   deleteCookies,
-  retriveCookie,
+  retrieveCookie,
 } from "../../helperFunctions/cookieHandler";
 
-test("Does retriveCookie retrive the cookie correctly", () => {
+test("Does retrieveCookie retrive the cookie correctly", () => {
   const testUsername = "username";
   document.cookie = `username=${testUsername};`;
-  const retrivedUsername = retriveCookie("username=");
+  const retrivedUsername = retrieveCookie("username=");
   expect(retrivedUsername).toBe("username");
 
   //Deleting cookie
@@ -21,9 +21,9 @@ test("Can Cookies be added", () => {
 
   addCookies(testUsername, testUserId, testUserSessionToken);
 
-  const retrivedUsername = retriveCookie("username=");
-  const retrivedUserId = retriveCookie("userid=");
-  const retrivedUserSessionToken = retriveCookie("sessionToken=");
+  const retrivedUsername = retrieveCookie("username=");
+  const retrivedUserId = retrieveCookie("userid=");
+  const retrivedUserSessionToken = retrieveCookie("sessionToken=");
 
   expect(retrivedUsername).toBe("username");
   expect(retrivedUserId).toBe("userid");

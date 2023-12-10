@@ -39,8 +39,6 @@ test("Renders expected default recipe not marked as favorite by default when cur
     new Recipe("1", "Recipe 1", ["ingredient 1", "ingredient 2"]),
     new Recipe("2", "Recipe 2", ["ingredient 3", "ingredient 4"]),
   ];
-  // const mockStore = getMockStoreWithMultipleRecipesWithRecipeIndexOf(0);
-  // expect(defaultRecipes).toHaveLength(2);
   renderComponentWithDispatchActions(<RecipeView />, [
     recipeActions.addRecipes(recipes),
     recipeActions.setCurrentRecipeIndex(1),

@@ -32,13 +32,9 @@ const LoginBox = ({ closeModal }) => {
   //States used to fetch data from backend
   const [userLogin, { isLogInLoading }] = useUserLoginMutation();
   const [userCreate, { isCreateLoading }] = useUserCreateMutation();
-  const [
-    userResetPasswordEmailRequest,
-    { isResetPasswordEmailRequestLoading },
-  ] = useUserResetPasswordEmailRequestMutation();
-  // eslint-disable-next-line
-  const [userResetPassword, { isResetPasswordLoading }] =
-    useUserResetPasswordMutation();
+  const [userResetPasswordEmailRequest] =
+    useUserResetPasswordEmailRequestMutation();
+  const [userResetPassword] = useUserResetPasswordMutation();
 
   async function handleSubmitForm(event) {
     event.preventDefault();

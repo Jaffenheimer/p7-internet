@@ -9,7 +9,7 @@ import { getCookieUserId } from "../helperFunctions/cookieHandler";
 import { checkValidTwoPasswords } from "../helperFunctions/inputValidation";
 import { getCookies } from "../helperFunctions/cookieHandler";
 
-const SettingBox = ({ closeModal }) => {
+const SettingsModalContainer = ({ closeModal }) => {
   // eslint-disable-next-line
   const [userConfirmEmailRequest, { isConfirmEmailRequestLoading }] =
     useUserConfirmEmailRequestMutation();
@@ -188,4 +188,4 @@ const SettingBox = ({ closeModal }) => {
   );
 };
 
-export default SettingBox;
+export default SettingsModalContainer;

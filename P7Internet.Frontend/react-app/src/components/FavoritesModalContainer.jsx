@@ -19,6 +19,7 @@ import {
 import Recipe from "../objects/Recipe";
 
 const FavoritesModalContainer = ({ closeModal }) => {
+  //States used to fetch data from backend
   const [userDeleteFavoriteRecipe] = useUserDeleteFavoriteRecipeMutation();
   const [userGetAllFavoriteRecipes] = useUserGetAllFavoriteRecipesMutation();
 
@@ -48,10 +49,8 @@ const FavoritesModalContainer = ({ closeModal }) => {
       }
       dispatch(userActions.setFavoriteRecipes(recipes));
     } catch (error) {
-      console.log(error.originalStatus);
       if (error.originalStatus === 401) {
         closeModal();
-        //hvorfor dukker den op 2 gange?
         toast.error(
           "Din session er udløbet. Log ind igen for at se dine favorit opskrifter "
         );
@@ -61,14 +60,11 @@ const FavoritesModalContainer = ({ closeModal }) => {
       if (error.originalStatus === 500)
         //if no recipes are found, set favoriteRecipes to empty array
         dispatch(userActions.setFavoriteRecipes([]));
-      console.log(error.originalStatus);
     }
   };
   useEffect(() => {
-    // try {
-    getFavoriteRecipes();
-    // }
-  }, []);
+    getFavoriteRecipes(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); //ensures useeffect is only called once
   const dispatch = useDispatch();
 
   function selectRecipe(event, selectedRecipe) {

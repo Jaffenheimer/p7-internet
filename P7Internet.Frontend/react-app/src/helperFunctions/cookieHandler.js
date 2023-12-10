@@ -1,5 +1,5 @@
 //Function for retriving data from cookies
-export const retriveCookie = (retriveValue) => {
+export const retrieveCookie = (retriveValue) => {
   const cookies = document.cookie;
   const cookieArray = cookies.split(";").map((cookie) => cookie.trim());
 
