@@ -91,8 +91,6 @@ public class OpenAiService
         prompt += "Det skal have følgende format: Titel, ingredienser og metode. ";
         prompt += "Opskriften må ikke indeholde noter, bemærkninger, Bemærk og serveringsforslag.";
         
-        // Console.WriteLine("Prompt: " + prompt);
-
         return prompt;
     }
 }

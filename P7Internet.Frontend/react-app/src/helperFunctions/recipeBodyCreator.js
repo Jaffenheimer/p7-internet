@@ -15,13 +15,15 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     excludedIngredients = [];
 
   //Combines allgeries with dietaryrestrictions
-  const restrictions = ((dietaryRestrictions.value === '') ? [] : [dietaryRestrictions.label]);
+  var restrictions = ((dietaryRestrictions.value === '') ? [] : [dietaryRestrictions.label]);
   
   //Adds all allergies to restrictions array
-  if (allergens !== "") {
+  if (allergens !== '' && dietaryRestrictions.value !== '') {
     allergens.forEach((allergy) => {
       restrictions.push(allergy.label);
     });
+  }else if (allergens === '' && dietaryRestrictions.value === ''){
+    restrictions = [];
   }
 
   //Add ownedIngredients to ingredients array 
