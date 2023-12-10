@@ -46,4 +46,7 @@ public interface IFavouriteRecipeRepository
     /// <returns>Returns true if successful, false if not</returns>
     /// <exception cref="ArgumentException">Throws an argument exception if no recipe is found</exception>
     public Task<bool> UpsertRecipesToHistory(Guid userId, Guid recipeId);
+
+
+    public Task<bool> CheckIfRecipeIsAlreadyFavourite(Guid userId, Guid recipeId);
 }

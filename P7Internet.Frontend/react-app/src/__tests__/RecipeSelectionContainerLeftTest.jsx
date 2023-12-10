@@ -40,8 +40,9 @@ test("Content of left container is rendered correctly ", () => {
 
 test("Recipe changes after pressing arrow right", async () => {
   const recipes = [
-    new Recipe("1", "Recipe 1", ["ingredient 1", "ingredient 2"]),
-    new Recipe("2", "Recipe 2", ["ingredient 3", "ingredient 4"]),
+    new Recipe("1","Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("2","Recipe 2", ["ingredient 3", "ingredient 4"]),
+    new Recipe("3","Recipe 3", ["ingredient 5", "ingredient 6"]),
   ];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
     recipeActions.addRecipes(recipes),

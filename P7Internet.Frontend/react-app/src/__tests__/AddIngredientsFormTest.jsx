@@ -172,3 +172,34 @@ test("Submitting the excluded ingredients form with an input that is already in 
     )
   ).toBeInTheDocument();
 });
+
+test("case insensitive input", async () => {
+  const ingredient = { text: "test", id: 1 };
+  const mockState = {
+    recipeGeneration: {
+      ownedIngredients: [ingredient],
+      excludeList: [],
+    },
+  };
+  // configureMockStore() returns a function that can be called with the initial state
+  const mockStore = configureMockStore()(mockState);
+  const addIngredientExcluded = recipeGenerationActions.addExcludedIngredient;
+  renderComponentWithSpecificStore(
+    <AddIngredientsForm
+      addIngredient={addIngredientExcluded}
+      ingredientsList={[]}
+    />,
+    mockStore
+  );
+  render(<ToastContainer position="top-center" />);
+  const addIngredientInputExcluded = screen.getByTestId("AddIngredientInput");
+  const addIngredientFormExcluded = screen.getByTestId("AddIngredientsForm");
+  userEvent.type(addIngredientInputExcluded, "TEST");
+  fireEvent.submit(addIngredientFormExcluded); //adding element to excluded ingredients
+
+  expect(
+    await screen.findByText(
+      /"TEST" er allerede tilføjet til listen af ejede ingredienser!/
+    )
+  ).toBeInTheDocument();
+});

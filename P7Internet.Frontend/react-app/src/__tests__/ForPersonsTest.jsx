@@ -33,7 +33,8 @@ test("ForPersons renders properly with specific value of number of persons", () 
 
 //integration test between NumberOfPersonsField and ForPersons
 test("ForPersons renders properly when the number of persons is changed", () => {
-  renderMultipleComponents([<ForPersons />, <NumberOfPersonsField />]);
+  renderMultipleComponents([<NumberOfPersonsField />, <ForPersons />]);
+  expect(screen.getByText(/4 personer/)).toBeInTheDocument();
   const plus = screen.getByText(/\+/);
 
   //making changes to numberOfPersonsField

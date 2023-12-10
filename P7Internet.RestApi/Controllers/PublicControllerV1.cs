@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -450,11 +451,11 @@ public class PublicControllerV1 : ControllerBase
     [HttpDelete("user/favorite-recipe")]
     public async Task<IActionResult> DeleteFavouriteRecipe([FromBody] DeleteFavouriteRecipeRequest req)
     {
-        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
         if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
 
-        var result = await _favouriteRecipeRepository.Delete(req.UserId, req.RecipeId);
+        var result = await _favouriteRecipeRepository.Delete(userId, recipeId);
         if (result)
         {
             return Ok("Recipe deleted from favourites");
@@ -583,13 +584,13 @@ public class PublicControllerV1 : ControllerBase
     }
 
     [HttpDelete("user/delete-user")]
-    public async Task<IActionResult> DeleteUser([FromBody] DeleteUserRequest req)
+    public async Task<IActionResult> DeleteUser([FromQuery] Guid userId, string sessionToken)
     {
-        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
         if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
 
-        var user = await _userRepository.GetUserFromId(req.UserId);
+        var user = await _userRepository.GetUserFromId(userId);
         if (user == null)
             return NotFound("User does not exist");
 

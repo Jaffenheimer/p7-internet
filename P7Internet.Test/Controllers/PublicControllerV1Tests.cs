@@ -631,7 +631,7 @@ namespace P7Internet.Test.Controllers
             _favouriteRecipeRepositoryMock.Setup(x => x.Delete(_testUser.Id, _testRecipe.Id)).ReturnsAsync(true);
 
             //Act
-            IActionResult actionResult = controller.DeleteFavouriteRecipe(deleteFavouriteReq).Result;
+            IActionResult actionResult = controller.DeleteFavouriteRecipe(_testUser.Id, _testRecipe.Id, _seshToken).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
@@ -649,7 +649,7 @@ namespace P7Internet.Test.Controllers
             _favouriteRecipeRepositoryMock.Setup(x => x.Delete(_testUser.Id, _testRecipe.Id)).ReturnsAsync(true);
 
             //Act
-            IActionResult actionResult = controller.DeleteFavouriteRecipe(deleteFavouriteReq).Result;
+            IActionResult actionResult = controller.DeleteFavouriteRecipe(_testUser.Id, _testRecipe.Id, _seshToken).Result;
             var contentResult = actionResult as UnauthorizedObjectResult;
 
             //Assert
@@ -755,7 +755,7 @@ namespace P7Internet.Test.Controllers
             _userRepositoryMock.Setup(x => x.DeleteUser(_testUser)).ReturnsAsync(true);
 
             //Act
-            IActionResult actionResult = controller.DeleteUser(deleteUserRequest).Result;
+            IActionResult actionResult = controller.DeleteUser(_testUser.Id, _seshToken).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
@@ -774,7 +774,7 @@ namespace P7Internet.Test.Controllers
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(_testUser.Id, _seshToken))
                 .ReturnsAsync(false);
             //Act
-            IActionResult actionResult = controller.DeleteUser(deleteUserRequest).Result;
+            IActionResult actionResult = controller.DeleteUser(_testUser.Id, _seshToken).Result;
             var contentResult = actionResult as UnauthorizedObjectResult;
 
             //Assert
@@ -792,7 +792,7 @@ namespace P7Internet.Test.Controllers
                 .ReturnsAsync(true);
             _userRepositoryMock.Setup(x => x.GetUserFromId(_testUser.Id)).ReturnsAsync(value: null);
             //Act
-            IActionResult actionResult = controller.DeleteUser(deleteUserRequest).Result;
+            IActionResult actionResult = controller.DeleteUser(_testUser.Id, _seshToken).Result;
             var contentResult = actionResult as NotFoundObjectResult;
 
             //Assert

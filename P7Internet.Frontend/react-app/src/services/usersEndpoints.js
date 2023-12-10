@@ -108,6 +108,13 @@ const userEndpoints = apiSlice.injectEndpoints({
         body: "",
       }),
     }),
+    userDeleteUser: builder.mutation({
+      query: (querystring) => ({
+        url: `public/user/delete-user/${querystring}`,
+        method: "DELETE",
+        body: "",
+      }),
+    }),
   }),
   //Is a flag that tells redux that is does not override existing endpoints
   overrideExisting: false,
@@ -126,4 +133,5 @@ export const {
   useUserChangePasswordMutation,
   useUserConfirmEmailRequestMutation,
   useUserConfirmEmailMutation,
+  useUserDeleteUserMutation,
 } = userEndpoints;
