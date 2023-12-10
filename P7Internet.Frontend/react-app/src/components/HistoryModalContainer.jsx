@@ -16,9 +16,9 @@ import Recipe from "../objects/Recipe";
 import { toast } from "react-toastify";
 
 const HistoryModalContainer = ({ closeModal }) => {
-   //States used to fetch data from backend
+  //States used to fetch data from backend
   const [userGetRecipesInHistory] = useUserGetRecipesInHistoryMutation();
-  
+
   const dispatch = useDispatch();
   const recipes = useSelector((state) => state.recipe.recipes);
 
@@ -50,7 +50,7 @@ const HistoryModalContainer = ({ closeModal }) => {
       if (error.originalStatus === 500)
         //if no recipes are found, set favoriteRecipes to empty array
         dispatch(userActions.setHistory([]));
-      if (error.originalStatus === 401) {
+      else if (error.originalStatus === 401) {
         closeModal();
         toast.error(
           "Din session er udløbet. Log ind igen for at se din historik"
@@ -60,7 +60,7 @@ const HistoryModalContainer = ({ closeModal }) => {
       } else console.log(error);
     }
   };
-  
+
   useEffect(() => {
     getRecipesInHistory(); // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); //ensures useeffect is only called once

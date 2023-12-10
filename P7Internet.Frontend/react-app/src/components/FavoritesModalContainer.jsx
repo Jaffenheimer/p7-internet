@@ -57,7 +57,7 @@ const FavoritesModalContainer = ({ closeModal }) => {
         dispatch(userActions.logoutUser());
         return;
       }
-      if (error.originalStatus === 500)
+      else if (error.originalStatus === 500)
         //if no recipes are found, set favoriteRecipes to empty array
         dispatch(userActions.setFavoriteRecipes([]));
     }
