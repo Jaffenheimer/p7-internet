@@ -45,6 +45,7 @@ const FullRecipeView = ({ shouldShowBackButton }) => {
           )}
           ListElement={RecipeIngredientElement}
         />
+        <br></br>
         <MethodsList methods={recipe.method} />
         <div className="BottomButtons no-print">
           <div className="BottomButtonsSpacer">

@@ -66,16 +66,8 @@ public class OpenAiService
     /// <returns>Returns a string composed of all the components in the RecipeRequest</returns>
     private string ComposePromptFromRecipeRequest(RecipeRequest req)
     {
-        var prompt = "";
-        if (req.Amount > 1 || req.Amount != null)
-        {
-            prompt += $"Jeg vil gerne have {req.Amount} opskrifter";
-        }
-        else
-        {
-            prompt += "Jeg vil gerne have en opskrift";
-        }
-
+        var prompt = "Jeg vil gerne have en ny anderledes og forskllige opskrift";
+        
         if (req.Ingredients != null)
         {
             prompt += $" med disse ingredienser {string.Join(", ", req.Ingredients)}";
@@ -93,8 +85,13 @@ public class OpenAiService
 
         if (req.AmountOfPeople != null)
         {
-            prompt += $" til {req.AmountOfPeople} personer";
+            prompt += $" til {req.AmountOfPeople} personer. ";
         }
+
+        prompt += "Det skal have følgende format: Titel, ingredienser og metode. ";
+        prompt += "Opskriften må ikke indeholde noter, bemærkninger, Bemærk og serveringsforslag.";
+        
+        // Console.WriteLine("Prompt: " + prompt);
 
         return prompt;
     }

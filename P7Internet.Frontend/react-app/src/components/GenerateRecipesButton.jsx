@@ -54,6 +54,7 @@ const GenerateRecipesButton = () => {
           });
 
           if (recepies.length !== 0) {
+            dispatch(recipeActions.clearRecipes());
             dispatch(recipeActions.addRecipes(recepies));
             return true;
           } else {
