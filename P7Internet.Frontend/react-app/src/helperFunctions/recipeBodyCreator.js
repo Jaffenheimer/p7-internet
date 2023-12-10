@@ -15,10 +15,6 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     excludedIngredients = [],
     restrictions = [];
 
-  console.log(
-    "recipeGenerationSlice: ",
-    recipeGenerationSlice.dietaryRestrictions
-  );
 
   if (dietaryRestrictions === "") {
     restrictions = [];
@@ -32,8 +28,6 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
       restrictions.push(allergy.label);
     });
   }
-
-  console.log("restrictions:", restrictions);
 
   //Add ownedIngredients to ingredients array
   ownedIngredients.forEach((ingredient) => {

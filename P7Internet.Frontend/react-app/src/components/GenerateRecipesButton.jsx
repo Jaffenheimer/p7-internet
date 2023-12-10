@@ -89,9 +89,6 @@ const GenerateRecipesButton = () => {
 
     //Create Body for request
     const body = recipeBodyCreator(loggedIn, recipeGenData);
-
-    console.log("Body: ", body);
-
     
     //Runs function to request recipes from backend
     var succeed = await fetchRecipes(body);
