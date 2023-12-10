@@ -631,7 +631,7 @@ namespace P7Internet.Test.Controllers
             _favouriteRecipeRepositoryMock.Setup(x => x.Delete(_testUser.Id, _testRecipe.Id)).ReturnsAsync(true);
 
             //Act
-            IActionResult actionResult = controller.DeleteFavouriteRecipe(_testUser.Id, _testRecipe.Id, _seshToken).Result;
+            IActionResult actionResult = controller.DeleteFavouriteRecipe(deleteFavouriteReq).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
@@ -649,7 +649,7 @@ namespace P7Internet.Test.Controllers
             _favouriteRecipeRepositoryMock.Setup(x => x.Delete(_testUser.Id, _testRecipe.Id)).ReturnsAsync(true);
 
             //Act
-            IActionResult actionResult = controller.DeleteFavouriteRecipe(_testUser.Id, _testRecipe.Id, _seshToken).Result;
+            IActionResult actionResult = controller.DeleteFavouriteRecipe(deleteFavouriteReq).Result;
             var contentResult = actionResult as UnauthorizedObjectResult;
 
             //Assert

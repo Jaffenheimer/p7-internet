@@ -451,11 +451,11 @@ public class PublicControllerV1 : ControllerBase
     [HttpDelete("user/favorite-recipe")]
     public async Task<IActionResult> DeleteFavouriteRecipe([FromBody] DeleteFavouriteRecipeRequest req)
     {
-        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
 
-        var result = await _favouriteRecipeRepository.Delete(userId, recipeId);
+        var result = await _favouriteRecipeRepository.Delete(req.UserId, req.RecipeId);
         if (result)
         {
             return Ok("Recipe deleted from favourites");
