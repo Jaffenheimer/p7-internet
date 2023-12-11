@@ -73,7 +73,7 @@ public class UserRepository : IUserRepository
         var query = $@"SELECT EmailConfirmed FROM {TableName} WHERE Name = @name";
         var result = await Connection.QuerySingleOrDefaultAsync(query, new {name});
 
-        return result > 0;
+        return Convert.ToBoolean(result.EmailConfirmed);
     }
 
     /// <summary>

@@ -26,9 +26,9 @@ const userEndpoints = apiSlice.injectEndpoints({
     }),
     userResetPasswordEmailRequest: builder.mutation({
       query: ({ email }) => ({
-        url: `/public/user/reset-password-email-request?email=${email}`,
+        url: `/public/user/reset-password-email-request`,
         method: "POST",
-        body: "",
+        body: { email: email },
       }),
     }),
     userResetPassword: builder.mutation({
@@ -57,25 +57,24 @@ const userEndpoints = apiSlice.injectEndpoints({
         },
       }),
     }),
-    userConfirmEmailRequest: builder.mutation({
-      query: ({ UserId }) => ({
-        url: `/public/user/confirm-email-request?UserId=${UserId}`,
-        method: "POST",
-        body: "",
-      }),
-    }),
     userConfirmEmail: builder.mutation({
       query: ({ UserId, VerificationCode }) => ({
-        url: `/public/user/confirm-email?userId=${UserId}&verificationCode=${VerificationCode}`,
+        url: `/public/user/confirm-email`,
         method: "POST",
-        body: "",
+        body: {
+          userId: UserId,
+          verificationCode: VerificationCode,
+        },
       }),
     }),
     userDeleteUser: builder.mutation({
-      query: (querystring) => ({
-        url: `public/user/delete-user/${querystring}`,
+      query: ({ userId, sessionToken }) => ({
+        url: `/public/user/delete-user`,
         method: "DELETE",
-        body: "",
+        body: {
+          userId: userId,
+          sessionToken: sessionToken,
+        },
       }),
     }),
   }),
@@ -90,7 +89,6 @@ export const {
   useUserResetPasswordEmailRequestMutation,
   useUserResetPasswordMutation,
   useUserChangePasswordMutation,
-  useUserConfirmEmailRequestMutation,
   useUserConfirmEmailMutation,
   useUserDeleteUserMutation,
 } = userEndpoints;

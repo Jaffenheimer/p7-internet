@@ -467,9 +467,9 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="email"></param>
     /// <returns>Returns Ok if a user is found and the email has been sent, if the user is not found it returns BadRequest</returns>
     [HttpPost("user/reset-password-email-request")]
-    public async Task<IActionResult> ResetPasswordRequest([EmailAddress] string email)
+    public async Task<IActionResult> ResetPasswordRequest([FromBody] ResetPasswordEmailRequest req)
     {
-        var user = await _userRepository.GetUserByEmail(email);
+        var user = await _userRepository.GetUserByEmail(req.Email);
         if (user != null)
         {
             if (!await _userRepository.CheckIfEmailIsConfirmed(user.Name))
@@ -581,20 +581,24 @@ public class PublicControllerV1 : ControllerBase
     }
 
     [HttpDelete("user/delete-user")]
-    public async Task<IActionResult> DeleteUser([FromQuery] Guid userId, string sessionToken)
+    public async Task<IActionResult> DeleteUser([FromBody] DeleteUser req)
     {
-        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
 
-        var user = await _userRepository.GetUserFromId(userId);
+        var user = await _userRepository.GetUserFromId(req.UserId);
         if (user == null)
             return NotFound("User does not exist");
 
         var result = await _userRepository.DeleteUser(user);
         if (result)
         {
-            return Ok("User deleted");
+            var resultSessionToken = await _userSessionRepository.DeleteSessionToken(req.UserId, req.SessionToken);
+            if (resultSessionToken)
+                return Ok("User deleted");
+
+            return NotFound("Session Token was not found, please login again");
         }
 
         return BadRequest("This should never happen");

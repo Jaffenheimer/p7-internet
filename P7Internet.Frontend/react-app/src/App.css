@@ -108,11 +108,15 @@ body {
   height: 1.3em;
 }
 .titleLogo:hover {
-  animation: spin 3s linear infinite;;
+  animation: spin 3s linear infinite;
 }
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .RecipeSelectionContainerLeft {
@@ -518,12 +522,6 @@ input[type="password"] {
 .SettingModal h3 {
   text-align: center;
   margin: 24px 0 12px 0;
-}
-
-.SettingModal .SendVerificationEmailButton {
-  width: 25%;
-  margin-right: 10%;
-  float: right;
 }
 
 .LoginModal input[type="text"],

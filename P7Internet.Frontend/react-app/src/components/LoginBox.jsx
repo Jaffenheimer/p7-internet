@@ -51,12 +51,15 @@ const LoginBox = ({ closeModal }) => {
 
       try {
         let response;
-        if (!creatingAccount) {
+        if (loggingIn) {
           response = await userLogin({
             username: username,
             password: password,
           }).unwrap();
-        } else if (userInputValidation(username, password, email) === true) {
+        } else if (
+          creatingAccount &&
+          userInputValidation(username, password, email) === true
+        ) {
           response = await userCreate({
             username: username,
             password: password,
@@ -84,8 +87,6 @@ const LoginBox = ({ closeModal }) => {
               email: response.emailAddress,
             })
           );
-
-          if (!creatingAccount) setCreatingAccount(false);
 
           clearandclose();
         }
@@ -126,10 +127,8 @@ const LoginBox = ({ closeModal }) => {
     if (checkValidEmail(email)) {
       try {
         //send email to backend
-        const encodedEmail = encodeURIComponent(email);
-
         let response = await userResetPasswordEmailRequest({
-          email: encodedEmail,
+          email: email,
         }).unwrap();
 
         if (response) {
@@ -161,40 +160,37 @@ const LoginBox = ({ closeModal }) => {
     if (checkValidVerificationCode(verificationCode)) {
       if (checkValidPassword(password)) {
         try {
-          await userResetPassword({
+          let response = await userResetPassword({
             password: password,
             verificationCode: verificationCode,
-          }).unwrap();
-        } catch (error) {
-          console.log(error);
-          if (error.originalStatus === 200) {
+          });
+          if (response.error.originalStatus === 200) {
             toast.success("Dit kodeord er nu nulstillet");
             clearandclose();
-          }
-          if (
-            error.originalStatus === 400 &&
-            error.data ===
+          } else if (
+            response.error.originalStatus === 400 &&
+            response.error.data ===
               "The verification code is not for resetting the password"
           ) {
             toast.error(
               "Denne verifikationskode er ikke til at nulstille kodeord"
             );
           } else if (
-            error.originalStatus === 400 &&
-            error.data === "No user found on the verification code"
+            response.error.originalStatus === 400 &&
+            response.error.data === "No user found on the verification code"
           ) {
             toast.error("Din bruger er ikke fundet på denne verifikationskode");
           } else if (
-            error.originalStatus === 400 &&
-            error.data ===
+            response.error.originalStatus === 400 &&
+            response.error.data ===
               "Verification code was invalid, please check that the inserted value is correct"
           ) {
             toast.error(
               "Verfikationskoden er invalid, tjek venligst at den indtastede værdi er korrekt"
             );
-          } else {
-            toast.error("En fejl opstod med at sende verifikationsmailen");
           }
+        } catch (error) {
+          console.log(error);
         }
       } else {
         toast.error("Du indtastede ikke et gyldigt kodeord");
