@@ -40,14 +40,13 @@ const FullRecipeView = ({ shouldShowBackButton }) => {
       <div className="FullRecipeView">
         <RecipeTitle id="RecipeTitle" recipe={recipe} />
         <ForPersons />
-        <h2>Ingredienser:</h2>
         <IngredientsList
           ingredients={convertIngredientsToIngredientObjects(
             recipe.shortIngredients
           )}
           ListElement={RecipeOfferElement}
         />
-        <h4>Ialt: {finalRecipesSum},-</h4>
+        <h4>Ialt: {finalRecipesSum.toFixed(2)},-</h4>
         <br />
         <MethodsList methods={recipe.method} />
         <div className="BottomButtons no-print">

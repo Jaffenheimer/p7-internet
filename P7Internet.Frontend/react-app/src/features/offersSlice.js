@@ -6,9 +6,14 @@ const initialState = {
   toggleStateIsRadius:
     localStorage.getItem("geolocation") !== null ? true : false,
   radius: "100 m",
+  realRadius: 100,
   finalRecipes: {},
   finalRecipesSum: 0,
 };
+
+function stripRadius(radius) {
+  return Math.ceil(parseFloat(radius.toString().split(" ")));
+}
 
 export const offersSlice = createSlice({
   name: "offers",
@@ -22,6 +27,9 @@ export const offersSlice = createSlice({
     },
     setRadius(state, action) {
       state.radius = action.payload;
+      state.realRadius = action.payload.includes("km")
+        ? stripRadius(action.payload) * 1000
+        : stripRadius(action.payload);
     },
     addTotalPrice(state, action) {
       state.finalRecipes = {

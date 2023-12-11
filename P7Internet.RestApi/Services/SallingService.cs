@@ -68,7 +68,8 @@ namespace P7Internet.Services
             }
             catch (Exception e)
             {
-                throw new HttpRequestException(e.Message);
+                throw e;
             }
-        }    }
+        }   
+    }
 }

@@ -12,7 +12,7 @@ const RecipeOfferElement = ({ ingredient }) => {
   );
 
   const stores = useSelector((state) => state.offers.stores);
-  const radius = useSelector((state) => state.offers.radius);
+  const radius = useSelector((state) => state.offers.realRadius);
   const recipes = useSelector((state) => state.recipe.recipes);
   const ownedIngredients = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
@@ -97,7 +97,7 @@ const RecipeOfferElement = ({ ingredient }) => {
 
   function FindFullIngredientName(shortName, recipe) {
     let fullName;
-    const fullNames = recipe.recipe.ingredients;
+    const fullNames = recipe.ingredients;
     fullName = fullNames.find((fullName) =>
       fullName.toLowerCase().includes(shortName.toLowerCase())
     );

@@ -685,7 +685,6 @@ public class PublicControllerV1 : ControllerBase
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipe, validIngredients);
         if (res.Success == false)
             return RecipeResponse.Error(res.ErrorMessage, res.RecipeId);
-        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
         await _cachedRecipeRepository.Upsert(res.Recipe, res.RecipeId);
         return res;
