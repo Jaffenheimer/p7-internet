@@ -246,22 +246,14 @@ button:hover {
 button:active {
   transform: scale(0.95);
 }
-/* 
-.FormStyle{
-  width: 100%;
-} */
 
-/* #IngredientsBody {
-  margin-left: 2%;
-  margin-top: 10%;
-} */
-
-.excludedIngredientListItems {
-  width: 90%;
-}
-
-.ownedIngredientListItems {
-  width: 40%;
+button:disabled,
+button[disabled] {
+  border: 1px solid #999999;
+  background-color: #cccccc;
+  color: #666666;
+  pointer-events: none;
+  cursor: not-allowed;
 }
 
 .RecipeView > #RecipeTitleDiv > h1 {
@@ -554,7 +546,8 @@ input[type="password"] {
   margin: auto;
 }
 
-.LoginForm button {
+.LoginForm,
+.CreateAccountForm button {
   width: 96%;
 }
 
