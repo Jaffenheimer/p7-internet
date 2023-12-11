@@ -24,6 +24,7 @@ const LoginBox = ({ closeModal }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
+  const [buttonIsDisabled, setButtonIsDisabled] = useState(false);
 
   const [loggingIn, setLoggingIn] = useState(true);
   const [creatingAccount, setCreatingAccount] = useState(false);
@@ -40,6 +41,7 @@ const LoginBox = ({ closeModal }) => {
     event.preventDefault();
 
     if (!isLogInLoading || isCreateLoading) {
+      setButtonIsDisabled(true);
       /*
       Will try to createAcount or logIn to api Endpoint
       */
@@ -99,6 +101,7 @@ const LoginBox = ({ closeModal }) => {
           toast.error("Brugernavnet eller kodeordet er forkert, prøv igen");
       }
     }
+    setButtonIsDisabled(false);
   }
 
   function clearandclose() {
@@ -165,8 +168,7 @@ const LoginBox = ({ closeModal }) => {
           if (error.originalStatus === 200) {
             toast.success("Dit kodeord er nu nulstillet");
             clearandclose();
-          }
-          else if (
+          } else if (
             error.originalStatus === 400 &&
             error.data ===
               "The verification code is not for resetting the password"
@@ -220,7 +222,7 @@ const LoginBox = ({ closeModal }) => {
         {!creatingAccount ? (
           ""
         ) : (
-          <form className="LoginForm" onSubmit={handleSubmitForm}>
+          <form className="CreateAccountForm" onSubmit={handleSubmitForm}>
             <label>
               <b>Email</b>
             </label>
@@ -251,7 +253,10 @@ const LoginBox = ({ closeModal }) => {
               onChange={(event) => setPassword(event.target.value)}
               required
             />
-            <button type="submit"> Tilføj Bruger </button>
+            <button type="submit" disabled={buttonIsDisabled}>
+              {" "}
+              Opret Bruger{" "}
+            </button>
             <br />
             <br />
             <p id="alreadyHasUserText">Har allerede en bruger:</p>
@@ -285,11 +290,10 @@ const LoginBox = ({ closeModal }) => {
               onChange={(event) => setPassword(event.target.value)}
               required
             />
-            <button type="submit"> Login </button>
-
-            {/* <label>
-                Husk mig: <input type="checkbox" />{" "}
-              </label> */}
+            <button type="submit" disabled={buttonIsDisabled}>
+              {" "}
+              Login{" "}
+            </button>
             <br />
             <br />
             <a href="/#" onClick={() => setModalPage("verifyingAccount")}>
