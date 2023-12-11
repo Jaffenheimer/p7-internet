@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using P7Internet.Persistence.CachedIngredientPricesRepository;
@@ -208,8 +209,10 @@ public class PublicControllerV1 : ControllerBase
                 await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(),
                     recipe.RecipeId);
                 if (req.UserId != null && req.SessionToken != null)
+                {
                     await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(),
-                        recipeList[i].RecipeId);
+                        recipeList[i].RecipeId);                   
+                }
             }
 
             return Ok(recipeList);
@@ -358,7 +361,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns unauthorized if the user is not logged in or the sessiontoken has expired, otherwise it returns Ok if it is valid,
     /// and bad request if none of these are met, should never happen tho</returns>
-    [HttpPost("user/favourite-recipe")]
+    [HttpPost("user/favorite-recipe")]
     public async Task<IActionResult> AddFavouriteRecipe([FromBody] AddFavouriteRecipeRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
@@ -380,7 +383,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns unauthorized if the sessiontoken is invalid, otherwise Ok. If the sessiontoken is valid and no favorite recipes are found
     /// it returns Badrequest</returns>
-    [HttpPost("user/get-favourite-recipes")]
+    [HttpPost("user/get-favorite-recipes")]
     public async Task<IActionResult> GetFavouriteRecipes([FromBody] GetFavouriteRecipesRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
@@ -445,14 +448,14 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Unauthorized if the session token is invalid, returns ok if it is successful and Badrequest if something unexpected happens
     /// E.g it should never happen</returns>
-    [HttpDelete("user/favourite-recipe")]
-    public async Task<IActionResult> DeleteFavouriteRecipe([FromQuery] Guid userId, Guid recipeId, string sessionToken)
+    [HttpDelete("user/favorite-recipe")]
+    public async Task<IActionResult> DeleteFavouriteRecipe([FromBody] DeleteFavouriteRecipeRequest req)
     {
-        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
 
-        var result = await _favouriteRecipeRepository.Delete(userId, recipeId);
+        var result = await _favouriteRecipeRepository.Delete(req.UserId, req.RecipeId);
         if (result)
         {
             return Ok("Recipe deleted from favourites");

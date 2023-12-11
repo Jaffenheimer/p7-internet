@@ -11,27 +11,27 @@ export const recipeSlice = createSlice({
   initialState,
   reducers: {
     addRecipes(state, action) {
-      for (let i = 0; i < action.payload.length; i++) {
-        state.recipes.push(action.payload[i]);
+      for (const recipe of action.payload) {
+        state.recipes.push(recipe);
       }
     },
     addRecipe(state, action) {
       state.recipes.push(action.payload);
-    },
-    clearRecipes(state){
-        state.recipes = []; 
     },
     removeRecipe(state, action) {
       state.recipes = state.recipes.filter(
         (recipe) => recipe.id !== action.payload
       );
     },
+    clearRecipes(state) {
+      state.recipes = [];
+    },
     setCurrentRecipeIndex(state, action) {
       state.currentRecipeIndex = action.payload;
     },
     setRecipeToShow(state, action) {
       state.recipeToShow = action.payload;
-    }
+    },
   },
 });
 

@@ -1,14 +1,14 @@
 import {
   addCookies,
   deleteCookies,
-  retriveCookie,
+  retrieveCookie,
 } from "../../helperFunctions/cookieHandler";
 
-test("Does retriveCookie retrive the cookie correctly", () => {
+test("Does retrieveCookie retrieve the cookie correctly", () => {
   const testUsername = "username";
   document.cookie = `username=${testUsername};`;
-  const retrivedUsername = retriveCookie("username=");
-  expect(retrivedUsername).toBe("username");
+  const retrievedUsername = retrieveCookie("username=");
+  expect(retrievedUsername).toBe("username");
 
   //Deleting cookie
   document.cookie = "username=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
@@ -21,13 +21,13 @@ test("Can Cookies be added", () => {
 
   addCookies(testUsername, testUserId, testUserSessionToken);
 
-  const retrivedUsername = retriveCookie("username=");
-  const retrivedUserId = retriveCookie("userid=");
-  const retrivedUserSessionToken = retriveCookie("sessionToken=");
+  const retrievedUsername = retrieveCookie("username=");
+  const retrievedUserId = retrieveCookie("userid=");
+  const retrievedUserSessionToken = retrieveCookie("sessionToken=");
 
-  expect(retrivedUsername).toBe("username");
-  expect(retrivedUserId).toBe("userid");
-  expect(retrivedUserSessionToken).toBe("sessiontoken");
+  expect(retrievedUsername).toBe("username");
+  expect(retrievedUserId).toBe("userid");
+  expect(retrievedUserSessionToken).toBe("sessiontoken");
 
   //Deleting cookies
   deleteCookies();

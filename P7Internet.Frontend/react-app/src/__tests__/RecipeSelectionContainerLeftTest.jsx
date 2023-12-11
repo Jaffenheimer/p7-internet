@@ -72,9 +72,9 @@ test("Recipe changes after pressing arrow left", async () => {
 
 test("Marking one recipe as favorite, changes state of the heart icon for that recipe, but remaining recipes are not marked as favorite", async () => {
   const recipes = [
-    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
-    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
-    new Recipe("Recipe 3", ["ingredient 5", "ingredient 6"]),
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"], [], "1"),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"], [], "2"),
+    new Recipe("Recipe 3", ["ingredient 5", "ingredient 6"], [], "3"),
   ];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
     recipeActions.addRecipes(recipes),

@@ -106,7 +106,5 @@ namespace P7Internet.Test.FavouriteRecipeRepository
             Assert.NotNull(status);
             Assert.True(status);
         }
-        
-        
     }
 }

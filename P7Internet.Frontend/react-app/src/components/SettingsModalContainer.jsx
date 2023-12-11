@@ -6,24 +6,21 @@ import {
   useUserConfirmEmailMutation,
   useUserDeleteUserMutation,
 } from "../services/usersEndpoints";
-import { getCookieUserId } from "../helperFunctions/cookieHandler";
+import {
+  getCookieSessionToken,
+  getCookieUserId,
+  getCookieUserName,
+} from "../helperFunctions/cookieHandler";
 import { checkValidTwoPasswords } from "../helperFunctions/inputValidation";
 import { getCookies } from "../helperFunctions/cookieHandler";
-import Cookies from "js-cookie";
 import { pageActions } from "../features/pageSlice";
 import { userActions } from "../features/userSlice";
 
-const SettingBox = () => {
+const SettingsModalContainer = () => {
   const dispatch = useDispatch();
-
-  // eslint-disable-next-line
-  const [userChangePassword, { isChangePasswordLoading }] =
-    useUserChangePasswordMutation();
-  // eslint-disable-next-line
-  const [userConfirmEmail, { isConfirmEmailLoading }] =
-    useUserConfirmEmailMutation();
-  // eslint-disable-next-line
-  const [userDeleteUser, { isDeleteUserLoading }] = useUserDeleteUserMutation();
+  const [userChangePassword] = useUserChangePasswordMutation();
+  const [userConfirmEmail] = useUserConfirmEmailMutation();
+  const [userDeleteUser] = useUserDeleteUserMutation();
 
   const [modalPage, setModalPage] = useState("settingPage");
   const [verificationCode, setVerificationCode] = useState("");
@@ -33,10 +30,9 @@ const SettingBox = () => {
 
   async function handleSubmitForm(event) {
     event.preventDefault();
-    let cookies = getCookies();
-    let username = cookies.username;
-    let userId = cookies.userid;
-    let sessionToken = cookies.sessionToken;
+    const username = getCookieUserName();
+    const userId = getCookieUserId();
+    const sessionToken = getCookies().sessionToken;
 
     let isValid = checkValidTwoPasswords(password, repeatedPassword);
     if (password === oldPassword) {
@@ -92,7 +88,7 @@ const SettingBox = () => {
       if (window.confirm("Er du sikker på du vil slette din bruger?")) {
         let response = await userDeleteUser({
           userId: getCookieUserId(),
-          sessionToken: Cookies.get("sessionToken"),
+          sessionToken: getCookieSessionToken(),
         });
 
         // close the modal and log the user out
@@ -197,4 +193,4 @@ const SettingBox = () => {
   );
 };
 
-export default SettingBox;
+export default SettingsModalContainer;

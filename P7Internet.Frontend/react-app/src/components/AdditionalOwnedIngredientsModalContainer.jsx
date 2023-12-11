@@ -7,7 +7,6 @@ import {
 import { nanoid } from "@reduxjs/toolkit";
 import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { pageActions } from "../features/pageSlice";
-import { userActions } from "../features/userSlice";
 import Pages from "../objects/Pages";
 import { useState } from "react";
 import { recipeActions } from "../features/recipeSlice";
@@ -66,8 +65,6 @@ const AdditionalOwnedIngredientsModalContainer = () => {
         );
       }
     }
-    
-    dispatch(userActions.addRecipeToHistory(currentRecipe));
     closeModalAndGoToFullRecipeView();
   }
 

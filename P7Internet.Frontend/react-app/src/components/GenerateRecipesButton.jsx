@@ -9,6 +9,7 @@ import {
   useGenerateRecipeMutation,
   useGenerateUserRecipeMutation,
 } from "../services/recipeEndpoints";
+import { userActions } from "../features/userSlice";
 import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 
 const GenerateRecipesButton = () => {
@@ -41,7 +42,9 @@ const GenerateRecipesButton = () => {
 
     if (!isRecipeLoading || !isRecipeUserLoading) {
       try {
-        toastId = toast.loading("Generer Opskrifter");
+        toastId = toast.loading("Generer Opskrifter", {
+          toastId: "generateRecipesToast",
+        });
 
         //Checks if user is login
         if (loggedIn) {
@@ -78,6 +81,12 @@ const GenerateRecipesButton = () => {
           }
         }
       } catch (error) {
+        if (error.originalStatus === 401) {
+          toast.dismiss("generateRecipesToast");
+          toast.warning("Din session er udløbet.");
+          dispatch(userActions.logoutUser());
+          return;
+        }
         console.log(error);
         toast.update(toastId, {
           render: "Fejl under generation, Prøv igen",
@@ -105,7 +114,7 @@ const GenerateRecipesButton = () => {
     var succeed = await fetchRecipes(body);
 
     //Checks if the fetch succeded. If succeded then it goes to next page
-    if (succeed === true) {
+    if (succeed) {
       toast.update(toastId, {
         render: "Generation færdig",
         type: "success",
