@@ -7,7 +7,11 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { pageActions } from "../features/pageSlice";
 import { useUserLogOutMutation } from "../services/usersEndpoints";
-import { deleteCookies, retriveCookie } from "../helperFunctions/cookieHandler";
+import {
+  deleteCookies,
+  getCookieSessionToken,
+  getCookieUserId,
+} from "../helperFunctions/cookieHandler";
 
 const ProfilePicture = () => {
   const dispatch = useDispatch();
@@ -32,6 +36,7 @@ const ProfilePicture = () => {
     setOpen(false);
   };
 
+  //States used to fetch data from backend
   const [userLogOut, { isLogOutLoading }] = useUserLogOutMutation();
 
   //Functions is async because it needs to wait for the response from the backend
@@ -41,8 +46,8 @@ const ProfilePicture = () => {
         if there is an an error it will be displayed 
     */
     if (!isLogOutLoading) {
-      const sessionToken = retriveCookie("sessionToken=");
-      const userId = retriveCookie("userid=");
+      const sessionToken = getCookieSessionToken();
+      const userId = getCookieUserId();
 
       try {
         // Waits for the response and allows to use response (unwrap, because JSON)

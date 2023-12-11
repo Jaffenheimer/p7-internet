@@ -7,27 +7,22 @@ import {
   useUserConfirmEmailMutation,
   useUserDeleteUserMutation,
 } from "../services/usersEndpoints";
-import { getCookieUserId } from "../helperFunctions/cookieHandler";
+import {
+  getCookieSessionToken,
+  getCookieUserId,
+  getCookieUserName,
+} from "../helperFunctions/cookieHandler";
 import { checkValidTwoPasswords } from "../helperFunctions/inputValidation";
 import { getCookies } from "../helperFunctions/cookieHandler";
-import Cookies from "js-cookie";
 import { pageActions } from "../features/pageSlice";
 import { userActions } from "../features/userSlice";
 
-const SettingBox = ({ closeModal }) => {
+const SettingsModalContainer = ({ closeModal }) => {
   const dispatch = useDispatch();
-
-  // eslint-disable-next-line
-  const [userConfirmEmailRequest, { isConfirmEmailRequestLoading }] =
-    useUserConfirmEmailRequestMutation();
-  // eslint-disable-next-line
-  const [userChangePassword, { isChangePasswordLoading }] =
-    useUserChangePasswordMutation();
-  // eslint-disable-next-line
-  const [userConfirmEmail, { isConfirmEmailLoading }] =
-    useUserConfirmEmailMutation();
-  // eslint-disable-next-line
-  const [userDeleteUser, { isDeleteUserLoading }] = useUserDeleteUserMutation();
+  const [userConfirmEmailRequest] = useUserConfirmEmailRequestMutation();
+  const [userChangePassword] = useUserChangePasswordMutation();
+  const [userConfirmEmail] = useUserConfirmEmailMutation();
+  const [userDeleteUser] = useUserDeleteUserMutation();
 
   const [modalPage, setModalPage] = useState("settingPage");
   const [verificationCode, setVerificationCode] = useState("");
@@ -37,10 +32,9 @@ const SettingBox = ({ closeModal }) => {
 
   async function handleSubmitForm(event) {
     event.preventDefault();
-    let cookies = getCookies();
-    let username = cookies.username;
-    let userId = cookies.userid;
-    let sessionToken = cookies.sessionToken;
+    const username = getCookieUserName();
+    const userId = getCookieUserId();
+    const sessionToken = getCookies().sessionToken;
 
     let isValid = checkValidTwoPasswords(password, repeatedPassword);
     if (password === oldPassword) {
@@ -50,7 +44,6 @@ const SettingBox = ({ closeModal }) => {
     } else if (isValid) {
       // send a request to API for changing the user's password
       try {
-        console.log(sessionToken);
         let response = await userChangePassword({
           userId: userId,
           sessionToken: sessionToken,
@@ -72,7 +65,6 @@ const SettingBox = ({ closeModal }) => {
       let userId = getCookieUserId();
 
       const encodedUserId = encodeURIComponent(userId);
-      console.log(encodedUserId);
       // send a request to API for confirming the user's email
       await userConfirmEmailRequest({
         UserId: encodedUserId,
@@ -119,7 +111,7 @@ const SettingBox = ({ closeModal }) => {
       if (window.confirm("Er du sikker på du vil slette din bruger?")) {
         // encode the userId and sessionToken such that they can be sent in the query
         let userId = encodeURIComponent(getCookieUserId());
-        let sessionToken = encodeURIComponent(Cookies.get("sessionToken"));
+        let sessionToken = encodeURIComponent(getCookieSessionToken());
         // create the query for the request
         const query = `?userId=${userId}&sessionToken=${sessionToken}`;
         // send a request to API for deleting the user
@@ -153,7 +145,8 @@ const SettingBox = ({ closeModal }) => {
             </label>
             <button
               className="SendVerificationEmailButton"
-              onClick={sendVerificationCode}>
+              onClick={sendVerificationCode}
+            >
               Send kode
             </button>
           </div>
@@ -231,4 +224,4 @@ const SettingBox = ({ closeModal }) => {
   );
 };
 
-export default SettingBox;
+export default SettingsModalContainer;

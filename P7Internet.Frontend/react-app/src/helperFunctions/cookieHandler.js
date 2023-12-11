@@ -1,10 +1,10 @@
 //Function for retriving data from cookies
-export const retriveCookie = (retriveValue) => {
+export const retrieveCookie = (retrieveValue) => {
   const cookies = document.cookie;
   const cookieArray = cookies.split(";").map((cookie) => cookie.trim());
 
   const storedToken = cookieArray.find((cookie) =>
-    cookie.startsWith(retriveValue)
+    cookie.startsWith(retrieveValue)
   );
   const splitToken = storedToken.split("=");
   const storedValue = splitToken.slice(1).join("=");
@@ -31,6 +31,24 @@ export const getCookieUserId = () => {
   let cookies = document.cookie.split(";");
   for (let cookie in cookies) {
     if (cookies[cookie].includes("userid")) {
+      return cookies[cookie].split("=")[1];
+    }
+  }
+};
+
+export const getCookieSessionToken = () => {
+  let cookies = document.cookie.split(";");
+  for (let cookie in cookies) {
+    if (cookies[cookie].includes("sessionToken")) {
+      return cookies[cookie].split("sessionToken=")[1];
+    }
+  }
+};
+
+export const getCookieUserName = () => {
+  let cookies = document.cookie.split(";");
+  for (let cookie in cookies) {
+    if (cookies[cookie].includes("username")) {
       return cookies[cookie].split("=")[1];
     }
   }

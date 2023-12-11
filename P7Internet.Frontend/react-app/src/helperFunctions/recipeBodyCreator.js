@@ -1,4 +1,4 @@
-import { retriveCookie } from "./cookieHandler";
+import { getCookieSessionToken, getCookieUserId } from "./cookieHandler";
 
 //Function to create the body for the post for recipes
 function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
@@ -48,10 +48,10 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     dietaryRestrictions: restrictions,
   };
 
-  //Retrive userid and sessiontoken if login
+  //Retrieve userid and sessiontoken if login
   if (loggedIn === true) {
-    userid = retriveCookie("userid=");
-    sessiontoken = retriveCookie("sessionToken=");
+    userid = getCookieUserId();
+    sessiontoken = getCookieSessionToken();
 
     const userData = {
       userId: userid,

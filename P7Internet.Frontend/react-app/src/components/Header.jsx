@@ -8,7 +8,7 @@ import FavoritesModalContainer from "./FavoritesModalContainer";
 import HistoryModalContainer from "./HistoryModalContainer";
 import { modalStyling } from "../objects/Modal";
 import ModalContent from "./ModalContent";
-import SettingBox from "./SettingBox";
+import SettingsModalContainer from "./SettingsModalContainer";
 import icon from "../data/recipe_oracle_icon.png";
 import Pages from "../objects/Pages";
 
@@ -55,7 +55,7 @@ const Header = () => {
         <ModalContent
           title="Indstillinger"
           closeModal={closeSettingModal}
-          Container={SettingBox}
+          Container={SettingsModalContainer}
         />
       </Modal>
 

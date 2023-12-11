@@ -108,11 +108,15 @@ body {
   height: 1.3em;
 }
 .titleLogo:hover {
-  animation: spin 3s linear infinite;;
+  animation: spin 3s linear infinite;
 }
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .RecipeSelectionContainerLeft {
@@ -693,7 +697,8 @@ p {
   overflow-y: scroll;
 }
 
-.FavoriteRecipeElement {
+.FavoriteRecipeElement,
+.HistoryRecipeElement {
   width: 100%;
 }
 
@@ -702,21 +707,21 @@ p {
   width: 90%;
   height: 5%;
   float: left;
-  padding: 0;
-  border: none;
+  padding: 5px;
   font: inherit;
   color: inherit;
   background-color: transparent;
   cursor: pointer;
-}
-.RemoveFavoritedElement {
-  /* float: right; */
-  display: inline-block;
+  border: none;
+  border-bottom: 1px solid black;
+  border-radius: 0;
 }
 
 .RemoveFavoritedElement {
+  display: inline-block;
   float: right;
   margin-right: 2%;
+  margin-top: 3%;
 }
 
 #BackToFrontPageButtonRecipeSelection {

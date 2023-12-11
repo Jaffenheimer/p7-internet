@@ -20,9 +20,9 @@ function configureDefaultStore() {
       [apiSlice.reducerPath]: apiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({ serializableCheck: false }).concat(
-      apiSlice.middleware
-    ),  
+      getDefaultMiddleware({ serializableCheck: false }).concat(
+        apiSlice.middleware
+      ),
   });
 }
 

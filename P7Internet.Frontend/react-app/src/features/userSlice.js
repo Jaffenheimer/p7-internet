@@ -24,10 +24,14 @@ export const userSlice = createSlice({
     addFavoriteRecipe(state, action) {
       state.favoriteRecipes.push(action.payload);
     },
+    //takes in the recipe id as payload
     removeFavoriteRecipe(state, action) {
       state.favoriteRecipes = state.favoriteRecipes.filter(
-        (recipe) => recipe.title !== action.payload.title
+        (recipe) => recipe.id !== action.payload
       );
+    },
+    setFavoriteRecipes(state, action) {
+      state.favoriteRecipes = action.payload;
     },
     addRecipeToHistory(state, action) {
       for (const recipe of state.recipesInHistory) {
@@ -36,6 +40,9 @@ export const userSlice = createSlice({
         }
       }
       state.recipesInHistory.push(action.payload);
+    },
+    setHistory(state, action) {
+      state.recipesInHistory = action.payload;
     },
   },
 });

@@ -37,7 +37,7 @@ const FullRecipeView = ({ shouldShowBackButton }) => {
         <Header />
       </div>
       <div className="FullRecipeView">
-        <RecipeTitle id="RecipeTitle" title={recipe.title} recipe={recipe} />
+        <RecipeTitle id="RecipeTitle" recipe={recipe} />
         <ForPersons />
         <h2>Ingredienser:</h2>
         <IngredientsList
