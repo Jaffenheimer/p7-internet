@@ -3,15 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
 import { toast } from "react-toastify";
-import { getGeoLocation } from "../helperFunctions/getGeoLocation";
-import recipeBodyCreator from "../helperFunctions/recipeBodyCreator";
 import { recipeActions } from "../features/recipeSlice";
+import recipeBodyCreator from "../helperFunctions/recipeBodyCreator";
 import {
-  useGenerateUserRecipeMutation,
   useGenerateRecipeMutation,
+  useGenerateUserRecipeMutation,
 } from "../services/recipeEndpoints";
-
-//import data from "../testdata/testrescipes.json";
+import { userActions } from "../features/userSlice";
 import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 
 const GenerateRecipesButton = () => {
@@ -19,78 +17,89 @@ const GenerateRecipesButton = () => {
   const ingredients = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
   );
-  const recipeGenData = useSelector((state) => state.recipeGeneration);
 
-  //Selector for finde out wheater or not the user is login
+  //Creates functions from Mutations from the recipeEndpoints
+  const [generateUserRecipe, { isLoading: isRecipeUserLoading }] =
+    useGenerateUserRecipeMutation();
+  const [generateRecipe, { isLoading: isRecipeLoading }] =
+    useGenerateRecipeMutation();
+
+  //Id to toast
+  var toastId;
+
+  //Collects the data from store
+  const recipeGenData = useSelector((state) => state.recipeGeneration);
   const loggedIn = useSelector((state) => state.user.loggedIn);
 
   function goToPageFullRecipeSelection() {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
   }
 
-  const [generateUserRecipe, { isLoading: isRecipeUserLoading }] =
-    useGenerateUserRecipeMutation();
-  const [generateRecipe, { isLoading: isRecipeLoading, error: generateError }] =
-    useGenerateRecipeMutation();
-  let response;
+  //Async function to fetch recipes from backend
+  async function fetchRecipes(body) {
+    var response;
+    const recipes = [];
 
-  const fetchRecipe = async (body) => {
-    console.log("Body som bliver sendt med");
-    console.log(body);
-
-    if (!isRecipeUserLoading || !isRecipeLoading) {
+    if (!isRecipeLoading || !isRecipeUserLoading) {
       try {
-        // Waits for the response and allows to use response (unwrap, because JSON)
-        toast.loading("Laver en opskrift med de valgte");
+        toastId = toast.loading("Generer Opskrifter", {
+          toastId: "generateRecipesToast",
+        });
+
+        //Checks if user is login
         if (loggedIn) {
           response = await generateUserRecipe(body).unwrap();
         } else {
           response = await generateRecipe(body).unwrap();
         }
 
+        //If these was an response then create recipes object from the response
         if (response) {
-          console.log(response);
+          response.forEach((recipe) => {
+            //Convert recipe from response into recipe object
+            var recipeObject = recipeFromResponse(recipe);
+            recipes.push(recipeObject);
+          });
 
-          for (let i = 0; i < response.length; i++) {
-            const recipe = response[i];
-            var _recipe = recipeFromResponse(recipe.recipes);
-            dispatch(
-              recipeActions.addRecipes({
-                recipeId: recipe.recipeId,
-                recipe: _recipe,
-                ingredients: recipe.ingredients,
-              })
-            );
+          // If there are recipes on in array then add to the store
+          if (recipes.length !== 0) {
+            //Clearing recipes from store
+            dispatch(recipeActions.clearRecipes());
+
+            //Adds new recipes to store
+            dispatch(recipeActions.addRecipes(recipes));
+
+            return true;
+          } else {
+            //Updates toast
+            toast.update(toastId, {
+              render: "Fejl under generation, Prøv igen",
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
           }
-
-          toast.success("Opskrifter oprettet");
         }
       } catch (error) {
-        console.log("Fejl fra request");
+        if (error.originalStatus === 401) {
+          toast.dismiss("generateRecipesToast");
+          toast.warning("Din session er udløbet.");
+          dispatch(userActions.logoutUser());
+          return;
+        }
         console.log(error);
-        console.log(generateError);
-        toast.error("Kunne ikke lave en opskrift");
+        toast.update(toastId, {
+          render: "Fejl under generation, Prøv igen",
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
       }
     }
-  };
-
-  const test = (response) => {
-    for (let i = 0; i < response.length; i++) {
-      const recipe = response[i];
-      var recipeString = recipeFromResponse(recipe.recipes);
-      console.log("recipe: ", recipeString);
-      dispatch(
-        recipeActions.addRecipes({
-          recipeId: recipe.recipeId,
-          recipe: recipeString,
-          ingredients: recipe.ingredients,
-        })
-      );
-    }
-  };
+  }
 
   //handles all the logic for when the button is clicked
-  const handleOnClick = async () => {
+  async function handleOnClick() {
     if (ingredients.length === 0) {
       toast.error(
         "Du skal tilføje mindst 1 ingrediens for at generere opskrifter"
@@ -98,17 +107,23 @@ const GenerateRecipesButton = () => {
       return;
     }
 
-    //Create body for request
+    //Create Body for request
     const body = recipeBodyCreator(loggedIn, recipeGenData);
 
-    console.log(body);
+    //Runs function to request recipes from backend -> openAi/Database
+    var succeed = await fetchRecipes(body);
 
-    //test(data);
-
-    await fetchRecipe(body);
-
-    goToPageFullRecipeSelection();
-  };
+    //Checks if the fetch succeded. If succeded then it goes to next page
+    if (succeed) {
+      toast.update(toastId, {
+        render: "Generation færdig",
+        type: "success",
+        isLoading: false,
+        autoClose: 5000,
+      });
+      goToPageFullRecipeSelection();
+    }
+  }
 
   return (
     <button

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity.Infrastructure;
 using System.Linq;
+using System;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -38,7 +39,7 @@ public class PublicControllerV1 : ControllerBase
         IRecipeCacheRepository cachedRecipeRepository, IFavouriteRecipeRepository favouriteRecipeRepository,
         ICachedOfferRepository cachedOfferRepository, EmailService emailService,
         IUserSessionRepository userSessionRepository, IIngredientRepository ingredientRepository,
-        SallingService sallingService)
+        SallingService sallingService, ETilbudsAvisService eTilbudsAvisService)
     {
         _userRepository = userRepository;
         _openAiService = openAiService;
@@ -48,8 +49,8 @@ public class PublicControllerV1 : ControllerBase
         _emailService = emailService;
         _userSessionRepository = userSessionRepository;
         _ingredientRepository = ingredientRepository;
-        _eTilbudsAvisService = new ETilbudsAvisService();
         _sallingService = sallingService;
+        _eTilbudsAvisService = eTilbudsAvisService;
     }
 
     #region Recipe Endpoints
@@ -101,7 +102,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if (counter == req.Amount)
+                if(counter == req.Amount)
                     break;
             }
 
@@ -132,47 +133,13 @@ public class PublicControllerV1 : ControllerBase
         }
 
         var validIngredients = await _ingredientRepository.GetAllIngredients();
-        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
+        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipe, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
 
 
-        await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+        await _cachedRecipeRepository.Upsert(res.Recipe, res.RecipeId);
 
         return Ok(res);
-    }
-
-    /// <summary>
-    /// Gets a list of recipes from history
-    /// </summary>
-    /// <param name="userId"></param>
-    /// <param name="sessionToken"></param>
-    /// <returns>Returns a list of recipes if found, returns unauthorized of the user is not logged in</returns>
-    [HttpGet("recipes/history")]
-    public async Task<IActionResult> GetRecipeHistory([FromQuery] Guid userId, string sessionToken)
-    {
-        var checkIfUserSessionIsValid =
-            await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
-        if (!checkIfUserSessionIsValid)
-            return Unauthorized("User session is not valid, please login again");
-
-        var result = await _favouriteRecipeRepository.GetHistory(userId);
-        if (result != null)
-        {
-            var recipeList = new List<RecipeResponse>();
-
-            var recipes = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result.ConvertAll(x => x.ToString()));
-            int counter = 0;
-            var validIngredients = await _ingredientRepository.GetAllIngredients();
-            foreach (var res in result)
-            {
-                recipeList.Add(new RecipeResponse(recipes[counter],CheckListForValidIngredients(recipes[counter], validIngredients) , res));
-                counter++;
-            }
-            
-            return Ok(recipeList);
-        }
-
-        return BadRequest("No favourite recipes found");
     }
 
     /// <summary>
@@ -225,9 +192,10 @@ public class PublicControllerV1 : ControllerBase
             {
                 var validIng = await _ingredientRepository.GetAllIngredients();
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
+                await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(), recipe.Id);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if (counter == req.Amount)
+                if  (counter == req.Amount)
                     break;
             }
 
@@ -245,9 +213,13 @@ public class PublicControllerV1 : ControllerBase
                 if (recipe.Success == false)
                     return BadRequest(recipe.ErrorMessage);
                 recipeList.Add(recipe);
+                await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(),
+                    recipe.RecipeId);
                 if (req.UserId != null && req.SessionToken != null)
+                {
                     await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(),
-                        recipeList[i].RecipeId);
+                        recipeList[i].RecipeId);                   
+                }
             }
 
             return Ok(recipeList);
@@ -260,9 +232,9 @@ public class PublicControllerV1 : ControllerBase
         }
 
         var validIngredients = await _ingredientRepository.GetAllIngredients();
-        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
+        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipe, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
-        await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+        await _cachedRecipeRepository.Upsert(res.Recipe, res.RecipeId);
         if (req.UserId != null && req.SessionToken != null)
             await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(), res.RecipeId);
         return Ok(res);
@@ -339,7 +311,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns a login response if the user creation was successful, otherwise badrequest</returns>
     [HttpPost("user/create-user")]
-    public async Task<IActionResult> CreateUser([FromQuery] CreateUserRequest req)
+    public async Task<IActionResult> CreateUser([FromBody] CreateUserRequest req)
     {
         var user = _userRepository.CreateUser(req.Name, req.EmailAddress);
         var res = await _userRepository.Upsert(user, req.Password);
@@ -347,7 +319,8 @@ public class PublicControllerV1 : ControllerBase
             return BadRequest(
                 "User with the specified Username or Email already exists, please choose another Username or Email");
         // ONLY COMMENT THIS IN WHEN WE NEED TO SHOW THIS FEATURE
-        //await _emailService.ConfirmEmail(user.EmailAddress, user.Name);
+        //var confirmEmailToken = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "confirmEmail");
+        //await _emailService.ConfirmEmail(user, confirmEmailToken);
         var token = await _userSessionRepository.GenerateSessionToken(user.Id);
         var response = new LogInResponse(user.Id, token, user.Name, user.EmailAddress);
 
@@ -360,7 +333,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns a login response if successful otherwise bad request</returns>
     [HttpPost("user/login")]
-    public async Task<IActionResult> Login([FromQuery] LogInRequest req)
+    public async Task<IActionResult> Login([FromBody] LogInRequest req)
     {
         var result = await _userRepository.LogIn(req.Username, req.Password);
         if (result != null)
@@ -380,7 +353,7 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>Returns Unauthorized if the sessiontoken is not valid, returns Ok if the session token is valid,
     /// and bad request if none of these are met, should never happen tho</returns>
     [HttpPost("user/logout")]
-    public async Task<IActionResult> Logout([FromQuery] LogOutRequest req)
+    public async Task<IActionResult> Logout([FromBody] LogOutRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
@@ -401,8 +374,8 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns unauthorized if the user is not logged in or the sessiontoken has expired, otherwise it returns Ok if it is valid,
     /// and bad request if none of these are met, should never happen tho</returns>
-    [HttpPost("user/favourite-recipe")]
-    public async Task<IActionResult> AddFavouriteRecipe([FromQuery] AddFavouriteRecipeRequest req)
+    [HttpPost("user/favorite-recipe")]
+    public async Task<IActionResult> AddFavouriteRecipe([FromBody] AddFavouriteRecipeRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
@@ -423,31 +396,63 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns unauthorized if the sessiontoken is invalid, otherwise Ok. If the sessiontoken is valid and no favorite recipes are found
     /// it returns Badrequest</returns>
-    [HttpGet("user/favourite-recipes")]
-    public async Task<IActionResult> GetFavouriteRecipes([FromQuery] GetFavouriteRecipesRequest req)
+    [HttpPost("user/get-favorite-recipes")]
+    public async Task<IActionResult> GetFavouriteRecipes([FromBody] GetFavouriteRecipesRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
 
         var result = await _favouriteRecipeRepository.Get(req.UserId);
-        if (result != null)
-        {
-            var recipeList = new List<RecipeResponse>();
 
-            var recipes = await _cachedRecipeRepository.GetListOfRecipesFromListOfStrings(result.ConvertAll(x => x.ToString()));
-            int counter = 0;
+        var recipeList = new List<RecipeResponse>();
+
+        foreach (var res in result)
+        {
             var validIngredients = await _ingredientRepository.GetAllIngredients();
-            foreach (var res in result)
-            {
-                recipeList.Add(new RecipeResponse(recipes[counter],CheckListForValidIngredients(recipes[counter], validIngredients) , res));
-                counter++;
-            }
-            
+            var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Description, validIngredients);
+            recipeList.Add(new RecipeResponse(res.Description, ingredientsToPassToFrontend, res.Id));
+        }
+
+        if (recipeList != null && recipeList.Count != 0)
+        {
             return Ok(recipeList);
         }
 
-        return BadRequest("No favourite recipes found");
+        return NotFound("No favourite recipes found");
+    }
+
+    /// <summary>
+    /// Gets a list of recipes from history
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="sessionToken"></param>
+    /// <returns>Returns a list of recipes if found, returns unauthorized of the user is not logged in</returns>
+    [HttpPost("user/recipes-history")]
+    public async Task<IActionResult> GetRecipeHistory([FromBody] GetRecipeHistoryRequest req)
+    {
+        var checkIfUserSessionIsValid =
+            await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
+        if (!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
+
+        var result = await _favouriteRecipeRepository.GetHistory(req.UserId);
+
+        var recipeList = new List<RecipeResponse>();
+
+        foreach (var res in result)
+        {
+            var validIngredients = await _ingredientRepository.GetAllIngredients();
+            var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Description, validIngredients);
+            recipeList.Add(new RecipeResponse(res.Description, ingredientsToPassToFrontend, res.Id));
+        }
+
+        if (recipeList != null && recipeList.Count != 0)
+        {
+            return Ok(recipeList);
+        }
+
+        return NotFound("No history found");
     }
 
     /// <summary>
@@ -456,8 +461,8 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Unauthorized if the session token is invalid, returns ok if it is successful and Badrequest if something unexpected happens
     /// E.g it should never happen</returns>
-    [HttpDelete("user/favourite-recipe")]
-    public async Task<IActionResult> DeleteFavouriteRecipe([FromQuery] DeleteFavouriteRecipeRequest req)
+    [HttpDelete("user/favorite-recipe")]
+    public async Task<IActionResult> DeleteFavouriteRecipe([FromBody] DeleteFavouriteRecipeRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
@@ -473,19 +478,21 @@ public class PublicControllerV1 : ControllerBase
     }
 
     /// <summary>
-    /// Endpoint to reset the password of a user if requested.
-    /// This is done by sending an email to the users specified email 
+    /// Endpoint to request a verification code and send it by email if the user cannot remember their password and wish to reset it.
     /// </summary>
     /// <param name="email"></param>
-    /// <param name="userName"></param>
     /// <returns>Returns Ok if a user is found and the email has been sent, if the user is not found it returns BadRequest</returns>
-    [HttpPost("user/reset-password-request")]
-    public async Task<IActionResult> ResetPassword([EmailAddress] string email)
+    [HttpPost("user/reset-password-email-request")]
+    public async Task<IActionResult> ResetPasswordRequest([EmailAddress] string email)
     {
         var user = await _userRepository.GetUserByEmail(email);
         if (user != null)
         {
-            await _emailService.ResetPassword(user);
+            if (!await _userRepository.CheckIfEmailIsConfirmed(user.Name))
+                return BadRequest("Email is not confirmed, please confirm your email before resetting your password");
+
+            var token = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "resetPassword");
+            await _emailService.ResetPassword(user, token);
             return Ok("Email sent");
         }
 
@@ -493,25 +500,65 @@ public class PublicControllerV1 : ControllerBase
     }
 
     /// <summary>
+    /// Resets the password of a user
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns>Ok if the user is found and the verification code is valid, returns bad request if not</returns>
+    [HttpPost("user/reset-password")]
+    public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest req)
+    {
+        var isValidAction =
+            await _userSessionRepository.VerificationCodeTypeMatchesAction(req.VerificationCode, type: "resetPassword");
+        if (!isValidAction)
+        {
+            return BadRequest("The verification code is not for resetting the password");
+        }
+
+        var userId = await _userSessionRepository.GetUserIdFromVerificationCode(req.VerificationCode);
+        if (userId == null)
+        {
+            return BadRequest("No user found on the verification code");
+        }
+
+        var user = await _userRepository.GetUserFromId(userId.GetValueOrDefault());
+
+        if (user != null)
+        {
+            var result = await _userRepository.ResetPassword(user, req.Password);
+            if (result)
+            {
+                await _userSessionRepository.DeleteVerificationToken(userId.GetValueOrDefault(), req.VerificationCode);
+                return Ok("Password was reset and has been changed, you can now login with your new password");
+            }
+        }
+
+        return BadRequest("Verification code was invalid, please check that the inserted value is correct");
+    }
+
+    /// <summary>
     /// Endpoint to change the password of a user if requested.
     /// </summary>
     /// <param name="req"></param>
     /// <returns>Unauthorized if the session token is invalid, returns ok if it is successful
-    /// and Badrequest if the username or password is incorrect</returns>
+    /// and Badrequest if the password is incorrect or user session is not valid</returns>
     [HttpPost("user/change-password")]
-    public async Task<IActionResult> ChangePassword([FromQuery] ChangePasswordRequest req)
+    public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
         if (!checkIfUserSessionIsValid)
             return Unauthorized("User session is not valid, please login again");
 
-        var result = await _userRepository.ChangePassword(req.UserName, req.OldPassword, req.NewPassword);
+        var user = await _userRepository.GetUser(req.UserName);
+        if (user == null)
+            return NotFound("User does not exist");
+
+        var result = await _userRepository.ChangePassword(user, req.OldPassword, req.NewPassword);
         if (result)
         {
             return Ok("Password changed");
         }
 
-        return BadRequest("Username or password is incorrect please try again");
+        return BadRequest("Password is incorrect please try again");
     }
 
     //NOTE: IKKE BRUG DET HER ENDPOINT TIL TESTING DER ER KUN 100 GRATIS EMAILS OM DAGEN
@@ -522,12 +569,48 @@ public class PublicControllerV1 : ControllerBase
     /// <returns>Returns Ok if the link has been followed and and the DB returns that the confirmation was good,
     /// otherwise badrequest which should never happen</returns>
     [HttpPost("user/confirm-email")]
-    public async Task<IActionResult> ConfirmEmail([FromQuery] ConfirmEmailRequest req)
+    public async Task<IActionResult> ConfirmEmail([FromBody] ConfirmEmailRequest req)
     {
-        var result = await _userRepository.ConfirmEmail(req.UserName, req.EmailAddress);
+        var user = await _userRepository.GetUserFromId(req.UserId);
+
+        if (user != null)
+        {
+            if (await _userRepository.CheckIfEmailIsConfirmed(user.Name))
+                return BadRequest("The email is already confirmed");
+
+            var isValidAction =
+                await _userSessionRepository.VerificationCodeTypeMatchesAction(req.VerificationCode,
+                    type: "confirmEmail");
+            if (!isValidAction)
+                return BadRequest("The verification code is not for confirming an email");
+
+            var result = await _userRepository.ConfirmEmail(user.Name, user.EmailAddress);
+
+            if (result)
+            {
+                await _userSessionRepository.DeleteVerificationToken(req.UserId, req.VerificationCode);
+                return Ok("Email confirmed");
+            }
+        }
+
+        return BadRequest("The user was not found");
+    }
+
+    [HttpDelete("user/delete-user")]
+    public async Task<IActionResult> DeleteUser([FromQuery] Guid userId, string sessionToken)
+    {
+        var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(userId, sessionToken);
+        if (!checkIfUserSessionIsValid)
+            return Unauthorized("User session is not valid, please login again");
+
+        var user = await _userRepository.GetUserFromId(userId);
+        if (user == null)
+            return NotFound("User does not exist");
+
+        var result = await _userRepository.DeleteUser(user);
         if (result)
         {
-            return Ok("Email confirmed");
+            return Ok("User deleted");
         }
 
         return BadRequest("This should never happen");
@@ -599,11 +682,12 @@ public class PublicControllerV1 : ControllerBase
     private async Task<RecipeResponse> GetRecipeAsync(RecipeRequest req, List<string> validIngredients)
     {
         var res = await _openAiService.GetAiResponse(req);
+        var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipe, validIngredients);
         if (res.Success == false)
             return RecipeResponse.Error(res.ErrorMessage, res.RecipeId);
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipes, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
-        await _cachedRecipeRepository.Upsert(res.Recipes, res.RecipeId);
+        await _cachedRecipeRepository.Upsert(res.Recipe, res.RecipeId);
         return res;
     }
 

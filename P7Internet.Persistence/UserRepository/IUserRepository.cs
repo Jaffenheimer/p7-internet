@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using P7Internet.Shared;
 
@@ -5,6 +6,13 @@ namespace P7Internet.Persistence.UserRepository;
 
 public interface IUserRepository
 {
+    /// <summary>
+    /// Gets a user from a user id
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns>Returns a user of type user</returns>
+    public Task<User> GetUserFromId(Guid userId);
+
     /// <summary>
     /// Gets a user by username
     /// </summary>
@@ -49,22 +57,36 @@ public interface IUserRepository
     /// <param name="userName"></param>
     /// <param name="emailAddress"></param>
     /// <returns>Returns true if successful E.g the number of rows affected is more than 0, otherwise false</returns>
-    public Task<bool> ConfirmEmail(string userName, string emailAdress);
+    public Task<bool> ConfirmEmail(string userName, string emailAddress);
 
     /// <summary>
     /// Resets the password of a user, must be directed to said site from an email
     /// </summary>
-    /// <param name="userName"></param>
+    /// <param name="user"></param>
     /// <param name="password"></param>
     /// <returns>Returns true if the process is successful, otherwise false also false if no user is found</returns>
-    public Task<bool> ResetPassword(string email, string password);
+    public Task<bool> ResetPassword(User user, string password);
+
+    /// <summary>
+    /// Deletes a user from the database
+    /// </summary>
+    /// <param name="user"></param>
+    /// <returns>Returns true if it went well otherwise false</returns>
+    public Task<bool> DeleteUser(User user);
 
     /// <summary>
     /// Changes the password of a user, if the old password matches the correct password stores in the database
     /// </summary>
-    /// <param name="email"></param>
+    /// <param name="user"></param>
     /// <param name="oldPassword"></param>
     /// <param name="newPassword"></param>
     /// <returns>Returns true if the old password was correct and false if not</returns>
-    public Task<bool> ChangePassword(string userName, string oldPassword, string newPassword);
+    public Task<bool> ChangePassword(User user, string oldPassword, string newPassword);
+
+    /// <summary>
+    /// Checks if the email is confirmed
+    /// </summary>
+    /// <param name="name"></param>
+    /// <returns>True if yes, false if no</returns>
+    public Task<bool> CheckIfEmailIsConfirmed(string name);
 }

@@ -1,10 +1,10 @@
 using System.Collections.Generic;
 using System.Data;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using P7Internet.Persistence.Connection;
+using P7Internet.Shared;
 
 namespace P7Internet.Persistence.IngredientRepository;
 
@@ -12,6 +12,7 @@ public class IngredientRepository : IIngredientRepository
 {
     private static readonly string TableName = "IngredientTable";
     private readonly IDbConnectionFactory _connectionFactory;
+    private HelperFunctions _helperFunctions = new();
     private IDbConnection Connection => _connectionFactory.Connection;
 
     public IngredientRepository(IDbConnectionFactory connectionFactory)
@@ -28,7 +29,7 @@ public class IngredientRepository : IIngredientRepository
     {
         var query = $@"INSERT INTO {TableName} (Name)
                         VALUES (@Name);";
-        var ingredients = GetIngredientsFromTextFile();
+        var ingredients = _helperFunctions.GetIngredientsFromTextFile();
         var parameters = ingredients.Select(ingredient => new
         {
             Name = ingredient
@@ -48,7 +49,7 @@ public class IngredientRepository : IIngredientRepository
     {
         var query = $@"SELECT Name FROM {TableName} WHERE Name = @Name";
 
-        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new { Name = ingredient });
+        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new {Name = ingredient});
 
         return resultFromDb != null;
     }
@@ -64,21 +65,5 @@ public class IngredientRepository : IIngredientRepository
         var resultFromDb = await Connection.QueryAsync<string>(query);
 
         return resultFromDb.ToList();
-    }
-
-    /// <summary>
-    /// Helper function to get ingredients from a text file
-    /// </summary>
-    /// <returns></returns>
-    private List<string> GetIngredientsFromTextFile()
-    {
-        var ingredients = new List<string>();
-        var lines = File.ReadAllLines("../P7Internet.Persistence/IngredientRepository/Ingredients.txt");
-        foreach (var line in lines)
-        {
-            ingredients.Add(line);
-        }
-
-        return ingredients;
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Dapper;
 using P7Internet.Persistence.Connection;
 using P7Internet.Persistence.RecipeCacheRepository;
+using P7Internet.Shared;
 
 namespace P7Internet.Persistence.FavouriteRecipeRepository;
 
@@ -25,22 +26,15 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     }
 
 
-    /// <summary>
-    /// Gets all favourite recipes by user id
-    /// </summary>
-    /// <param name="userId"></param>
-    /// <returns>Returns a list of all recipes favourited by the user. Returns 0 if none is present</returns>
-    public async Task<List<Guid>> Get(Guid userId)
+    public async Task<List<Recipe>> Get(Guid userId)
     {
         var query = $@"SELECT RecipeId FROM {TableName} WHERE UserId = @UserId";
 
-        var gridReader = await Connection.QueryMultipleAsync(query, new { UserId = userId });
+        var guids = await Connection.QueryAsync<Guid>(query, new {UserId = userId});
 
-        var guids = gridReader.Read<Guid>();
+        var result = await _cachedRecipeRepository.GetListOfRecipes(guids.ToList());
 
-        if (guids != null)
-            return guids.ToList();
-        return null;
+        return result is {Count: > 0} ? result : null;
     }
 
     /// <summary>
@@ -64,7 +58,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
         var query = $@"INSERT INTO {TableName} (UserId, RecipeId)
                        VALUES (@UserId, @RecipeId)";
 
-        return await Connection.ExecuteAsync(query, new { UserId = userId, RecipeId = recipeId }) > 0;
+        return await Connection.ExecuteAsync(query, new {UserId = userId, RecipeId = recipeId}) > 0;
     }
 
     /// <summary>
@@ -77,7 +71,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     {
         var query = $@"DELETE FROM {TableName} WHERE UserId = @UserId AND RecipeId = @RecipeId";
 
-        return await Connection.ExecuteAsync(query, new { UserId = userId, RecipeId = recipeId }) > 0;
+        return await Connection.ExecuteAsync(query, new {UserId = userId, RecipeId = recipeId}) > 0;
     }
 
     /// <summary>
@@ -86,12 +80,28 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     /// <param name="userId"></param>
     /// <param name="recipeId"></param>
     /// <returns>Returns true of the process was successful E.g resultFromDb is something else than NULL else it returns false</returns>
-    private async Task<bool> CheckIfRecipeIsAlreadyFavourite(Guid userId, Guid recipeId)
+    public virtual async Task<bool> CheckIfRecipeIsAlreadyFavourite(Guid userId, Guid recipeId)
     {
         var query = $@"SELECT RecipeId FROM {TableName} WHERE UserId = @UserId AND RecipeId = @RecipeId";
 
         var resultFromDb =
-            await Connection.QueryFirstOrDefaultAsync<string>(query, new { UserId = userId, RecipeId = recipeId });
+            await Connection.QueryFirstOrDefaultAsync<string>(query, new {UserId = userId, RecipeId = recipeId});
+
+        return resultFromDb != null;
+    }
+    
+    /// <summary>
+    /// Checks if a recipe is already a favourite recipe
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <param name="recipeId"></param>
+    /// <returns>Returns true of the process was successful E.g resultFromDb is something else than NULL else it returns false</returns>
+    private async Task<bool> CheckIfRecipeIsAlreadyInHistory(Guid userId, Guid recipeId)
+    {
+        var query = $@"SELECT RecipeId FROM {HistoryTableName} WHERE UserId = @UserId AND RecipeId = @RecipeId";
+
+        var resultFromDb =
+            await Connection.QueryFirstOrDefaultAsync<string>(query, new {UserId = userId, RecipeId = recipeId});
 
         return resultFromDb != null;
     }
@@ -101,21 +111,22 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     /// </summary>
     /// <param name="userId"></param>
     /// <returns>Returns a list of strings of the Ids of said recipes if any found otherwise returns null</returns>
-    public async Task<List<Guid>> GetHistory(Guid userId)
+    public async Task<List<Recipe>> GetHistory(Guid userId)
     {
         var query = $@"SELECT RecipeId FROM {HistoryTableName} WHERE UserId = @UserId";
 
-        var gridReader = await Connection.QueryMultipleAsync(query, new { UserId = userId });
+        var guids = await Connection.QueryAsync<Guid>(query, new {UserId = userId});
 
-        var guids = gridReader.Read<Guid>();
+        var result = await _cachedRecipeRepository.GetListOfRecipes(guids.ToList());
 
-        if (guids != null)
-            return guids.ToList();
+        if (result != null)
+            return result;
         return null;
     }
 
     /// <summary>
-    /// Upserts a list of recipes to the history table
+    /// Upserts a recipe id to the history table and deletes the oldest recipe 
+    /// if the user has more than 50 recipes in the history table
     /// </summary>
     /// <param name="userId"></param>
     /// <param name="recipeId"></param>
@@ -128,11 +139,22 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
             throw new ArgumentException(
                 $@"The recipe with the id: {recipeId} does not exist in the database. And therefore cannot be added to the favourite recipes.");
 
-        var query = $@"INSERT INTO {HistoryTableName} (UserId, RecipeId)
+        var recipeIsAlreadyInHistory = await CheckIfRecipeIsAlreadyInHistory(userId, recipeId);
+        if (recipeIsAlreadyInHistory)
+            return false;
+
+        
+        var insertQuery = $@"INSERT INTO {HistoryTableName} (UserId, RecipeId)
                        VALUES (@UserId, @RecipeId)";
-
-        var result = await Connection.ExecuteAsync(query, new { UserId = userId, RecipeId = recipeId });
-
+        var countQuery =  $@"SELECT COUNT(*) FROM {HistoryTableName} WHERE UserId = @UserId";
+        var deleteQuery = $@"DELETE FROM {HistoryTableName} WHERE Updated IS NOT NULL AND UserId = @UserId ORDER BY Updated ASC LIMIT 1;";
+        
+        var result = await Connection.ExecuteAsync(insertQuery, new {UserId = userId, RecipeId = recipeId});
+        var count = await Connection.ExecuteScalarAsync<int>(countQuery, new {UserId = userId});
+        if (count > 50)
+        {
+            await Connection.ExecuteAsync(deleteQuery, new {UserId = userId});
+        }
         return result > 0;
     }
 }

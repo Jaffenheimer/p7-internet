@@ -19,15 +19,19 @@ namespace P7Internet.Services
         private readonly string _apiKey;
         private IIngredientRepository _ingredientRepository;
 
-        public SallingService(string? apiKey)
+        public SallingService()
         {
+        }
+
+        public SallingService(string? apiKey, HttpClient httpClient)
+        {
+            _httpClient = httpClient;
             _apiKey = apiKey;
-            _httpClient = new HttpClient();
-            _httpClient.BaseAddress = new Uri("https://api.sallinggroup.com/");//Bearer = give access to the bearer of this token
+            _httpClient.BaseAddress = new Uri("https://api.sallinggroup.com/");
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
         }
 
-        public async Task<List<Offer>> GetRelevantProducts(string query)
+        public virtual async Task<List<Offer>> GetRelevantProducts(string query)
         {
             try
             {

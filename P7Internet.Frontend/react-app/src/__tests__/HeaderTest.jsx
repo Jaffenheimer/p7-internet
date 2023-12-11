@@ -1,19 +1,19 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import { renderComponent } from "../testSetupHelper/Helper.jsx";
 import Header from "../components/Header";
 import "@testing-library/jest-dom";
 import { fireEvent } from "@testing-library/react";
-import { Provider } from "react-redux";
 import configureMockStore from "redux-mock-store";
+import { renderComponentWithSpecificStore } from "../testSetupHelper/Helper.jsx";
 
 describe("Header component", () => {
   beforeEach(() => {
     renderComponent(<Header />);
   });
   it("Checks if the title is rendered", () => {
-    expect(screen.getByText(/Opskriftsgenerator/)).toBeInTheDocument();
+    expect(screen.getByText(/OpskriftsOraklet/)).toBeInTheDocument();
   });
 
   it("Checks if clicking the login button opens the login modal", () => {
@@ -38,10 +38,6 @@ test("checks if profile picture is there when logged in", () => {
     },
   };
   mockStore = configureMockStore()(mockState);
-  render(
-    <Provider store={mockStore}>
-      <Header />
-    </Provider>
-  );
+  renderComponentWithSpecificStore(<Header />, mockStore);
   expect(screen.getByTestId("ProfilePicture")).toBeInTheDocument();
 });

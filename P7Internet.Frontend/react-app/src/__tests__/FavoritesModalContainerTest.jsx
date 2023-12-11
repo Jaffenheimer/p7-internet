@@ -7,7 +7,6 @@ import {
   renderComponentWithSpecificStore,
 } from "../testSetupHelper/Helper.jsx";
 import FavoritesModalContainer from "../components/FavoritesModalContainer";
-import { pageActions } from "../features/pageSlice";
 import { ToastContainer } from "react-toastify";
 import configureMockStore from "redux-mock-store";
 
@@ -22,7 +21,7 @@ test("Renders the favoritesModalContainer", () => {
 test("Renders the favoriteBox for each favorite recipe added the element as well as the remove cross", () => {
   const mockState = {
     user: {
-      favoriteRecipes: ["1", "2"],
+      favoriteRecipes: [{ title: "1" }, { title: "2" }],
       loggedIn: true,
     },
     recipe: {
@@ -57,7 +56,6 @@ test("Renders the favoritesModalContainer with correct text when no favorite rec
 
   renderComponentWithSpecificStore(<FavoritesModalContainer />, mockStore);
 
-  //   renderComponentWithSpecificStore(<FavoritesModalContainer />);
   const buttons = screen.queryAllByRole("button");
   expect(buttons.length).toBe(0);
   expect(
@@ -65,7 +63,7 @@ test("Renders the favoritesModalContainer with correct text when no favorite rec
   ).toBeInTheDocument();
 });
 
-test("if user is not logged in the there are no favorite recipes", () => {
+test("if user is not logged in there are no favorite recipes", () => {
   renderComponent(<FavoritesModalContainer />);
 
   const buttons = screen.queryAllByRole("button");
@@ -78,7 +76,7 @@ test("if user is not logged in the there are no favorite recipes", () => {
 test("Selecting a recipe, makes toast appears when the selected recipe is not in the recipes object", async () => {
   const mockState = {
     user: {
-      favoriteRecipes: ["1", "2"],
+      favoriteRecipes: [{ title: "1" }, { title: "2" }],
       loggedIn: true,
     },
     recipe: {
@@ -100,7 +98,7 @@ test("Selecting a recipe, makes toast appears when the selected recipe is not in
 test("Selecting a recipe, calls onclick function without problems when the selected recipe is in the recipes object", () => {
   const mockState = {
     user: {
-      favoriteRecipes: ["1", "2"],
+      favoriteRecipes: [{ title: "1" }, { title: "2" }],
       loggedIn: true,
     },
     recipe: {
@@ -118,7 +116,7 @@ test("Selecting a recipe, calls onclick function without problems when the selec
 test("Clicking on the remove cross calls onclick function", () => {
   const mockState = {
     user: {
-      favoriteRecipes: ["1", "2"],
+      favoriteRecipes: [{ title: "1" }, { title: "2" }],
       loggedIn: true,
     },
     recipe: {

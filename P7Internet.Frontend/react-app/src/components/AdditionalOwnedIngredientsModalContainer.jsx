@@ -9,6 +9,7 @@ import { recipeGenerationActions } from "../features/recipeGenerationSlice";
 import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
 import { useState } from "react";
+import { recipeActions } from "../features/recipeSlice";
 
 const AdditionalOwnedIngredientsModalContainer = () => {
   const dispatch = useDispatch();
@@ -19,7 +20,8 @@ const AdditionalOwnedIngredientsModalContainer = () => {
   const currentRecipeIndex = useSelector(
     (state) => state.recipe.currentRecipeIndex
   );
-  const currentRecipe = recipes[currentRecipeIndex].recipe;
+  const currentRecipe = recipes[currentRecipeIndex];
+
   const currentRecipeUnownedIngredients = convertIngredientsToIngredientObjects(
     currentRecipe.ingredients
   ).filter(
@@ -47,6 +49,9 @@ const AdditionalOwnedIngredientsModalContainer = () => {
   function closeModalAndGoToFullRecipeView() {
     document.body.style.overflow = "visible";
     dispatch(pageActions.closeAdditionalOwnedIngredientsModalContainer());
+
+    const recipe = recipes[currentRecipeIndex];
+    dispatch(recipeActions.setRecipeToShow(recipe));
     dispatch(pageActions.goToPage(Pages.fullRecipeView));
   }
 

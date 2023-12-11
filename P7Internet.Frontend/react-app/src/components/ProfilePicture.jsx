@@ -5,11 +5,15 @@ import { userActions } from "../features/userSlice";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
+import { pageActions } from "../features/pageSlice";
 import { useUserLogOutMutation } from "../services/usersEndpoints";
-import { deleteCookies, retriveCookie } from "../helperFunctions/cookieHandler";
+import {
+  deleteCookies,
+  getCookieSessionToken,
+  getCookieUserId,
+} from "../helperFunctions/cookieHandler";
 
-const ProfilePicture = ({ openFavoritesModal }) => {
+const ProfilePicture = () => {
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
 
@@ -18,14 +22,21 @@ const ProfilePicture = ({ openFavoritesModal }) => {
   }
 
   const handleFavorites = () => {
-    openFavoritesModal();
     setOpen(false);
+    dispatch(pageActions.openFavoritesModal());
+  };
+
+  const handleHistory = () => {
+    setOpen(false);
+    dispatch(pageActions.openHistoryModal());
   };
 
   const handleSettings = () => {
+    dispatch(pageActions.openSettingModal());
     setOpen(false);
   };
 
+  //States used to fetch data from backend
   const [userLogOut, { isLogOutLoading }] = useUserLogOutMutation();
 
   //Functions is async because it needs to wait for the response from the backend
@@ -35,18 +46,14 @@ const ProfilePicture = ({ openFavoritesModal }) => {
         if there is an an error it will be displayed 
     */
     if (!isLogOutLoading) {
-      const sessionToken = retriveCookie("sessionToken=");
-      const userId = retriveCookie("userid=");
+      const sessionToken = getCookieSessionToken();
+      const userId = getCookieUserId();
 
       try {
-        //Enconding request to URI standart (handles symbols in request)
-        const encodedSessionToken = encodeURIComponent(sessionToken);
-        const encodedUserId = encodeURIComponent(userId);
-
         // Waits for the response and allows to use response (unwrap, because JSON)
         const response = await userLogOut({
-          userId: encodedUserId,
-          sessionToken: encodedSessionToken,
+          userId: userId,
+          sessionToken: sessionToken,
         });
         if (response) {
           toast.success("Du loggede succesfuldt ud");
@@ -64,24 +71,55 @@ const ProfilePicture = ({ openFavoritesModal }) => {
 
   return (
     <div className="ProfilePicture" data-testid="ProfilePicture">
-      <img
-        className="Profile"
-        src={profile}
-        alt="ProfilePicture"
-        onClick={profileClick}
-      />
+      <div className="dropdown-buttons">
+        <img
+          className="Profile"
+          src={profile}
+          alt="ProfilePicture"
+          onClick={profileClick}
+        />
+      </div>
       {open ? (
-        <ul className="menu">
-          <li className="menu-item">
-            <button onClick={handleFavorites}>Favoritter</button>
-          </li>
-          <li className="menu-item">
-            <button onClick={handleSettings}>Indstillinger</button>
-          </li>
-          <li className="menu-item">
-            <button onClick={handleLogOut}>Log ud</button>
-          </li>
-        </ul>
+        <div className="dropdown">
+          <ul className="dropdown-content">
+            <li>
+              <button
+                id="FavoritesButton"
+                className="menuItemButton"
+                onClick={handleFavorites}
+              >
+                Favoritter
+              </button>
+            </li>
+            <li>
+              <button
+                id="HistoryButton"
+                className="menuItemButton"
+                onClick={handleHistory}
+              >
+                Historik
+              </button>
+            </li>
+            <li>
+              <button
+                id="SettingsButton"
+                className="menuItemButton"
+                onClick={handleSettings}
+              >
+                Indstillinger
+              </button>
+            </li>
+            <li>
+              <button
+                id="LogoutButton"
+                className="menuItemButton"
+                onClick={handleLogOut}
+              >
+                Log ud
+              </button>
+            </li>
+          </ul>
+        </div>
       ) : null}
     </div>
   );

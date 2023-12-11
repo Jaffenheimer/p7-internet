@@ -29,7 +29,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     {
         var query = $@"SELECT Id FROM {TableName} WHERE Id = @Id";
 
-        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new { Id = recipeId });
+        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new {Id = recipeId});
 
         return resultFromDb != null;
     }
@@ -81,41 +81,23 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     /// </summary>
     /// <param name="ids"></param>
     /// <returns>Returns a list of recipes as strings</returns>
-    public async Task<List<string>> GetListOfRecipes(List<Guid> ids)
+    public async Task<List<Recipe>> GetListOfRecipes(List<Guid> ids)
     {
         var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
-
-        var param = ids.Select(id => new
+        
+        List<string> result = new List<string>();
+        foreach (var id in ids)
         {
-            Ids = id
-        });
-
-        var recipes = new List<string>();
-        foreach (var par in param)
-        {
-            recipes.Add(await Connection.QuerySingleOrDefaultAsync<string>(query, par));
+            var res = await Connection.QuerySingleOrDefaultAsync<string>(query, new {Ids = id});
+            result.Add(res);
         }
+        var recipes = new List<Recipe>();
 
-        return recipes;
-    }
-
-    /// <summary>
-    /// Gets a list of recipes from the database based on a list of Id's as strings
-    /// </summary>
-    /// <param name="ids"></param>
-    /// <returns>Returns a list of recipes as strings</returns>
-    public async Task<List<string>> GetListOfRecipesFromListOfStrings(List<string> ids)
-    {
-        var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
-
-        var param = ids.Select(id => new
+        var counter = 0;
+        foreach (var recipe in result)
         {
-            Ids = id
-        });
-        var recipes = new List<string>();
-        foreach (var par in param)
-        {
-            recipes.Add(await Connection.QuerySingleOrDefaultAsync<string>(query, par));
+            recipes.Add(new Recipe(ids[counter], recipe));
+            counter++;
         }
 
         return recipes;

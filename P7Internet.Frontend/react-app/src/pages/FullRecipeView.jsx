@@ -12,19 +12,11 @@ import { convertIngredientsToIngredientObjects } from "../helperFunctions/ingred
 import { ToastContainer } from "react-toastify";
 import RecipeOfferElement from "../components/RecipeOfferElement";
 
-function FullRecipeView() {
+const FullRecipeView = ({ shouldShowBackButton }) => {
   const dispatch = useDispatch();
 
-  const recipes = useSelector((state) => state.recipe.recipes);
+  const recipe = useSelector((state) => state.recipe.recipeToShow);
   const finalRecipesSum = useSelector((state) => state.offers.finalRecipesSum);
-
-  console.log("Fullrecipeveiw: ", recipes);
-
-  const currentRecipeIndex = useSelector(
-    (state) => state.recipe.currentRecipeIndex
-  );
-
-  const recipe = recipes[currentRecipeIndex];
 
   function goToPageRecipeSelection() {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
@@ -46,13 +38,9 @@ function FullRecipeView() {
         <Header />
       </div>
       <div className="FullRecipeView">
-        <RecipeTitle
-          id="RecipeTitle"
-          recipeId={recipe.recipeId}
-          recipeTitle={recipe.recipe.title}
-        />
+        <RecipeTitle id="RecipeTitle" recipe={recipe} />
         <ForPersons />
-        <br />
+        <h2>Ingredienser:</h2>
         <IngredientsList
           ingredients={convertIngredientsToIngredientObjects(
             recipe.shortIngredients
@@ -61,15 +49,19 @@ function FullRecipeView() {
         />
         <h4>Ialt: {finalRecipesSum},-</h4>
         <br />
-        <MethodsList methods={recipe.recipe.method} />
+        <MethodsList methods={recipe.method} />
         <div className="BottomButtons no-print">
           <div className="BottomButtonsSpacer">
             <div id="BackToFrontPageButtonRecipeView">
               <FrontPageButton buttonText="Tilbage til forsiden" />
             </div>
-            <button id="BackButton" onClick={goToPageRecipeSelection}>
-              Tilbage
-            </button>
+            {shouldShowBackButton ? (
+              <button id="BackButton" onClick={goToPageRecipeSelection}>
+                Tilbage
+              </button>
+            ) : (
+              <></>
+            )}
             <button id="PrintButton" onClick={PrintRecipe}>
               Print
             </button>
@@ -78,6 +70,6 @@ function FullRecipeView() {
       </div>
     </div>
   );
-}
+};
 
 export default FullRecipeView;

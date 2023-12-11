@@ -24,12 +24,16 @@ const RecipeView = () => {
   // console.log("Recipe View from store");
   // console.log(recipes);
 
+  const recipes = useSelector((state) => state.recipe.recipes);
+
   return (
     <div className="RecipeView">
       <RecipeTitle
         recipeTitle={recipes[tab].recipe.title}
         recipeId={recipes[tab].recipeId}
       />
+      <RecipeTitle recipe={recipes[tab]} />
+      <h2>Ingredienser:</h2>
       <IngredientsList
         ingredients={convertIngredientsToIngredientObjects(
           recipes[tab].recipe.ingredients

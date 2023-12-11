@@ -1,4 +1,4 @@
-import { retriveCookie } from "./cookieHandler";
+import { getCookieSessionToken, getCookieUserId } from "./cookieHandler";
 
 //Function to create the body for the post for recipes
 function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
@@ -9,19 +9,32 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     excludeList,
     numPeople,
   } = recipeGenerationSlice;
-  let userid = "",
+  var userid = "",
     sessiontoken = "",
     ingredients = [],
-    excludedIngredients = [];
+    excludedIngredients = [],
+    restrictions = [];
 
-  //Combines allgeries with dietaryrestrictions
-  const restrictions = [...allergens];
-  if (dietaryRestrictions !== '') restrictions.push(dietaryRestrictions);
+  //Checks if there is any dietaryRestrictions if there is and it is added
+  if (dietaryRestrictions === "") {
+    restrictions = [];
+  } else {
+    restrictions = [dietaryRestrictions.label];
+  }
 
+  //Adds all allergies to restrictions array
+  if (allergens !== "") {
+    allergens.forEach((allergy) => {
+      restrictions.push(allergy.label);
+    });
+  }
+
+  //Add ownedIngredients to ingredients array
   ownedIngredients.forEach((ingredient) => {
     ingredients.push(ingredient.text);
   });
 
+  //Add excludeList to excludedIngredients array
   excludeList.forEach((ingredient) => {
     excludedIngredients.push(ingredient.text);
   });
@@ -35,28 +48,27 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     dietaryRestrictions: restrictions,
   };
 
-  //Retrive userid and sessiontoken if login
+  //Retrieve userid and sessiontoken if login
   if (loggedIn === true) {
-    userid = retriveCookie("userid=");
-    sessiontoken = retriveCookie("sessionToken=");
+    userid = getCookieUserId();
+    sessiontoken = getCookieSessionToken();
 
     const userData = {
-      userId: userid, 
+      userId: userid,
       sessionToken: sessiontoken,
-    }
+    };
 
+    //Add user data to body if logged in
     const combinedBody = {
-      ...userData, 
+      ...userData,
       ...body,
-    }
+    };
 
+    //returns combind if the user is login
     return combinedBody;
-
   }
 
-  // console.log("Body to post");
-  // console.log(body);
-
+  //returns body if the user is not logged in
   return body;
 }
 

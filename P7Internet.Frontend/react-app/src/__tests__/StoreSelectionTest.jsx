@@ -1,9 +1,11 @@
-import { fireEvent, screen } from "@testing-library/react";
+import { cleanup, fireEvent, screen } from "@testing-library/react";
 import "@testing-library/jest-dom";
 import React from "react";
 import { renderComponent } from "../testSetupHelper/Helper.jsx";
 import StoreSelection from "../components/StoreSelection";
 import { allStoreObjects } from "../objects/Stores.js";
+
+afterEach(cleanup);
 
 test("render store selection with correct title and all shops present", () => {
   renderComponent(<StoreSelection values={allStoreObjects} options={[]} />);
@@ -21,10 +23,33 @@ test("render store selection with correct title and all shops present", () => {
 });
 
 test("changing store selection calls onChange function", () => {
-  onChange = jest.fn();
+  const onChange = jest.fn();
   renderComponent(<StoreSelection values={allStoreObjects} options={[]} />);
   const select = screen.getByRole("combobox");
   select.onchange = onChange;
   fireEvent.change(select, { target: { value: "2" } });
   expect(onChange).toHaveBeenCalledTimes(1);
+});
+
+test("remove all but two store from the store selection", () => {
+  const setStoreValues = jest.fn();
+  renderComponent(
+    <StoreSelection
+      values={allStoreObjects}
+      setValues={setStoreValues}
+      setOptions={() => {}}
+      options={[]}
+    />
+  );
+
+  // Remove all stores but Lidl by removing the first 6 stores
+  let buttons = screen.getAllByRole("button");
+
+  for (let i = 0; i < buttons.length - 1; i++) {
+    expect(buttons[i]).toBeInTheDocument();
+    fireEvent.click(buttons[i]);
+  }
+
+  buttons = screen.getAllByRole("button");
+  expect(setStoreValues).toHaveBeenCalledTimes(5);
 });

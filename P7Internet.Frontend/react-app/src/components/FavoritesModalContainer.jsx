@@ -1,99 +1,138 @@
-import React from "react";
+import React, { useEffect } from "react";
 import cross from "../data/cross.svg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { pageActions } from "../features/pageSlice";
 import { recipeActions } from "../features/recipeSlice";
 import { userActions } from "../features/userSlice";
-import { useSelector } from "react-redux";
 import Pages from "../objects/Pages";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { nanoid } from "@reduxjs/toolkit";
+import {
+  useUserDeleteFavoriteRecipeMutation,
+  useUserGetAllFavoriteRecipesMutation,
+} from "../services/usersEndpoints";
+import {
+  getCookieUserId,
+  getCookieSessionToken,
+} from "../helperFunctions/cookieHandler";
+import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 
-const FavoritesModalContainer = () => {
+const FavoritesModalContainer = ({ closeModal }) => {
+  //States used to fetch data from backend
+  const [userDeleteFavoriteRecipe] = useUserDeleteFavoriteRecipeMutation();
+  const [userGetAllFavoriteRecipes] = useUserGetAllFavoriteRecipesMutation();
+
   const recipes = useSelector((state) => state.recipe.recipes);
-  const loggedIn = useSelector((state) => state.user.loggedIn);
-  const favoriteRecipesRedux = useSelector(
-    (state) => state.user.favoriteRecipes
-  );
+  const favoriteRecipes = useSelector((state) => state.user.favoriteRecipes); //useState([]);
 
-  const favoriteRecipesobject = () => {
-    var recipeTitles = [];
-    recipes.forEach((recipe) => {
-      favoriteRecipesRedux.forEach((frecipe) => {
-        if(frecipe === recipe.recipeId){
-          recipeTitles.push(recipe);
-        }
-      })
-    });
-    return recipeTitles;
-  }
-
-  //if user is not logged in, favoriteRecipes is an empty list
-  const favoriteRecipes = loggedIn === undefined ? [] : favoriteRecipesobject();
-
+  const getFavoriteRecipes = async () => {
+    try {
+      const userId = getCookieUserId();
+      const sessionToken = getCookieSessionToken();
+      let response = await userGetAllFavoriteRecipes({
+        userId: userId,
+        sessionToken: sessionToken,
+      }).unwrap();
+      const recipes = [];
+      for (const favoriteRecipe of response) {
+        recipes.push(recipeFromResponse(favoriteRecipe));
+      }
+      dispatch(userActions.setFavoriteRecipes(recipes));
+    } catch (error) {
+      if (error.originalStatus === 401) {
+        closeModal();
+        toast.error(
+          "Din session er udløbet. Log ind igen for at se dine favorit opskrifter "
+        );
+        dispatch(userActions.logoutUser());
+        return;
+      } else if (error.originalStatus === 500)
+        //if no recipes are found, set favoriteRecipes to empty array
+        dispatch(userActions.setFavoriteRecipes([]));
+    }
+  };
+  useEffect(() => {
+    getFavoriteRecipes(); // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); //ensures useeffect is only called once
   const dispatch = useDispatch();
 
-  function selectRecipe(event, recipeTitle) {
+  function selectRecipe(event, selectedRecipe) {
     event.preventDefault();
 
     var recipeTitles = [];
-    recipes.forEach((recipe) => recipeTitles.push(recipe.recipeId));
-
-    if (!recipeTitles.includes(recipeTitle.recipeId)) {
+    recipes.forEach((recipe) => recipeTitles.push(recipe["title"]));
+    if (!recipeTitles.includes(selectedRecipe.title)) {
       toast.error(
-        `${recipeTitle} er ikke i listen af opskrifter på databasen. Prøv at vælge en anden opskrift.`
+        `${selectedRecipe.title} er ikke i listen af opskrifter på databasen. Prøv at vælge en anden opskrift.`
       );
     } else {
       dispatch(
-        recipeActions.setCurrentRecipeIndex(recipeTitles.indexOf(recipeTitle.recipeId))
+        recipeActions.setCurrentRecipeIndex(
+          recipeTitles.indexOf(selectedRecipe.title)
+        )
       );
-      dispatch(pageActions.goToPage(Pages.fullRecipeView));
-//      closeModal();
-    }      
+      dispatch(pageActions.goToPage(Pages.fullRecipeViewNoBackButton));
+      dispatch(recipeActions.setRecipeToShow(selectedRecipe));
+      dispatch(pageActions.closeFavoritesModal());
+    }
   }
 
-  function handleRemove(_, recipeTitle) {
+  async function handleRemove(_, recipe) {
     if (
       window.confirm(
-        `Er du sikker på du gerne vil fjerne ${recipeTitle.recipe.title} fra dine favoritter`
+        `Er du sikker på du gerne vil fjerne ${recipe.title} fra dine favoritter`
       )
     )
-      dispatch(userActions.removeRecipe(recipeTitle.recipeId));
+      try {
+        await userDeleteFavoriteRecipe({
+          userId: getCookieUserId(),
+          sessionToken: getCookieSessionToken(),
+          recipeId: recipe.id,
+        });
+        dispatch(
+          userActions.setFavoriteRecipes(
+            favoriteRecipes.filter((favoriteRecipe) => {
+              return favoriteRecipe.id !== recipe.id;
+            })
+          )
+        );
+      } catch (error) {
+        console.log(error);
+      }
   }
 
-
-
   return (
-    <div id="FavoritesModalContainer" data-testid="FavoritesModalContainer">
-      <div className="scrollableModalContainer">
-        {favoriteRecipes.length === 0 ? (
-          <p>Ingen opskrifter er blevet markeret som favorit.</p>
-        ) : (
-          <>
-            {favoriteRecipes.map((recipeTitle) => (
-              <div className="FavoriteRecipeElement" key={nanoid()}>
-                <button
-                  className="FavoriteRecipeButton"
-                  value={recipeTitle.recipe.title}
-                  key={nanoid()}
-                  onClick={(event) => selectRecipe(event, recipeTitle)}
-                >
-                  {recipeTitle.recipe.title}
-                </button>
-                <img
-                  key={nanoid()}
-                  data-testid="RemoveFavoriteRecipeCross"
-                  className="RemoveFavoritedElement"
-                  src={cross}
-                  alt="cross"
-                  onClick={(event) => handleRemove(event, recipeTitle)}
-                />
-              </div>
-            ))}
-          </>
-        )}
-      </div>
+    <div
+      className="scrollableModalContainer"
+      data-testid="FavoritesModalContainer"
+    >
+      {favoriteRecipes.length === 0 ? (
+        <p>Ingen opskrifter er blevet markeret som favorit.</p>
+      ) : (
+        <>
+          {favoriteRecipes.map((recipe) => (
+            <div className="FavoriteRecipeElement" key={nanoid()}>
+              <button
+                className="FavoriteRecipeButton"
+                value={recipe.title}
+                key={nanoid()}
+                onClick={(event) => selectRecipe(event, recipe)}
+              >
+                {recipe.title}
+              </button>
+              <img
+                key={nanoid()}
+                data-testid="RemoveFavoriteRecipeCross"
+                className="RemoveFavoritedElement"
+                src={cross}
+                alt="cross"
+                onClick={(event) => handleRemove(event, recipe)}
+              />
+            </div>
+          ))}
+        </>
+      )}
     </div>
   );
 };

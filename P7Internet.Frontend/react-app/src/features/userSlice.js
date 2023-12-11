@@ -5,6 +5,7 @@ const initialState = {
   user: {},
   favoriteRecipes: [],
   loggedIn: false,
+  recipesInHistory: [],
 };
 
 export const userSlice = createSlice({
@@ -20,13 +21,28 @@ export const userSlice = createSlice({
       state.favoriteRecipes = [];
       state.loggedIn = false;
     },
-    addRecipe(state, action) {
+    addFavoriteRecipe(state, action) {
       state.favoriteRecipes.push(action.payload);
     },
-    removeRecipe(state, action) {
+    //takes in the recipe id as payload
+    removeFavoriteRecipe(state, action) {
       state.favoriteRecipes = state.favoriteRecipes.filter(
-        (recipe) => recipe !== action.payload
+        (recipe) => recipe.id !== action.payload
       );
+    },
+    setFavoriteRecipes(state, action) {
+      state.favoriteRecipes = action.payload;
+    },
+    addRecipeToHistory(state, action) {
+      for (const recipe of state.recipesInHistory) {
+        if (recipe.title === action.payload.title) {
+          return; //dont add recipe to history if it already exists
+        }
+      }
+      state.recipesInHistory.push(action.payload);
+    },
+    setHistory(state, action) {
+      state.recipesInHistory = action.payload;
     },
   },
 });

@@ -6,6 +6,7 @@ import { recipeReducer } from "../features/recipeSlice";
 import { pageReducer } from "../features/pageSlice";
 import { userReducer } from "../features/userSlice";
 import { offersReducer } from "../features/offersSlice";
+import { apiSlice } from "../services/apiSlice";
 import { configureStore } from "@reduxjs/toolkit";
 
 function configureDefaultStore() {
@@ -16,24 +17,18 @@ function configureDefaultStore() {
       page: pageReducer,
       user: userReducer,
       offers: offersReducer,
+      [apiSlice.reducerPath]: apiSlice.reducer,
     },
     middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware({
-        serializableCheck: false,
-      }),
+      getDefaultMiddleware({ serializableCheck: false }).concat(
+        apiSlice.middleware
+      ),
   });
 }
 
 function renderComponent(component) {
   //this resets the store for each test
   const store = configureDefaultStore();
-  render(<Provider store={store}>{component}</Provider>);
-}
-
-function renderComponentWithChangeToStore(component, type, payload) {
-  //this resets the store for each test
-  const store = configureDefaultStore();
-  store.dispatch({ type: type }, { payload: payload });
   render(<Provider store={store}>{component}</Provider>);
 }
 
@@ -52,9 +47,17 @@ function renderMultipleComponents(componentsList) {
   //make new ones if necessary
 }
 
+function renderComponentWithDispatchActions(component, dispatchActions) {
+  const store = configureDefaultStore();
+  dispatchActions.forEach((dispatchAction) => {
+    store.dispatch(dispatchAction);
+  });
+  render(<Provider store={store}>{component}</Provider>);
+}
+
 export {
   renderComponent,
-  renderComponentWithChangeToStore,
   renderComponentWithSpecificStore,
   renderMultipleComponents,
+  renderComponentWithDispatchActions,
 };

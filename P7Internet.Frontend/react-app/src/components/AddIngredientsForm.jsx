@@ -28,7 +28,7 @@ const AddIngredientsForm = ({
 
   const ingredientIsInIngredientsObject = (ingredient, ingredientsObject) => {
     for (const ingredientObject of ingredientsObject) {
-      if (ingredientObject.text === ingredient) {
+      if (ingredientObject.text.toLowerCase() === ingredient.toLowerCase()) {
         return true;
       }
     }
@@ -44,7 +44,7 @@ const AddIngredientsForm = ({
     }
     if (ingredientIsInIngredientsObject(ingredient, excludeList)) {
       toast.error(
-        `"${ingredient}" er allerede tilføjet til listen af eksluderede ingredienser!`
+        `"${ingredient}" er allerede tilføjet til listen af ekskluderede ingredienser!`
       );
       return;
     }

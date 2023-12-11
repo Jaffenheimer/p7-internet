@@ -16,12 +16,18 @@ namespace P7Internet.Services;
 
 public class ETilbudsAvisService
 {
-    private readonly HttpClient _client = new();
+    private readonly HttpClient _client;
     private readonly QueryBuilder _queryBuilder = new();
-
+    private readonly string _apiKey;
 
     public ETilbudsAvisService()
     {
+    }
+
+    public ETilbudsAvisService(string? apiKey, HttpClient httpClient)
+    {
+        _client = httpClient;
+        _apiKey = apiKey;
         _client.BaseAddress = new Uri("https://squid-api.tjek.com/v4/rpc/get_offers");
     }
 
@@ -30,13 +36,13 @@ public class ETilbudsAvisService
     /// </summary>
     /// <param name="req"></param>
     /// <returns>An IList of offers from the api</returns>
-    public async Task<IList<Offer>> GetAllOffers(OfferRequest req)
+    public virtual async Task<IList<Offer>> GetAllOffers(OfferRequest req)
     {
         var url = new Uri(_client.BaseAddress.ToString());
         var request = new HttpRequestMessage(HttpMethod.Post, url);
 
         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-        request.Headers.Add("X-Api-Key", "EFSiDV");
+        request.Headers.Add("X-Api-Key", _apiKey);
         StringContent payload = new StringContent(req.ComposeOfferObject(), Encoding.UTF8, "application/json");
 
         request.Content = payload;

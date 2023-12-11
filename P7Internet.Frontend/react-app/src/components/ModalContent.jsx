@@ -10,7 +10,7 @@ const ModalContent = ({ Container, title, closeModal }) => {
           <CloseModalCross closeModal={closeModal} />
         </h3>
       </div>
-      <Container />
+      <Container closeModal={closeModal} />
     </>
   );
 };
