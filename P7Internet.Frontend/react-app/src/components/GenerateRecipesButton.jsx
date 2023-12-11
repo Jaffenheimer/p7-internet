@@ -41,7 +41,7 @@ const GenerateRecipesButton = () => {
     var response;
     const recipes = [];
 
-    if (!isRecipeLoading || !isRecipeUserLoading) {
+    if (!isRecipeLoading && !isRecipeUserLoading) {
       try {
         setIsDisabled(true);
         toastId = toast.loading("Generer Opskrifter", {
