@@ -1,7 +1,6 @@
 import Recipe from "../objects/Recipe";
 
 function recipeFromResponse(response) {
-  console.log("recipeFromResponse", response);
   const recipe = response.recipe;
 
   // Split recipe on title and ingredients
