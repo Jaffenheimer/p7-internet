@@ -1,6 +1,6 @@
 import { apiSlice } from "./apiSlice";
 
-// Functions injects endpoints into the apiSlice
+// Function injects endpoints into the apiSlice
 const recipeEndpoints = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     generateUserRecipe: builder.mutation({

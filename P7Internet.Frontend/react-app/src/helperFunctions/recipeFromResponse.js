@@ -1,37 +1,39 @@
 import Recipe from "../objects/Recipe";
 
 function recipeFromResponse(response) {
+  console.log("recipeFromResponse", response);
   const recipe = response.recipe;
-  console.log(recipe);
 
-  //Splitting the string into sections using regular expressions
+  // Split recipe on title and ingredients
   const title = recipe.split("Titel:")[1].split("Ingredienser:")[0];
-  console.log(title);
+
+  //Split recipe on ingredients and methods
   const ingredients = recipe
     .split("Ingredienser:")[1]
     .split("Metode:")[0]
     .split("\n");
 
-  console.log(ingredients);
+  //Separates the methods from the rest of the recipe
   const methods = recipe.split("Metode:").slice(1);
-  //const ingredientList = ingredients[0].split("-").map((ingredient) => ingredient.trim());
+
+  //Separates the ingredients from the rest of the recipe and splits on "-" and adds to array
   const ingredientList = ingredients[0]
     .split("-")
     .slice(1)
     .map((ingredient) => ingredient.trim());
+
+  //Separates the methods from the rest of the recipe and splits on numbers and adds to array
   const methodArray = methods[0]
     .split(/\d+\./)
     .map((item) => item.trim())
     .filter(Boolean);
-  const filteredingredientList = ingredientList.slice(0);
-  console.log(title);
-  console.log(response);
-  //Returns an recipe
+
+  //Returns a recipe
   return new Recipe(
-    response.recipeId,
     title,
-    filteredingredientList,
+    ingredientList,
     methodArray,
+    response.recipeId,
     response.ingredients
   );
 }

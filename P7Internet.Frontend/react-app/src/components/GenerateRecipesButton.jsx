@@ -11,6 +11,7 @@ import {
 } from "../services/recipeEndpoints";
 import Recipe from "../objects/Recipe";
 import { userActions } from "../features/userSlice";
+import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 
 const GenerateRecipesButton = () => {
   const dispatch = useDispatch();
@@ -18,12 +19,16 @@ const GenerateRecipesButton = () => {
     (state) => state.recipeGeneration.ownedIngredients
   );
 
-  //States used to fetch data from backend
+  //Creates functions from Mutations from the recipeEndpoints
   const [generateUserRecipe, { isLoading: isRecipeUserLoading }] =
     useGenerateUserRecipeMutation();
   const [generateRecipe, { isLoading: isRecipeLoading }] =
     useGenerateRecipeMutation();
 
+  //Id to toast
+  var toastId;
+
+  //Collects the data from store
   const recipeGenData = useSelector((state) => state.recipeGeneration);
   const loggedIn = useSelector((state) => state.user.loggedIn);
 
@@ -31,39 +36,66 @@ const GenerateRecipesButton = () => {
     dispatch(pageActions.goToPage(Pages.RecipeSelection));
   }
 
+  //Async function to fetch recipes from backend
   async function fetchRecipes(body) {
     var response;
-    try {
-      if (!isRecipeLoading || !isRecipeUserLoading) {
-        toast.loading("Generer Opskrifter", {
+    const recipes = [];
+
+    if (!isRecipeLoading || !isRecipeUserLoading) {
+      try {
+        toastId = toast.loading("Generer Opskrifter", {
           toastId: "generateRecipesToast",
         });
+
+        //Checks if user is login
         if (loggedIn) {
           response = await generateUserRecipe(body).unwrap();
         } else {
           response = await generateRecipe(body).unwrap();
         }
 
+        //If these was an response then create recipes object from the response
         if (response) {
-          let i = 0;
-          dispatch(recipeActions.clearRecipes());
           response.forEach((recipe) => {
-            // Convert recipe from response into recipe object
-            // var recipeObject = recipeFromResponse(recipe);
-            const newRecipe = new Recipe(
-              recipe.recipeId,
-              i,
-              ["ingredienser"],
-              ["metoder"],
-              ["ingredienser"]
-            );
-            i++;
-            dispatch(recipeActions.addRecipe(newRecipe));
+            //Convert recipe from response into recipe object
+            var recipeObject = recipeFromResponse(recipe);
+            recipes.push(recipeObject);
           });
+
+          // If there are recipes on in array then add to the store
+          if (recipes.length !== 0) {
+            //Clearing recipes from store
+            dispatch(recipeActions.clearRecipes());
+
+            //Adds new recipes to store
+            dispatch(recipeActions.addRecipes(recipes));
+
+            return true;
+          } else {
+            //Updates toast
+            toast.update(toastId, {
+              render: "Fejl under generation, Prøv igen",
+              type: "error",
+              isLoading: false,
+              autoClose: 5000,
+            });
+          }
         }
+      } catch (error) {
+        if (error.originalStatus === 401) {
+          toast.dismiss("generateRecipesToast");
+          toast.warning("Din session er udløbet.");
+          dispatch(userActions.logoutUser());
+          return;
+        }
+        console.log(error);
+        toast.update(toastId, {
+          render: "Fejl under generation, Prøv igen",
+          type: "error",
+          isLoading: false,
+          autoClose: 5000,
+        });
       }
-    } catch (error) {
-      console.log(error);
     }
   }
 
@@ -76,20 +108,22 @@ const GenerateRecipesButton = () => {
       return;
     }
 
-    try {
-      //Create Body for request
-      const body = recipeBodyCreator(loggedIn, recipeGenData);
-      //Runs function to request recipes from backend
-      await fetchRecipes(body);
-    } catch (error) {
-      if (error.originalStatus === 401) {
-        toast.dismiss("generateRecipesToast");
-        toast.error("Din session er udløbet.");
-        dispatch(userActions.logoutUser());
-        return;
-      }
+    //Create Body for request
+    const body = recipeBodyCreator(loggedIn, recipeGenData);
+
+    //Runs function to request recipes from backend -> openAi/Database
+    var succeed = await fetchRecipes(body);
+
+    //Checks if the fetch succeded. If succeded then it goes to next page
+    if (succeed) {
+      toast.update(toastId, {
+        render: "Generation færdig",
+        type: "success",
+        isLoading: false,
+        autoClose: 5000,
+      });
+      goToPageFullRecipeSelection();
     }
-    goToPageFullRecipeSelection();
   }
 
   return (

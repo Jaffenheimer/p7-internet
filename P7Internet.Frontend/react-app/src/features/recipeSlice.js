@@ -18,6 +18,9 @@ export const recipeSlice = createSlice({
     addRecipe(state, action) {
       state.recipes.push(action.payload);
     },
+    clearRecipes(state){
+        state.recipes = []; 
+    },
     removeRecipe(state, action) {
       state.recipes = state.recipes.filter(
         (recipe) => recipe.id !== action.payload
