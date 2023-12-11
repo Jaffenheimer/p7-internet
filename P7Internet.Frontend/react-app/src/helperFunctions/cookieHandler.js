@@ -1,10 +1,10 @@
 //Function for retriving data from cookies
-export const retrieveCookie = (retriveValue) => {
+export const retrieveCookie = (retrieveValue) => {
   const cookies = document.cookie;
   const cookieArray = cookies.split(";").map((cookie) => cookie.trim());
 
   const storedToken = cookieArray.find((cookie) =>
-    cookie.startsWith(retriveValue)
+    cookie.startsWith(retrieveValue)
   );
   const splitToken = storedToken.split("=");
   const storedValue = splitToken.slice(1).join("=");

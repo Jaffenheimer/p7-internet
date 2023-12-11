@@ -40,7 +40,7 @@ export const checkValidTwoPasswords = (password1, password2) => {
     toast.error("De to kodeord er ikke ens. Prøv igen");
   } else if (!checkValidPassword(password1) || !checkValidPassword(password2)) {
     toast.error(
-      "Kodeordet skal være mindst 8 tegn langt og indeholde mindst et stort bogstav, et lille bogstav, et tal, og et specialtegn"
+      "Kodeordet skal være mindst 8 tegn langt og indeholde mindst et stort bogstav, et lille bogstav, et tal og et specialtegn"
     );
   } else {
     return true;

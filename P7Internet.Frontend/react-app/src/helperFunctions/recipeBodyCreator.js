@@ -48,7 +48,7 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     dietaryRestrictions: restrictions,
   };
 
-  //Retrive userid and sessiontoken if login
+  //Retrieve userid and sessiontoken if login
   if (loggedIn === true) {
     userid = getCookieUserId();
     sessiontoken = getCookieSessionToken();
