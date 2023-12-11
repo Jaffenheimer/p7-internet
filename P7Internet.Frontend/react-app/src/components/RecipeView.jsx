@@ -12,6 +12,7 @@ const RecipeView = () => {
   return (
     <div className="RecipeView">
       <RecipeTitle title={recipes[tab].title} recipe={recipes[tab]} />
+      <h2>Ingredienser:</h2>
       <IngredientsList
         ingredients={convertIngredientsToIngredientObjects(
           recipes[tab].ingredients

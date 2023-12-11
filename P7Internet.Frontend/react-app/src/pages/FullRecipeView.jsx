@@ -39,6 +39,7 @@ const FullRecipeView = ({ shouldShowBackButton }) => {
       <div className="FullRecipeView">
         <RecipeTitle id="RecipeTitle" title={recipe.title} recipe={recipe} />
         <ForPersons />
+        <h2>Ingredienser:</h2>
         <IngredientsList
           ingredients={convertIngredientsToIngredientObjects(
             recipe.ingredients

@@ -66,7 +66,7 @@ public class OpenAiService
     /// <returns>Returns a string composed of all the components in the RecipeRequest</returns>
     private string ComposePromptFromRecipeRequest(RecipeRequest req)
     {
-        var prompt = "Jeg vil gerne have en ny forskellig opskrift fra andre og med en unik titel.";
+        var prompt = "Jeg vil gerne have en ny forskellige opskrift fra andre og med en unik titel.";
         
         if (req.Ingredients != null)
         {
