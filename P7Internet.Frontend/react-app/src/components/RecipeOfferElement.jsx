@@ -102,7 +102,7 @@ const RecipeOfferElement = ({ ingredient }) => {
             <img
               className="IngredientStoreLogo offer-default no-print"
               src={offer.storeImage}
-              alt=""
+              alt="No store image found"
             />
           </>
         )}
