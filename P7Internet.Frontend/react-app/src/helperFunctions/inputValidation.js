@@ -11,14 +11,12 @@ export function checkValidEmail(email) {
 }
 
 export function checkValidVerificationCode(verificationCode) {
-  // TODO: CHANGE THE REGEX TO ACTUAL REGEX FOR GUID
-  const verificationCodeRegex = /./;
+  const verificationCodeRegex =
+    /^([0-9a-zA-Z+/]{4})*(([0-9a-zA-Z+/]{2}==)|([0-9a-zA-Z+/]{3}=))?$/;
   const isValidVerificationCode = verificationCodeRegex.exec(verificationCode);
-  if (isValidVerificationCode === null) return false;
-  else return true;
+  return isValidVerificationCode !== null;
 }
 
-//THE USERNAME VALIDATION SHOULD HAPPEN IN THE BACKEND
 //username: allowed characters are integers and upper/lowercase letters
 function checkValidUsername(username) {
   const usernameRegex = /^[a-zA-Z0-9]+$/;
@@ -40,7 +38,7 @@ export const checkValidTwoPasswords = (password1, password2) => {
     toast.error("De to kodeord er ikke ens. Prøv igen");
   } else if (!checkValidPassword(password1) || !checkValidPassword(password2)) {
     toast.error(
-      "Kodeordet skal være mindst 8 tegn langt og indeholde mindst et stort bogstav, et lille bogstav, et tal og et specialtegn"
+      "Kodeordet skal bestå af mindst et tal, et stort bogstav, et lille bogstav, et specialtegn og være mindst 6 tegn langt."
     );
   } else {
     return true;
