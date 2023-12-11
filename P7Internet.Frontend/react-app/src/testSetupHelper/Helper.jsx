@@ -8,7 +8,6 @@ import { userReducer } from "../features/userSlice";
 import { offersReducer } from "../features/offersSlice";
 import { apiSlice } from "../services/apiSlice";
 import { configureStore } from "@reduxjs/toolkit";
-import { apiSlice } from "../services/apiSlice";
 
 function configureDefaultStore() {
   return configureStore({

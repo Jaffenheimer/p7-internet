@@ -16,7 +16,7 @@ import {
   getCookieUserId,
   getCookieSessionToken,
 } from "../helperFunctions/cookieHandler";
-import Recipe from "../objects/Recipe";
+import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 
 const FavoritesModalContainer = ({ closeModal }) => {
   //States used to fetch data from backend
@@ -35,17 +35,8 @@ const FavoritesModalContainer = ({ closeModal }) => {
         sessionToken: sessionToken,
       }).unwrap();
       const recipes = [];
-      let i = 0;
       for (const favoriteRecipe of response) {
-        recipes.push(
-          new Recipe(
-            favoriteRecipe.recipeId,
-            i++, //favoriteRecipe.title,
-            favoriteRecipe.ingredients,
-            ["metode 1"], //favoriteRecipe.methods
-            favoriteRecipe.ingredients
-          )
-        );
+        recipes.push(recipeFromResponse(favoriteRecipe));
       }
       dispatch(userActions.setFavoriteRecipes(recipes));
     } catch (error) {
@@ -56,8 +47,7 @@ const FavoritesModalContainer = ({ closeModal }) => {
         );
         dispatch(userActions.logoutUser());
         return;
-      }
-      else if (error.originalStatus === 500)
+      } else if (error.originalStatus === 500)
         //if no recipes are found, set favoriteRecipes to empty array
         dispatch(userActions.setFavoriteRecipes([]));
     }

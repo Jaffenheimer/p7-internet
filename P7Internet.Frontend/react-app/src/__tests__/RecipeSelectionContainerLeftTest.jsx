@@ -14,11 +14,10 @@ import Recipe from "../objects/Recipe.js";
 
 afterEach(cleanup);
 
-
 test("Content of left container is rendered correctly ", () => {
   const recipes = [
-    new Recipe("1", "Recipe 1", ["ingredient 1", "ingredient 2"]),
-    new Recipe("2", "Recipe 2", ["ingredient 3", "ingredient 4"]),
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
   ];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
     recipeActions.addRecipes(recipes),
@@ -41,9 +40,9 @@ test("Content of left container is rendered correctly ", () => {
 
 test("Recipe changes after pressing arrow right", async () => {
   const recipes = [
-    new Recipe("1","Recipe 1", ["ingredient 1", "ingredient 2"]),
-    new Recipe("2","Recipe 2", ["ingredient 3", "ingredient 4"]),
-    new Recipe("3","Recipe 3", ["ingredient 5", "ingredient 6"]),
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
+    new Recipe("Recipe 3", ["ingredient 5", "ingredient 6"]),
   ];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
     recipeActions.addRecipes(recipes),
@@ -57,9 +56,9 @@ test("Recipe changes after pressing arrow right", async () => {
 
 test("Recipe changes after pressing arrow left", async () => {
   const recipes = [
-    new Recipe("1", "Recipe 1", ["ingredient 1", "ingredient 2"]),
-    new Recipe("2", "Recipe 2", ["ingredient 3", "ingredient 4"]),
-    new Recipe("3", "Recipe 3", ["ingredient 5", "ingredient 6"]),
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
+    new Recipe("Recipe 3", ["ingredient 5", "ingredient 6"]),
   ];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
     recipeActions.addRecipes(recipes),
@@ -73,9 +72,9 @@ test("Recipe changes after pressing arrow left", async () => {
 
 test("Marking one recipe as favorite, changes state of the heart icon for that recipe, but remaining recipes are not marked as favorite", async () => {
   const recipes = [
-    new Recipe("1","Recipe 1", ["ingredient 1", "ingredient 2"]),
-    new Recipe("2","Recipe 2", ["ingredient 3", "ingredient 4"]),
-    new Recipe("3","Recipe 3", ["ingredient 5", "ingredient 6"]),
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"], [], "1"),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"], [], "2"),
+    new Recipe("Recipe 3", ["ingredient 5", "ingredient 6"], [], "3"),
   ];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
     recipeActions.addRecipes(recipes),

@@ -12,8 +12,8 @@ import Pages from "../objects/Pages";
 import "react-toastify/dist/ReactToastify.css";
 import { nanoid } from "@reduxjs/toolkit";
 import { useUserGetRecipesInHistoryMutation } from "../services/usersEndpoints";
-import Recipe from "../objects/Recipe";
 import { toast } from "react-toastify";
+import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 
 const HistoryModalContainer = ({ closeModal }) => {
   //States used to fetch data from backend
@@ -21,7 +21,6 @@ const HistoryModalContainer = ({ closeModal }) => {
 
   const dispatch = useDispatch();
   const recipes = useSelector((state) => state.recipe.recipes);
-
   const recipesInHistory = useSelector((state) => state.user.recipesInHistory);
 
   const getRecipesInHistory = async () => {
@@ -33,22 +32,13 @@ const HistoryModalContainer = ({ closeModal }) => {
         sessionToken: sessionToken,
       }).unwrap();
       const recipes = [];
-      let i = 0;
       for (const recipeInHistory of response) {
-        recipes.push(
-          new Recipe(
-            recipeInHistory.recipeId,
-            i++, //recipeInHistory.title,
-            recipeInHistory.ingredients,
-            ["metode 1"], //recipeInHistory.methods,
-            recipeInHistory.ingredients
-          )
-        );
+        recipes.push(recipeFromResponse(recipeInHistory));
       }
       dispatch(userActions.setHistory(recipes));
     } catch (error) {
-      if (error.originalStatus === 500)
-        //if no recipes are found, set favoriteRecipes to empty array
+      if (error.originalStatus === 500 || error.originalStatus === 404)
+        //if no recipes are found, set history to empty array
         dispatch(userActions.setHistory([]));
       else if (error.originalStatus === 401) {
         closeModal();

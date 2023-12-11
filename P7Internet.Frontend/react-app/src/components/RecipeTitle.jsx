@@ -14,7 +14,7 @@ import {
   getCookieUserId,
   getCookieSessionToken,
 } from "../helperFunctions/cookieHandler";
-import Recipe from "../objects/Recipe";
+import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 
 const RecipeTitle = ({ recipe }) => {
   //States used to fetch data from backend
@@ -37,15 +37,7 @@ const RecipeTitle = ({ recipe }) => {
         }).unwrap();
         const recipes = [];
         for (const favoriteRecipe of response) {
-          recipes.push(
-            new Recipe(
-              favoriteRecipe.recipeId,
-              "Agurk", //favoriteRecipe.title,
-              favoriteRecipe.ingredients,
-              ["metode 1"], //favoriteRecipe.methods
-              favoriteRecipe.ingredients
-            )
-          );
+          recipes.push(recipeFromResponse(favoriteRecipe));
         }
         dispatch(userActions.setFavoriteRecipes(recipes));
       } catch (error) {

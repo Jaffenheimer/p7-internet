@@ -48,7 +48,7 @@ const userEndpoints = apiSlice.injectEndpoints({
     }),
     userGetAllFavoriteRecipes: builder.mutation({
       query: ({ userId, sessionToken }) => ({
-        url: `/public/user/get-favourite-recipes`,
+        url: `/public/user/get-favorite-recipes`,
         method: "POST",
         body: { userId: userId, sessionToken: sessionToken },
       }),

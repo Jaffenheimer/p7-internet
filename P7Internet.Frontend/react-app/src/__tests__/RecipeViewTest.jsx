@@ -20,9 +20,7 @@ import RecipeTitle from "../components/RecipeTitle";
 afterEach(cleanup);
 
 test("Renders expected default recipe not marked as favorite by default", () => {
-  const recipes = [
-    new Recipe("1", "Recipe 1", ["ingredient 1", "ingredient 2"]),
-  ];
+  const recipes = [new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"])];
   renderComponentWithDispatchActions(<RecipeSelectionContainerLeft />, [
     recipeActions.addRecipes(recipes),
   ]);
@@ -36,8 +34,8 @@ test("Renders expected default recipe not marked as favorite by default", () => 
 
 test("Renders expected default recipe not marked as favorite by default when currentRecipeIndex is changed", () => {
   const recipes = [
-    new Recipe("1", "Recipe 1", ["ingredient 1", "ingredient 2"]),
-    new Recipe("2", "Recipe 2", ["ingredient 3", "ingredient 4"]),
+    new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"]),
+    new Recipe("Recipe 2", ["ingredient 3", "ingredient 4"]),
   ];
   renderComponentWithDispatchActions(<RecipeView />, [
     recipeActions.addRecipes(recipes),
@@ -53,9 +51,7 @@ test("Renders expected default recipe not marked as favorite by default when cur
 });
 
 test("heart is solid when recipe is marked as favorite", () => {
-  const recipes = [
-    new Recipe("1", "Recipe 1", ["ingredient 1", "ingredient 2"]),
-  ];
+  const recipes = [new Recipe("Recipe 1", ["ingredient 1", "ingredient 2"])];
   renderComponentWithDispatchActions(<RecipeView />, [
     recipeActions.addRecipes(recipes),
     userActions.addFavoriteRecipe(recipes[0]),

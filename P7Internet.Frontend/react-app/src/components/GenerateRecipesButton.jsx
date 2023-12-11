@@ -9,7 +9,6 @@ import {
   useGenerateRecipeMutation,
   useGenerateUserRecipeMutation,
 } from "../services/recipeEndpoints";
-import Recipe from "../objects/Recipe";
 import { userActions } from "../features/userSlice";
 import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 

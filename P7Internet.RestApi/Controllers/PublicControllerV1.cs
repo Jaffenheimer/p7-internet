@@ -383,7 +383,7 @@ public class PublicControllerV1 : ControllerBase
     /// <param name="req"></param>
     /// <returns>Returns unauthorized if the sessiontoken is invalid, otherwise Ok. If the sessiontoken is valid and no favorite recipes are found
     /// it returns Badrequest</returns>
-    [HttpPost("user/get-favourite-recipes")]
+    [HttpPost("user/get-favorite-recipes")]
     public async Task<IActionResult> GetFavouriteRecipes([FromBody] GetFavouriteRecipesRequest req)
     {
         var checkIfUserSessionIsValid = await _userSessionRepository.CheckIfTokenIsValid(req.UserId, req.SessionToken);
