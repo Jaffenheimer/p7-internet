@@ -24,6 +24,7 @@ const LoginBox = ({ closeModal }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [verificationCode, setVerificationCode] = useState("");
+  const [showResetPassword, setShowResetPassword] = useState(false);
 
   const [loggingIn, setLoggingIn] = useState(true);
   const [creatingAccount, setCreatingAccount] = useState(false);
@@ -133,6 +134,7 @@ const LoginBox = ({ closeModal }) => {
         console.log(error);
         if (error.originalStatus === 200) {
           toast.success("Din verifikationskode er sendt til din email");
+          setShowResetPassword(true);
         } else if (
           error.originalStatus === 400 &&
           error.data === "User does not exist"
@@ -161,6 +163,7 @@ const LoginBox = ({ closeModal }) => {
           });
           if (response.error.originalStatus === 200) {
             toast.success("Dit kodeord er nu nulstillet");
+            setShowResetPassword(false);
             clearandclose();
           } else if (
             response.error.originalStatus === 400 &&
@@ -315,28 +318,34 @@ const LoginBox = ({ closeModal }) => {
               onChange={(event) => setEmail(event.target.value)}
             />
             <button onClick={() => sendVerificationCode()}>Send</button>
-            <br></br>
-            <br></br>
-            <label>
-              <b>Angiv dit nye kodeord</b>
-            </label>
-            <input
-              type="password"
-              placeholder="Indtast kodeordet"
-              value={password}
-              onChange={(event) => setPassword(event.target.value)}
-              required
-            />
-            <label>
-              <b>Angiv verificeringskoden</b>
-            </label>
-            <input
-              type="text"
-              placeholder="Angiv koden her"
-              value={verificationCode}
-              onChange={(event) => setVerificationCode(event.target.value)}
-            />
-            <button onClick={() => resetPassword()}>Gendan</button>
+            {!showResetPassword ? (
+              ""
+            ) : (
+              <>
+                <br></br>
+                <br></br>
+                <label>
+                  <b>Angiv dit nye kodeord</b>
+                </label>
+                <input
+                  type="password"
+                  placeholder="Indtast kodeordet"
+                  value={password}
+                  onChange={(event) => setPassword(event.target.value)}
+                  required
+                />
+                <label>
+                  <b>Angiv verificeringskoden</b>
+                </label>
+                <input
+                  type="text"
+                  placeholder="Angiv koden her"
+                  value={verificationCode}
+                  onChange={(event) => setVerificationCode(event.target.value)}
+                />
+                <button onClick={() => resetPassword()}>Gendan</button>
+              </>
+            )}
           </>
         )}
       </div>
