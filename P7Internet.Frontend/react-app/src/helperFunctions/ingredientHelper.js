@@ -2,7 +2,9 @@ import { nanoid } from "nanoid";
 
 function ingredientIsOwned(ingredient, ownedIngredients) {
   for (const ownedIngredient of ownedIngredients) {
-    if (ownedIngredient.text === ingredient.text) {
+    if (
+      ingredient.text.toLowerCase().includes(ownedIngredient.text.toLowerCase())
+    ) {
       return true;
     }
   }

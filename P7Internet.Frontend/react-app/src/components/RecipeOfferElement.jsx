@@ -35,8 +35,7 @@ const RecipeOfferElement = ({ ingredient }) => {
   useEffect(() => {
     const fetchOffer = async () => {
       try {
-        //let _radius = toggleStateIsRadius ? radius : 3000; //TODO: INDSÆT DETTE VED MERGE MED DEVELOP
-        let _radius = 3000;
+        let _radius = toggleStateIsRadius ? radius : 3000;
         var response = await getOffer({
           lat: encodeURIComponent(
             Math.round(JSON.parse(localStorage.getItem("geolocation")).lat)
@@ -88,6 +87,24 @@ const RecipeOfferElement = ({ ingredient }) => {
     }
   }, []);
 
+  //#region Helpers
+  function FindCheapestProduct(arr) {
+    let offer;
+    if (typeof arr === "undefined" || arr.length == 0) return new Offer();
+    offer = arr.reduce((prev, curr) => (prev.price < curr.price ? prev : curr));
+    return offer;
+  }
+
+  function FindFullIngredientName(shortName, recipe) {
+    let fullName;
+    const fullNames = recipe.recipe.ingredients;
+    fullName = fullNames.find((fullName) =>
+      fullName.toLowerCase().includes(shortName.toLowerCase())
+    );
+    return fullName;
+  }
+  //#endregion
+
   return (
     <div className="RecipeOfferElement" data-testid="RecipeOfferElement">
       <li>
@@ -110,22 +127,5 @@ const RecipeOfferElement = ({ ingredient }) => {
     </div>
   );
 };
-//#region Helpers
-function FindCheapestProduct(arr) {
-  let offer;
-  if (typeof arr === "undefined" || arr.length == 0) return new Offer();
-  offer = arr.reduce((prev, curr) => (prev.price < curr.price ? prev : curr));
-  return offer;
-}
-
-function FindFullIngredientName(shortName, recipe) {
-  let fullName;
-  const fullNames = recipe.recipe.ingredients;
-  fullName = fullNames.find((fullName) =>
-    fullName.toLowerCase().includes(shortName.toLowerCase())
-  );
-  return fullName;
-}
-//#endregion
 
 export default RecipeOfferElement;
