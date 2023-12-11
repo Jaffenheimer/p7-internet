@@ -32,13 +32,13 @@ const expectedLoggedInBody = {
   dietaryRestrictions: [],
 };
 
-test("Check if recipeBody creator creates the exepted body, if the user is login", () => {
+test("Check if recipeBody creator creates the expected body, if the user is login", () => {
   addCookies("username", "1", "2");
   const body = recipeBodyCreator(true, recipeGenSlice);
   expect(body).toEqual(expectedLoggedInBody);
 });
 
-test("Check if recipeBody creator creates the exepted body, if the user is not logged in", () => {
+test("Check if recipeBody creator creates the expected body, if the user is not logged in", () => {
   const body = recipeBodyCreator(false, recipeGenSlice);
   expect(body).toEqual(expectedNotLogInBody);
 });

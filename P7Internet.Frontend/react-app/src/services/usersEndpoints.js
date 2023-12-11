@@ -1,9 +1,8 @@
 import { apiSlice } from "./apiSlice";
 
-// Functions injects endpoints into the apiSlice
+// Function injects endpoints into the apiSlice
 const userEndpoints = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    //Because it is a post request it is a mutation
     userLogin: builder.mutation({
       query: ({ username, password }) => ({
         url: `/public/user/login`,

@@ -12,22 +12,22 @@ function recipeFromResponse(response) {
     .split("Metode:")[0]
     .split("\n");
 
-  //Sepereates the methods from the rest of the recipe
+  //Separates the methods from the rest of the recipe
   const methods = recipe.split("Metode:").slice(1);
 
-  //Sepereates the ingredients from the rest of the recipe and splits on "-" and adds to array
+  //Separates the ingredients from the rest of the recipe and splits on "-" and adds to array
   const ingredientList = ingredients[0]
     .split("-")
     .slice(1)
     .map((ingredient) => ingredient.trim());
 
-  //Sepereates the methods from the rest of the recipe and splits on numbers and adds to array
+  //Separates the methods from the rest of the recipe and splits on numbers and adds to array
   const methodArray = methods[0]
     .split(/\d+\./)
     .map((item) => item.trim())
     .filter(Boolean);
 
-  //Returns an recipe
+  //Returns a recipe
   return new Recipe(
     title,
     ingredientList,

@@ -4,7 +4,6 @@ import { pageActions } from "../features/pageSlice";
 import Pages from "../objects/Pages";
 import { toast } from "react-toastify";
 import { recipeActions } from "../features/recipeSlice";
-//import { defaultRecipes } from "../objects/DefaultRecipes";
 import recipeBodyCreator from "../helperFunctions/recipeBodyCreator";
 import {
   useGenerateRecipeMutation,
@@ -104,9 +103,6 @@ const GenerateRecipesButton = () => {
 
     //Runs function to request recipes from backend -> openAi/Database
     var succeed = await fetchRecipes(body);
-
-    //for testing purposes to ensure we have recipes on next page:
-    //dispatch(recipeActions.addRecipes(defaultRecipes));
 
     //Checks if the fetch succeded. If succeded then it goes to next page
     if (succeed === true) {

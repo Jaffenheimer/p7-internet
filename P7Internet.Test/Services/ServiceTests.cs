@@ -122,7 +122,7 @@ namespace P7Internet.Test.Services
                 new List<string> {"kylling", "julebryg", "hestebønner"}, 2, new List<string> {"kartoffel", "løg"},
                 new List<string> {"vegansk"}, 4);
             var checkPrompt =
-                @"Jeg vil gerne have en ny forskllige opskrift fra andre og med en unik titel. Opskriften skal indeholde disse ingredienser kylling, julebryg, "
+                @"Jeg vil gerne have en ny forskellig opskrift fra andre og med en unik titel. Opskriften skal indeholde disse ingredienser kylling, julebryg, "
             + "hestebønner uden disse ingredienser kartoffel,løg der er vegansk til 4 personer. Det skal have følgende format: Titel, ingredienser og metode. "+
                 "Opskriften må ikke indeholde noter, bemærkninger, Bemærk og serveringsforslag.";
             
@@ -141,7 +141,7 @@ namespace P7Internet.Test.Services
                 new List<string>(), 2, new List<string>(),
                 new List<string>(), 4);
             var checkPrompt =
-                @"Jeg vil gerne have en ny forskllige opskrift fra andre og med en unik titel. Opskriften skal indeholde disse ingredienser kylling, julebryg, "
+                @"Jeg vil gerne have en ny forskellig opskrift fra andre og med en unik titel. Opskriften skal indeholde disse ingredienser kylling, julebryg, "
                 + "hestebønner uden disse ingredienser kartoffel,løg der er vegansk til 4 personer. Det skal have følgende format: Titel, ingredienser og metode. "+
                 "Opskriften må ikke indeholde noter, bemærkninger, Bemærk og serveringsforslag.";
             //Act

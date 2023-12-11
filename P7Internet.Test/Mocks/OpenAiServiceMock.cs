@@ -24,7 +24,7 @@ public class OpenAiServiceMock
 
     public string ComposePromptFromRecipeRequest(RecipeRequest req)
     {
-        var prompt = "Jeg vil gerne have en ny forskllige opskrift fra andre og med en unik titel.";
+        var prompt = "Jeg vil gerne have en ny forskellig opskrift fra andre og med en unik titel.";
 
         if (req.Ingredients != null)
         {
