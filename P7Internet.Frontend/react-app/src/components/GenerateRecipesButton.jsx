@@ -14,6 +14,7 @@ import recipeFromResponse from "../helperFunctions/recipeFromResponse";
 
 const GenerateRecipesButton = () => {
   const dispatch = useDispatch();
+  const [isDisabled, setIsDisabled] = React.useState(false);
   const ingredients = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
   );
@@ -40,8 +41,9 @@ const GenerateRecipesButton = () => {
     var response;
     const recipes = [];
 
-    if (!isRecipeLoading || !isRecipeUserLoading) {
+    if (!isRecipeLoading && !isRecipeUserLoading) {
       try {
+        setIsDisabled(true);
         toastId = toast.loading("Generer Opskrifter", {
           toastId: "generateRecipesToast",
         });
@@ -123,6 +125,7 @@ const GenerateRecipesButton = () => {
       });
       goToPageFullRecipeSelection();
     }
+    setIsDisabled(false);
   }
 
   return (
@@ -130,6 +133,7 @@ const GenerateRecipesButton = () => {
       onClick={handleOnClick}
       id="GenerateRecipesButton"
       data-testid="GenerateRecipesButton"
+      disabled={isDisabled}
     >
       Generer opskrifter
     </button>
