@@ -96,17 +96,14 @@ const SettingsModalContainer = () => {
         dispatch(userActions.logoutUser());
         if (response.error.originalStatus === 200) {
           toast.success("Din bruger er nu slettet");
+        } else if (response.error.originalStatus === 404) {
+          toast.error("Brugeren blev ikke fundet");
+        } else if (response.error.originalStatus === 401) {
+          toast.error("Sessionen er udløbet, log ind igen");
         }
       }
     } catch (error) {
-      if (error.originalStatus === 404) {
-        toast.error("Brugeren blev ikke fundet");
-      } else if (error.originalStatus === 401) {
-        toast.error("Sessionen er udløbet, log ind igen");
-      } else {
-        toast.error("Der opstod en fejl");
-        console.log(error);
-      }
+      console.log(error);
     }
   }
   return (
