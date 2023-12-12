@@ -50,7 +50,7 @@ const SettingsModalContainer = () => {
           newPassword: repeatedPassword,
         });
         if (response.error.originalStatus === 200) {
-          toast.success("Verifikationskoden er sendt til din email");
+          toast.success("Dit kodeord er nu ændret");
         }
       } catch (error) {
         console.log(error);
