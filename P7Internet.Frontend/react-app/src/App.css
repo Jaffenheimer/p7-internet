@@ -516,12 +516,6 @@ input[type="password"] {
   margin: 24px 0 12px 0;
 }
 
-.SettingModal .SendVerificationEmailButton {
-  width: 25%;
-  margin-right: 10%;
-  float: right;
-}
-
 .LoginModal input[type="text"],
 input[type="password"] {
   width: 100%;
