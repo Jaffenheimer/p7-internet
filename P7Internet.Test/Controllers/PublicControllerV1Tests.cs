@@ -753,6 +753,7 @@ namespace P7Internet.Test.Controllers
                 .ReturnsAsync(true);
             _userRepositoryMock.Setup(x => x.GetUserFromId(_testUser.Id)).ReturnsAsync(_testUser);
             _userRepositoryMock.Setup(x => x.DeleteUser(_testUser)).ReturnsAsync(true);
+            _userSessionRepositoryMock.Setup(x=>x.DeleteSessionToken(_testUser.Id, _seshToken)).ReturnsAsync(true);
 
             //Act
             DeleteUser deleteUser = new(_testUser.Id, _seshToken);
