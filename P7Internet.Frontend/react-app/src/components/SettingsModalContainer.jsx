@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import {
-  useUserConfirmEmailRequestMutation,
   useUserChangePasswordMutation,
   useUserConfirmEmailMutation,
   useUserDeleteUserMutation,
@@ -17,9 +16,8 @@ import { getCookies } from "../helperFunctions/cookieHandler";
 import { pageActions } from "../features/pageSlice";
 import { userActions } from "../features/userSlice";
 
-const SettingsModalContainer = ({ closeModal }) => {
+const SettingsModalContainer = () => {
   const dispatch = useDispatch();
-  const [userConfirmEmailRequest] = useUserConfirmEmailRequestMutation();
   const [userChangePassword] = useUserChangePasswordMutation();
   const [userConfirmEmail] = useUserConfirmEmailMutation();
   const [userDeleteUser] = useUserDeleteUserMutation();
@@ -60,41 +58,20 @@ const SettingsModalContainer = ({ closeModal }) => {
     }
   }
 
-  async function sendVerificationCode() {
-    try {
-      let userId = getCookieUserId();
-
-      const encodedUserId = encodeURIComponent(userId);
-      // send a request to API for confirming the user's email
-      await userConfirmEmailRequest({
-        UserId: encodedUserId,
-      }).unwrap();
-    } catch (error) {
-      if (error.originalStatus === 200) {
-        toast.success("Verifikationskoden er sendt til din email");
-      } else if (
-        error.originalStatus === 400 &&
-        error.data === "The email is already confirmed"
-      ) {
-        toast.warning("Emailen er allerede bekræftet");
-      } else {
-        toast.error("En fejl opstod med at sende verifikationsmailen");
-      }
-    }
-  }
-
   async function verifyEmail() {
     try {
       let userId = getCookieUserId();
       // send a request to API for confirming the user's email
       await userConfirmEmail({
-        UserId: encodeURIComponent(userId),
-        VerificationCode: encodeURIComponent(verificationCode),
+        UserId: userId,
+        VerificationCode: verificationCode,
       }).unwrap();
     } catch (error) {
       console.log(error);
       if (error.originalStatus === 200) {
         toast.success("Din email er nu bekræftet");
+        dispatch(pageActions.closeSettingModal());
+        setVerificationCode("");
       } else if (
         error.originalStatus === 400 &&
         error.data === "The email is already confirmed"
@@ -109,29 +86,24 @@ const SettingsModalContainer = ({ closeModal }) => {
   async function deleteUser() {
     try {
       if (window.confirm("Er du sikker på du vil slette din bruger?")) {
-        // encode the userId and sessionToken such that they can be sent in the query
-        let userId = encodeURIComponent(getCookieUserId());
-        let sessionToken = encodeURIComponent(getCookieSessionToken());
-        // create the query for the request
-        const query = `?userId=${userId}&sessionToken=${sessionToken}`;
-        // send a request to API for deleting the user
-        let response = await userDeleteUser(query);
+        let response = await userDeleteUser({
+          userId: getCookieUserId(),
+          sessionToken: getCookieSessionToken(),
+        });
+
         // close the modal and log the user out
         dispatch(pageActions.closeSettingModal());
         dispatch(userActions.logoutUser());
         if (response.error.originalStatus === 200) {
           toast.success("Din bruger er nu slettet");
+        } else if (response.error.originalStatus === 404) {
+          toast.error("Brugeren blev ikke fundet");
+        } else if (response.error.originalStatus === 401) {
+          toast.error("Sessionen er udløbet, log ind igen");
         }
       }
     } catch (error) {
-      if (error.originalStatus === 404) {
-        toast.error("Brugeren blev ikke fundet");
-      } else if (error.originalStatus === 401) {
-        toast.error("Sessionen er udløbet, log ind igen");
-      } else {
-        toast.error("Der opstod en fejl");
-        console.log(error);
-      }
+      console.log(error);
     }
   }
   return (
@@ -143,16 +115,10 @@ const SettingsModalContainer = ({ closeModal }) => {
             <label>
               <b>Verificer din email</b>
             </label>
-            <button
-              className="SendVerificationEmailButton"
-              onClick={sendVerificationCode}
-            >
-              Send kode
-            </button>
           </div>
           <input
             type="text"
-            placeholder="Indtast din kode"
+            placeholder="Indtast din verifikationskode"
             value={verificationCode}
             onChange={(event) => setVerificationCode(event.target.value)}
           />
