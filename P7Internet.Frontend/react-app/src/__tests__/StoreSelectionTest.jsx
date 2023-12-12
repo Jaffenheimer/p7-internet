@@ -42,7 +42,7 @@ test("remove all but two store from the store selection", () => {
     />
   );
 
-  // Remove all stores but SuperBrugsen by removing the first 9 stores
+  // Remove all stores but two
   let buttons = screen.getAllByRole("button");
 
   for (let i = 0; i < buttons.length - 1; i++) {

@@ -46,7 +46,7 @@ const FullRecipeView = ({ shouldShowBackButton }) => {
           )}
           ListElement={RecipeOfferElement}
         />
-        <h4>Ialt: {finalRecipesSum.toFixed(2)},-</h4>
+        <h4 className="no-print">Pris i alt: {finalRecipesSum.toFixed(2)},-</h4>
         <br />
         <MethodsList methods={recipe.method} />
         <div className="BottomButtons no-print">

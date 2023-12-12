@@ -54,34 +54,32 @@ const RecipeOfferElement = ({ ingredient }) => {
       }
       return response;
     };
-    if (
-      ingredient.text != "" &&
-      !ingredientIsOwned(ingredient, ownedIngredients)
-    ) {
-      //Empty check should be removed when the empty ingredient issue is fixed
+    if (!ingredientIsOwned(ingredient, ownedIngredients)) {
       fetchOffer().then((res) => {
-        for (let i = 0; i < res.length; i++) {
-          let _offer = new Offer();
-          _offer.name = res[i].name;
-          _offer.id = res[i].id;
-          _offer.price = res[i].price;
-          _offer.store = res[i].store;
-          _offer.created = res[i].created;
-          _offer.ending = res[i].ending;
-          _offer.storeImage = res[i].image;
-          let _offers = offers;
-          _offers.push(_offer);
-          setOffers(_offers);
-          setOffer(FindCheapestProduct(_offers));
-        }
-        if (FindCheapestProduct(offers).name !== undefined) {
-          dispatch(
-            offersActions.addTotalPrice({
-              [FindCheapestProduct(offers).name]: `${
-                FindCheapestProduct(offers).price
-              }`,
-            })
-          );
+        if (res != null) {
+          for (let i = 0; i < res.length; i++) {
+            let _offer = new Offer();
+            _offer.name = res[i].name;
+            _offer.id = res[i].id;
+            _offer.price = res[i].price;
+            _offer.store = res[i].store;
+            _offer.created = res[i].created;
+            _offer.ending = res[i].ending;
+            _offer.storeImage = res[i].image;
+            let _offers = offers;
+            _offers.push(_offer);
+            setOffers(_offers);
+            setOffer(FindCheapestProduct(_offers));
+          }
+          if (FindCheapestProduct(offers).name !== undefined) {
+            dispatch(
+              offersActions.addTotalPrice({
+                [FindCheapestProduct(offers).name]: `${
+                  FindCheapestProduct(offers).price
+                }`,
+              })
+            );
+          }
         }
       });
     }
@@ -110,7 +108,7 @@ const RecipeOfferElement = ({ ingredient }) => {
       <li>
         {FindFullIngredientName(ingredient.text, recipe)}
         {ingredientIsOwned(ingredient, ownedIngredientsList) ? (
-          <b className=""> Ejet </b>
+          <b className="no-print"> Ejet </b>
         ) : (
           <>
             <p className="offer-default no-print offer-price">
