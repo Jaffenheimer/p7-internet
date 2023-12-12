@@ -71,8 +71,8 @@ describe("slider value changes properly in radius slider component", () => {
   ])(
     "when slider value is updated to %i, the actual value is %s",
     (sliderUpdateValue, sliderUpdateActualValue) => {
-      const sliderValue = 1;
-      const sliderActualValue = 100;
+      const sliderValue = 40;
+      const sliderActualValue = 3;
       //forces the toggle state to be radius, which would be the case if geolocation is enabled (geolocation cannot be enabled before rendering the component)
       renderComponentWithDispatchActions(<RecipeSelectionContainerRight />, [
         offersActions.setToggleState(true),
@@ -80,7 +80,7 @@ describe("slider value changes properly in radius slider component", () => {
       const slider = screen.getByTestId("radiusSlider");
       expect(slider).toHaveValue(sliderValue.toString());
       expect(screen.getByText(/Radius:/)).toBeInTheDocument(); //h3 element
-      expect(screen.getByText(`${sliderActualValue} m`)).toBeInTheDocument(); //p element
+      expect(screen.getByText(`${sliderActualValue} km`)).toBeInTheDocument(); //p element
 
       fireEvent.change(slider, { target: { value: sliderUpdateValue } });
       expect(slider).toHaveValue(sliderUpdateValue.toString());
