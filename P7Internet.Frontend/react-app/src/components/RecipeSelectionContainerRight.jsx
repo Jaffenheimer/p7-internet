@@ -14,8 +14,8 @@ const RecipeSelectionContainerRight = () => {
     (state) => state.offers.toggleStateIsRadius
   );
   const dispatch = useDispatch();
-  const [radiusSliderValue, setRadiusSliderValue] = useState(1);
-  const [shownRadius, setShownRadius] = useState("100 m");
+  const [radiusSliderValue, setRadiusSliderValue] = useState(40);
+  const [shownRadius, setShownRadius] = useState("3 km");
   const [storeValues, setStoreValues] = useState(allStoreObjects);
   const [storeOptions, setStoreOptions] = useState([]);
 

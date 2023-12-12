@@ -5,14 +5,14 @@ const initialState = {
   stores: stores,
   toggleStateIsRadius:
     localStorage.getItem("geolocation") !== null ? true : false,
-  radius: "100 m",
-  realRadius: 100,
+  radius: "3 km",
+  realRadius: 3000,
   finalRecipes: {},
   finalRecipesSum: 0,
 };
 
 function stripRadius(radius) {
-  return Math.ceil(parseFloat(radius.toString().split(" ")));
+  return parseFloat(radius.toString().split(" "));
 }
 
 export const offersSlice = createSlice({
