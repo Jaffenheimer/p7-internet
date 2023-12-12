@@ -71,9 +71,9 @@ public class UserRepository : IUserRepository
     public async Task<bool> CheckIfEmailIsConfirmed(string name)
     {
         var query = $@"SELECT EmailConfirmed FROM {TableName} WHERE Name = @name";
-        var result = await Connection.QuerySingleOrDefaultAsync(query, new {name});
+        var result = await Connection.QuerySingleOrDefaultAsync<bool>(query, new {name});
 
-        return Convert.ToBoolean(result.EmailConfirmed);
+        return result;
     }
 
     /// <summary>
