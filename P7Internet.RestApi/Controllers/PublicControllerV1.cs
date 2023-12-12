@@ -658,7 +658,6 @@ public class PublicControllerV1 : ControllerBase
             return new List<string>();
 
         List<string> result = new List<string>();
-        Console.WriteLine("recipe: ", recipe);
         recipe = recipe.ToLower();
         foreach (var ingredient in validIngredients)
         {
@@ -667,9 +666,6 @@ public class PublicControllerV1 : ControllerBase
             if (recipe.Contains(" " + ingredient.ToLower() + " "))
                 result.Add(ingredient);
         }
-
-
-        Console.WriteLine(result);
         return result;
     }
 
