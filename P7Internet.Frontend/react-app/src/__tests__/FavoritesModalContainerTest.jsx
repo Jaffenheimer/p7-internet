@@ -7,9 +7,7 @@ import {
   renderComponentWithSpecificStore,
 } from "../testSetupHelper/Helper.jsx";
 import FavoritesModalContainer from "../components/FavoritesModalContainer";
-import { ToastContainer } from "react-toastify";
 import configureMockStore from "redux-mock-store";
-import Recipe from "../objects/Recipe.js";
 
 afterEach(cleanup);
 jest.spyOn(window, "confirm").mockImplementation(() => {});
