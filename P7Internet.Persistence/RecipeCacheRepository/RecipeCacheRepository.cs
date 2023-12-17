@@ -44,14 +44,11 @@ public class RecipeCacheRepository : IRecipeCacheRepository
         
         var returnList = new List<Recipe>();
         
-        var recipeResultFromDb = await Connection.QueryAsync(cachedRecipeQuery);
+        var recipeResultsFromDb = await Connection.QueryAsync(cachedRecipeQuery);
         
-        foreach (var test in recipeResultFromDb)
+        foreach (var recipeResult in recipeResultsFromDb)
         {
-            var id = test.Id; 
-            var recipe = test.Recipe; 
-            
-            returnList.Add(new Recipe(new Guid(id), recipe.ToString()));
+            returnList.Add(new Recipe(new Guid(recipeResult.Id), recipeResult.Recipe.ToString()));
         }
         
         return returnList;
