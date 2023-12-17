@@ -61,7 +61,7 @@ public class CachedOfferRepository : ICachedOfferRepository
     /// <returns> Returns true of the process was successful E.g. the number of rows affected was more than 0 else it returns false </returns>
     public async Task<bool> UpsertOffer(string ingredientName, decimal price, string store)
     {
-        var deleteDeprecatedQuery = $@"DELETE FROM {TableName} WHERE CreatedAt < DATE_SUB(NOW(), INTERVAL 7 DAY)";
+        var deleteDeprecatedQuery = $@"DELETE FROM {TableName} WHERE CreatedAt < DATE_SUB(NOW(), INTERVAL 1 DAY)";
 
         await Connection.ExecuteAsync(deleteDeprecatedQuery);
 
