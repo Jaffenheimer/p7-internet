@@ -9,6 +9,7 @@ import {
 import FavoritesModalContainer from "../components/FavoritesModalContainer";
 import { ToastContainer } from "react-toastify";
 import configureMockStore from "redux-mock-store";
+import Recipe from "../objects/Recipe.js";
 
 afterEach(cleanup);
 jest.spyOn(window, "confirm").mockImplementation(() => {});
@@ -70,28 +71,6 @@ test("if user is not logged in there are no favorite recipes", () => {
   expect(buttons.length).toBe(0);
   expect(
     screen.getByText(/Ingen opskrifter er blevet markeret som favorit./)
-  ).toBeInTheDocument();
-});
-
-test("Selecting a recipe, makes toast appears when the selected recipe is not in the recipes object", async () => {
-  const mockState = {
-    user: {
-      favoriteRecipes: [{ title: "1" }, { title: "2" }],
-      loggedIn: true,
-    },
-    recipe: {
-      recipes: [],
-    },
-  };
-  const mockStore = configureMockStore()(mockState);
-  renderComponentWithSpecificStore(<FavoritesModalContainer />, mockStore);
-  render(<ToastContainer position="top-center" />);
-  const buttons = screen.getAllByRole("button");
-  userEvent.click(buttons[0]);
-  expect(
-    await screen.findByText(
-      /1 er ikke i listen af opskrifter på databasen. Prøv at vælge en anden opskrift./
-    )
   ).toBeInTheDocument();
 });
 

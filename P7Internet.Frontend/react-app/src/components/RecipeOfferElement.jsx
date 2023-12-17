@@ -15,12 +15,10 @@ const RecipeOfferElement = ({ ingredient }) => {
   const radius = useSelector((state) => state.offers.realRadius);
   const recipe = useSelector((state) => state.recipe.recipeToShow);
 
-
   const ownedIngredients = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
   );
 
-  
   const toggleStateIsRadius = useSelector(
     (state) => state.offers.toggleStateIsRadius
   );
@@ -31,7 +29,6 @@ const RecipeOfferElement = ({ ingredient }) => {
   const [getOffer] = useGetOfferMutation();
 
   useEffect(() => {
-
     const fetchOffer = async () => {
       try {
         let _radius = toggleStateIsRadius ? radius : 3000;
@@ -49,7 +46,7 @@ const RecipeOfferElement = ({ ingredient }) => {
           stores: encodeURIComponent(stores),
         }).unwrap();
       } catch (error) {
-        console.log("Error " + error);
+        console.log(error);
       }
       return response;
     };
