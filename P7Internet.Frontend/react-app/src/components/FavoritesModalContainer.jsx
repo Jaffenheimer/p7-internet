@@ -23,7 +23,6 @@ const FavoritesModalContainer = ({ closeModal }) => {
   const [userDeleteFavoriteRecipe] = useUserDeleteFavoriteRecipeMutation();
   const [userGetAllFavoriteRecipes] = useUserGetAllFavoriteRecipesMutation();
 
-  const recipes = useSelector((state) => state.recipe.recipes);
   const favoriteRecipes = useSelector((state) => state.user.favoriteRecipes); //useState([]);
 
   const getFavoriteRecipes = async () => {
@@ -35,6 +34,7 @@ const FavoritesModalContainer = ({ closeModal }) => {
         sessionToken: sessionToken,
       }).unwrap();
       const recipes = [];
+
       for (const favoriteRecipe of response) {
         recipes.push(recipeFromResponse(favoriteRecipe));
       }
@@ -60,22 +60,9 @@ const FavoritesModalContainer = ({ closeModal }) => {
   function selectRecipe(event, selectedRecipe) {
     event.preventDefault();
 
-    var recipeTitles = [];
-    recipes.forEach((recipe) => recipeTitles.push(recipe["title"]));
-    if (!recipeTitles.includes(selectedRecipe.title)) {
-      toast.error(
-        `${selectedRecipe.title} er ikke i listen af opskrifter på databasen. Prøv at vælge en anden opskrift.`
-      );
-    } else {
-      dispatch(
-        recipeActions.setCurrentRecipeIndex(
-          recipeTitles.indexOf(selectedRecipe.title)
-        )
-      );
-      dispatch(pageActions.goToPage(Pages.fullRecipeViewNoBackButton));
-      dispatch(recipeActions.setRecipeToShow(selectedRecipe));
-      dispatch(pageActions.closeFavoritesModal());
-    }
+    dispatch(recipeActions.setRecipeToShow(selectedRecipe));
+    dispatch(pageActions.closeFavoritesModal());
+    dispatch(pageActions.goToPage(Pages.fullRecipeViewNoBackButton));
   }
 
   async function handleRemove(_, recipe) {

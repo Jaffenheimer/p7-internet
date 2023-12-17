@@ -1,22 +1,27 @@
 const stores = [
-  "Bilka",
-  "Rema 1000",
-  "Coop 365",
-  "Lidl",
-  "Føtex",
+  "BilkaToGo",
+  "REMA 1000",
   "Netto",
+  "føtex",
   "Kvickly",
   "Fakta",
+  "Lidl",
+  "MENY",
+  "365discount",
+  "SuperBrugsen",
 ];
 
 const allStoreObjects = [
-  { value: "Bilka", label: "Bilka" },
-  { value: "Rema 1000", label: "Rema 1000" },
+  { value: "BilkaToGo", label: "Bilka" },
+  { value: "REMA 1000", label: "Rema 1000" },
   { value: "Netto", label: "Netto" },
-  { value: "Føtex", label: "Føtex" },
+  { value: "føtex", label: "Føtex" },
   { value: "Kvickly", label: "Kvickly" },
   { value: "Fakta", label: "Fakta" },
   { value: "Lidl", label: "Lidl" },
+  { value: "MENY", label: "Meny" },
+  { value: "365discount", label: "365discount" },
+  { value: "SuperBrugsen", label: "SuperBrugsen" },
 ];
 
 export { stores, allStoreObjects };

@@ -61,7 +61,6 @@ const ProfilePicture = () => {
           deleteCookies();
         }
       } catch (error) {
-        console.log(error);
         toast.error("Kunne ikke logge ud");
       }
     }

@@ -19,5 +19,6 @@ public class Offer
     public string Store { get; set; }
     public DateTime Created { get; set; }
     public DateTime Ending { get; set; }
-    [JsonProperty("img")] public string image { get; set; }
+    public string Image { get; set; }
+    
 }

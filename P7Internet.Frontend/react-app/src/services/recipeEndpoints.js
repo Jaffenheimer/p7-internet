@@ -20,8 +20,5 @@ const recipeEndpoints = apiSlice.injectEndpoints({
   }),
 });
 
-export const {
-    useGenerateUserRecipeMutation,
-    useGenerateRecipeMutation,
-  } = recipeEndpoints;
-  
+export const { useGenerateUserRecipeMutation, useGenerateRecipeMutation } =
+  recipeEndpoints;

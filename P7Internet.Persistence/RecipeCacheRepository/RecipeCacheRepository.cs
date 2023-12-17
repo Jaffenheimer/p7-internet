@@ -40,18 +40,17 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     /// <returns>Returns a list of recipes as strings</returns>
     public async Task<List<Recipe>> GetAllRecipes()
     {
-        var query = $@"SELECT Id FROM {TableName}";
-
-        var recipeQuery = $@"SELECT Recipe FROM {TableName}";
+        var cachedRecipeQuery = $@"SELECT * FROM {TableName}";
+        
         var returnList = new List<Recipe>();
-        var idResultFromDb = await Connection.QueryAsync<Guid>(query);
-        var recipeResultFromDb = await Connection.QueryAsync<string>(recipeQuery);
-
-        for (int i = 0; i < recipeResultFromDb.Count(); i++)
+        
+        var recipeResultsFromDb = await Connection.QueryAsync(cachedRecipeQuery);
+        
+        foreach (var recipeResult in recipeResultsFromDb)
         {
-            returnList.Add(new Recipe(idResultFromDb.ElementAt(i), recipeResultFromDb.ElementAt(i)));
+            returnList.Add(new Recipe(new Guid(recipeResult.Id), recipeResult.Recipe.ToString()));
         }
-
+        
         return returnList;
     }
 

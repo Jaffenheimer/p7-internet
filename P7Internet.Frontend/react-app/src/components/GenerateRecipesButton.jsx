@@ -58,6 +58,7 @@ const GenerateRecipesButton = () => {
         //If these was an response then create recipes object from the response
         if (response) {
           response.forEach((recipe) => {
+            
             //Convert recipe from response into recipe object
             var recipeObject = recipeFromResponse(recipe);
             recipes.push(recipeObject);

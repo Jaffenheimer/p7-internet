@@ -74,7 +74,7 @@ namespace P7Internet.Test.Controllers
             //Arrange
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(),
                 new List<string>() {"æble", "kartoffel", "julebryg"}, 1, new List<string>() {"fløde"},
-                new List<string>() {"vegansk"}, It.IsAny<int>());
+                new List<string>() {"vegansk"}, It.IsAny<int>() ,false);
             var res = new RecipeResponse(_testRecipe.Description, null, _testRecipe.Id);
             _recipeCacheRepositoryMock.Setup(x => x.GetAllRecipes()).ReturnsAsync(new List<Recipe>());
             _recipeCacheRepositoryMock.Setup(x => x.Upsert(_testRecipe.Description, _testRecipe.Id))
@@ -99,7 +99,7 @@ namespace P7Internet.Test.Controllers
             //Arrange
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(),
                 new List<string>() {"æble", "kartoffel", "julebryg"}, 1, new List<string>() {"fløde"},
-                new List<string>() {"vegansk"}, It.IsAny<int>());
+                new List<string>() {"vegansk"}, It.IsAny<int>(),false);
             var res = new RecipeResponse(_testRecipe.Description, null, Guid.NewGuid());
             _openAiServiceMock.Setup(x => x.GetAiResponse(recipeRequest)).ReturnsAsync(res);
             _recipeCacheRepositoryMock.Setup(x => x.GetAllRecipes()).Returns(Task.FromResult(new List<Recipe>()
@@ -194,7 +194,7 @@ namespace P7Internet.Test.Controllers
             //Arrange
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(),
                 new List<string>() {"æble", "kartoffel", "julebryg"}, 1, new List<string>() {"fløde"},
-                new List<string>() {"vegansk"}, It.IsAny<int>());
+                new List<string>() {"vegansk"}, It.IsAny<int>(),false);
             var res = new RecipeResponse(_testRecipe.Description, null, Guid.NewGuid());
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(true));
@@ -224,7 +224,7 @@ namespace P7Internet.Test.Controllers
             //Arrange
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(),
                 new List<string>() {"æble", "kartoffel", "julebryg"}, 1, new List<string>() {"fløde"},
-                new List<string>() {"vegansk"}, It.IsAny<int>());
+                new List<string>() {"vegansk"}, It.IsAny<int>(), false);
             var res = new RecipeResponse(_testRecipe.Description, null, Guid.NewGuid());
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(false));
@@ -255,7 +255,7 @@ namespace P7Internet.Test.Controllers
             _cachedOfferRepositoryMock.Setup(x => x.GetOffer(It.IsAny<string>())).ReturnsAsync(new Offer());
 
             //Act
-            IActionResult actionResult = controller.GetOffer(new OfferRequest(1, "Kylling", 5000, "true")).Result;
+            IActionResult actionResult = controller.GetOffer(new OfferRequest(1, "Kylling", 5000, "true", It.IsAny<string>())).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
@@ -269,7 +269,7 @@ namespace P7Internet.Test.Controllers
             _cachedOfferRepositoryMock.Setup(x => x.GetOffer(It.IsAny<string>())).ReturnsAsync(value: null);
 
             //Act
-            IActionResult actionResult = controller.GetOffer(new OfferRequest(1, "Kylling", 5000, "true")).Result;
+            IActionResult actionResult = controller.GetOffer(new OfferRequest(1, "Kylling", 5000, "true", It.IsAny<string>())).Result;
             var contentResult = actionResult as OkObjectResult;
 
             //Assert
@@ -281,13 +281,13 @@ namespace P7Internet.Test.Controllers
         public void GetOfferFromEtilbudsavisSuccess()
         {
             //Arrange
-            var offerRequest = new OfferRequest(1, "Kylling", 5000, "true");
+            var offerRequest = new OfferRequest(1, "Kylling", 5000, "true", "Bilka, Føtex, Netto");
             _cachedOfferRepositoryMock.Setup(x => x.GetOffer(It.IsAny<string>())).ReturnsAsync(value: null);
             _cachedOfferRepositoryMock
                 .Setup(x => x.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>()))
                 .ReturnsAsync(true);
             _etilbudsAvisServiceMock.Setup(x => x.GetAllOffers(offerRequest))
-                .ReturnsAsync(new List<Offer>() {new Offer(), new Offer()});
+                .ReturnsAsync(new List<Offer>() {new Offer() { Store = "Bilka"}, new Offer()});
 
             //Act
             IActionResult actionResult = controller.GetOffer(offerRequest).Result;
@@ -305,7 +305,7 @@ namespace P7Internet.Test.Controllers
         public void GetOfferFromEtilbudsavisFail()
         {
             //Arrange
-            var offerRequest = new OfferRequest(1, "Kylling", 5000, "true");
+            var offerRequest = new OfferRequest(1, "Kylling", 5000, "true", It.IsAny<string>());
             _cachedOfferRepositoryMock.Setup(x => x.GetOffer(It.IsAny<string>())).ReturnsAsync(value: null);
             _etilbudsAvisServiceMock.Setup(x => x.GetAllOffers(offerRequest)).ReturnsAsync(value: null);
 
@@ -325,7 +325,7 @@ namespace P7Internet.Test.Controllers
         public void GetOfferFromSallingSuccessIfNotFoundInCacheOrEtilbudsavisSuccess()
         {
             //Arrange
-            var offerRequest = new OfferRequest(1, "Kylling", 5000, "true");
+            var offerRequest = new OfferRequest(1, "Kylling", 5000, "true", It.IsAny<string>());
             _cachedOfferRepositoryMock.Setup(x => x.GetOffer(It.IsAny<string>())).ReturnsAsync(value: null);
             _cachedOfferRepositoryMock
                 .Setup(x => x.UpsertOffer(It.IsAny<string>(), It.IsAny<decimal>(), It.IsAny<string>()))
@@ -351,7 +351,7 @@ namespace P7Internet.Test.Controllers
         public void GetOfferFromSallingSuccessIfNotFoundInCacheOrEtilbudsavisFail()
         {
             //Arrange
-            var offerRequest = new OfferRequest(1, "Kylling", 5000, "true");
+            var offerRequest = new OfferRequest(1, "Kylling", 5000, "true", It.IsAny<string>());
             _cachedOfferRepositoryMock.Setup(x => x.GetOffer(It.IsAny<string>())).ReturnsAsync(value: null);
             _iIngredientRepositoryMock.Setup(x => x.GetAllIngredients()).Returns(Task.FromResult(new List<string>()
                 {"Æble, Kartoffel, Julebryg, Fløde, Vegansk"}));

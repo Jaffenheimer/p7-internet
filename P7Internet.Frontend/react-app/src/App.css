@@ -104,16 +104,20 @@ body {
   display: flex;
   cursor: pointer;
 }
+
 .titleLogo {
   height: 1.3em;
 }
+
 .titleLogo:hover {
   animation: spin 3s linear infinite;
 }
+
 @keyframes spin {
   0% {
     transform: rotate(0deg);
   }
+
   100% {
     transform: rotate(360deg);
   }
@@ -124,7 +128,7 @@ body {
   height: 60%;
 }
 
-.App > .AppRight {
+.App>.AppRight {
   background: #ead7bb;
   width: 25%;
   min-height: 100vh;
@@ -145,7 +149,8 @@ h2 {
   font-size: x-large;
   font-style: normal;
   font-weight: 400;
-  line-height: 16px; /* 45.714% */
+  line-height: 16px;
+  /* 45.714% */
   letter-spacing: 0.75px;
 }
 
@@ -173,14 +178,15 @@ body.Modal__Content {
   align-items: center;
 }
 
-#OwnedIngredientsList > div > ul > .IngredientElement {
+#OwnedIngredientsList>div>ul>.IngredientElement {
   width: 30%;
 }
+
 #OwnedIngredientsList {
   margin-right: 10%;
 }
 
-#ExcludedIngredientsList > .ingredientsList > ul > .IngredientElement {
+#ExcludedIngredientsList>.ingredientsList>ul>.IngredientElement {
   width: 70%;
 }
 
@@ -198,8 +204,19 @@ input[type="password"] {
   font-size: 17px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22px; /* 129.412% */
+  line-height: 22px;
+  /* 129.412% */
   letter-spacing: -0.408px;
+  margin-top: 0.5px;
+
+  background-color: hsl(0, 0%, 100%);
+  border-color: hsl(0, 0%, 80%);
+  border-radius: 4px;
+  border-style: solid;
+  border-width: 1px;
+  box-sizing: border-box;
+  height: 45px;
+
 }
 
 li {
@@ -226,7 +243,8 @@ button {
   background-color: #113946;
   color: white;
   border: 2px solid black;
-  border-radius: 5px; /* rounded corners */
+  border-radius: 5px;
+  /* rounded corners */
   border-color: #113946;
   /* color: #000; */
   cursor: pointer;
@@ -243,6 +261,7 @@ button:hover {
   background: #979191;
   transition: all 0.1s;
 }
+
 button:active {
   transform: scale(0.95);
 }
@@ -256,7 +275,7 @@ button[disabled] {
   cursor: not-allowed;
 }
 
-.RecipeView > #RecipeTitleDiv > h1 {
+.RecipeView>#RecipeTitleDiv>h1 {
   text-align: left;
 }
 
@@ -279,7 +298,7 @@ button[disabled] {
   margin-right: 3%;
 }
 
-#SelectArrows > img {
+#SelectArrows>img {
   margin: 5%;
   transform: scale(2);
 }
@@ -316,6 +335,7 @@ button[disabled] {
   text-align: center;
   justify-content: center;
 }
+
 #InputNumberOfPersonsField {
   width: 30px;
   height: auto;
@@ -335,11 +355,7 @@ button[disabled] {
   margin: 0;
 }
 
-.FrontPageContainerRight
-  > .ContainerRightTop
-  > .ContainerRightColumn
-  > .NumberOfPersonsField
-  > .PlusMinusButton {
+.FrontPageContainerRight>.ContainerRightTop>.ContainerRightColumn>.NumberOfPersonsField>.PlusMinusButton {
   text-align: center;
   width: 30px;
   height: auto;
@@ -374,7 +390,7 @@ button[disabled] {
   margin-left: 2.5%;
 }
 
-.ContainerRightMiddle > .DietaryRestrictions > #DietaryRestrictionsCheckbox {
+.ContainerRightMiddle>.DietaryRestrictions>#DietaryRestrictionsCheckbox {
   text-align: left;
   font-size: x-large;
 }
@@ -396,13 +412,13 @@ button[disabled] {
 
 .dropdown-content li {
   position: relative;
-  transform: translateX(
-    150%
-  ); /* Initially move the dropdown content off-screen */
+  transform: translateX(150%);
+  /* Initially move the dropdown content off-screen */
   width: 155px;
   border-radius: 0em;
   animation: slideInFromRight 0.5s forwards;
 }
+
 .dropdown-buttons {
   display: flex;
   justify-content: space-between;
@@ -418,6 +434,7 @@ button[disabled] {
   0% {
     transform: translateX(100%);
   }
+
   100% {
     transform: translateX(0);
   }
@@ -438,9 +455,11 @@ button[disabled] {
 #FavoritesButton {
   border-radius: 0px;
 }
+
 #SettingsButton {
   border-radius: 0px;
 }
+
 #LogoutButton {
   border-radius: 0px;
 }
@@ -479,12 +498,12 @@ button[disabled] {
   margin-left: 8%;
 }
 
-.ForPersons > h4 {
+.ForPersons>h4 {
   text-align: center;
   margin-top: -20px;
 }
 
-.App > .RecipeSelectionContainerLeft {
+.App>.RecipeSelectionContainerLeft {
   flex: 1;
   position: relative;
 }
@@ -564,11 +583,11 @@ input[type="password"] {
   max-height: 75%;
 }
 
-input:focus + .slider {
+input:focus+.slider {
   box-shadow: 0 0 1px #2196f3;
 }
 
-input:checked + .slider:before {
+input:checked+.slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);
@@ -598,14 +617,25 @@ input[type="range"] {
 
 /* Apply style only when printing */
 @media print {
+
   .no-print,
   .no-print * {
     display: none;
   }
+
   /* Styles applied to the printed page */
   @page {
     margin: 0;
   }
+}
+
+.offer-default {
+  cursor: default;
+  align-items: end;
+}
+
+.offer-price {
+  padding-left: 1%;
 }
 
 #BackButton {
@@ -630,7 +660,7 @@ input[type="range"] {
   padding-bottom: 10%;
 }
 
-.ingredientsList > ul {
+.ingredientsList>ul {
   padding-left: 40px;
 }
 
@@ -649,7 +679,8 @@ input[type="range"] {
   align-items: center;
   justify-content: center;
   border: 2px solid black;
-  border-radius: 5px; /* rounded corners */
+  border-radius: 5px;
+  /* rounded corners */
   border-color: #113946;
 }
 
@@ -722,4 +753,8 @@ p {
   align-items: right;
   margin-top: 25px;
   margin-right: 1%;
+}
+
+.IngredientStoreLogo {
+  padding-left: 1%;
 }

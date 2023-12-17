@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P7Internet.Persistence.CachedIngredientPricesRepository;
 using P7Internet.Persistence.FavouriteRecipeRepository;
@@ -61,6 +63,11 @@ public class PublicControllerV1 : ControllerBase
     [HttpPost("recipes")]
     public async Task<IActionResult> GetARecipe([FromBody] RecipeRequest req)
     {
+        if (req.IsDietaryRestrictionsSet)
+        {
+            goto NotEnoughRecipes;
+        }
+        
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
         List<Recipe> recipesIncludingIngredients = new List<Recipe>();
@@ -100,7 +107,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if (counter == req.Amount)
+                if(counter == req.Amount)
                     break;
             }
 
@@ -125,6 +132,11 @@ public class PublicControllerV1 : ControllerBase
         }
 
         var res = await _openAiService.GetAiResponse(req);
+        if (res.Success == false)
+        {
+            return BadRequest(res.ErrorMessage);
+        }
+
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipe, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
@@ -143,6 +155,11 @@ public class PublicControllerV1 : ControllerBase
     [HttpPost("user/recipe")]
     public async Task<IActionResult> GetARecipeWhenLoggedIn([FromBody] RecipeRequest req)
     {
+        if (req.IsDietaryRestrictionsSet)
+        {
+            goto NotEnoughRecipes;
+        } 
+        
         var checkIfUserSessionIsValid =
             await _userSessionRepository.CheckIfTokenIsValid(req.UserId.GetValueOrDefault(), req.SessionToken);
         if (!checkIfUserSessionIsValid)
@@ -188,7 +205,7 @@ public class PublicControllerV1 : ControllerBase
                 await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(), recipe.Id);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if (counter == req.Amount)
+                if  (counter == req.Amount)
                     break;
             }
 
@@ -219,6 +236,11 @@ public class PublicControllerV1 : ControllerBase
         }
 
         var res = await _openAiService.GetAiResponse(req);
+        if (res.Success == false)
+        {
+            return BadRequest(res.ErrorMessage);
+        }
+
         var validIngredients = await _ingredientRepository.GetAllIngredients();
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipe, validIngredients);
         res.Ingredients = ingredientsToPassToFrontend;
@@ -237,6 +259,7 @@ public class PublicControllerV1 : ControllerBase
     public async Task<IActionResult> GetOffer([FromQuery] OfferRequest req)
     {
         var checkIfOfferExists = await _cachedOfferRepository.GetOffer(req.SearchTerm);
+
         if (checkIfOfferExists != null)
         {
             return Ok(checkIfOfferExists);
@@ -250,8 +273,9 @@ public class PublicControllerV1 : ControllerBase
             {
                 await _cachedOfferRepository.UpsertOffer(offer.Name, offer.Price, offer.Store);
             }
-
-            return Ok(res);
+            var stores = req.StoresStringToList(req.Stores);
+            if (res.Any(offer => stores.Contains(offer.Store)))
+                return Ok(res);
         }
 
         res = await _sallingService.GetRelevantProducts(req.SearchTerm);
@@ -263,7 +287,6 @@ public class PublicControllerV1 : ControllerBase
                 if (await _cachedOfferRepository.GetOffer(product.Name) != null) break;
                 await _cachedOfferRepository.UpsertOffer(product.Name, product.Price, product.Store);
             }
-
             return Ok(res);
         }
 
@@ -654,10 +677,9 @@ public class PublicControllerV1 : ControllerBase
         {
             if (result.Contains(ingredient))
                 continue;
-            if (recipe.Contains(" " + ingredient.ToLower() + " "))
-                result.Add(ingredient);
+            if ((recipe.Contains(" " + ingredient.ToLower() + " ") || (recipe.Contains(" " + ingredient.ToLower() + ", "))))
+                if(ingredient != "") result.Add(ingredient);
         }
-
         return result;
     }
 
@@ -671,6 +693,8 @@ public class PublicControllerV1 : ControllerBase
     {
         var res = await _openAiService.GetAiResponse(req);
         var ingredientsToPassToFrontend = CheckListForValidIngredients(res.Recipe, validIngredients);
+        if (res.Success == false)
+            return RecipeResponse.Error(res.ErrorMessage, res.RecipeId);
         res.Ingredients = ingredientsToPassToFrontend;
         await _cachedRecipeRepository.Upsert(res.Recipe, res.RecipeId);
         return res;

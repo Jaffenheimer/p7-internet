@@ -1,6 +1,10 @@
 import React from "react";
 
-const IngredientsList = ({ ingredients, ListElement, handleRemove, shortIngredients }) => {
+const IngredientsList = ({
+  ingredients,
+  ListElement,
+  handleRemove,
+}) => {
   return (
     <div className="ingredientsList" data-testid="IngredientsList">
       <ul>

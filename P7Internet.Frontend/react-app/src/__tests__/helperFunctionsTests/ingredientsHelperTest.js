@@ -11,14 +11,17 @@ test("ingredients can be converted to ingredient objects", () => {
   expect(ingredientObjects[0]).toStrictEqual({
     text: "ingredient1",
     id: expect.anything(),
+    stores: expect.anything(),
   });
   expect(ingredientObjects[1]).toStrictEqual({
     text: "ingredient2",
     id: expect.anything(),
+    stores: expect.anything(),
   });
   expect(ingredientObjects[2]).toStrictEqual({
     text: "ingredient3",
     id: expect.anything(),
+    stores: expect.anything(),
   });
 });
 

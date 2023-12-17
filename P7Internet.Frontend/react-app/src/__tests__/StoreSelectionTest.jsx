@@ -42,7 +42,7 @@ test("remove all but two store from the store selection", () => {
     />
   );
 
-  // Remove all stores but Lidl by removing the first 6 stores
+  // Remove all stores but two
   let buttons = screen.getAllByRole("button");
 
   for (let i = 0; i < buttons.length - 1; i++) {
@@ -51,5 +51,5 @@ test("remove all but two store from the store selection", () => {
   }
 
   buttons = screen.getAllByRole("button");
-  expect(setStoreValues).toHaveBeenCalledTimes(5);
+  expect(setStoreValues).toHaveBeenCalledTimes(9);
 });

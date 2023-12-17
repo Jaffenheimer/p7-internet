@@ -1,5 +1,8 @@
 import { getCookieSessionToken, getCookieUserId } from "./cookieHandler";
 
+//Boolean to check if dietaryRestrictions is set
+let isDietaryRestrictionsSet = false;
+
 //Function to create the body for the post for recipes
 function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
   const {
@@ -29,6 +32,14 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
     });
   }
 
+  //Checks if there is any restrictions and sets the boolean
+  if(restrictions.length > 0){
+    isDietaryRestrictionsSet = true;
+  } else {
+    isDietaryRestrictionsSet = false;
+  }
+
+
   //Add ownedIngredients to ingredients array
   ownedIngredients.forEach((ingredient) => {
     ingredients.push(ingredient.text);
@@ -43,6 +54,7 @@ function recipeBodyCreator(loggedIn, recipeGenerationSlice) {
   const body = {
     ingredients: ingredients,
     amount: 3,
+    isDietaryRestrictionsSet: isDietaryRestrictionsSet,
     amountOfPeople: numPeople,
     excludedIngredients: excludedIngredients,
     dietaryRestrictions: restrictions,

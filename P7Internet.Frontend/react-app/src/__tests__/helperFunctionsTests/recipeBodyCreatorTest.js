@@ -17,6 +17,7 @@ const recipeGenSlice = {
 const expectedNotLogInBody = {
   ingredients: ["oksekød"],
   amount: 3,
+  isDietaryRestrictionsSet: false,
   amountOfPeople: 4,
   excludedIngredients: [],
   dietaryRestrictions: [],
@@ -26,6 +27,7 @@ const expectedLoggedInBody = {
   sessionToken: "2",
   userId: "1",
   ingredients: ["oksekød"],
+  isDietaryRestrictionsSet: false,
   amount: 3,
   amountOfPeople: 4,
   excludedIngredients: [],

@@ -90,6 +90,7 @@ public class OpenAiService
 
         prompt += "Det skal have følgende format: Titel, ingredienser og metode. ";
         prompt += "Opskriften må ikke indeholde noter, bemærkninger, Bemærk og serveringsforslag.";
+        prompt += "Opskriften må ikke indeholde salt eller peber.";
         
         return prompt;
     }

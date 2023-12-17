@@ -170,8 +170,7 @@ const LoginBox = ({ closeModal }) => {
             clearandclose();
           } else if (
             response.error.originalStatus === 400 &&
-            response.error.data ===
-              "The verification code is not for resetting the password"
+            response.error.data === "The verification code is not for resetting the password"
           ) {
             toast.error(
               "Denne verifikationskode er ikke til at nulstille kodeord"
