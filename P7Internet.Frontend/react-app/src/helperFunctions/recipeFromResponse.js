@@ -1,4 +1,5 @@
 import Recipe from "../objects/Recipe";
+import { ingredientCompare } from "./ingredientCompare";
 
 function recipeFromResponse(response) {
   const recipe = response.recipe;
@@ -27,13 +28,15 @@ function recipeFromResponse(response) {
     .map((item) => item.trim())
     .filter(Boolean);
 
+  const comparedList = ingredientCompare(response.ingredients, ingredientList);
+
   //Returns a recipe
   return new Recipe(
     title,
     ingredientList,
     methodArray,
     response.recipeId,
-    response.ingredients
+    comparedList
   );
 }
 

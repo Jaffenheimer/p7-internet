@@ -1,23 +1,28 @@
 import { nanoid } from "nanoid";
 
 function ingredientIsOwned(ingredient, ownedIngredients) {
+
+  
   for (const ownedIngredient of ownedIngredients) {
     if (
-      ownedIngredient.text.toLowerCase().includes(ingredient.text.toLowerCase())
+      ownedIngredient.text.toLowerCase() === ingredient.text.toLowerCase()
     ) {
       return true;
+    } else if(ingredient.text.toLowerCase().includes(ownedIngredient.text.toLowerCase())){
+      return true;
+    }else if(ownedIngredient.text.toLowerCase().includes(ingredient.text.toLowerCase())){
+      return true;
     }
+
   }
   return false;
 }
 
 function convertIngredientsToIngredientObjects(ingredients) {
   var ingredientObjects = [];
-  console.log("ingredients: ", ingredients);
   for (const ingredient of ingredients) {
     ingredientObjects.push({ text: ingredient, id: nanoid(), stores: [] });
   }
-  console.log(ingredientObjects);
   return ingredientObjects;
 }
 

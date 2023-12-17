@@ -1,11 +1,9 @@
 import React from "react";
-import { useSelector } from "react-redux";
 
 const IngredientsList = ({
   ingredients,
   ListElement,
   handleRemove,
-  shortIngredients,
 }) => {
   return (
     <div className="ingredientsList" data-testid="IngredientsList">

@@ -40,9 +40,12 @@ export const offersSlice = createSlice({
       let valuesDictionary = Object.keys(state.finalRecipes).map((key) => {
         return parseFloat(state.finalRecipes[key]);
       });
-
       state.finalRecipesSum = valuesDictionary.reduce((a, b) => a + b, 0);
     },
+    resetTotalPrice(state){
+      state.finalRecipes = {};
+      state.finalRecipesSum = 0;
+    }
   },
 });
 

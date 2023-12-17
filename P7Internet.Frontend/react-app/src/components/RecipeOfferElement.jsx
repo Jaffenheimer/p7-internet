@@ -13,16 +13,14 @@ const RecipeOfferElement = ({ ingredient }) => {
 
   const stores = useSelector((state) => state.offers.stores);
   const radius = useSelector((state) => state.offers.realRadius);
-  const recipes = useSelector((state) => state.recipe.recipes);
+  const recipe = useSelector((state) => state.recipe.recipeToShow);
+
+
   const ownedIngredients = useSelector(
     (state) => state.recipeGeneration.ownedIngredients
   );
 
-  const currentRecipeIndex = useSelector(
-    (state) => state.recipe.currentRecipeIndex
-  );
-
-  const recipe = recipes[currentRecipeIndex];
+  
   const toggleStateIsRadius = useSelector(
     (state) => state.offers.toggleStateIsRadius
   );
@@ -30,9 +28,10 @@ const RecipeOfferElement = ({ ingredient }) => {
   const [offers, setOffers] = useState([]);
   const [offer, setOffer] = useState(new Offer());
 
-  const [getOffer, { isOfferLoading }] = useGetOfferMutation();
+  const [getOffer] = useGetOfferMutation();
 
   useEffect(() => {
+
     const fetchOffer = async () => {
       try {
         let _radius = toggleStateIsRadius ? radius : 3000;
@@ -83,12 +82,13 @@ const RecipeOfferElement = ({ ingredient }) => {
         }
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //#region Helpers
   function FindCheapestProduct(arr) {
     let offer;
-    if (typeof arr === "undefined" || arr.length == 0) return new Offer();
+    if (typeof arr === "undefined" || arr.length === 0) return new Offer();
     offer = arr.reduce((prev, curr) => (prev.price < curr.price ? prev : curr));
     return offer;
   }
@@ -96,9 +96,17 @@ const RecipeOfferElement = ({ ingredient }) => {
   function FindFullIngredientName(shortName, recipe) {
     let fullName;
     const fullNames = recipe.ingredients;
-    fullName = fullNames.find((fullName) =>
-      fullName.toLowerCase().includes(shortName.toLowerCase())
-    );
+    // eslint-disable-next-line
+    fullName = fullNames.find((fullName) => {
+      if (
+        new RegExp("(?:^|\\s)" + shortName.toLowerCase(), "i").test(
+          fullName.toLowerCase()
+        )
+      ) {
+        return fullName;
+      } // i is case insensitive
+    });
+
     return fullName;
   }
   //#endregion
@@ -117,7 +125,7 @@ const RecipeOfferElement = ({ ingredient }) => {
             <img
               className="IngredientStoreLogo offer-default no-print"
               src={offer.storeImage}
-              alt="No store image found"
+              alt=""
             />
           </>
         )}

@@ -74,7 +74,7 @@ namespace P7Internet.Test.Controllers
             //Arrange
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(),
                 new List<string>() {"æble", "kartoffel", "julebryg"}, 1, new List<string>() {"fløde"},
-                new List<string>() {"vegansk"}, It.IsAny<int>());
+                new List<string>() {"vegansk"}, It.IsAny<int>() ,false);
             var res = new RecipeResponse(_testRecipe.Description, null, _testRecipe.Id);
             _recipeCacheRepositoryMock.Setup(x => x.GetAllRecipes()).ReturnsAsync(new List<Recipe>());
             _recipeCacheRepositoryMock.Setup(x => x.Upsert(_testRecipe.Description, _testRecipe.Id))
@@ -99,7 +99,7 @@ namespace P7Internet.Test.Controllers
             //Arrange
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(),
                 new List<string>() {"æble", "kartoffel", "julebryg"}, 1, new List<string>() {"fløde"},
-                new List<string>() {"vegansk"}, It.IsAny<int>());
+                new List<string>() {"vegansk"}, It.IsAny<int>(),false);
             var res = new RecipeResponse(_testRecipe.Description, null, Guid.NewGuid());
             _openAiServiceMock.Setup(x => x.GetAiResponse(recipeRequest)).ReturnsAsync(res);
             _recipeCacheRepositoryMock.Setup(x => x.GetAllRecipes()).Returns(Task.FromResult(new List<Recipe>()
@@ -194,7 +194,7 @@ namespace P7Internet.Test.Controllers
             //Arrange
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(),
                 new List<string>() {"æble", "kartoffel", "julebryg"}, 1, new List<string>() {"fløde"},
-                new List<string>() {"vegansk"}, It.IsAny<int>());
+                new List<string>() {"vegansk"}, It.IsAny<int>(),false);
             var res = new RecipeResponse(_testRecipe.Description, null, Guid.NewGuid());
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(true));
@@ -224,7 +224,7 @@ namespace P7Internet.Test.Controllers
             //Arrange
             var recipeRequest = new RecipeRequest(It.IsAny<Guid>(), It.IsAny<string>(),
                 new List<string>() {"æble", "kartoffel", "julebryg"}, 1, new List<string>() {"fløde"},
-                new List<string>() {"vegansk"}, It.IsAny<int>());
+                new List<string>() {"vegansk"}, It.IsAny<int>(), false);
             var res = new RecipeResponse(_testRecipe.Description, null, Guid.NewGuid());
             _userSessionRepositoryMock.Setup(x => x.CheckIfTokenIsValid(It.IsAny<Guid>(), It.IsAny<string>()))
                 .Returns(Task.FromResult(false));

@@ -58,6 +58,8 @@ namespace P7Internet.Test.Services
         public async Task GetSallingOffersFail()
         {
             //Arrange
+            mockHttp.Clear();
+            
             mockHttp.When("https://api.sallinggroup.com/*").Respond("application/json", "");
             var query = "Akvavit";
             List<Offer> products = null;

@@ -14,16 +14,23 @@ import { nanoid } from "@reduxjs/toolkit";
 import { useUserGetRecipesInHistoryMutation } from "../services/usersEndpoints";
 import { toast } from "react-toastify";
 import recipeFromResponse from "../helperFunctions/recipeFromResponse";
+import { offersActions } from "../features/offersSlice";
+
 
 const HistoryModalContainer = ({ closeModal }) => {
   //States used to fetch data from backend
   const [userGetRecipesInHistory] = useUserGetRecipesInHistoryMutation();
+
+  useEffect(() => {
+    dispatch(offersActions.resetTotalPrice()); 
+  },[]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const dispatch = useDispatch();
   const recipes = useSelector((state) => state.recipe.recipes);
   const recipesInHistory = useSelector((state) => state.user.recipesInHistory);
 
   const getRecipesInHistory = async () => {
+
     try {
       const userId = getCookieUserId();
       const sessionToken = getCookieSessionToken();
@@ -58,6 +65,7 @@ const HistoryModalContainer = ({ closeModal }) => {
   function selectRecipe(event, recipe) {
     event.preventDefault();
     var recipeTitles = [];
+
     recipes.forEach((recipe) => recipeTitles.push(recipe["title"]));
     dispatch(
       recipeActions.setCurrentRecipeIndex(recipeTitles.indexOf(recipe.title))

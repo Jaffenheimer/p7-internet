@@ -63,6 +63,11 @@ public class PublicControllerV1 : ControllerBase
     [HttpPost("recipes")]
     public async Task<IActionResult> GetARecipe([FromBody] RecipeRequest req)
     {
+        if (req.IsDietaryRestrictionsSet)
+        {
+            goto NotEnoughRecipes;
+        }
+        
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
         List<Recipe> recipesIncludingIngredients = new List<Recipe>();
@@ -150,6 +155,11 @@ public class PublicControllerV1 : ControllerBase
     [HttpPost("user/recipe")]
     public async Task<IActionResult> GetARecipeWhenLoggedIn([FromBody] RecipeRequest req)
     {
+        if (req.IsDietaryRestrictionsSet)
+        {
+            goto NotEnoughRecipes;
+        } 
+        
         var checkIfUserSessionIsValid =
             await _userSessionRepository.CheckIfTokenIsValid(req.UserId.GetValueOrDefault(), req.SessionToken);
         if (!checkIfUserSessionIsValid)
@@ -667,8 +677,8 @@ public class PublicControllerV1 : ControllerBase
         {
             if (result.Contains(ingredient))
                 continue;
-            if (recipe.Contains(" " + ingredient.ToLower() + " "))
-                result.Add(ingredient);
+            if ((recipe.Contains(" " + ingredient.ToLower() + " ") || (recipe.Contains(" " + ingredient.ToLower() + ", "))))
+                if(ingredient != "") result.Add(ingredient);
         }
         return result;
     }

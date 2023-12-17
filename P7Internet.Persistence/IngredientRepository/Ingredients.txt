@@ -6,6 +6,10 @@ Sort peber
 Smør
 Tomater
 Kyllingebouillon
+Rød peberfrugt
+Gul peberfrugt
+Grøn peberfrugt
+Flåede tomater
 Rød peber
 Sukker
 Hvedemel
@@ -607,3 +611,12 @@ Sesamfrø
 Linser
 Miso
 Kartoffel
+Hasselnødder
+Olie
+Grøntsagsbouillon
+Oksebouillon
+Vand
+Hakkede tomater
+Tomatpure
+Julebryg
+
