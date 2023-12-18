@@ -36,8 +36,8 @@ namespace P7Internet.Services
             try
             {
                 var url = new Uri(QueryHelpers.AddQueryString(
-                Path.Combine(_httpClient.BaseAddress.ToString(), "v1-beta/product-suggestions/relevant-products"),
-                "query", query));
+                    Path.Combine(_httpClient.BaseAddress.ToString(), "v1-beta/product-suggestions/relevant-products"),
+                    "query", query));
                 var request = new HttpRequestMessage(HttpMethod.Get, url);
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", _apiKey);
                 var response = await _httpClient.SendAsync(request);
@@ -70,6 +70,6 @@ namespace P7Internet.Services
             {
                 throw e;
             }
-        }   
+        }
     }
 }

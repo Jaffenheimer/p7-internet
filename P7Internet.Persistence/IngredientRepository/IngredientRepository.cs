@@ -23,7 +23,6 @@ public class IngredientRepository : IIngredientRepository
     /// <summary>
     /// Upserts a list of ingredients to the database
     /// </summary>
-    /// <param name="ingredients"></param>
     /// <returns>True if successful false otherwise</returns>
     public async Task<bool> UpsertIngredients()
     {
@@ -49,7 +48,7 @@ public class IngredientRepository : IIngredientRepository
     {
         var query = $@"SELECT Name FROM {TableName} WHERE Name = @Name";
 
-        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new {Name = ingredient});
+        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new { Name = ingredient });
 
         return resultFromDb != null;
     }

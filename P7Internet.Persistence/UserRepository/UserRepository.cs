@@ -27,7 +27,7 @@ public class UserRepository : IUserRepository
     public async Task<User> GetUserFromId(Guid userId)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Id = @Id";
-        var result = await Connection.QuerySingleOrDefaultAsync(query, new {Id = userId});
+        var result = await Connection.QuerySingleOrDefaultAsync(query, new { Id = userId });
         if (result != null)
         {
             var user = new User(result.Name, result.Email);
@@ -49,7 +49,7 @@ public class UserRepository : IUserRepository
     public async Task<User> GetUser(string name)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Name = @name";
-        var result = await Connection.QuerySingleOrDefaultAsync(query, new {name});
+        var result = await Connection.QuerySingleOrDefaultAsync(query, new { name });
         if (result != null)
         {
             var user = new User(result.Name, result.Email);
@@ -71,7 +71,7 @@ public class UserRepository : IUserRepository
     public async Task<bool> CheckIfEmailIsConfirmed(string name)
     {
         var query = $@"SELECT EmailConfirmed FROM {TableName} WHERE Name = @name";
-        var result = await Connection.QuerySingleOrDefaultAsync<bool>(query, new {name});
+        var result = await Connection.QuerySingleOrDefaultAsync<bool>(query, new { name });
 
         return result;
     }
@@ -84,7 +84,7 @@ public class UserRepository : IUserRepository
     public async Task<User> GetUserByEmail(string email)
     {
         var query = $@"SELECT * FROM {TableName} WHERE Email = @email";
-        var result = await Connection.QuerySingleOrDefaultAsync(query, new {email});
+        var result = await Connection.QuerySingleOrDefaultAsync(query, new { email });
         if (result != null)
         {
             var user = new User(result.Name, result.Email);
@@ -141,7 +141,7 @@ public class UserRepository : IUserRepository
         var query = $@"SELECT * FROM {TableName} WHERE Name = @userName";
 
 
-        var result = await Connection.QueryFirstOrDefaultAsync(query, new {userName});
+        var result = await Connection.QueryFirstOrDefaultAsync(query, new { userName });
 
         if (result != null)
         {
@@ -165,7 +165,7 @@ public class UserRepository : IUserRepository
     public async Task<bool> ConfirmEmail(string userName, string emailAddress)
     {
         var query = $@"UPDATE {TableName} SET EmailConfirmed = true WHERE Name = @Name AND Email = @Email";
-        var result = await Connection.ExecuteAsync(query, new {Name = userName, Email = emailAddress});
+        var result = await Connection.ExecuteAsync(query, new { Name = userName, Email = emailAddress });
         return result > 0;
     }
 
@@ -197,7 +197,7 @@ public class UserRepository : IUserRepository
     public async Task<bool> DeleteUser(User user)
     {
         var query = $@"DELETE FROM {TableName} WHERE Name = @Name";
-        var result = await Connection.ExecuteAsync(query, new {Name = user.Name});
+        var result = await Connection.ExecuteAsync(query, new { Name = user.Name });
         return result > 0;
     }
 

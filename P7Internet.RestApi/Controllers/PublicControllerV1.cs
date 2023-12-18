@@ -1,11 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Data.Entity.Infrastructure;
 using System.Linq;
-using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using P7Internet.Persistence.CachedIngredientPricesRepository;
 using P7Internet.Persistence.FavouriteRecipeRepository;
@@ -67,7 +62,7 @@ public class PublicControllerV1 : ControllerBase
         {
             goto NotEnoughRecipes;
         }
-        
+
         var recipes = await _cachedRecipeRepository.GetAllRecipes();
 
         List<Recipe> recipesIncludingIngredients = new List<Recipe>();
@@ -107,7 +102,7 @@ public class PublicControllerV1 : ControllerBase
                 var ingredientsToFrontend = CheckListForValidIngredients(recipe.Description, validIng);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if(counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 
@@ -158,8 +153,8 @@ public class PublicControllerV1 : ControllerBase
         if (req.IsDietaryRestrictionsSet)
         {
             goto NotEnoughRecipes;
-        } 
-        
+        }
+
         var checkIfUserSessionIsValid =
             await _userSessionRepository.CheckIfTokenIsValid(req.UserId.GetValueOrDefault(), req.SessionToken);
         if (!checkIfUserSessionIsValid)
@@ -205,7 +200,7 @@ public class PublicControllerV1 : ControllerBase
                 await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(), recipe.Id);
                 returnList.Add(new RecipeResponse(recipe.Description, ingredientsToFrontend, recipe.Id));
                 counter++;
-                if  (counter == req.Amount)
+                if (counter == req.Amount)
                     break;
             }
 
@@ -228,7 +223,7 @@ public class PublicControllerV1 : ControllerBase
                 if (req.UserId != null && req.SessionToken != null)
                 {
                     await _favouriteRecipeRepository.UpsertRecipesToHistory(req.UserId.GetValueOrDefault(),
-                        recipeList[i].RecipeId);                   
+                        recipeList[i].RecipeId);
                 }
             }
 
@@ -273,6 +268,7 @@ public class PublicControllerV1 : ControllerBase
             {
                 await _cachedOfferRepository.UpsertOffer(offer.Name, offer.Price, offer.Store);
             }
+
             var stores = req.StoresStringToList(req.Stores);
             if (res.Any(offer => stores.Contains(offer.Store)))
                 return Ok(res);
@@ -287,6 +283,7 @@ public class PublicControllerV1 : ControllerBase
                 if (await _cachedOfferRepository.GetOffer(product.Name) != null) break;
                 await _cachedOfferRepository.UpsertOffer(product.Name, product.Price, product.Store);
             }
+
             return Ok(res);
         }
 
@@ -571,7 +568,7 @@ public class PublicControllerV1 : ControllerBase
         return BadRequest("Password is incorrect please try again");
     }
 
-    //NOTE: IKKE BRUG DET HER ENDPOINT TIL TESTING DER ER KUN 100 GRATIS EMAILS OM DAGEN
+
     /// <summary>
     /// Endpoint to confirm the email of a user if requested.
     /// </summary>
@@ -606,6 +603,11 @@ public class PublicControllerV1 : ControllerBase
         return BadRequest("The user was not found");
     }
 
+    /// <summary>
+    /// Endpoint to delete a user.
+    /// </summary>
+    /// <param name="req"></param>
+    /// <returns></returns>
     [HttpDelete("user/delete-user")]
     public async Task<IActionResult> DeleteUser([FromBody] DeleteUser req)
     {
@@ -662,7 +664,6 @@ public class PublicControllerV1 : ControllerBase
     /// Helper function to retrieve valid ingredients from a list of ingredients.
     /// They are valid in the sense of being stripped of all other characters than letters e.g. numbers etc
     /// </summary>
-    /// <param name="ingredients"></param>
     /// <param name="recipe"></param>
     /// <param name="validIngredients"></param>
     /// <returns>A list of ingredients in the correct format</returns>
@@ -677,9 +678,12 @@ public class PublicControllerV1 : ControllerBase
         {
             if (result.Contains(ingredient))
                 continue;
-            if ((recipe.Contains(" " + ingredient.ToLower() + " ") || (recipe.Contains(" " + ingredient.ToLower() + ", "))))
-                if(ingredient != "") result.Add(ingredient);
+            if ((recipe.Contains(" " + ingredient.ToLower() + " ") ||
+                 (recipe.Contains(" " + ingredient.ToLower() + ", "))))
+                if (ingredient != "")
+                    result.Add(ingredient);
         }
+
         return result;
     }
 

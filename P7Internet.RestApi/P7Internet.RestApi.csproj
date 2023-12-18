@@ -41,8 +41,5 @@
             <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
         </Content>
     </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Dtos\" />
-    </ItemGroup>
 
 </Project>

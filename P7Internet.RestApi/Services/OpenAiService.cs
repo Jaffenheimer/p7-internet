@@ -67,7 +67,7 @@ public class OpenAiService
     private string ComposePromptFromRecipeRequest(RecipeRequest req)
     {
         var prompt = "Jeg vil gerne have en ny forskellige opskrift fra andre og med en unik titel.";
-        
+
         if (req.Ingredients != null)
         {
             prompt += $" Opskriften skal indeholde disse ingredienser {string.Join(", ", req.Ingredients)}";
@@ -90,7 +90,7 @@ public class OpenAiService
 
         prompt += "Det skal have følgende format: Titel, ingredienser og metode. ";
         prompt += "Opskriften må ikke indeholde noter, bemærkninger, Bemærk og serveringsforslag.";
-        
+
         return prompt;
     }
 }

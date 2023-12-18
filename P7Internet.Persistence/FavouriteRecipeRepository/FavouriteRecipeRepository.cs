@@ -25,16 +25,20 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
         _cachedRecipeRepository = cachedRecipeRepository;
     }
 
-
+    /// <summary>
+    /// Gets all favourite recipes for a user
+    /// </summary>
+    /// <param name="userId"></param>
+    /// <returns>A list of recipes if any found, null if nothing is found</returns>
     public async Task<List<Recipe>> Get(Guid userId)
     {
         var query = $@"SELECT RecipeId FROM {TableName} WHERE UserId = @UserId";
 
-        var guids = await Connection.QueryAsync<Guid>(query, new {UserId = userId});
+        var guids = await Connection.QueryAsync<Guid>(query, new { UserId = userId });
 
         var result = await _cachedRecipeRepository.GetListOfRecipes(guids.ToList());
 
-        return result is {Count: > 0} ? result : null;
+        return result is { Count: > 0 } ? result : null;
     }
 
     /// <summary>
@@ -58,7 +62,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
         var query = $@"INSERT INTO {TableName} (UserId, RecipeId)
                        VALUES (@UserId, @RecipeId)";
 
-        return await Connection.ExecuteAsync(query, new {UserId = userId, RecipeId = recipeId}) > 0;
+        return await Connection.ExecuteAsync(query, new { UserId = userId, RecipeId = recipeId }) > 0;
     }
 
     /// <summary>
@@ -71,7 +75,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     {
         var query = $@"DELETE FROM {TableName} WHERE UserId = @UserId AND RecipeId = @RecipeId";
 
-        return await Connection.ExecuteAsync(query, new {UserId = userId, RecipeId = recipeId}) > 0;
+        return await Connection.ExecuteAsync(query, new { UserId = userId, RecipeId = recipeId }) > 0;
     }
 
     /// <summary>
@@ -85,11 +89,11 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
         var query = $@"SELECT RecipeId FROM {TableName} WHERE UserId = @UserId AND RecipeId = @RecipeId";
 
         var resultFromDb =
-            await Connection.QueryFirstOrDefaultAsync<string>(query, new {UserId = userId, RecipeId = recipeId});
+            await Connection.QueryFirstOrDefaultAsync<string>(query, new { UserId = userId, RecipeId = recipeId });
 
         return resultFromDb != null;
     }
-    
+
     /// <summary>
     /// Checks if a recipe is already a favourite recipe
     /// </summary>
@@ -101,7 +105,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
         var query = $@"SELECT RecipeId FROM {HistoryTableName} WHERE UserId = @UserId AND RecipeId = @RecipeId";
 
         var resultFromDb =
-            await Connection.QueryFirstOrDefaultAsync<string>(query, new {UserId = userId, RecipeId = recipeId});
+            await Connection.QueryFirstOrDefaultAsync<string>(query, new { UserId = userId, RecipeId = recipeId });
 
         return resultFromDb != null;
     }
@@ -115,7 +119,7 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
     {
         var query = $@"SELECT RecipeId FROM {HistoryTableName} WHERE UserId = @UserId";
 
-        var guids = await Connection.QueryAsync<Guid>(query, new {UserId = userId});
+        var guids = await Connection.QueryAsync<Guid>(query, new { UserId = userId });
 
         var result = await _cachedRecipeRepository.GetListOfRecipes(guids.ToList());
 
@@ -143,18 +147,20 @@ public class FavouriteRecipeRepository : IFavouriteRecipeRepository
         if (recipeIsAlreadyInHistory)
             return false;
 
-        
+
         var insertQuery = $@"INSERT INTO {HistoryTableName} (UserId, RecipeId)
                        VALUES (@UserId, @RecipeId)";
-        var countQuery =  $@"SELECT COUNT(*) FROM {HistoryTableName} WHERE UserId = @UserId";
-        var deleteQuery = $@"DELETE FROM {HistoryTableName} WHERE Updated IS NOT NULL AND UserId = @UserId ORDER BY Updated ASC LIMIT 1;";
-        
-        var result = await Connection.ExecuteAsync(insertQuery, new {UserId = userId, RecipeId = recipeId});
-        var count = await Connection.ExecuteScalarAsync<int>(countQuery, new {UserId = userId});
+        var countQuery = $@"SELECT COUNT(*) FROM {HistoryTableName} WHERE UserId = @UserId";
+        var deleteQuery =
+            $@"DELETE FROM {HistoryTableName} WHERE Updated IS NOT NULL AND UserId = @UserId ORDER BY Updated ASC LIMIT 1;";
+
+        var result = await Connection.ExecuteAsync(insertQuery, new { UserId = userId, RecipeId = recipeId });
+        var count = await Connection.ExecuteScalarAsync<int>(countQuery, new { UserId = userId });
         if (count > 50)
         {
-            await Connection.ExecuteAsync(deleteQuery, new {UserId = userId});
+            await Connection.ExecuteAsync(deleteQuery, new { UserId = userId });
         }
+
         return result > 0;
     }
 }

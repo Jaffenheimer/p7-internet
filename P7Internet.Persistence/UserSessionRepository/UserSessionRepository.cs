@@ -54,7 +54,7 @@ public class UserSessionRepository : IUserSessionRepository
     {
         var query =
             $@"SELECT * FROM {TableName} WHERE UserId = @userId AND SessionToken = @token AND ExpiresAt >= (TIME(NOW()))";
-        var result = await Connection.QuerySingleOrDefaultAsync(query, new {userId, token});
+        var result = await Connection.QuerySingleOrDefaultAsync(query, new { userId, token });
         if (result != null && result.ExpiresAt > DateTime.UtcNow.AddHours(1))
         {
             return true;
@@ -73,7 +73,7 @@ public class UserSessionRepository : IUserSessionRepository
     public async Task<bool> DeleteSessionToken(Guid userId, string sessionToken)
     {
         var query = $@"DELETE FROM {TableName} WHERE UserId = @UserId AND SessionToken = @SessionToken";
-        return await Connection.ExecuteAsync(query, new {UserId = userId, SessionToken = sessionToken}) > 0;
+        return await Connection.ExecuteAsync(query, new { UserId = userId, SessionToken = sessionToken }) > 0;
     }
 
     /// <summary>
@@ -86,7 +86,7 @@ public class UserSessionRepository : IUserSessionRepository
         var query =
             $@"SELECT UserId FROM {VerificationTable} WHERE VerificationCode = @VerificationCode AND ExpiresAt >= (TIME(NOW()))";
         var result =
-            await Connection.QueryFirstOrDefaultAsync<Guid>(query, new {VerificationCode = verificationCode});
+            await Connection.QueryFirstOrDefaultAsync<Guid>(query, new { VerificationCode = verificationCode });
         if (result != Guid.Empty)
         {
             await DeleteVerificationToken(result, verificationCode);
@@ -108,7 +108,7 @@ public class UserSessionRepository : IUserSessionRepository
             $@"SELECT UserId FROM {VerificationTable} WHERE VerificationCode = @VerificationCode AND ExpiresAt >= TIME(NOW()) AND CodeType = @CodeType";
         var result =
             await Connection.QueryFirstOrDefaultAsync<Guid>(query,
-                new {VerificationCode = verificationCode, CodeType = type});
+                new { VerificationCode = verificationCode, CodeType = type });
 
         if (result != Guid.Empty)
         {
@@ -122,6 +122,7 @@ public class UserSessionRepository : IUserSessionRepository
     /// Generates a verification code for the user and inserts it into the database
     /// </summary>
     /// <param name="userId"></param>
+    /// <param name="codeType"></param>
     /// <returns>returns the generated token</returns>
     public async Task<string> GenerateVerificationCode(Guid userId, string codeType)
     {
@@ -152,7 +153,7 @@ public class UserSessionRepository : IUserSessionRepository
     public async Task<bool> DeleteVerificationToken(Guid userId, string verificationCode)
     {
         var query = $@"DELETE FROM {VerificationTable} WHERE UserId = @UserId AND VerificationCode = @VerificationCode";
-        return await Connection.ExecuteAsync(query, new {UserId = userId, VerificationCode = verificationCode}) > 0;
+        return await Connection.ExecuteAsync(query, new { UserId = userId, VerificationCode = verificationCode }) > 0;
     }
 
     /// <summary>

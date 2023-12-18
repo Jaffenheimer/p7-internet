@@ -59,7 +59,7 @@ namespace P7Internet.Test.Services
         {
             //Arrange
             mockHttp.Clear();
-            
+
             mockHttp.When("https://api.sallinggroup.com/*").Respond("application/json", "");
             var query = "Akvavit";
             List<Offer> products = null;
@@ -121,13 +121,13 @@ namespace P7Internet.Test.Services
         {
             //Arrange
             var recipeRequest = new RecipeRequest(Guid.NewGuid(), "test-token",
-                new List<string> {"kylling", "julebryg", "hestebønner"}, 2, new List<string> {"kartoffel", "løg"},
-                new List<string> {"vegansk"}, 4);
+                new List<string> { "kylling", "julebryg", "hestebønner" }, 2, new List<string> { "kartoffel", "løg" },
+                new List<string> { "vegansk" }, 4);
             var checkPrompt =
                 @"Jeg vil gerne have en ny forskellig opskrift fra andre og med en unik titel. Opskriften skal indeholde disse ingredienser kylling, julebryg, "
-            + "hestebønner uden disse ingredienser kartoffel,løg der er vegansk til 4 personer. Det skal have følgende format: Titel, ingredienser og metode. "+
+                + "hestebønner uden disse ingredienser kartoffel,løg der er vegansk til 4 personer. Det skal have følgende format: Titel, ingredienser og metode. " +
                 "Opskriften må ikke indeholde noter, bemærkninger, Bemærk og serveringsforslag.";
-            
+
             //Act
             var prompt = _openAiService.ComposePromptFromRecipeRequest(recipeRequest);
 
@@ -144,7 +144,7 @@ namespace P7Internet.Test.Services
                 new List<string>(), 4);
             var checkPrompt =
                 @"Jeg vil gerne have en ny forskellig opskrift fra andre og med en unik titel. Opskriften skal indeholde disse ingredienser kylling, julebryg, "
-                + "hestebønner uden disse ingredienser kartoffel,løg der er vegansk til 4 personer. Det skal have følgende format: Titel, ingredienser og metode. "+
+                + "hestebønner uden disse ingredienser kartoffel,løg der er vegansk til 4 personer. Det skal have følgende format: Titel, ingredienser og metode. " +
                 "Opskriften må ikke indeholde noter, bemærkninger, Bemærk og serveringsforslag.";
             //Act
             var prompt = _openAiService.ComposePromptFromRecipeRequest(recipeRequest);

@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
 using System.Threading.Tasks;
 using Dapper;
 using P7Internet.Persistence.Connection;
@@ -29,7 +28,7 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     {
         var query = $@"SELECT Id FROM {TableName} WHERE Id = @Id";
 
-        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new {Id = recipeId});
+        var resultFromDb = await Connection.QueryFirstOrDefaultAsync<string>(query, new { Id = recipeId });
 
         return resultFromDb != null;
     }
@@ -41,16 +40,16 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     public async Task<List<Recipe>> GetAllRecipes()
     {
         var cachedRecipeQuery = $@"SELECT * FROM {TableName}";
-        
+
         var returnList = new List<Recipe>();
-        
+
         var recipeResultsFromDb = await Connection.QueryAsync(cachedRecipeQuery);
-        
+
         foreach (var recipeResult in recipeResultsFromDb)
         {
             returnList.Add(new Recipe(new Guid(recipeResult.Id), recipeResult.Recipe.ToString()));
         }
-        
+
         return returnList;
     }
 
@@ -83,13 +82,14 @@ public class RecipeCacheRepository : IRecipeCacheRepository
     public async Task<List<Recipe>> GetListOfRecipes(List<Guid> ids)
     {
         var query = $@"SELECT Recipe FROM {TableName} WHERE Id = @Ids";
-        
+
         List<string> result = new List<string>();
         foreach (var id in ids)
         {
-            var res = await Connection.QuerySingleOrDefaultAsync<string>(query, new {Ids = id});
+            var res = await Connection.QuerySingleOrDefaultAsync<string>(query, new { Ids = id });
             result.Add(res);
         }
+
         var recipes = new List<Recipe>();
 
         var counter = 0;

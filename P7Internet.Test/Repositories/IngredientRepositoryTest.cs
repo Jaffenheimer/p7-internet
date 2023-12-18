@@ -27,7 +27,7 @@ public class IngredientRepositoryTest
     public void GetIngredientSuccess()
     {
         //Arrange
-        List<string> testIngredient = new List<string>() {"TestIngredient", "TestIngredient2", "TestIngredient3"};
+        List<string> testIngredient = new List<string>() { "TestIngredient", "TestIngredient2", "TestIngredient3" };
         _dbConnection.SetupDapperAsync(c => c.QueryAsync<string>(It.IsAny<string>(), null, null, null, null))
             .ReturnsAsync(testIngredient);
 
@@ -47,7 +47,7 @@ public class IngredientRepositoryTest
     public void GetIngredientFail()
     {
         //Arrange
-        List<string> testIngredient = new List<string>() {"TestIngredient", "TestIngredient2", "TestIngredient3"};
+        List<string> testIngredient = new List<string>() { "TestIngredient", "TestIngredient2", "TestIngredient3" };
         _dbConnection.SetupDapperAsync(c => c.QueryAsync<string>(It.IsAny<string>(), null, null, null, null))
             .ReturnsAsync(new List<string>());
 
@@ -84,7 +84,7 @@ public class IngredientRepositoryTest
         //Arrange
         _dbConnection
             .SetupDapperAsync(c => c.QueryFirstOrDefaultAsync<string>(It.IsAny<string>(), null, null, null, null))
-            .ReturnsAsync((string) null);
+            .ReturnsAsync((string)null);
 
         //Act
         var result = _ingredientRepository.CheckIfIngredientExists("TestIngredient").Result;

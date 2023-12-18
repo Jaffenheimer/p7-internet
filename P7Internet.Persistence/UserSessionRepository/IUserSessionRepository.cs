@@ -31,7 +31,8 @@ public interface IUserSessionRepository
     /// <summary>
     /// Gets a userId from a verification code given that the code is valid and deletes the verification token from the database
     /// </summary>
-    /// <param name="verificationCode"></param>
+    /// <param name="userId"></param>
+    /// <param name="codeType"></param>
     /// <returns>A user if found null if not</returns>
     public Task<string> GenerateVerificationCode(Guid userId, string codeType);
 

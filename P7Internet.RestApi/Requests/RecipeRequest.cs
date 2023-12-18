@@ -23,13 +23,14 @@ public class RecipeRequest
     public List<string> DietaryRestrictions { get; set; }
 
     public RecipeRequest(Guid? userId, string? sessionToken, List<string> ingredients, int? amount,
-        List<string> excludedIngredients, List<string> dietaryRestrictions, int? amountOfPeople, bool isDietaryRestrictionsSet = false)
+        List<string> excludedIngredients, List<string> dietaryRestrictions, int? amountOfPeople,
+        bool isDietaryRestrictionsSet = false)
     {
         UserId = userId;
         SessionToken = sessionToken;
         Ingredients = ingredients;
         Amount = amount;
-        IsDietaryRestrictionsSet = isDietaryRestrictionsSet; 
+        IsDietaryRestrictionsSet = isDietaryRestrictionsSet;
         ExcludedIngredients = excludedIngredients;
         DietaryRestrictions = dietaryRestrictions;
         AmountOfPeople = amountOfPeople;

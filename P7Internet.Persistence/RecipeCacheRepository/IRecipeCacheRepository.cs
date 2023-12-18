@@ -23,7 +23,7 @@ public interface IRecipeCacheRepository
     /// <summary>
     /// Inserts or updates a recipe in the database
     /// </summary>
-    /// <param name="openAiResponse"></param>
+    /// <param name="recipe"></param>
     /// <param name="recipeId"></param>
     /// <returns>Returns true of the process was successful E.g. the number of rows affected was more than 0 else it returns false</returns>
     public Task<bool> Upsert(string recipe, Guid recipeId);

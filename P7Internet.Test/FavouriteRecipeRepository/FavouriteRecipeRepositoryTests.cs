@@ -47,7 +47,7 @@ namespace P7Internet.Test.FavouriteRecipeRepository
             //Arrange
             _dbConnection
                 .SetupDapperAsync(
-                    c => c.QueryAsync(It.IsAny<string>(), new {UserId = _testUser.Id}, null, null, null))
+                    c => c.QueryAsync(It.IsAny<string>(), new { UserId = _testUser.Id }, null, null, null))
                 .ReturnsAsync(value: null);
 
             //Act
@@ -63,7 +63,7 @@ namespace P7Internet.Test.FavouriteRecipeRepository
         {
             //Arrange
             _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(),
-                new {UserId = _testUser.Id, RecipeId = _testRecipe.Id}, null, null, null)).ReturnsAsync(1);
+                new { UserId = _testUser.Id, RecipeId = _testRecipe.Id }, null, null, null)).ReturnsAsync(1);
             _dbConnection.SetupDapperAsync(c => c.QueryFirstOrDefaultAsync(It.IsAny<string>(), null, null, null, null))
                 .ReturnsAsync(value: null);
             _recipeCacheRepositoryMock.Setup(x => x.CheckIfRecipeExist(It.IsAny<Guid>())).ReturnsAsync(true);
@@ -82,7 +82,7 @@ namespace P7Internet.Test.FavouriteRecipeRepository
         {
             //Arrange
             _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(),
-                new {UserId = _testUser.Id, RecipeId = _testRecipe.Id}, null, null, null)).ReturnsAsync(1);
+                new { UserId = _testUser.Id, RecipeId = _testRecipe.Id }, null, null, null)).ReturnsAsync(1);
 
             //Act
             var status = _favRecipeCacheRepository.Delete(_testUser.Id, _testRecipe.Id).Result;
@@ -97,7 +97,7 @@ namespace P7Internet.Test.FavouriteRecipeRepository
         {
             //Arrange
             _dbConnection.SetupDapperAsync(c => c.ExecuteAsync(It.IsAny<string>(),
-                new {UserId = _testUser.Id, RecipeId = _testRecipe.Id}, null, null, null)).ReturnsAsync(1);
+                new { UserId = _testUser.Id, RecipeId = _testRecipe.Id }, null, null, null)).ReturnsAsync(1);
 
             //Act
             var status = _favRecipeCacheRepository.Delete(_testUser.Id, _testRecipe.Id).Result;

@@ -49,7 +49,6 @@ public class OpenAiServiceMock
         prompt += "Det skal have følgende format: Titel, ingredienser og metode. ";
         prompt += "Opskriften må ikke indeholde noter, bemærkninger, Bemærk og serveringsforslag.";
 
-        return prompt; 
-
+        return prompt;
     }
 }
