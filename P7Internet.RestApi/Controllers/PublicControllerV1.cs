@@ -325,9 +325,9 @@ public class PublicControllerV1 : ControllerBase
         if (!res)
             return BadRequest(
                 "User with the specified Username or Email already exists, please choose another Username or Email");
-        // ONLY COMMENT THIS IN WHEN WE NEED TO SHOW THIS FEATURE
-        //var confirmEmailToken = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "confirmEmail");
-        //await _emailService.ConfirmEmail(user, confirmEmailToken);
+      
+        var confirmEmailToken = await _userSessionRepository.GenerateVerificationCode(user.Id, codeType: "confirmEmail");
+        await _emailService.ConfirmEmail(user, confirmEmailToken);
         var token = await _userSessionRepository.GenerateSessionToken(user.Id);
         var response = new LogInResponse(user.Id, token, user.Name, user.EmailAddress);
 

@@ -19,7 +19,7 @@ public class EmailService
     }
 
     /// <summary>
-    /// Sends an email to the user with a link to Confirm the email
+    /// Sends an email to the user with a verification code to Confirm the email
     /// There is no return value to this function
     /// </summary>
     /// <param name="user"></param>
@@ -42,7 +42,7 @@ public class EmailService
     }
 
     /// <summary>
-    /// Sends an email to the user with a link to reset the password
+    /// Sends an email to the user with a verification code to reset the password
     /// There is no return value to this function
     /// </summary>
     /// <param name="user"></param>
